@@ -13,6 +13,14 @@ function page() {
     let [editEmailAddress, setEmailAddress] = useState(false);
 
 
+    let nums=[1,2,3,4,5];
+    let newData= nums.map(manipulate)
+
+
+    function manipulate(num){
+        return 10 
+    }
+
     return (
         <>
             <Header />

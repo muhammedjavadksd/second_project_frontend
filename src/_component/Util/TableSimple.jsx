@@ -45,7 +45,7 @@ function TableSimple({ headers = [], data = [] }) {
                         </th>
                         {headers.map((each) => {
                             return (
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="text-center px-6 py-3">
                                     {each}
                                 </th>
                             );
@@ -66,7 +66,7 @@ function TableSimple({ headers = [], data = [] }) {
                                     </div>
                                 </td>
                                 {Object.keys(item).map((each) => {
-                                    return <th scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    return <th scope="row" class="text-center px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {item[each]}
                                     </th>;
                                 })}
