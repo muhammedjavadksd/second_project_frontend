@@ -9,7 +9,7 @@ function Header() {
     let [showToggle, setShowToggle] = useState(false);
 
     return (
-        <nav class="bg-light-800">
+        <nav class="bg-white pt-3 pb-3">
             <div className="container mx-auto">
                 <div class="relative flex h-16 items-center justify-between">
                     <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
