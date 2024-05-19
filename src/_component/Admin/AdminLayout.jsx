@@ -9,11 +9,11 @@ function AdminLayout({ children }) {
 
     return (
         <div className='adminBody'>
-            <div className={`flex  w-full  h-screen`}>
-                <div className={`${navbarToggler ? 'w-1/5' : 'hidden'} transition-all duration-500 ease-in-out flex-grow row-span-1 h-full`}>
+            <div className={`flex  w-full  min-h-screen`}>
+                <div className={`${navbarToggler ? 'w-1/5' : 'hidden'} fixed transition-all duration-500 ease-in-out flex-grow row-span-1 h-full`}>
                     <AdminSideBar isShow={navbarToggler} />
                 </div>
-                <div className={`${navbarToggler ? 'w-5/6' : 'w-full'}`}>
+                <div className={`${navbarToggler ? 'w-4/5 ml-auto' : 'w-full'}`}>
                     <AdminNavbar onMenuClick={setNavbarToggler} />
                     
                     <div className='p-5'>

@@ -1,10 +1,17 @@
-import AdminLayout from '@/_component/Admin/AdminLayout'
-import AdminNavbar from '@/_component/Admin/Partials/Navbar'
-import AdminSideBar from '@/_component/Admin/Partials/SideBar'
+"use client"
+import AdminLayout from '@/_component/Admin/AdminLayout' 
 import DashboardCard from '@/_component/Util/DashboardCard'
 import React from 'react'
+import CanvasJSReact from '@canvasjs/react-charts'
+import { MONEY_ICON } from '@/app/const/const'
+import { userGrowthGraph, userTypeOptions } from './data'
 
 function DashboardPage() {
+
+   var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+  
+
   return (
     <AdminLayout>
 
@@ -68,6 +75,70 @@ function DashboardPage() {
 
         </div>
       </div>
+
+
+      <div className='mt-5'>
+        <h4 className='font-medium text-2xl mb-2'>Progress Data</h4>
+        <div className='flex gap-5'>
+
+          <div className='w-2/6'>
+
+
+
+            <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+              <div class="flex justify-between">
+                <div>
+                  <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32,000{MONEY_ICON}</h5>
+                  <p class="text-base font-normal text-gray-500 dark:text-gray-400">Total Fund Raised</p>
+                </div>
+                <div
+                  class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                  12%
+                  <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <CanvasJSChart options={userTypeOptions}
+                />
+              </div>
+
+            </div>
+          </div>
+          <div className='w-4/6'>
+
+
+
+            <div class=" w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+              <div class="flex justify-between">
+                <div>
+                  <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">500</h5>
+                  <p class="text-base font-normal text-gray-500 dark:text-gray-400">New User's</p>
+                </div>
+                <div
+                  class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                  12%
+                  <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <CanvasJSChart options={userGrowthGraph}
+                />
+              </div>
+
+            </div>
+            
+
+
+
+          </div>
+         
+        </div>
+      </div>
+
 
 
 

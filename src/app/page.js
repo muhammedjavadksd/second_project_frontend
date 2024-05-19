@@ -13,7 +13,6 @@ import Header from "@/_component/Header/Header";
 import Footer from "@/_component/Util/Footer";
 // import Footer from "@/_component/Util/Footer";
 // import '../external/style.css'
-import './global.css'
 
 
 

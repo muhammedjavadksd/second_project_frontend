@@ -1,4 +1,5 @@
 import Script from "next/script";
+import './global.css'
 
 export default function RootLayout({ children }) {
   return (
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
 
       <script src="https://cdn.tailwindcss.com"></script>
 
-      <script src="https://kit.fontawesome.com/046dc73391.js" crossorigin="anonymous"></script>
+      <Script src="https://kit.fontawesome.com/046dc73391.js" crossorigin="anonymous"></Script>
       <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></Script>
 
     </html>
