@@ -1,16 +1,18 @@
 "use client"
-import AdminLayout from '@/_component/Admin/AdminLayout' 
+import AdminLayout from '@/_component/Admin/AdminLayout'
 import DashboardCard from '@/_component/Util/DashboardCard'
 import React from 'react'
 import CanvasJSReact from '@canvasjs/react-charts'
 import { MONEY_ICON } from '@/app/const/const'
 import { userGrowthGraph, userTypeOptions } from './data'
+import TableSimple from '@/_component/Util/TableSimple'
+import PaginationTab from '@/_component/Util/PaginationTab'
 
 function DashboardPage() {
 
-   var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+  var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-  
+
 
   return (
     <AdminLayout>
@@ -130,13 +132,32 @@ function DashboardPage() {
               </div>
 
             </div>
-            
+
 
 
 
           </div>
-         
+
         </div>
+      </div>
+
+
+      <div className="mt-5">
+
+
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <TableSimple headers={['Product Name', 'Color', 'Category', 'Price', 'Action']} data={[{
+            name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action : <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
+          },{
+            name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action : <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
+          },{
+            name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action : <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
+          },{
+            name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action : <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
+          }]} />
+          <PaginationTab/>
+        </div>
+
       </div>
 
 
