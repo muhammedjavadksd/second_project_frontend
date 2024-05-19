@@ -31,6 +31,17 @@
     margin: 0 -15px;
 }
 
+
+.sliderCap  .slick-slide {
+    margin: 0 0px !important;
+}
+
+/* the parent */
+.sliderCap .slick-list {
+    margin: 0 0px !important;
+}
+
+
 .slick-initialized {
     overflow: hidden;
 }
@@ -62,4 +73,10 @@
     height: 55px;
     background: #c4afaf57;
     border-radius: 6px;
+}
+
+
+.adminBody{
+    background-color: #E0E2E7;
+    min-height: 100vh;
 }

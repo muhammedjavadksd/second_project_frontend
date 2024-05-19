@@ -8,15 +8,22 @@ import CountDisplay from "@/_section/Home/CountDisplay";
 import BloodReqSlider from "@/_section/Home/BloodReqSlider";
 import EventPromo from "@/_section/Home/EventPromo";
 import NewsSlider from "@/_section/Home/NewsSlider";
+import DataComponent from "@/_component/DataComponent";
+import Header from "@/_component/Header/Header";
+import Footer from "@/_component/Util/Footer";
 // import Footer from "@/_component/Util/Footer";
 // import '../external/style.css'
+import './global.css'
+
+
 
 export default function Home() {
+
+  
   return (
     <main className="flex min-h-screen flex-col">
       <div>
-        div
-
+        
         {/* <Footer */}
         <Header />
         <HomeHero />
