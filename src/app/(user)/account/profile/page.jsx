@@ -28,55 +28,86 @@ function page() {
                             <h4 className='font-medium text-3xl mb-2'>Hi, Muhammed Javad</h4>
                             <p>Here is your daily activities, and history</p>
                         </div>
-                        <div>
-                            <div className='mt-5   rounded-lg  shadow-mds'>
-                                 
+                        <div className='mt-5'>
 
-                                <div className="grid flex gap-10 grid-cols-2">
-                                    <div>
 
-                                        <div class="max-w-xs">
-                                            <div class="bg-white shadow-xl rounded-lg py-3">
-                                                <div class="photo-wrapper p-2">
-                                                    <img class="w-32 h-32 rounded-full mx-auto" src="https://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp" alt="John Doe" />
-                                                </div>
-                                                <div class="p-2">
-                                                    <h3 class="text-center text-xl text-gray-900 font-medium leading-8">Joh Doe</h3>
-                                                    <div class="text-center text-gray-400 text-xs font-semibold">
-                                                        <p>Web Developer</p>
-                                                    </div>
-                                                    <table class="text-xs my-3">
-                                                        <tbody><tr>
-                                                            <td class="px-2 py-2 text-gray-500 font-semibold">Address</td>
-                                                            <td class="px-2 py-2">Chatakpur-3, Dhangadhi Kailali</td>
-                                                        </tr>
-                                                            <tr>
-                                                                <td class="px-2 py-2 text-gray-500 font-semibold">Phone</td>
-                                                                <td class="px-2 py-2">+977 9955221114</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="px-2 py-2 text-gray-500 font-semibold">Email</td>
-                                                                <td class="px-2 py-2">john@exmaple.com</td>
-                                                            </tr>
-                                                        </tbody></table>
-
-                                                    <div class="text-center my-3">
-                                                        <a class="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium" href="#">View Profile</a>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
+                            <div class="bg-white shadow-xl mt-3  p-5 pt-5">
+                                <div>
+                                    <div className='flex mb-3'>
+                                        <h2 className='text-1xl'>Personal Details</h2>
+                                        {!editPersonalDetails && <button type="button" class="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm   ">
+                                            <i class="fa-solid fa-pencil"></i>    Edit Details
+                                        </button>}
                                     </div>
 
-                                    
+                                    <form action="" method="post">
+                                        <div className="grid flex gap-5 grid-cols-2">
+                                            <div>
+                                                {editPersonalDetails && <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>}
+                                                <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Muhammed " required />
+                                            </div>
+                                            <div>
+                                                {editPersonalDetails && <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>}
+                                                <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Javad" required />
+                                            </div>
+                                        </div>
+                                        {editPersonalDetails && <button type="button" class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit Personal Details</button>}
 
+
+                                    </form>
                                 </div>
 
-                            </div>
 
-                             
+                                <div className="grid grid-cols-2 flex gap-5">
+                                    <div className='mt-10'>
+                                        <div className='flex mb-3'>
+                                            <h2 className='text-1xl'>Personal Details</h2>
+                                            {!editPersonalDetails && <button type="button" class="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm   ">
+                                                <i class="fa-solid fa-pencil"></i>    Edit Details
+                                            </button>}
+                                        </div>
+
+                                        <form action="" method="post">
+                                            <div>
+                                                {editPersonalDetails && <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>}
+                                                <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="+91 9744727684 " required />
+                                            </div>
+                                            <div className='mt-5'>
+                                                {editPersonalDetails && <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>}
+                                                <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter OTP Number" required />
+                                            </div>
+
+                                            {editPersonalDetails && <button type="button" class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit Personal Details</button>}
+
+
+                                        </form>
+                                    </div><div className='mt-10'>
+                                        <div className='flex mb-3'>
+                                            <h2 className='text-1xl'>Update Email Address</h2>
+                                            {!editPersonalDetails && <button type="button" class="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm   ">
+                                                <i class="fa-solid fa-pencil"></i>    Edit Details
+                                            </button>}
+                                        </div>
+
+                                        <form action="" method="post">
+                                            <div>
+                                                {editPersonalDetails && <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email Address</label>}
+                                                <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="muhammedjavad119144@gmail.com " required />
+                                            </div>
+                                            <div className='mt-5'>
+                                                {editPersonalDetails && <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>}
+                                                <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter OTP Number" required />
+                                            </div>
+                                            {editPersonalDetails && <button type="button" class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit Personal Details</button>}
+
+
+                                        </form>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
