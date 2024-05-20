@@ -32,12 +32,12 @@
 }
 
 
-.sliderCap  .slick-slide {
+.sliderCap>.slick-slide {
     margin: 0 0px !important;
 }
 
 /* the parent */
-.sliderCap .slick-list {
+.sliderCap>.slick-list {
     margin: 0 0px !important;
 }
 

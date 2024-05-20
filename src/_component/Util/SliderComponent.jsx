@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css'
 import "slick-carousel/slick/slick-theme.css";
 
-function SliderComponent({ children, slidesToShow, slidesToScroll, dots = true, isGap, arrow }) {
+function SliderComponent({ children, slidesToShow, slidesToScroll, dots = true, isGap=false, arrow=false }) {
 
     let sliderRef = useRef();
 
@@ -14,7 +14,7 @@ function SliderComponent({ children, slidesToShow, slidesToScroll, dots = true, 
         slidesToShow,
         slidesToScroll,
         adaptiveHeight: true,
-         
+        
     };
 
 

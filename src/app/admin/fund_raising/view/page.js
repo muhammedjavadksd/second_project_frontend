@@ -24,7 +24,15 @@ function ViewFundRaising() {
             <div className='mt-5'>
                 <div className='grid grid-cols-2'>
                     <AdminDateFilter />
+                    <div className='buttonGroups flex items-center justify-end gap-3'>
+                    <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5'><i class="fa-solid fa-bars"></i> All case's</button>
+
+                        <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5'><i class="fa-solid fa-bars"></i> Pending Verification</button>
+                        <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'><i class="fa-solid fa-bars"></i> Verified </button>
+                        <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> <i class="fa-solid fa-bars"></i> Closed </button>
+                    </div>
                 </div>
+
                 <div className='mt-5'>
                     <TableSimple headers={['Raising ID', 'User', 'Target Amount', 'Dead Line', 'Status', 'Action']} data={[{
                         raisingID: "123",
@@ -41,7 +49,7 @@ function ViewFundRaising() {
                         action: <div>
                             <button className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2'><i class="fa-solid fa-eye"></i> View</button>
                         </div>
-                    }, 
+                    },
                     {
                         raisingID: "123",
                         User: <div className='flex justify-center gap-3'>
