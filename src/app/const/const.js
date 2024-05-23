@@ -15,4 +15,9 @@ export const tailWindColors = [
     'rose'
 ];
 
+
+export const ERROR_MSG = {
+    PHONE_NUMBER_VALIDATION:"Please enter 10 digit phone number"
+}
+
 export const MONEY_ICON= '₹'
