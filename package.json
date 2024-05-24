@@ -11,6 +11,7 @@
   "dependencies": {
     "@canvasjs/react-charts": "^1.0.2",
     "@coreui/react-chartjs": "^3.0.0",
+    "axios": "^1.7.2",
     "flowbite": "^2.3.0",
     "formik": "^2.4.6",
     "next": "14.2.3",
