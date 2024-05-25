@@ -15,10 +15,18 @@ export const tailWindColors = [
     'rose'
 ];
 
-export let  blood_groups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-
-export const ERROR_MSG = {
-    PHONE_NUMBER_VALIDATION:"Please enter 10 digit phone number"
+export let AUTH_PROVIDERS = {
+    GOOGLE: "GOOGLE",
+    FACEBOOK: "FACEBOOK",
+    CREDENTIAL: "CREDENTIAL"
 }
 
-export const MONEY_ICON= '₹'
+export let blood_groups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+
+export const ERROR_MSG = {
+    PHONE_NUMBER_VALIDATION: "Please enter 10 digit phone number"
+}
+
+export const MONEY_ICON = '₹'
+export const OTP_LENGTH = 6
+

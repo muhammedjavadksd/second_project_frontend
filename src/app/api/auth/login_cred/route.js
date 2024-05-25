@@ -1,14 +1,14 @@
 // src/app/api/hello/route.js
 
-import axiosInstance from "@/external/axios/api_axios_instance";
+import API_axiosInstance from "@/external/axios/api_axios_instance";
 
-export async function POST(request){
+export async function POST(request) {
 
-  let body = await request.json(); 
-  let phoneNumber = body.phone; 
+  let body = await request.json();
+  let phoneNumber = body.phone;
 
   try {
-    let loginRequest = await axiosInstance.post("/auth/sign_in", {
+    let loginRequest = await API_axiosInstance.post("/auth/sign_in", {
       phone: phoneNumber
     })
     let response = loginRequest.data.data;
