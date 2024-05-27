@@ -1,5 +1,6 @@
-import { AUTH_PROVIDERS } from "@/app/const/const";
+import { AUTH_PROVIDERS, COOKIE_DATA_KEY } from "@/app/const/const";
 import API_axiosInstance from "@/external/axios/api_axios_instance"
+import { cookies } from "next/headers";
 
 export async function POST(request) {
 
@@ -26,6 +27,8 @@ export async function POST(request) {
         let signUpRequets = await API_axiosInstance.post("/auth/sign_up", dataSignUp)
         let signUpResponse = signUpRequets.data;
         if (signUpResponse.status) {
+            let cookiesSet = cookies();
+            cookiesSet.set(COOKIE_DATA_KEY.SIGN_UP_DATA, signUpResponse.token)
             return new Response(JSON.stringify({ status: true, msg: "Account initiated success" }),
                 {
                     status: 200,
@@ -44,7 +47,10 @@ export async function POST(request) {
         }
     } catch (e) {
         console.log(e);
-        return new Response(JSON.stringify({ status: false, msg: "Something went wrong" }), {
+        console.log("The next error is:");
+        let errorMsg = e.response?.data.msg ?? "Something went wrong"
+        console.log(errorMsg);
+        return new Response(JSON.stringify({ status: false, msg: errorMsg }), {
             status: 500,
             headers: {
                 'Content-Type': 'application/json'

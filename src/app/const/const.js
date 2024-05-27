@@ -15,6 +15,10 @@ export const tailWindColors = [
     'rose'
 ];
 
+export let COOKIE_DATA_KEY = {
+    SIGN_UP_DATA: "SIGN_UP_DATA"
+}
+
 export let AUTH_PROVIDERS = {
     GOOGLE: "GOOGLE",
     FACEBOOK: "FACEBOOK",

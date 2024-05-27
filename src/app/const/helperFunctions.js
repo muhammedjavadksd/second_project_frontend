@@ -1,12 +1,10 @@
 
 
-export function getCurrentPosition(successCB, errorDB)
-{
-    navigator.geolocation.getCurrentPosition((location)=>{
+export function getCurrentPosition(successCB, errorDB) {
+    navigator.geolocation.getCurrentPosition((location) => {
         successCB(location)
-    },(err)=>{
+    }, (err) => {
         errorDB(err)
     })
 }
 
- 

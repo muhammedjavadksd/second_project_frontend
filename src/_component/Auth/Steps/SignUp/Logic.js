@@ -1,4 +1,4 @@
-import { ERROR_MSG, OTP_LENGTH, blood_groups } from '@/app/const/const';
+import { COOKIE_DATA_KEY, ERROR_MSG, OTP_LENGTH, blood_groups } from '@/app/const/const';
 import { getCurrentPosition } from '@/app/const/helperFunctions';
 import axios_instance from '@/external/axios/axios-instance';
 import { toast } from 'react-toastify';
@@ -14,41 +14,43 @@ function signUpIndexDown(state) {
 
 async function signUpDataHandler(data) {
 
-
-    console.log("Passing data is : ", data);
+    console.log("This worked");
     try {
         let sendRequest = await axios_instance.post("/api/auth/signup_cred", data);
-        console.log(sendRequest);
-        return sendRequest.data;
+        let response = sendRequest.data;
+        return response;
     } catch (e) {
-        console.log("This worked");
-        return Promise.reject()
+        console.log("This worked", e);
+        let errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        console.log("The error is : " + errorMsg);
+        return {
+            status: false,
+            msg: errorMsg
+        }
     }
 }
 
 
-function onSignUpHandler(values, successCB) {
+function onSignUpHandler(values, successCB, onSignUpError) {
     let userSignUpData = {
         first_name: values.first_name,
         last_name: values.last_name,
         email_address: values.email_address,
         blood_group: values.bloodGroup,
         phone_number: values.phone_number,
+
     }
 
-    console.log(userSignUpData);
 
-    try {
-
-        getCurrentPosition(async (location) => {
-            console.log(location);
-            if (location.coords) {
-                userSignUpData.location = {
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude
-                };
-            }
-            console.log("The loca", userSignUpData);
+    getCurrentPosition(async (location) => {
+        console.log(location);
+        if (location.coords) {
+            userSignUpData.location = {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude
+            };
+        }
+        try {
             let data = await signUpDataHandler(userSignUpData)
             console.log({ data });
             if (data.status) {
@@ -56,23 +58,26 @@ function onSignUpHandler(values, successCB) {
                 successCB()
                 //Invoce Callback for signup success
             } else {
-                toast.error(data.msg)
+                onSignUpError(data.msg)
             }
-        }, async (err) => {
-            console.log(err);
-            console.log("Error worked");
-            let data = await signUpDataHandler(userSignUpData)
-            if (data.status) {
-                toast.success("Sign Up Success");
-                successCB()
-                //Invoce Callback for signup success
-            } else {
-                toast.error(data.msg)
-            }
-        })
-    } catch (e) {
-        toast.error("Something went wrong");
-    }
+        } catch (e) {
+            console.log(e);
+            onSignUpError("Something went wrong");
+        }
+    }, async (err) => {
+        console.log(err);
+        let data = await signUpDataHandler(userSignUpData)
+        console.log(data);
+        console.log("API after error");
+        if (data.status) {
+            // onSignUpError("Sign Up Success");
+            successCB()
+            //Invoce Callback for signup success
+        } else {
+            onSignUpError(data.msg)
+        }
+    })
+
 }
 
 let signUpValidator = yup.object().shape({
@@ -93,32 +98,40 @@ let signUpInitialValues = {
 
 let signUpOtpInitialValues = {
     otp_number: null,
-    email_id: "muhammedjavad119144@gmail.com"
 }
 
 let otpValidator = yup.object().shape({
-    otp_number: yup.number("Please enter valid otp number").test("len", `Please enter ${OTP_LENGTH} digit OTP Number`, (val) => val.toString().length == OTP_LENGTH),
-    email_id: yup.string("Something went wrong").email("You do not have valid email id-").required("You do not have valid email id")
+    otp_number: yup.number("Please enter valid otp number").test("len", `Please enter ${OTP_LENGTH} digit OTP Number`, (val) => val.toString().length == OTP_LENGTH).required("Otp number is required"),
 })
 
-let signUpOtpHandler = async function (val) {
+let signUpOtpHandler = async function (val, onCb) {
     let { otp_number, email_id } = val;
     console.log(val);
 
     try {
+
+
         let signupOtpRequest = await axios_instance.post("/api/auth/signup_otp", {
-            otp_number,
-            email_id: email_id
+            otp_number
         })
         let response = signupOtpRequest.data;
+
         if (response.status) {
             toast.success("OTP has been verified")
+            onCb()
         } else {
             toast.success(response.msg)
+            onCb()
         }
     } catch (e) {
         toast.success("Something went wrong")
+        onCb()
     }
+}
+
+function clickMe() {
+    alert("Hello world")
+    toast.success("Something went wrong")
 }
 
 module.exports = {
@@ -129,5 +142,6 @@ module.exports = {
     signUpInitialValues,
     signUpOtpHandler,
     otpValidator,
-    signUpOtpInitialValues
+    signUpOtpInitialValues,
+    clickMe
 }

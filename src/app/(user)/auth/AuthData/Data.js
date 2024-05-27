@@ -3,6 +3,7 @@ const { default: SignInPhoneNumber } = require("@/_component/Auth/Steps/SignIn/S
 const { loginStepIndexUp } = require("./Logic");
 const { default: SignUpStart } = require("@/_component/Auth/Steps/SignUp/SignUpStart");
 const { default: SignUpOTP } = require("@/_component/Auth/Steps/SignUp/SignUpOTP");
+const { default: EditPhoneNumber } = require("@/_component/Auth/Steps/SignUp/EditPhoneNumber");
 
 let bannerSlider = [
     {
@@ -15,14 +16,15 @@ let bannerSlider = [
     }
 ]
 
-let loginSteps  = [
+let loginSteps = [
     SignInPhoneNumber,
     SignInOTP
 ]
 
 let signUpSteps = [
     SignUpStart,
-    SignUpOTP
+    SignUpOTP,
+    EditPhoneNumber
 ]
 
-module.exports = { bannerSlider , loginSteps, signUpSteps };
+module.exports = { bannerSlider, loginSteps, signUpSteps };

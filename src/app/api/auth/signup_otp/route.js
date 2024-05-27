@@ -1,17 +1,35 @@
+import { COOKIE_DATA_KEY } from "@/app/const/const";
+import { setAuthSignUpToken } from "@/app/const/helperFunctions";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
+import { cookies } from "next/headers";
 
 export async function POST(request) {
     console.log("OTP Invoked");
     try {
+        const headers = request.headers;
+        console.log(headers);
         let body = await request.json();
+
         console.log(body);
 
         let { otp_number, email_id } = body;
         console.log(otp_number, email_id);
         console.log("The body" + otp_number + " " + email_id);
+
+        let cookieData = cookies();
+        let cookieValues = cookieData.get(COOKIE_DATA_KEY.SIGN_UP_DATA);
+
+        console.log("OTp submission cookie value is : " + cookieValues.value);
+        console.log(cookieValues.value);
+
         let otpSubmissionRequest = await API_axiosInstance.post("/auth/auth_otp_submission", {
             otp_number,
             email_id
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                "authorization": `Bearer ${cookieValues.value}`
+            }
         })
 
 
