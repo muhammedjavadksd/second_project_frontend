@@ -13,9 +13,16 @@ function SignUpOTP({ state }) {
     let [isLoading, setIsLoading] = useState(false);
     let [isTimeEnd, setIsTimeEnd] = useState(false)
     function otpCompleted() {
+        toast.success("OTP has been verified")
+        setIsTimeEnd(false)
+        setIsLoading(false)
+        // signUpIndexDown(state)
+    }
+
+    function onResetOtp() {
         toast.success("OTP has been sented")
         setIsTimeEnd(false)
-        // signUpIndexDown(state)
+        setIsLoading(false)
     }
 
 
@@ -23,6 +30,7 @@ function SignUpOTP({ state }) {
 
     function onError(msg) {
         toast.error(msg)
+        setIsLoading(false)
     }
 
 
@@ -59,7 +67,7 @@ function SignUpOTP({ state }) {
                                         {({ start, resume, pause, stop, reset, timerState }) => (
                                             <p> {isTimeEnd ? <button className='mb-2' onClick={() => {
                                                 setIsTimeEnd(false)
-                                                resendOtpHandler(otpCompleted, onError)
+                                                resendOtpHandler(onResetOtp, onError)
                                                 reset();
                                                 start();
                                             }
@@ -76,8 +84,8 @@ function SignUpOTP({ state }) {
                         <ErrorMessage component={"div"} className='errorMessage' id='email_id' name='email_id' />
 
                         <div className='flex gap-3'>
-                            <button type="button" class="text-black bg-white border-black border hover:bg-blue-950 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => signUpIndexUp(state)}><i class="fa-solid fa-pencil"></i> Edit Phone Number</button>
                             <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit OTP</button>
+                            <button type="button" class="text-black bg-white border-black border hover:bg-blue-950 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => signUpIndexUp(state)}><i class="fa-solid fa-pencil"></i> Edit Phone Number</button>
                         </div>
                     </Form>
                 </Formik>
