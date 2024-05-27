@@ -15,6 +15,17 @@ export const tailWindColors = [
     'rose'
 ];
 
+
+export let API_ENDPOINT = {
+    RESET_USER_SIGNUP_EMAIL_ID: "auth/edit_auth_phone",
+    RESEND_USER_SIGNUP_EMAIL_ID: "auth/resend_otp"
+}
+
+export let FRONT_END_APIENDPOINT = {
+    RESET_USER_SIGNUP_EMAIL_ID: "/api/auth/sign_up_reset_email",
+    RESENT_USER_SIGNUP_EMAIL_ID: "/api/auth/sign_up_resend_otp",
+}
+
 export let COOKIE_DATA_KEY = {
     SIGN_UP_DATA: "SIGN_UP_DATA"
 }
@@ -33,4 +44,5 @@ export const ERROR_MSG = {
 
 export const MONEY_ICON = '₹'
 export const OTP_LENGTH = 6
+export const OTP_TIME_SECONDS = 60;
 

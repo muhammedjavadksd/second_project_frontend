@@ -1,4 +1,4 @@
-import { COOKIE_DATA_KEY, ERROR_MSG, OTP_LENGTH, blood_groups } from '@/app/const/const';
+import { COOKIE_DATA_KEY, ERROR_MSG, FRONT_END_APIENDPOINT, OTP_LENGTH, blood_groups } from '@/app/const/const';
 import { getCurrentPosition } from '@/app/const/helperFunctions';
 import axios_instance from '@/external/axios/axios-instance';
 import { toast } from 'react-toastify';
@@ -134,6 +134,53 @@ function clickMe() {
     toast.success("Something went wrong")
 }
 
+
+async function changeEmailIDHandler(values, successCB, errorCB) {
+
+    let { email_id } = values;
+
+    try {
+
+        let changeReqAPI = await axios_instance.post(FRONT_END_APIENDPOINT.RESET_USER_SIGNUP_EMAIL_ID, {
+            email_id
+        });
+        let response = changeReqAPI.data;
+        if (response.status) {
+            successCB()
+        } else {
+            errorCB(response.msg)
+        }
+    } catch (e) {
+        errorCB("Something went wrong")
+    }
+}
+
+
+let changeEmailIDInitialValues = {
+    email_id: null,
+}
+
+let changemailIDValidation = yup.object().shape({
+    email_id: yup.string("Please enter valid email id").email("Please enter valid email id").required("Email field is required")
+})
+
+function resendOtpHandler(successCB, errorCB) {
+
+
+    console.log("Resend otp request");
+    axios_instance.post(FRONT_END_APIENDPOINT.RESENT_USER_SIGNUP_EMAIL_ID, null).then((data) => {
+        let response = data.data;
+        if (response.status) {
+            successCB()
+        } else {
+            errorCB(response.msg)
+        }
+    }).catch((err) => {
+        console.log(err);
+        errorCB("Something went wrong")
+    })
+}
+
 module.exports = {
     signUpIndexUp,
     signUpIndexDown,
@@ -143,5 +190,9 @@ module.exports = {
     signUpOtpHandler,
     otpValidator,
     signUpOtpInitialValues,
-    clickMe
+    clickMe,
+    changeEmailIDHandler,
+    changemailIDValidation,
+    changeEmailIDInitialValues,
+    resendOtpHandler
 }
