@@ -15,14 +15,17 @@ import Footer from "@/_component/Util/Footer";
 // import Footer from "@/_component/Util/Footer";
 // import '../external/style.css'
 import { SessionProvider } from "next-auth/react"
+import { getServerSession } from "next-auth";
 
 
 
 export default function Home() {
 
+  let session = getServerSession()
+
 
   return (
-    <SessionProvider>
+    <SessionProvider session={session}>
       <main className="flex min-h-screen flex-col">
         <div>
 

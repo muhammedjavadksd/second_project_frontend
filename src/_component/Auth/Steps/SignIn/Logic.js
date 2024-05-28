@@ -1,6 +1,7 @@
 
-import { OTP_LENGTH } from '@/app/const/const'
+import { FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/const/const'
 import axios_instance from '@/external/axios/axios-instance'
+import { signIn } from 'next-auth/react'
 import * as yup from 'yup'
 
 
@@ -45,18 +46,60 @@ export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
     try {
         let otp_number = values.otp_number
 
-        let request = await axios_instance.post("/api/auth/login_otp", {
-            otp_number
+        signIn("credentials", { otp_number, redirect: false }).then((data) => {
+            if (data.ok) {
+                onsuccessCB()
+            } else {
+                errorCB("Invalid OTP or OTP has been expired")
+            }
+        }).catch((err) => {
+            errorCB("Something went wrong")
         })
-        let response = request.data;
-        if (response.status) {
-            onsuccessCB()
-        } else {
-            errorCB(response.msg)
-        }
+
+        // let request = await axios_instance.post("/api/auth/login_otp", {
+        //     otp_number
+        // })
+        // let response = request.data;
+        // if (response.status) {
+        //     onsuccessCB()
+        // } else {
+        //     errorCB(response.msg)
+        // }
     } catch (E) {
         console.log(e);
         errorCB("Something went wrong")
     }
+
+    // try {
+    //     let otp_number = values.otp_number
+
+    //     let request = await axios_instance.post("/api/auth/login_otp", {
+    //         otp_number
+    //     })
+    //     let response = request.data;
+    //     if (response.status) {
+    //         onsuccessCB()
+    //     } else {
+    //         errorCB(response.msg)
+    //     }
+    // } catch (E) {
+    //     console.log(e);
+    //     errorCB("Something went wrong")
+    // }
 }
 
+export function onResetOtp(successCB, errorCB) {
+    console.log("Resend otp request");
+    axios_instance.post(FRONT_END_APIENDPOINT.RESENT_USER_SIGN_EMAIL_ID, null).then((data) => {
+        let response = data.data;
+        if (response.status) {
+            successCB()
+        } else {
+            errorCB(response.msg)
+        }
+    }).catch((err) => {
+        console.log(err);
+        errorCB("Something went wrong")
+    })
+
+}

@@ -168,7 +168,7 @@ function resendOtpHandler(successCB, errorCB) {
 
 
     console.log("Resend otp request");
-    axios_instance.post(FRONT_END_APIENDPOINT.RESENT_USER_SIGNUP_EMAIL_ID, null).then((data) => {
+    axios_instance.post(FRONT_END_APIENDPOINT.RESENT_USER_SIGN_EMAIL_ID, null).then((data) => {
         let response = data.data;
         if (response.status) {
             successCB()
