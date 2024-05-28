@@ -23,7 +23,7 @@ export let API_ENDPOINT = {
 
 export let FRONT_END_APIENDPOINT = {
     RESET_USER_SIGNUP_EMAIL_ID: "/api/auth/sign_up_reset_email",
-    RESENT_USER_SIGNUP_EMAIL_ID: "/api/auth/sign_up_resend_otp",
+    RESENT_USER_SIGN_EMAIL_ID: "/api/auth/sign_resend_otp",
 }
 
 export let COOKIE_DATA_KEY = {

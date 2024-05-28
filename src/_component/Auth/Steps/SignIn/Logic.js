@@ -1,5 +1,5 @@
 
-import { OTP_LENGTH } from '@/app/const/const'
+import { FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/const/const'
 import axios_instance from '@/external/axios/axios-instance'
 import * as yup from 'yup'
 
@@ -60,3 +60,18 @@ export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
     }
 }
 
+export function onResetOtp(successCB, errorCB) {
+    console.log("Resend otp request");
+    axios_instance.post(FRONT_END_APIENDPOINT.RESENT_USER_SIGN_EMAIL_ID, null).then((data) => {
+        let response = data.data;
+        if (response.status) {
+            successCB()
+        } else {
+            errorCB(response.msg)
+        }
+    }).catch((err) => {
+        console.log(err);
+        errorCB("Something went wrong")
+    })
+
+}
