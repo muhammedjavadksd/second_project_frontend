@@ -6,16 +6,20 @@ import LoadingComponent from '@/_component/Util/LoadingComponent'
 import { toast } from 'react-toastify'
 import Timer from "@amplication/react-compound-timer";
 import { OTP_TIME_SECONDS } from '@/app/const/const'
+import { useRouter } from 'next/navigation'
 
 
 function SignUpOTP({ state }) {
 
     let [isLoading, setIsLoading] = useState(false);
-    let [isTimeEnd, setIsTimeEnd] = useState(false)
+    let [isTimeEnd, setIsTimeEnd] = useState(false);
+    let router = useRouter();
     function otpCompleted() {
         toast.success("OTP has been verified")
         setIsTimeEnd(false)
         setIsLoading(false)
+        router.replace("/auth/sign_in")
+
         // signUpIndexDown(state)
     }
 

@@ -27,7 +27,8 @@ export let FRONT_END_APIENDPOINT = {
 }
 
 export let COOKIE_DATA_KEY = {
-    SIGN_UP_DATA: "SIGN_UP_DATA"
+    SIGN_UP_DATA: "SIGN_UP_DATA",
+    SIGN_IN_DATA: "SIGN_IN_DATA"
 }
 
 export let AUTH_PROVIDERS = {
