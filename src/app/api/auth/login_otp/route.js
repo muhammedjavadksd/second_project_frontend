@@ -1,37 +1,62 @@
 import { COOKIE_DATA_KEY } from "@/app/const/const";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
+import { signIn } from "next-auth/react";
 import { cookies } from "next/headers";
 
 
 export async function POST(request) {
     try {
 
+
+
         let body = await request.json();
+        console.log("The body");
+        console.log(body);
 
         let otpNumber = body.otp_number;
 
+        let headers = request.headers;
+        let token = request.headers.get('authorization');
+
+
+
+
         let getCookies = cookies();
         let cookieToken = getCookies.get(COOKIE_DATA_KEY.SIGN_IN_DATA);
-        let apiCall = API_axiosInstance.post("/auth/auth_otp_submission", {
-            otp_number: otpNumber
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                "authorization": `Bearer ${cookieToken.value}`
-            }
-        })
-        let response = (await apiCall).data;
-        if (response.status) {
-            return new Response(JSON.stringify({
-                status: true,
-                msg: "OTP has been verified"
+        let auth_token = cookieToken ?? token;
+        console.log(cookieToken + " " + token);
+        console.log("Auth token is : " + auth_token);
+        if (auth_token) {
+
+            let apiCall = API_axiosInstance.post("/auth/auth_otp_submission", {
+                otp_number: otpNumber
             }, {
-                status: 200
-            }))
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": auth_token
+                }
+            })
+            let response = (await apiCall).data;
+            if (response.status) {
+                // signIn("credentials",)
+                return new Response(JSON.stringify({
+                    status: true,
+                    msg: "OTP has been verified"
+                }, {
+                    status: 200
+                }))
+            } else {
+                return new Response(JSON.stringify({
+                    status: false,
+                    msg: response?.msg ?? "Something went wrong"
+                }, {
+                    status: 401
+                }))
+            }
         } else {
             return new Response(JSON.stringify({
                 status: false,
-                msg: response?.msg ?? "Something went wrong"
+                msg: "Auth is not valid"
             }, {
                 status: 401
             }))
