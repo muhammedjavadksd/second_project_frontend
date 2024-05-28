@@ -39,9 +39,14 @@ export async function POST(request) {
             let response = (await apiCall).data;
             if (response.status) {
                 // signIn("credentials",)
+                console.log("Check response");
+                console.log(response);
                 return new Response(JSON.stringify({
                     status: true,
-                    msg: "OTP has been verified"
+                    msg: "OTP has been verified",
+                    token: response.token,
+                    name: response.name,
+                    email: response.email
                 }, {
                     status: 200
                 }))

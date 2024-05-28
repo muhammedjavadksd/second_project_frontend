@@ -40,10 +40,13 @@ let authOptions = {
                     })
 
                     let response = request.data;
+                    console.log(response);
                     if (response.status) {
                         console.log("Login success");
                         return {
-                            token: response.token
+                            token: response.token,
+                            name: response.name,
+                            email: response.email
                         }
                     } else {
                         return null
@@ -55,17 +58,36 @@ let authOptions = {
         })
     ],
     callbacks: {
-        async jwt({ token, account }) {
+        async jwt({ token, user, account }) {
+            console.log("JWT callback - token:", token);
+            console.log("JWT callback - account:", account);
+            console.log("JWT callback - user:", user);
+
             if (account) {
-                token.accessToken = account.access_token
+                token.accessToken = account.access_token;
             }
-            return token
+            if (user) {
+                token.user = user;
+            }
+            return token;
         },
         async session({ session, token, user }) {
             session.accessToken = token.accessToken
+            console.log("The session is:");
+            console.log(session);
+
+            console.log("The  token is:");
+            console.log(token);
+
+
             return session
-        }
-    }
+        },
+    },
+    jwt: {
+        secret: process.env.NEXTAUTH_SECRET,
+        encryption: true,
+    },
+    secret: process.env.NEXTAUTH_SECRET,
 }
 
 

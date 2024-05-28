@@ -4,17 +4,20 @@ import LoadingComponent from '@/_component/Util/LoadingComponent';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import Timer from "@amplication/react-compound-timer";
-import { OTP_TIME_SECONDS } from '@/app/const/const';
-
+import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/nav';
 
 function SignInOTP({ state }) {
 
   let [isLoading, setIsLoading] = useState(false);
   let [isTimeEnd, setIsTimeEnd] = useState(false)
+  let navigate = useRouter()
 
   function onSuccess() {
     toast.success("OTP has been verified")
+
     setIsLoading(false)
+    navigate.replace("/")
   }
 
   function onResendSuccess() {
