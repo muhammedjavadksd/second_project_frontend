@@ -6,6 +6,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { blood_groups } from '@/app/const/const'
 import LoadingComponent from '@/_component/Util/LoadingComponent'
 import { toast } from 'react-toastify'
+import Link from 'next/link'
 
 function SignUpStart({ state }) {
 
@@ -31,7 +32,7 @@ function SignUpStart({ state }) {
 
             <div className="headingSection mb-5">
                 <h1 class="mb-4 text-5xl font-extrabold leading-none tracking-tight text-gray-900   dark:text-white">Create your <span class="text-blue-600 dark:text-blue-500"> Account</span></h1>
-                <a href="/auth/sign_in" class="font-normal text-blue-600 dark:text-blue-500 hover:underline">Already have an account? Login here!</a>
+                <span class="font-normal text-black">Already have an account? <Link href="/auth/sign_in" className='text-blue-600 hover:underline'>Login here!</Link> </span>
             </div>
 
 
