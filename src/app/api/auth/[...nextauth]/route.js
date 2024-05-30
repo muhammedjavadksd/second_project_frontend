@@ -40,7 +40,7 @@ let authOptions = {
                         let getCookies = cookies();
                         let token = getCookies.get(COOKIE_DATA_KEY.SIGN_IN_DATA)
 
-                        let request = await axios_instance.post("/api/auth/login_otp", {
+                        let request = await axios_instance.post("/api/user_api/auth/login_otp", {
                             otp_number
                         }, {
                             headers: {
@@ -95,9 +95,6 @@ let authOptions = {
     ],
     callbacks: {
         async jwt({ token, user, account }) {
-            console.log("JWT callback - token:", token);
-            console.log("JWT callback - account:", account);
-            console.log("JWT callback - user:", user);
 
             if (user) {
                 token.user = {
@@ -110,8 +107,7 @@ let authOptions = {
 
 
 
-            console.log("The token is");
-            console.log(token);
+
             return token;
         },
         async session(session) {
@@ -126,8 +122,6 @@ let authOptions = {
             // console.log("The user is :");
             // console.log(user);
 
-            console.log("The session is");
-            console.log(session);
 
             return session
         },
