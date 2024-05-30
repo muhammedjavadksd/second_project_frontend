@@ -20,6 +20,7 @@ export async function onResetPassword(values, successCB, errorCB) {
         if (response.status) {
             successCB()
         } else {
+
             errorCB(response.msg ?? "Something went wrong")
         }
 

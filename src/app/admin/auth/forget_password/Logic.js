@@ -20,7 +20,9 @@ export async function onResetPassword(values, successCB, errorCB) {
         }
     } catch (e) {
         console.log(e);
-        errorCB("Somethign went wrong")
+        let errorMessage = e?.response?.data?.msg ?? "Something went wrong";
+        console.log(errorMessage);
+        errorCB(errorMessage)
     }
     console.log(values);
 }
