@@ -16,7 +16,7 @@ async function signUpDataHandler(data) {
 
     console.log("This worked");
     try {
-        let sendRequest = await axios_instance.post("/api/auth/signup_cred", data);
+        let sendRequest = await axios_instance.post("/api/user_api/auth/signup_cred", data);
         let response = sendRequest.data;
         return response;
     } catch (e) {
@@ -111,7 +111,7 @@ let signUpOtpHandler = async function (val, onCb) {
     try {
 
 
-        let signupOtpRequest = await axios_instance.post("/api/auth/signup_otp", {
+        let signupOtpRequest = await axios_instance.post("/api/user_api/auth/signup_otp", {
             otp_number
         })
         let response = signupOtpRequest.data;

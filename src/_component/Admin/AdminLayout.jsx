@@ -2,8 +2,12 @@
 import React, { useState } from 'react'
 import AdminSideBar from './Partials/SideBar'
 import AdminNavbar from './Partials/Navbar'
+import { SessionProvider, getSession, useSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth'
 
 function AdminLayout({ children }) {
+
+
 
     let [navbarToggler, setNavbarToggler] = useState(true)
 
@@ -15,7 +19,7 @@ function AdminLayout({ children }) {
                 </div>
                 <div className={`${navbarToggler ? 'w-4/5 ml-auto' : 'w-full'}`}>
                     <AdminNavbar onMenuClick={setNavbarToggler} />
-                    
+
                     <div className='p-5'>
                         {
                             children

@@ -18,7 +18,7 @@ export let onLoginSubmit = function (values, successCB, errorCB) {
     let dataSignIn = { email: values.email }
     console.log("The data is", dataSignIn);
 
-    axios_instance.post("/api/auth/login_cred", dataSignIn).then(async (data) => {
+    axios_instance.post("/api/user_api/auth/login_cred", dataSignIn).then(async (data) => {
         console.log(data);
         let response = await data.data;
         console.log(response);
