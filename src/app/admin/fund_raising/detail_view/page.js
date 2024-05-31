@@ -2,7 +2,7 @@
 import AdminLayout from '@/_component/Admin/AdminLayout'
 import AdminBreadCrumb from '@/_component/Util/AdminBreadCrumb'
 import DashboardCard from '@/_component/Util/DashboardCard'
-import { MONEY_ICON } from '@/app/const/const'
+import { MONEY_ICON } from '@/app/_util/_const/const'
 import CanvasJSReact from '@canvasjs/react-charts/canvasjs.react.js'
 import React from 'react'
 import { fundRaiserGraph } from './data'

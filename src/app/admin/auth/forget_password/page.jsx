@@ -7,6 +7,7 @@ import { onResetPassword } from './Logic'
 import { resetPasswordInitialValues, resetPasswordValidation } from './Data'
 import { toast } from 'react-toastify'
 import LoadingComponent from '@/_component/Util/LoadingComponent'
+import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
 
 function AdminForgetPassword() {
 
@@ -23,7 +24,7 @@ function AdminForgetPassword() {
     }
 
     return (
-        <div>
+        <BlackedRouter>
             <div className='h-screen'>
                 <AdminAuthBg />
 
@@ -57,7 +58,7 @@ function AdminForgetPassword() {
                     </LoadingComponent>
                 </AdminAuthCard>
             </div>
-        </div>
+        </BlackedRouter>
     )
 }
 

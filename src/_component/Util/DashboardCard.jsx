@@ -1,4 +1,4 @@
-import { tailWindColors } from '@/app/const/const'
+import { tailWindColors } from '@/app/_util/_const/const'
 import { useSession } from 'next-auth/react';
 import React from 'react'
 

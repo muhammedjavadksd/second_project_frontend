@@ -1,4 +1,4 @@
-import { API_ENDPOINT, COOKIE_DATA_KEY, FRONT_END_APIENDPOINT } from "@/app/const/const";
+import { API_ENDPOINT, COOKIE_DATA_KEY, FRONT_END_APIENDPOINT } from "@/app/_util/_const/const";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 import { cookies } from "next/headers";
 

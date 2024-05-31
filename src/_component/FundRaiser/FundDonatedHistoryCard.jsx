@@ -1,4 +1,4 @@
-import { MONEY_ICON } from '@/app/const/const'
+import { MONEY_ICON } from '@/app/_util/_const/const'
 import React from 'react'
 import DownloadButton from '../Util/downloadButton'
 
@@ -15,7 +15,7 @@ function FundDonatedHistoryCard() {
                             <p class="text-xs mt-2">Focus : IED</p>
                             <div className='mt-3'>
                                 <DownloadButton title={"Download Recipt"} onClick={() => { }} />
-                            </div>                  
+                            </div>
                         </div>
 
                         <div class="w-2/6 gap-3 border-b py-6 text-xs">

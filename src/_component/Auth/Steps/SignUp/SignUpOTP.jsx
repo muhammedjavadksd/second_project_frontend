@@ -5,7 +5,7 @@ import { signUpOtpInitialValues, signUpOtpHandler, otpValidator, resendOtpHandle
 import LoadingComponent from '@/_component/Util/LoadingComponent'
 import { toast } from 'react-toastify'
 import Timer from "@amplication/react-compound-timer";
-import { OTP_TIME_SECONDS } from '@/app/const/const'
+import { OTP_TIME_SECONDS } from '@/app/_util/_const/const'
 import { useRouter } from 'next/navigation'
 
 

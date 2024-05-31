@@ -1,4 +1,4 @@
-import { COOKIE_DATA_KEY } from "@/app/const/const";
+import { COOKIE_DATA_KEY } from "@/app/_util/_const/const";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 import { signIn } from "next-auth/react";
 import { cookies } from "next/headers";

@@ -1,5 +1,5 @@
 
-import { FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/const/const'
+import { FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/_util/_const/const'
 import axios_instance from '@/external/axios/axios-instance'
 import { signIn } from 'next-auth/react'
 import * as yup from 'yup'

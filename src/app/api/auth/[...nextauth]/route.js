@@ -4,7 +4,7 @@ import NextAuth from "next-auth/next"
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios_instance from "@/external/axios/axios-instance"
 import { cookies } from "next/headers"
-import { COOKIE_DATA_KEY } from "@/app/const/const"
+import { COOKIE_DATA_KEY } from "@/app/_util/_const/const"
 
 
 

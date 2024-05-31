@@ -2,7 +2,7 @@
 import Header from '@/_component/Header/Header'
 import Footer from '@/_component/Util/Footer'
 import TabItem from '@/_component/Util/TabItem'
-import { MONEY_ICON } from '@/app/const/const'
+import { MONEY_ICON } from '@/app/_util/_const/const'
 import React, { useState } from 'react'
 
 function ViewFundRaising() {
@@ -85,7 +85,7 @@ function ViewFundRaising() {
                 <p>Raised of {MONEY_ICON}20,000,0000</p>
               </div>
               <div className='raisingRange shadow h-3 rounded-lg w-full bg-slate-400'>
-                <div style={{width:"80%"}} className='rounded-lg bg-white h-full'></div>
+                <div style={{ width: "80%" }} className='rounded-lg bg-white h-full'></div>
               </div>
 
             </div>
