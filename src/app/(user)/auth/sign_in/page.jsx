@@ -9,10 +9,13 @@ import SignInPhoneNumber from '@/_component/Auth/Steps/SignIn/SignInPhoneNumber'
 import GoogleProviderButton from '@/_component/Auth/Common/ProvideLoginButton/GoogleProviderButton'
 import FacebookProviderButton from '@/_component/Auth/Common/ProvideLoginButton/FacebookProviderButton'
 import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
+import UserBlackedRouter from '@/_component/LoginComponent/UserBlackedRouter'
+import { useSession } from 'next-auth/react'
 
 function SignIn() {
 
   let [loginStepIndex, setLoginStepIndex] = useState(0)
+  let session = useSession()
 
   const LoginStepComponent = loginSteps[loginStepIndex];
 
@@ -20,7 +23,7 @@ function SignIn() {
 
 
   return (
-    <BlackedRouter>
+    <UserBlackedRouter session={session}>
       <div className='h-screen  '>
         <SimpleHeader />
 
@@ -47,7 +50,7 @@ function SignIn() {
           </div>
         </div>
       </div>
-    </BlackedRouter>
+    </UserBlackedRouter>
   )
 }
 

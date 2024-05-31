@@ -1,6 +1,7 @@
 "use client";
 import AccountTab from '@/_component/Account/AccountTab'
 import Header from '@/_component/Header/Header'
+import UserPrivateRouter from '@/_component/LoginComponent/UserPrivateRouter';
 import BreadCrumb from '@/_component/Util/BreadCrumb'
 import FileSelectBox from '@/_component/Util/FileSelectBox'
 import Footer from '@/_component/Util/Footer'
@@ -13,16 +14,16 @@ function page() {
     let [editEmailAddress, setEmailAddress] = useState(false);
 
 
-    let nums=[1,2,3,4,5];
-    let newData= nums.map(manipulate)
+    let nums = [1, 2, 3, 4, 5];
+    let newData = nums.map(manipulate)
 
 
-    function manipulate(num){
-        return 10 
+    function manipulate(num) {
+        return 10
     }
 
     return (
-        <>
+        <UserPrivateRouter>
             <Header />
             <div className="container mx-auto mt-5 mb-5">
                 <div className="mb-5">
@@ -46,7 +47,7 @@ function page() {
                                 <div>
                                     <div className='flex mb-3'>
                                         <h2 className='text-1xl'>Personal Details</h2>
-                                        {!editPersonalDetails && <button onClick={()=> setEditPersonalDetails(!editPersonalDetails)} type="button" class="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm   ">
+                                        {!editPersonalDetails && <button onClick={() => setEditPersonalDetails(!editPersonalDetails)} type="button" class="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm   ">
                                             <i class="fa-solid fa-pencil"></i>    Edit Details
                                         </button>}
                                     </div>
@@ -128,7 +129,7 @@ function page() {
                 </div>
             </div >
             <Footer />
-        </>
+        </UserPrivateRouter>
     )
 }
 
