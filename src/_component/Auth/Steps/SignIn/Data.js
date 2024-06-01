@@ -1,5 +1,5 @@
 
-import { ERROR_MSG } from '@/app/const/const'
+import { ERROR_MSG } from '@/app/_util/_const/const'
 import axios_instance from '@/external/axios/axios-instance';
 import axios from 'axios';
 import * as yup from 'yup'

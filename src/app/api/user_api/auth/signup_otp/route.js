@@ -1,5 +1,5 @@
-import { COOKIE_DATA_KEY } from "@/app/const/const";
-import { setAuthSignUpToken } from "@/app/const/helperFunctions";
+import { COOKIE_DATA_KEY } from "@/app/_util/_const/const";
+import { setAuthSignUpToken } from "@/app/_util/_const/helperFunctions";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 import { cookies } from "next/headers";
 

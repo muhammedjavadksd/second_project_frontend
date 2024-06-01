@@ -1,4 +1,4 @@
-import { COOKIE_DATA_KEY } from "@/app/const/const";
+import { COOKIE_DATA_KEY } from "@/app/_util/_const/const";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 import { signIn } from "next-auth/react";
 import { cookies } from "next/headers";
@@ -44,8 +44,10 @@ export async function POST(request) {
                 return new Response(JSON.stringify({
                     status: true,
                     msg: "OTP has been verified",
-                    token: response.token,
-                    name: response.name,
+                    token: response.jwt,
+                    first_name: response.first_name,
+                    last_name: response.last_name,
+                    phone: response.phone,
                     email: response.email
                 }, {
                     status: 200

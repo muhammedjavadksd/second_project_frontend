@@ -1,5 +1,5 @@
-import { COOKIE_DATA_KEY, ERROR_MSG, FRONT_END_APIENDPOINT, OTP_LENGTH, blood_groups } from '@/app/const/const';
-import { getCurrentPosition } from '@/app/const/helperFunctions';
+import { COOKIE_DATA_KEY, ERROR_MSG, FRONT_END_APIENDPOINT, OTP_LENGTH, blood_groups } from '@/app/_util/_const/const';
+import { getCurrentPosition } from '@/app/_util/_const/helperFunctions';
 import axios_instance from '@/external/axios/axios-instance';
 import { toast } from 'react-toastify';
 import * as yup from 'yup'

@@ -1,19 +1,19 @@
-"use client"
-import { isAdminlogged } from '@/app/_util/helper/authHelper';
-import { useSession } from 'next-auth/react'
+import { isUserLogged } from '@/app/_util/helper/authHelper';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
-function AdminPrivateRouter({ children }) {
+function UserPrivateRouter({ children }) {
     let session = useSession();
     let router = useRouter();
     let [isAuth, setAuth] = useState(false)
 
     useEffect(() => {
-        if (isAdminlogged(session)) {
+        let userLogged = isUserLogged(session)
+        if (userLogged) {
             setAuth(true)
         } else {
-            isAuth && router.replace("/admin/auth/sign_in");
+            isAuth && router.replace("/auth/sign_in");
         }
     }, [session])
 
@@ -28,4 +28,4 @@ function AdminPrivateRouter({ children }) {
     )
 }
 
-export default AdminPrivateRouter
+export default UserPrivateRouter

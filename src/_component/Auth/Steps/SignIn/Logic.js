@@ -1,5 +1,5 @@
 
-import { FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/const/const'
+import { FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/_util/_const/const'
 import axios_instance from '@/external/axios/axios-instance'
 import { signIn } from 'next-auth/react'
 import * as yup from 'yup'
@@ -46,7 +46,7 @@ export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
     try {
         let otp_number = values.otp_number
 
-        signIn("credentials", { otp_number, redirect: false }).then((data) => {
+        signIn("credentials", { otp_number, redirect: false, auth_type: "user" }).then((data) => {
             if (data.ok) {
                 onsuccessCB()
             } else {

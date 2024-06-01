@@ -1,6 +1,6 @@
 // src/app/api/hello/route.js
 
-import { COOKIE_DATA_KEY } from "@/app/const/const";
+import { COOKIE_DATA_KEY } from "@/app/_util/_const/const";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 import { cookies } from "next/headers";
 
