@@ -50,15 +50,21 @@ let authOptions = {
                         })
 
                         let response = request.data;
+
                         console.log(response);
                         if (response.status) {
                             console.log("Login success");
-                            return {
+                            console.log("Storing data")
+                            let storingData = {
                                 token: response.token,
-                                name: response.name,
+                                first_name: response.first_name,
+                                last_name: response.last_name,
+                                phone: response.phone,
                                 email: response.email,
                                 role: "user"
-                            }
+                            };
+                            console.log(storingData);
+                            return storingData
                         } else {
                             return null
                         }
@@ -76,8 +82,14 @@ let authOptions = {
                         console.log(response);
                         if (response.status) {
                             console.log("Login success");
+                            console.log({
+                                token: response.jwt,
+                                name: response.name,
+                                email: email_address,
+                                role: "admin"
+                            });
                             return {
-                                token: response.token,
+                                token: response.jwt,
                                 name: response.name,
                                 email: email_address,
                                 role: "admin"
@@ -96,13 +108,25 @@ let authOptions = {
     callbacks: {
         async jwt({ token, user, account }) {
 
+
+            console.log(token);
+            console.log(user);
+            console.log(account);
+
             if (user) {
-                token.user = {
+                console.log("User has ");
+                let insertObject = {
                     id: user.id,
-                    name: user.name,
+                    token: user.token,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
                     email: user.email,
+                    phone: user.phone,
                     role: user.role,
                 };
+                console.log("Insert object is");
+                console.log(insertObject);
+                token.user = insertObject
             }
 
 

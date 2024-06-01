@@ -18,7 +18,7 @@ function SignUpOTP({ state }) {
         toast.success("OTP has been verified")
         setIsTimeEnd(false)
         setIsLoading(false)
-        // router.replace("/auth/sign_in")
+        router.replace("/auth/sign_in")
 
         // signUpIndexDown(state)
     }

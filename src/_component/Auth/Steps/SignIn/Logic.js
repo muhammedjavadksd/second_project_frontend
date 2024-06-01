@@ -46,7 +46,7 @@ export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
     try {
         let otp_number = values.otp_number
 
-        signIn("credentials", { otp_number, redirect: false }).then((data) => {
+        signIn("credentials", { otp_number, redirect: false, auth_type: "user" }).then((data) => {
             if (data.ok) {
                 onsuccessCB()
             } else {
