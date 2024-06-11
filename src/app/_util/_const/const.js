@@ -256,28 +256,28 @@ export const fund_raise_category = {
     ]
 }
 
-// export const FUND_RAISER_FOR = [
-//     "Myself",
-//     "Father",
-//     "Mother",
-//     "Brother",
-//     "Sister",
-//     "Child",
-//     "Friend",
-//     "Neighbor",
-//     "Co-worker",
-//     "Relative",
-//     "Grandfather",
-//     "Grandmother",
-//     "Uncle",
-//     "Aunt",
-//     "Niece",
-//     "Nephew",
-//     "Cousin",
-//     "Partner",
-//     "Spouse",
-//     "In-law"
-// ]
+export const FUND_RAISER_FOR = [
+    "Myself",
+    "Father",
+    "Mother",
+    "Brother",
+    "Sister",
+    "Child",
+    "Friend",
+    "Neighbor",
+    "Co-worker",
+    "Relative",
+    "Grandfather",
+    "Grandmother",
+    "Uncle",
+    "Aunt",
+    "Niece",
+    "Nephew",
+    "Cousin",
+    "Partner",
+    "Spouse",
+    "In-law"
+]
 
 
 export const MONEY_ICON = '₹'

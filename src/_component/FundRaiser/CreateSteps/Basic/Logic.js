@@ -27,7 +27,10 @@ async function onInitialCreate(val, successCB, errorCB) {
             });
             let response = createRequest.data;
             if (response.status) {
-                successCB();
+                console.log(response);
+                let fund_id = response.fund_id
+
+                successCB(fund_id);
             } else {
                 errorCB({ msg: response.msg ?? "Something went wrong", statusCode: createRequest.status ?? 500 })
             }

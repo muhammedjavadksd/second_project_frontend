@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import CreateFormBackground from '../../CreateFormBackground'
 import FormInputWithBg from '../../FormInputWithBg'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
@@ -8,14 +8,21 @@ import { createInitialValidation, createInitialValue } from './Data'
 import { getMainCategory, getSubCategory } from '@/app/_util/_const/helperFunctions'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import { OnGoingApplicationContext } from '@/app/_util/context/Context'
+// import { OnGoingApplicationContext } from '@/app/_util/context/onGoingingFundRaise'
 
 function Basic({ state }) {
 
   let navigation = useRouter();
+  let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
 
-  function onSuccess() {
+  function onSuccess(fund_raiser_id) {
 
-    state((prev) => prev + 1)
+    if (fund_raiser_id) {
+      // console.log("The fund is :" + fund_raiser_id);
+      setApplication(fund_raiser_id)
+      state((prev) => prev + 1)
+    }
   }
 
   function onError(err) {

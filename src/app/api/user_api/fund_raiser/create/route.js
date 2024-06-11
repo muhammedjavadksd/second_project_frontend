@@ -21,13 +21,13 @@ export async function POST(request) {
 
 
             let body = await request.json();
-            let { amount, category, sub_category, phone_number, beneficiary } = body
+            let { amount, category, sub_category, phone_number, email_id } = body
 
             console.log("User data is");
 
 
             let createEndPoint = await API_axiosInstance.post("/fund_raise/create", {
-                amount, category, sub_category, phone_number, beneficiary
+                amount, category, sub_category, phone_number, email: email_id
             }, {
                 headers: {
                     "authorization": `Bearer ${token}`
@@ -36,7 +36,7 @@ export async function POST(request) {
             let data = createEndPoint.data;
             let statusCode = createEndPoint.status
             if (data.status) {
-                return new Response(JSON.stringify({ status: true, msg: "Fund raise created success" }), { status: statusCode })
+                return new Response(JSON.stringify({ status: true, msg: "Fund raise created success", fund_id: data.fund_id }), { status: statusCode })
             } else {
                 let errorMsg = data.msg ?? "Something went wrong"
                 return new Response(JSON.stringify({ status: false, msg: errorMsg }), { status: statusCode })
