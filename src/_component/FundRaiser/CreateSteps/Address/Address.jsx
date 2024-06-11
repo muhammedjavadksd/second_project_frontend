@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 // import CreateFormBackground from '../CreateFormBackground'
 // CreateFormBackground
 // import FormInputWithBg from '../FormInputWithBg'
@@ -10,11 +10,14 @@ import { onAddressSubmit } from './Logic'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { STATE_WITH_DIST } from '@/app/_util/_const/const'
+import { OnGoingApplicationContext } from '@/app/_util/context/Context'
 
 function Address({ state }) {
 
   let router = useRouter()
   let [district, setDistrict] = useState([])
+  let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+
 
   function onSuccess() {
     state((prev) => prev + 1)
@@ -35,11 +38,13 @@ function Address({ state }) {
         initialValues={addressInitialValues}
         validationSchema={addressValidationSchema}
         onSubmit={(e) => {
+          e.currentApplication = currentApplication
           onAddressSubmit(e, onSuccess, onError, ifNotLogged)
         }}
       >
-        {({ isSubmitting, setFieldValue }) => (
+        {({ setFieldValue }) => (
           <Form>
+            current app {currentApplication}
             <div className="mb-5">
               <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
               <Field
