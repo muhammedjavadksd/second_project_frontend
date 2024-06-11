@@ -10,7 +10,7 @@ import OnGoingingFundRaise from '@/app/_util/context/onGoingingFundRaise'
 
 function CreateFundRaisingPost() {
 
-  let [createFormIndex, setCreateFormIndex] = useState(0)
+  let [createFormIndex, setCreateFormIndex] = useState(2)
   let StepForm = CreateFormComponent(createFormIndex);
 
   return (

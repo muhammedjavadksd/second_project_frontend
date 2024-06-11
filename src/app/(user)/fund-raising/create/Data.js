@@ -1,5 +1,6 @@
 // const { default: Address } = require("@/_component/FundRaiser/CreateSteps/Address");
-const { default: AddressTwo } = require("@/_component/FundRaiser/CreateSteps/AddressTwo");
+const { default: Address } = require("@/_component/FundRaiser/CreateSteps/Address/Address");
+// const { default: AddressTwo } = require("@/_component/FundRaiser/CreateSteps/AddressTwo");
 const { default: Basic } = require("@/_component/FundRaiser/CreateSteps/Basic/Basic");
 // const { default: Basic } = require("@/_component/FundRaiser/CreateSteps/Basic");
 const { default: DescriptionCreator } = require("@/_component/FundRaiser/CreateSteps/DescriptionCreator");
@@ -10,7 +11,7 @@ const { default: PersonalDetails } = require("@/_component/FundRaiser/CreateStep
 let createFormSteps = [
     Basic,
     PersonalDetails,
-    AddressTwo,
+    Address,
     Document,
     DescriptionCreator
 ]
