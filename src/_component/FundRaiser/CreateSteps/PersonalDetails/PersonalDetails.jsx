@@ -6,18 +6,40 @@ import { FUND_RAISER_FOR } from '@/app/_util/_const/const'
 import { personalDetailsInitialValues, personalDetailsValidation } from './Data'
 import { onPersonalDetailsSubmit } from './Logic'
 import { OnGoingApplicationContext } from '@/app/_util/context/Context'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 // import { OnGoingApplicationContext } from '@/app/_util/context/onGoingingFundRaise'
 
 function PersonalDetails({ state }) {
 
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+  let router = useRouter();
+
   console.log(currentApplication);
+
+  function onSuccess() {
+    state((prev) => prev + 1)
+  }
+
+  function onError(err) {
+    toast.error(err)
+  }
+
+  function onNotLogged() {
+    router.push("/auth/sign_in")
+  }
+
 
   return (
     <CreateFormBackground>
       {/* The  ddata {currentApplication} */}
 
-      <Formik initialValues={personalDetailsInitialValues} validationSchema={personalDetailsValidation} onSubmit={onPersonalDetailsSubmit}>
+      <Formik initialValues={personalDetailsInitialValues} validationSchema={personalDetailsValidation} onSubmit={
+        (val) => {
+          val.currentApplication = currentApplication
+          onPersonalDetailsSubmit(val, onSuccess, onError, onNotLogged)
+        }
+      }>
         <Form>
           <div class="mb-5">
             <label for="raiser_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Raiser Full Name</label>

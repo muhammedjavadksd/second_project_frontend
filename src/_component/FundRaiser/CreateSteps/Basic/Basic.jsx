@@ -17,7 +17,6 @@ function Basic({ state }) {
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
 
   function onSuccess(fund_raiser_id) {
-
     if (fund_raiser_id) {
       // console.log("The fund is :" + fund_raiser_id);
       setApplication(fund_raiser_id)
@@ -37,7 +36,10 @@ function Basic({ state }) {
 
   return (
     <CreateFormBackground>
-      <Formik enableReinitialize onSubmit={(val) => onInitialCreate(val, onSuccess, onError)} initialValues={createInitialValue} validationSchema={createInitialValidation}>
+      <Formik enableReinitialize onSubmit={(val) => {
+
+        onInitialCreate(val, onSuccess, onError)
+      }} initialValues={createInitialValue} validationSchema={createInitialValidation}>
         {({ setFieldValue }) => (
           <Form>
             <div class="mb-5">
@@ -105,7 +107,7 @@ function Basic({ state }) {
         )}
       </Formik>
 
-    </CreateFormBackground>
+    </CreateFormBackground >
   )
 }
 

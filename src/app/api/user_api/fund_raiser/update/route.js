@@ -1,7 +1,7 @@
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 
 
-export async function POST(request) {
+export async function PATCH(request) {
 
     try {
 
@@ -12,13 +12,13 @@ export async function POST(request) {
         let auth_token = token.split(" ");
         console.log("Token is " + auth_token);
         console.log("Fund raiser id is : " + fundRaiserID);
-
+        // return;
         if (auth_token[0] == "Bearer" && auth_token[1] && fundRaiserID) {
             let bearerToken = auth_token[1]
 
             console.log("Bearer has been crossed");
 
-            let requestAPI = await API_axiosInstance.post(`/fund_raise/edit/${bearerToken}`, body, {
+            let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${fundRaiserID}`, body, {
                 headers: {
                     "authorization": `Bearer ${bearerToken}`,
                 }
