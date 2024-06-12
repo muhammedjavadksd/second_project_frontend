@@ -44,7 +44,7 @@ function Address({ state }) {
       >
         {({ setFieldValue }) => (
           <Form>
-            current app {currentApplication}
+            {/* current app {currentApplication} */}
             <div className="mb-5">
               <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
               <Field

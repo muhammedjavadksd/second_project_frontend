@@ -5,6 +5,9 @@ import { getSession } from "next-auth/react";
 
 async function onInitialCreate(val, successCB, errorCB) {
 
+
+    console.log("Data has been transferd");
+
     // console.log('The values are');
     let session = await getSession();
     let user = getUserDetails(session)

@@ -3,9 +3,22 @@ import API_axiosInstance from "@/external/axios/api_axios_instance";
 
 export async function PATCH(request) {
 
+
+    console.log("Fund raise updte");
+
     try {
 
-        let body = await request.json();
+        let body;
+
+        let contentType = request.headers.get('Content-Type');
+        if (contentType && contentType.includes('multipart/form-data')) {
+            // Read as FormData
+            body = await request.formData();
+        } else {
+            // Read as JSON
+            body = await request.json();
+        }
+
         let headers = request.headers;
         let fundRaiserID = headers.get("fund_id");
         let token = headers.get("authorization")
@@ -17,12 +30,16 @@ export async function PATCH(request) {
             let bearerToken = auth_token[1]
 
             console.log("Bearer has been crossed");
+            console.log(bearerToken);
 
             let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${fundRaiserID}`, body, {
                 headers: {
                     "authorization": `Bearer ${bearerToken}`,
-                }
+                    // 'Content-Type': 'multipart/form-data'
+                },
             })
+
+            console.log("Worked this");
 
             let response = requestAPI.data;
             if (response.status) {
@@ -44,6 +61,7 @@ export async function PATCH(request) {
         }
 
     } catch (e) {
+        console.log("Try catch error");
         console.log(e);
         let errorMessage = e?.response?.body?.msg ?? "Something went wrong";
         return new Response(JSON.stringify({
