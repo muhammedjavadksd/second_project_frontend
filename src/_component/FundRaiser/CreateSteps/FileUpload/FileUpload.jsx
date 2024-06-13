@@ -15,6 +15,7 @@ function FileUpload({ state }) {
 
   let [pictures, setPictures] = useState([]);
   let [Documents, setDocuments] = useState([]);
+  let [checkValidation, setCheckValidation] = useState(false)
 
 
 
@@ -43,6 +44,14 @@ function FileUpload({ state }) {
     toast.success("Image deleted success")
   }
 
+
+  function onNext() {
+    setCheckValidation(true);
+    if (Documents.length >= 3 && pictures.length >= 3) {
+      state((prev) => prev + 1)
+    }
+  }
+
   return (
     <div className='mb-5'>
       <CreateFormBackground>
@@ -51,6 +60,7 @@ function FileUpload({ state }) {
         <div>
           <label htmlFor="">Select Picture's</label>
           <div className="flex mt-3">
+
             <div className='w-2/4'>
               <div
                 onClick={() => imageRef.current.click()}>
@@ -67,7 +77,9 @@ function FileUpload({ state }) {
                 <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Pictures", currentApplication)} data={pictures} BASE_PATH={FUND_RAISE_IMAGE_URL} onDelete={() => { }} />
               </div>
             </div>
+
           </div>
+          {checkValidation && (pictures.length < 3 && <span className='errorMessage'>Please select minimum 3 picture's</span>)}
         </div>
 
         <div className='mt-3'>
@@ -89,12 +101,14 @@ function FileUpload({ state }) {
               {/* <UploadFilePlusButton /> */}
             </div>
           </div>
+          {checkValidation && (Documents.length < 3 && <span className='errorMessage'>Please select minimum 3 document's</span>)}
+
         </div>
 
 
         <div className='ml-auto mt-5 w-full overflow-hidden gap-3 flex justify-end'>
-          <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)}><i class="fa-solid fa-chevron-left"></i> Prev </button>
-          <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev + 1)}>Next <i class="fa-solid fa-chevron-right"></i></button>
+          <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"  ><i class="fa-solid fa-chevron-left"></i> Prev </button>
+          <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={onNext}>Next <i class="fa-solid fa-chevron-right"></i></button>
         </div>
 
 
