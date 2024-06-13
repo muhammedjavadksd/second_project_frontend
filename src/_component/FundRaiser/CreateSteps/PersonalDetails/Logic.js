@@ -30,14 +30,23 @@ async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
             if (response.status) {
                 successCB()
             } else {
-                errorCB(response.msg)
+                if (API_request.status == 401) {
+                    onNotLogged()
+                } else {
+                    errorCB(response.msg)
+                }
             }
 
         } catch (e) {
             let errorMessage = e?.response?.body?.msg;
+            let statusCode = e?.response?.status;
             console.log(e);
             console.log(errorMessage);
-            errorCB(errorMessage)
+            if (statusCode == 401) {
+                onNotLogged()
+            } else {
+                errorCB(errorMessage)
+            }
         }
     } else {
         onNotLogged()

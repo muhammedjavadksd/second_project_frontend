@@ -50,6 +50,6 @@ export async function POST(request) {
     } catch (e) {
         console.log(e);
         let errMsg = e?.response?.data?.msg ?? "Something went wrong";
-        return new Response(JSON.stringify({ status: false, msg: errMsg }), { status: 500 })
+        return new Response(JSON.stringify({ status: false, msg: errMsg }), { status: e.response?.status ?? 500 })
     }
 }   

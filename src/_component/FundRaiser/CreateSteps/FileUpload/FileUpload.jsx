@@ -1,23 +1,30 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import CreateFormBackground from '../../CreateFormBackground'
 import FileSelectBox from '@/_component/Util/FileSelectBox'
-import UploadFilePlusButton from '@/_component/Util/UploadFilePlusButton'
+import ListImageFile from '@/_component/Util/ListImageFile'
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { onFileUpload } from './Logic';
+import { onFileDelete, onFileUpload } from './Logic';
 import { OnGoingApplicationContext } from '@/app/_util/context/Context';
+import { FUND_RAISE_DOCUMENT_URL, FUND_RAISE_IMAGE_URL } from '@/app/_util/_const/const';
 
 function FileUpload({ state }) {
 
   let imageRef = useRef(null);
   let documentRef = useRef(null);
 
+  let [pictures, setPictures] = useState([]);
+  let [Documents, setDocuments] = useState([]);
+
+
 
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
   let router = useRouter();
 
-  function onSuccess() {
-    toast.success("Image uploaded successs")
+  function onSuccess(data) {
+    // toast.success("Image uploaded successs")
+    setPictures(data.pictures);
+    setDocuments(data.documents)
   }
 
   function onError(err) {
@@ -26,6 +33,14 @@ function FileUpload({ state }) {
 
   function ifNotLogged() {
     router.replace("/auth/sign_in")
+  }
+
+  function onFileDeleted(image_id, type) {
+
+    let newImagesData = type == "Pictures" ? pictures : Documents
+    let filterData = newImagesData.filter((each) => each != image_id);
+    type == "Pictures" ? setPictures(filterData) : setDocuments(filterData);
+    toast.success("Image deleted success")
   }
 
   return (
@@ -38,18 +53,19 @@ function FileUpload({ state }) {
           <div className="flex mt-3">
             <div className='w-2/4'>
               <div
-
                 onClick={() => imageRef.current.click()}>
                 <FileSelectBox>
                   <input ref={imageRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
                     onFileUpload(e.target.files[0], onSuccess, onError, ifNotLogged, "Pictures", currentApplication)
-                    e.target.files = []
+                    imageRef.current.value = null
                   }} className='hidden' />
                 </FileSelectBox>
               </div>
             </div>
-            <div className='w-1/4'>
-              {/* <UploadFilePlusButton /> */}
+            <div className="w-2/4">
+              <div className='overflow-auto'>
+                <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Pictures", currentApplication)} data={pictures} BASE_PATH={FUND_RAISE_IMAGE_URL} onDelete={() => { }} />
+              </div>
             </div>
           </div>
         </div>
@@ -63,12 +79,13 @@ function FileUpload({ state }) {
                 <FileSelectBox>
                   <input ref={documentRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
                     onFileUpload(e.target.files[0], onSuccess, onError, ifNotLogged, "Documents", currentApplication)
-                    e.target.files = []
+                    documentRef.current.value = null
                   }} className='hidden' />
                 </FileSelectBox>
               </div>
             </div>
-            <div className='w-1/4'>
+            <div className='w-2/4'>
+              <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Documents", currentApplication)} data={Documents} BASE_PATH={FUND_RAISE_DOCUMENT_URL} onDelete={() => { }} />
               {/* <UploadFilePlusButton /> */}
             </div>
           </div>

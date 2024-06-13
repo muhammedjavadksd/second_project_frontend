@@ -26,7 +26,7 @@ function Basic({ state }) {
 
   function onError(err) {
     if (err.statusCode == 401) {
-      // return navigation.replace("/auth/sign_in")
+      return navigation.replace("/auth/sign_in")
     }
     toast.error(err ?? "Something went wrong")
   }

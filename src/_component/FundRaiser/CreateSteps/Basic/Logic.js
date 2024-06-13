@@ -35,7 +35,11 @@ async function onInitialCreate(val, successCB, errorCB) {
 
                 successCB(fund_id);
             } else {
-                errorCB({ msg: response.msg ?? "Something went wrong", statusCode: createRequest.status ?? 500 })
+                if (createRequest.status == 401) {
+                    errorCB({ msg: "Un Authraized", statusCode: 401 })
+                } else {
+                    errorCB({ msg: response.msg ?? "Something went wrong", statusCode: createRequest.status ?? 500 })
+                }
             }
         } catch (e) {
             let statusCode = e?.response?.status ?? 500;
@@ -45,7 +49,7 @@ async function onInitialCreate(val, successCB, errorCB) {
             errorCB({ msg: errorMsg, statusCode })
         }
     } else {
-        errorCB({ msg: response.msg ?? "Something went wrong", statusCode: createRequest.status ?? 500 })
+        errorCB({ msg: response.msg ?? "Something went wrong", statusCode: 401 })
     }
 }
 

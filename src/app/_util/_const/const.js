@@ -318,6 +318,8 @@ export const FUND_RAISER_FOR = [
     "In-law"
 ]
 
+export const FUND_RAISE_IMAGE_URL = "http://localhost:7001/api/fund_raise/images/fund_raiser_image"
+export const FUND_RAISE_DOCUMENT_URL = "http://localhost:7001/api/fund_raise/images/fund_raise_document"
 
 export const MONEY_ICON = '₹'
 export const OTP_LENGTH = 6
