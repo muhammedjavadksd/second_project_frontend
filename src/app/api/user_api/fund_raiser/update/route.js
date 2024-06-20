@@ -31,17 +31,20 @@ export async function PATCH(request) {
 
             console.log("Bearer has been crossed");
             console.log(bearerToken);
+            console.log(body);
 
             let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${fundRaiserID}`, body, {
                 headers: {
                     "authorization": `Bearer ${bearerToken}`,
-                    // 'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data'
                 },
             })
 
             console.log("Worked this");
 
             let response = requestAPI.data;
+            console.log("The response");
+            console.log(response);
             if (response.status) {
                 return new Response(JSON.stringify({
                     status: true,

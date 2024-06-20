@@ -54,24 +54,31 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
     }
 }
 
-async function onFileUpload(file, onSuccess, onError, ifNotLogged, type, fundRaiseID) {
+async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fundRaiseID) {
+    console.log(my_files);
     let session = await getSession();
     let user = getUserDetails(session)
 
+
+    console.log(my_files);
 
 
     if (user) {
 
         console.log("User found");
 
-        console.log(file);
+        console.log(my_files);
         console.log(type);
 
 
 
         let formData = new FormData();
-        formData.append("images[type]", type);
-        formData.append("images[data]", file);
+        formData.append("image_type", type);
+        console.log("The length is : " + my_files.length);
+        for (let fileIndex = 0; fileIndex < my_files.length; fileIndex++) {
+            formData.append(`images_${fileIndex}`, my_files[fileIndex]);
+        }
+
 
         // console.log(formData.getAll());
 
@@ -89,10 +96,11 @@ async function onFileUpload(file, onSuccess, onError, ifNotLogged, type, fundRai
             if (response.status) {
 
                 if (type == "Documents") {
-                    store.dispatch(insertDocuments({ documents: [response.documents[0]] }))
+                    store.dispatch(insertDocuments({ documents: [...response.documents.slice(0, my_files.length)] }))
                 } else {
-                    store.dispatch(insertPicturs({ pictures: [response.pictures[0]] }))
+                    store.dispatch(insertPicturs({ pictures: [...response.pictures.slice(0, my_files.length)] }))
                 }
+
 
                 onSuccess({
                     documents: response.documents,

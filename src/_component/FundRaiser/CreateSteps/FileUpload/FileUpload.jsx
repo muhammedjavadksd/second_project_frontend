@@ -70,8 +70,9 @@ function FileUpload({ state }) {
               <div
                 onClick={() => imageRef.current.click()}>
                 <FileSelectBox>
-                  <input ref={imageRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
-                    onFileUpload(e.target.files[0], onSuccess, onError, ifNotLogged, "Pictures", currentApplication)
+                  <input multiple ref={imageRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
+                    // console.log(e.target.files);
+                    onFileUpload([...e.target.files], onSuccess, onError, ifNotLogged, "Pictures", currentApplication)
                     imageRef.current.value = null
                   }} className='hidden' />
                 </FileSelectBox>
@@ -94,8 +95,8 @@ function FileUpload({ state }) {
               <div
                 onClick={() => documentRef.current.click()}>
                 <FileSelectBox>
-                  <input ref={documentRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
-                    onFileUpload(e.target.files[0], onSuccess, onError, ifNotLogged, "Documents", currentApplication)
+                  <input multiple ref={documentRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
+                    onFileUpload([...e.target.files], onSuccess, onError, ifNotLogged, "Documents", currentApplication)
                     documentRef.current.value = null
                   }} className='hidden' />
                 </FileSelectBox>
