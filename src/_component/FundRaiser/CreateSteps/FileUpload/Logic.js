@@ -1,5 +1,7 @@
 import { getUserDetails } from "@/app/_util/helper/authHelper";
 import axios_instance from "@/external/axios/axios-instance";
+import { insertDocuments, insertPicturs, updateFundRaiseData } from "@/external/redux/slicer/fundRaiserForm";
+import store from "@/external/redux/store/store";
 import { getSession } from "next-auth/react";
 
 
@@ -35,6 +37,7 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
             let response = API_request.data;
             console.log(response);
             if (response.status) {
+
                 onSuccess(image_id, type)
             } else {
                 onError(response.msg)
@@ -84,6 +87,13 @@ async function onFileUpload(file, onSuccess, onError, ifNotLogged, type, fundRai
             let response = API_request.data;
             console.log(response);
             if (response.status) {
+
+                if (type == "Documents") {
+                    store.dispatch(insertDocuments({ documents: [response.documents[0]] }))
+                } else {
+                    store.dispatch(insertPicturs({ pictures: [response.pictures[0]] }))
+                }
+
                 onSuccess({
                     documents: response.documents,
                     pictures: response.pictures

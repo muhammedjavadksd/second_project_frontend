@@ -1,7 +1,18 @@
-import React from 'react'
-import CreateFormBackground from '../CreateFormBackground'
+import React, { useEffect, useState } from 'react'
+import CreateFormBackground from '../../CreateFormBackground';
+import { useSelector } from 'react-redux';
+// import CreateFormBackground from '../CreateFormBackground'
 
-function DescriptionCreator({state}) {
+function AIDescription({ state }) {
+
+    let [description, setDescription] = useState("");
+    let currentApplicationData = useSelector((state) => state.fund_raiser);
+
+
+    useEffect(() => {
+        console.log("Application has been done");
+        console.log(currentApplicationData);
+    }, [currentApplicationData])
     return (
         <CreateFormBackground>
             <form>
@@ -11,13 +22,7 @@ function DescriptionCreator({state}) {
                         <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
                             <label for="comment" class="sr-only">Your comment</label>
                             <textarea id="comment" rows="15" class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..." required >
-                                Dear Friends,
-
-                                I urgently seek your help for my cousin, Rajanish Singh, who is battling against a debilitating condition - Intestinal Perforations. This illness has struck our family like a bolt from the blue, and we find ourselves grappling with its formidable challenges.
-
-                                Rajanish, 23 years old, was struck down by this merciless affliction just 25 days ago. Since then, our family has spared no effort in seeking the best possible treatment to save his precious life.
-
-                                The journey has been arduous. From the initial diagnosis in Prayagraj to the grueling surgeries, every step has been filled with both emotional and financial strain. The medical expenses have already soared to a staggering 18 lakh rupees, leaving us on the brink of exhaustion.
+                                {description}
                             </textarea>
                         </div>
                         <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
@@ -57,4 +62,4 @@ function DescriptionCreator({state}) {
     )
 }
 
-export default DescriptionCreator
+export default AIDescription

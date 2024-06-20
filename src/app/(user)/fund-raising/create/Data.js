@@ -1,9 +1,10 @@
 // const { default: Address } = require("@/_component/FundRaiser/CreateSteps/Address");
+const { default: AIDescription } = require("@/_component/FundRaiser/CreateSteps/AIDescription/AIDescription");
 const { default: Address } = require("@/_component/FundRaiser/CreateSteps/Address/Address");
 // const { default: AddressTwo } = require("@/_component/FundRaiser/CreateSteps/AddressTwo");
 const { default: Basic } = require("@/_component/FundRaiser/CreateSteps/Basic/Basic");
 // const { default: Basic } = require("@/_component/FundRaiser/CreateSteps/Basic");
-const { default: DescriptionCreator } = require("@/_component/FundRaiser/CreateSteps/DescriptionCreator");
+// const { default: DescriptionCreator } = require("@/_component/FundRaiser/CreateSteps/DescriptionCreator");
 // const { default: Document } = require("@/_component/FundRaiser/CreateSteps/Document");
 const { default: FileUpload } = require("@/_component/FundRaiser/CreateSteps/FileUpload/FileUpload");
 const { default: PersonalDetails } = require("@/_component/FundRaiser/CreateSteps/PersonalDetails/PersonalDetails");
@@ -14,7 +15,7 @@ let createFormSteps = [
     PersonalDetails,
     Address,
     FileUpload,
-    DescriptionCreator
+    AIDescription
 ]
 
 

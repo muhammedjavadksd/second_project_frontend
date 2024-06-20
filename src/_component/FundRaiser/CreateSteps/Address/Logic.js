@@ -1,5 +1,7 @@
 import { getUserDetails } from "@/app/_util/helper/authHelper";
 import axios_instance from "@/external/axios/axios-instance";
+import { updateFundRaiseData } from "@/external/redux/slicer/fundRaiserForm";
+import store from "@/external/redux/store/store";
 import { getSession } from "next-auth/react";
 
 const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
@@ -29,6 +31,15 @@ const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
             let response = API_request.data;
             console.log(response);
             if (response.status) {
+                store.dispatch(updateFundRaiseData({
+                    data: {
+                        city,
+                        pinCode,
+                        state,
+                        district,
+                        fullAddress,
+                    }
+                }))
                 successCB()
             } else {
                 errorCB(response.msg)

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import CreateFormBackground from '../../CreateFormBackground'
 import FileSelectBox from '@/_component/Util/FileSelectBox'
 import ListImageFile from '@/_component/Util/ListImageFile'
@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { onFileDelete, onFileUpload } from './Logic';
 import { OnGoingApplicationContext } from '@/app/_util/context/Context';
 import { FUND_RAISE_DOCUMENT_URL, FUND_RAISE_IMAGE_URL } from '@/app/_util/_const/const';
+import { useSelector } from 'react-redux';
 
 function FileUpload({ state }) {
 
@@ -16,7 +17,11 @@ function FileUpload({ state }) {
   let [pictures, setPictures] = useState([]);
   let [Documents, setDocuments] = useState([]);
   let [checkValidation, setCheckValidation] = useState(false)
+  let selectData = useSelector((store) => store.fund_raiser);
 
+  useEffect(() => {
+    console.log(selectData);
+  }, [selectData])
 
 
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)

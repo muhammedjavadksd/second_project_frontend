@@ -1,5 +1,7 @@
 import { getUserDetails } from "@/app/_util/helper/authHelper";
 import axios_instance from "@/external/axios/axios-instance";
+import { updateFundRaiseData } from "@/external/redux/slicer/fundRaiserForm";
+import store from "@/external/redux/store/store";
 import { getSession } from "next-auth/react";
 
 
@@ -28,6 +30,14 @@ async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
             let response = API_request.data;
             console.log(response);
             if (response.status) {
+                store.dispatch(updateFundRaiseData({
+                    data: {
+                        benificiary_relation,
+                        description,
+                        raiser_age,
+                        raiser_name,
+                    }
+                }))
                 successCB()
             } else {
                 if (API_request.status == 401) {

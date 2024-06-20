@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import CreateFormBackground from '../../CreateFormBackground'
 import FormInputWithBg from '../../FormInputWithBg'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
@@ -8,16 +8,24 @@ import { onPersonalDetailsSubmit } from './Logic'
 import { OnGoingApplicationContext } from '@/app/_util/context/Context'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateFundRaiseData } from '@/external/redux/slicer/fundRaiserForm'
 // import { OnGoingApplicationContext } from '@/app/_util/context/onGoingingFundRaise'
 
 function PersonalDetails({ state }) {
 
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
   let router = useRouter();
+  let dispatcher = useDispatch();
+  let selectData = useSelector((store) => store.fund_raiser);
+
+  useEffect(() => {
+    console.log(selectData);
+  }, [selectData])
 
   console.log(currentApplication);
 
-  function onSuccess() {
+  function onSuccess(values) {
     state((prev) => prev + 1)
   }
 
