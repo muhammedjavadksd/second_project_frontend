@@ -7,6 +7,7 @@ function AccountTab() {
     let router = useRouter()
     return (
         <div>
+            <h2>Profile editing</h2>
             <div class="md:flex">
                 <ul class="w-full space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400  mb-4 md:mb-0">
                     <li>

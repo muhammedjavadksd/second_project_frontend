@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-function LoadingComponent({ isLoading, closeOnClick, children }) {
+function LoadingComponent({ isLoading, closeOnClick, children, paddingNeed = true }) {
 
     let [isDisplay, setIsDisplay] = useState(isLoading);
 
@@ -20,7 +20,7 @@ function LoadingComponent({ isLoading, closeOnClick, children }) {
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <div className={`p-5 ${!isDisplay && "bg-black bg-opacity-10 rounded-lg"}`}>
+            <div className={`${paddingNeed && 'p-5'} ${!isDisplay && "bg-black bg-opacity-10 rounded-lg"}`}>
                 {children}
             </div>
         </div>

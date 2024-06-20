@@ -75,11 +75,15 @@ export function isUserLogged(session) {
 }
 
 export function getUserDetails(session) {
-
-    let data = session?.data ?? session.token;
+    let data = session?.data ?? session?.token;
     if (!data) return false
     let token = data?.token ?? data;
     if (!token) return false;
     console.log(token.user);
     return token.user;
+}
+
+export function objectToUrlQuery(object) {
+    let query = new URLSearchParams(object)
+    return query.toString()
 }

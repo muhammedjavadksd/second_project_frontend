@@ -1,11 +1,11 @@
 import React from 'react'
 
-function CreateFormBackground({children}) {
+function CreateFormBackground({ children }) {
   return (
-    <div className=' pt-5  pb-5 '>
-        <div className='border-black bg-gray-300 p-10 pb-4 rounded-xl'>
+    <div className=''>
+      <div className='border-black bg-gray-300 p-10 pb-4 rounded-xl'>
         {children}
-        </div>
+      </div>
     </div>
   )
 }

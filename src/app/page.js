@@ -16,13 +16,14 @@ import Footer from "@/_component/Util/Footer";
 // import '../external/style.css'
 import { SessionProvider } from "next-auth/react"
 import { getServerSession } from "next-auth";
+// import { Provider } from "react-redux";
+// import { combineReducers } from "@reduxjs/toolkit";
 
 
 
 export default function Home() {
 
   let session = getServerSession()
-
 
   return (
     <SessionProvider session={session}>
@@ -50,6 +51,7 @@ export default function Home() {
           </div>
         </div>
       </main >
-    </SessionProvider>
+      {/* </Provider> */}
+    </SessionProvider >
   );
 }
