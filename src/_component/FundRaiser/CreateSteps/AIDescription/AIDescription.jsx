@@ -1,29 +1,56 @@
 import React, { useEffect, useState } from 'react'
 import CreateFormBackground from '../../CreateFormBackground';
 import { useSelector } from 'react-redux';
+import getAIDescription from './Logic';
+import { Field, Form, Formik } from 'formik';
+import { ai_descriptionInitialValues } from './Data';
 // import CreateFormBackground from '../CreateFormBackground'
 
 function AIDescription({ state }) {
 
-    let [description, setDescription] = useState("");
-    let currentApplicationData = useSelector((state) => state.fund_raiser);
+    let [initialValues, setInitialValues] = useState({});
 
+    let currentApplicationData = useSelector((state) => state.fund_raiser);
+    let isWorking = false;
+    let fetchAIData = () => {
+        console.log("Came");
+        if (currentApplicationData.amount && currentApplicationData.documents.length && !isWorking) {
+            isWorking = true;
+            console.log("Enterd");
+            // setRequest(0)
+            getAIDescription(currentApplicationData.amount, currentApplicationData.category, currentApplicationData.sub_category, currentApplicationData.raiser_name, currentApplicationData.raiser_age, currentApplicationData.benificiary_relation, currentApplicationData.description, currentApplicationData.city, currentApplicationData.pinCode, currentApplicationData.state, currentApplicationData.district).then((data) => {
+                console.log("The wait is over");
+                console.log("The ai data");
+                console.log(data);
+                setInitialValues({
+                    ai_description: data
+                })
+                // setRequest(1)
+            }).catch((err) => {
+                console.log(err);
+                console.log("Error occured");
+                // setRequest(1)
+            })
+        }
+    }
 
     useEffect(() => {
-        console.log("Application has been done");
-        console.log(currentApplicationData);
-    }, [currentApplicationData])
+        console.log(currentApplicationData.pictures.length, currentApplicationData.documents.length);
+        fetchAIData();
+    }, [])
+
     return (
         <CreateFormBackground>
-            <form>
-
-                <form>
+            <Formik initialValues={initialValues} enableReinitialize>
+                <Form>
                     <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+
                         <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
                             <label for="comment" class="sr-only">Your comment</label>
-                            <textarea id="comment" rows="15" class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..." required >
+                            <Field id="ai_description" rows='15' name="ai_description" as="textarea" className="w-full *:first-letter:first-line:w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" />
+                            {/* <textarea value={description} id="comment" rows="15" class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..." required >
                                 {description}
-                            </textarea>
+                            </textarea> */}
                         </div>
                         <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
 
@@ -49,14 +76,14 @@ function AIDescription({ state }) {
                             </div>
                         </div>
                     </div>
-                </form>
 
 
-                <div className='ml-auto w-full overflow-hidden gap-3 flex justify-end'>
-                    <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)}><i class="fa-solid fa-chevron-left"></i> Prev </button>
-                    <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Next <i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-            </form>
+                    <div className='ml-auto w-full overflow-hidden gap-3 flex justify-end'>
+                        <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)}><i class="fa-solid fa-chevron-left"></i> Prev </button>
+                        <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Next <i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </Form>
+            </Formik>
 
         </CreateFormBackground>
     )

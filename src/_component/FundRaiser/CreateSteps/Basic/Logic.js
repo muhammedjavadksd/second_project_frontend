@@ -42,6 +42,7 @@ async function onInitialCreate(val, successCB, errorCB) {
                 let fund_id = response.fund_id
 
 
+
                 store.dispatch(updateFundRaiseData({
                     data: {
                         amount,

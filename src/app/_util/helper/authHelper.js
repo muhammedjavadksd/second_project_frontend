@@ -83,3 +83,8 @@ export function getUserDetails(session) {
     console.log(token.user);
     return token.user;
 }
+
+export function objectToUrlQuery(object) {
+    let query = new URLSearchParams(object)
+    return query.toString()
+}
