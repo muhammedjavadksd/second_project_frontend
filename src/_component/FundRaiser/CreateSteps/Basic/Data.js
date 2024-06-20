@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 
-let createInitialValue = {
+let initialValuesForCreate = {
     amount: null,
     category: null,
     sub_category: null,
@@ -16,4 +16,4 @@ let createInitialValidation = yup.object().shape({
     email_id: yup.string("Please enter valid email id").email("Please enter valid email id").required("Email id is required")
 })
 
-export { createInitialValidation, createInitialValue }
+export { createInitialValidation, initialValuesForCreate }

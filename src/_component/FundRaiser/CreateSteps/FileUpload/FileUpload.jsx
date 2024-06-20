@@ -20,8 +20,13 @@ function FileUpload({ state }) {
   let selectData = useSelector((store) => store.fund_raiser);
 
   useEffect(() => {
-    console.log(selectData);
-  }, [selectData])
+    if (selectData.pictures?.length) {
+      setPictures(selectData.pictures)
+    }
+    if (selectData.documents?.length) {
+      setDocuments(selectData.documents)
+    }
+  }, [])
 
 
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
@@ -113,7 +118,7 @@ function FileUpload({ state }) {
 
 
         <div className='ml-auto mt-5 w-full overflow-hidden gap-3 flex justify-end'>
-          <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"  ><i class="fa-solid fa-chevron-left"></i> Prev </button>
+          <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)} ><i class="fa-solid fa-chevron-left"></i> Prev </button>
           <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={onNext}>Next <i class="fa-solid fa-chevron-right"></i></button>
         </div>
 

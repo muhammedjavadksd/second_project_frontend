@@ -16,10 +16,23 @@ import LoadingComponent from '@/_component/Util/LoadingComponent'
 function PersonalDetails({ state }) {
 
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+  let [personalDataInitialSet, setPersonalData] = useState(personalDetailsInitialValues)
   let [isLoading, setLoading] = useState(false);
   let router = useRouter();
   let dispatcher = useDispatch();
   let selectData = useSelector((store) => store.fund_raiser);
+
+  useEffect(() => {
+    console.log(personalDataInitialSet);
+    if (selectData.raiser_name) {
+      setPersonalData({
+        raiser_name: selectData.raiser_name,
+        raiser_age: selectData.raiser_age,
+        benificiary_relation: selectData.benificiary_relation,
+        description: selectData.description
+      })
+    }
+  }, [])
 
   useEffect(() => {
     console.log(selectData);
@@ -47,7 +60,7 @@ function PersonalDetails({ state }) {
       <CreateFormBackground>
         {/* The  ddata {currentApplication} */}
 
-        <Formik initialValues={personalDetailsInitialValues} validationSchema={personalDetailsValidation} onSubmit={
+        <Formik enableReinitialize initialValues={personalDataInitialSet} validationSchema={personalDetailsValidation} onSubmit={
           (val) => {
             setLoading(true)
             val.currentApplication = currentApplication

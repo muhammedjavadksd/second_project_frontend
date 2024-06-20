@@ -1,22 +1,41 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CreateFormBackground from '../../CreateFormBackground'
 import FormInputWithBg from '../../FormInputWithBg'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { FUND_RAISER_FOR } from '@/app/_util/_const/const'
 import { onInitialCreate } from './Logic'
-import { createInitialValidation, createInitialValue } from './Data'
+import { createInitialValidation, initialValuesForCreate } from './Data'
 import { getMainCategory, getSubCategory } from '@/app/_util/_const/helperFunctions'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { OnGoingApplicationContext } from '@/app/_util/context/Context'
 import LoadingComponent from '@/_component/Util/LoadingComponent'
+import { useSelector } from 'react-redux'
 // import { OnGoingApplicationContext } from '@/app/_util/context/onGoingingFundRaise'
 
 function Basic({ state }) {
 
+  let [createInitialValue, setInitialValues] = useState(initialValuesForCreate)
+
   let navigation = useRouter();
   let [isLoading, setLoading] = useState(false)
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+  let currentApplicationData = useSelector((state) => state.fund_raiser);
+  let [subCategory, setSubCategory] = useState([]);
+
+  useEffect(() => {
+    if (currentApplicationData.amount) {
+      setInitialValues({
+        amount: currentApplicationData.amount,
+        category: currentApplicationData.category,
+        sub_category: currentApplicationData.sub_category,
+        phone_number: currentApplicationData.phone_number,
+        email_id: currentApplicationData.email_id,
+        is_checked: true,
+      })
+      setSubCategory(getSubCategory(currentApplicationData.category))
+    }
+  }, [])
 
   function onSuccess(fund_raiser_id) {
     if (fund_raiser_id) {
@@ -35,7 +54,6 @@ function Basic({ state }) {
     setLoading(false)
   }
 
-  let [subCategory, setSubCategory] = useState([]);
   //amount
 
   return (
@@ -101,7 +119,10 @@ function Basic({ state }) {
 
               <div class="flex items-start mb-5">
                 <div class="flex items-center h-5">
-                  <input id="terms" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
+
+                  <input
+                    checked={createInitialValue.is_checked}
+                    id="terms" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
                 </div>
                 <label for="terms" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree with the <a href="#" class="text-blue-600 hover:underline dark:text-blue-500">terms and conditions</a></label>
               </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // import CreateFormBackground from '../CreateFormBackground'
 // CreateFormBackground
 // import FormInputWithBg from '../FormInputWithBg'
@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { STATE_WITH_DIST } from '@/app/_util/_const/const'
 import { OnGoingApplicationContext } from '@/app/_util/context/Context'
 import LoadingComponent from '@/_component/Util/LoadingComponent'
+import { useSelector } from 'react-redux'
 
 function Address({ state }) {
 
@@ -19,7 +20,21 @@ function Address({ state }) {
   let router = useRouter()
   let [district, setDistrict] = useState([])
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+  let [addressDataInitialValues, setInitialValues] = useState(addressInitialValues)
+  let selectData = useSelector((store) => store.fund_raiser);
 
+
+  useEffect(() => {
+    if (selectData.city) {
+      setInitialValues({
+        city: selectData.city,
+        pinCode: selectData.pinCode,
+        state: selectData.state,
+        district: selectData.district,
+        fullAddress: selectData.fullAddress,
+      })
+    }
+  }, [])
 
   function onSuccess() {
     state((prev) => prev + 1)
@@ -38,7 +53,7 @@ function Address({ state }) {
       <CreateFormBackground>
         <Formik
           enableReinitialize
-          initialValues={addressInitialValues}
+          initialValues={addressDataInitialValues}
           validationSchema={addressValidationSchema}
           onSubmit={(e) => {
             e.currentApplication = currentApplication
