@@ -75,8 +75,7 @@ export function isUserLogged(session) {
 }
 
 export function getUserDetails(session) {
-
-    let data = session?.data ?? session.token;
+    let data = session?.data ?? session?.token;
     if (!data) return false
     let token = data?.token ?? data;
     if (!token) return false;

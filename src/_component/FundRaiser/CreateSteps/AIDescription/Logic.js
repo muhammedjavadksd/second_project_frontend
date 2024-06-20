@@ -22,4 +22,5 @@ async function getAIDescription(amount, category, sub_category, raiser_name, rai
     }
 }
 
+
 export default getAIDescription

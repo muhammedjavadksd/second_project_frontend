@@ -44,9 +44,21 @@ function AIDescription({ state }) {
         fetchAIData();
     }, [])
 
+    function reGenerateAIDescription() {
+        setLoading(true)
+        fetchAIData();
+    }
+
+
+
     return (
         <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false}>
             <CreateFormBackground>
+                <div className='w-full mb-2 ml-auto' style={{ display: "flex" }}>
+                    <button onClick={reGenerateAIDescription} class="bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                        Re-generate FROM AI
+                    </button>
+                </div>
                 <Formik initialValues={initialValues} enableReinitialize>
                     <Form>
                         <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
