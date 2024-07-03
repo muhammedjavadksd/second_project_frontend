@@ -9,11 +9,17 @@ function BlackedRouter({ children, session }) {
     let router = useRouter();
 
     useEffect(() => {
-        const isLogged = isAdminlogged(session);
-        if (isLogged) {
-            router.replace("/admin");
+        if (session instanceof Promise) {
+            session.then((data) => {
+                const isLogged = isAdminlogged(data);
+                if (isLogged) {
+                    router.replace("/admin");
+                } else {
+                    setAuth(true);
+                }
+            }).catch((err) => { })
         } else {
-            setAuth(true);
+            router.replace("/admin");
         }
     }, [session])
 

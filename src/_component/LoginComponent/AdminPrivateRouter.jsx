@@ -1,19 +1,27 @@
 "use client"
 import { isAdminlogged } from '@/app/_util/helper/authHelper';
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 function AdminPrivateRouter({ children }) {
-    let session = useSession();
+    let session = getSession();
     let router = useRouter();
     let [isAuth, setAuth] = useState(false)
 
     useEffect(() => {
-        if (isAdminlogged(session)) {
-            setAuth(true)
+        console.log(session);
+        if (session instanceof Promise) {
+            session?.then((data) => {
+                console.log(data);
+                if (!isAdminlogged(data)) {
+                    router.replace("/admin/auth/sign_in");
+                } else {
+                    setAuth(true)
+                }
+            }).catch((err) => { })
         } else {
-            isAuth && router.replace("/admin/auth/sign_in");
+            router.replace("/admin/auth/sign_in");
         }
     }, [session])
 
