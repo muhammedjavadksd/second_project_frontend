@@ -5,7 +5,7 @@ function FundRaiserSingleItem() {
         <>
             <div class="mb-5 max-w-sm bg-white border border-gray-200  shadow dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">
-                    <img class="w-100" src={`${process.env.PUBLIC_IMAGE_URL}/fundRaisers/fundRaiser1.png`} alt="" />
+                    <img class="w-100" src={`${process.env.NEXT_PUBLIC_PUBLIC_IMAGE_URL}/fundRaisers/fundRaiser1.png`} alt="" />
                 </a>
                 <div class="p-5 pb-0">
                     <div class="grid  mb-3 grid-cols-3 gap-3 items-center	">
