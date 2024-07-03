@@ -28,9 +28,9 @@ function SimpleHeader() {
                     </div>
                     <div class="flex flex-1 items-center   sm:items-stretch sm:justify-start">
                         <div class="flex flex-shrink-0 items-center mr-5">
-                            <img class="h-8 w-auto" src={`${process.env.PUBLIC_IMAGE_URL}/company/logo.png`} alt="Your Company" />
+                            <img class="h-8 w-auto" src={`${process.env.NEXT_PUBLIC_PUBLIC_IMAGE_URL}/company/logo.png`} alt="Your Company" />
                         </div>
-                        
+
                     </div>
 
                     <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">

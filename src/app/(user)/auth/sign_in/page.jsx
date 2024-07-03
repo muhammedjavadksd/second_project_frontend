@@ -42,7 +42,7 @@ function SignIn() {
             </div>
             <div className="canvasLogin relative">
 
-              <div className='canvasLoginArea flex items-center h-full bg-cover bg-no-repeat absolute right-0 top-0 w-full -z-10' style={{ right: "-80px", backgroundImage: `url('${process.env.PUBLIC_IMAGE_URL}/promotion/check_promo.png')` }}>
+              <div className='canvasLoginArea flex items-center h-full bg-cover bg-no-repeat absolute right-0 top-0 w-full -z-10' style={{ right: "-80px", backgroundImage: `url('${process.env.NEXT_PUBLIC_PUBLIC_IMAGE_URL}/promotion/check_promo.png')` }}>
                 <AuthSideCanvas bannerTitle={bannerSlider[0].title}></AuthSideCanvas>
 
               </div>

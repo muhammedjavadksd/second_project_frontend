@@ -12,12 +12,12 @@ let authOptions = {
 
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLINET_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+            clientId: process.env.NEXT_PUBLIC_GOOGLE_CLINET_ID,
+            clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
         }),
         FacebookProvider({
-            clientId: process.env.FACEBOOK_APP_ID,
-            clientSecret: process.env.FACEBOOK_SECRET_ID
+            clientId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
+            clientSecret: process.env.NEXT_PUBLIC_FACEBOOK_SECRET_ID
         }),
         CredentialsProvider({
             credentials: {
@@ -83,13 +83,13 @@ let authOptions = {
                         if (response.status) {
                             console.log("Login success");
                             console.log({
-                                token: response.jwt,
+                                token: response.token,
                                 name: response.name,
                                 email: email_address,
                                 role: "admin"
                             });
                             return {
-                                token: response.jwt,
+                                token: response.token,
                                 name: response.name,
                                 email: email_address,
                                 role: "admin"
@@ -151,10 +151,10 @@ let authOptions = {
         },
     },
     jwt: {
-        secret: process.env.NEXTAUTH_SECRET,
+        secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
         encryption: true,
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
 }
 
 
