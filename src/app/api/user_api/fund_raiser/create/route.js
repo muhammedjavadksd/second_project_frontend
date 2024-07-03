@@ -9,6 +9,7 @@ export async function POST(request) {
 
         let header = request.headers;
         let authData = header.get("authorization");
+        console.log(header);
         console.log("Here");
         console.log("The token is  : " + authData);
         let splitToken = authData.split(" ");

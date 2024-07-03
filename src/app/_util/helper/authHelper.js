@@ -1,4 +1,6 @@
+import axios_instance from "@/external/axios/axios-instance";
 import exp from "constants";
+import { getSession } from "next-auth/react";
 
 
 export function isAdminlogged(session) {
@@ -112,6 +114,21 @@ export function getAdminToken(headers) {
 }
 
 
-function addTokenIntoAxiosInterceptor() {
+export async function addTokenIntoAxiosInterceptor(config) {
 
+    try {
+        let session = await getSession();
+        let user = getUserDetails(session)
+        let token = user?.token;
+        if (token) {
+            config.headers.authorization = `Bearer ${token}`;
+        }
+    } catch (e) {
+        console.log("Error on addTokenIntoAxiosInterceptor");
+    }
+    return config
+}
+
+export function addTokenIntoAxiosInterceptorError(err) {
+    return Promise.reject(err)
 }

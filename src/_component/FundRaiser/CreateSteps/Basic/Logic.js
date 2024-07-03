@@ -31,10 +31,6 @@ async function onInitialCreate(val, successCB, errorCB) {
             let { amount, category, sub_category, phone_number, email_id } = val;
             let createRequest = await axios_instance.post("/api/user_api/fund_raiser/create", {
                 amount, category, sub_category, phone_number, email_id
-            }, {
-                headers: {
-                    "authorization": `Bearer ${user.token}`
-                }
             });
             let response = createRequest.data;
             if (response.status) {
