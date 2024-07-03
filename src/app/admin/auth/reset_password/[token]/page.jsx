@@ -9,7 +9,7 @@ import { onResetPassword } from './Logic'
 import { toast } from 'react-toastify'
 import LoadingComponent from '@/_component/Util/LoadingComponent'
 import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 function ResetPassword() {
 
@@ -19,7 +19,7 @@ function ResetPassword() {
     function successCB() {
         toast.success("Password has been updated")
         // setIsLoading(false)
-        router.replace("/admin/sign_in")
+        router.replace("/admin/auth/sign_in")
     }
 
     function errorCB(err) {
