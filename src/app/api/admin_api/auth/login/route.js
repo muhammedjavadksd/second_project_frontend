@@ -17,6 +17,8 @@ export async function POST(request) {
         console.log("API response is : ");
         console.log(response);
         if (response.status && response.token) {
+            console.log("Token is");
+            console.log(response.token);
             return new Response(JSON.stringify({
                 status: true,
                 msg: "Admin login success",

@@ -8,7 +8,7 @@ import SectionTitle from '@/_component/Util/SectionTitle';
 
 function FundRaiserSlider() {
 
-  
+
 
     return (
         <section className='mt-5'>

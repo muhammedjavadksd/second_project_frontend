@@ -110,3 +110,8 @@ export function getAdminToken(headers) {
         return false;
     }
 }
+
+
+function addTokenIntoAxiosInterceptor() {
+
+}

@@ -9,12 +9,12 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 
 function AdminSignIN() {
 
     let router = useRouter()
-    let session = useSession();
+    let session = getSession();
 
     function successCB() {
         toast.success("Loggin success")
