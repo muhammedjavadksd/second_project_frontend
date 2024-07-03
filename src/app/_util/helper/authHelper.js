@@ -1,22 +1,36 @@
+import exp from "constants";
 
 
 export function isAdminlogged(session) {
+
+    console.log(session);
     try {
-        let user = session?.data;
-        console.log(user);
-        if (!user) {
+        let token;
+        if (session.data) {
+            token = session?.data?.token
+        } else if (session.token) {
+            token = session.token;
+        } else {
             console.log("This 1");
-            return false
+            return false;
         }
 
-        let token = user.token;
+        // let user = session?.data ?? session.token;
+        // console.log(user);
+        // if (!user) {
+        //     console.log("This 1");
+        //     return false
+        // }
+
+        // let token = user.token;
         console.log(token);
         if (!token) {
             console.log("This 2");
             return false
         }
 
-        let superUser = token.user;;
+        let superUser = token.user;
+        console.log(superUser);
         if (!superUser) {
             console.log("This 3");
             return false
@@ -31,7 +45,6 @@ export function isAdminlogged(session) {
         return true
 
     } catch (e) {
-        alert("Error")
         return false
     }
 }
@@ -40,7 +53,7 @@ export function isAdminlogged(session) {
 
 export function isUserLogged(session) {
     try {
-        let user = session?.data;
+        let user = session?.data ?? session.token;
         console.log(user);
         if (!user) {
             console.log("This 1");
@@ -83,7 +96,17 @@ export function getUserDetails(session) {
     return token.user;
 }
 
-export function objectToUrlQuery(object) {
-    let query = new URLSearchParams(object)
-    return query.toString()
+export function getAdminToken(headers) {
+    try {
+        let authToken = headers.get('authorization');
+        let extractToken = authToken.split(" ");
+        if (extractToken[0] == "Bearer") {
+            let token = extractToken[1];
+            return token
+        } else {
+            return false;
+        }
+    } catch (e) {
+        return false;
+    }
 }
