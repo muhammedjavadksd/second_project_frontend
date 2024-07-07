@@ -8,10 +8,12 @@ import { resetPasswordInitialValues, resetPasswordValidation } from './Data'
 import { toast } from 'react-toastify'
 import LoadingComponent from '@/_component/Util/LoadingComponent'
 import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
+import { getSession } from 'next-auth/react'
 
 function AdminForgetPassword() {
 
     let [isLoading, setIsLoading] = useState(false)
+    let session = getSession();
 
     function successCB() {
         toast.success("Please check your email id, for create new password")
@@ -24,7 +26,7 @@ function AdminForgetPassword() {
     }
 
     return (
-        <BlackedRouter>
+        <BlackedRouter session={session}>
             <div className='h-screen'>
                 <AdminAuthBg />
 

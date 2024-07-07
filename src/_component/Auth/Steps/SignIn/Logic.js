@@ -1,8 +1,13 @@
 
-import { FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/_util/_const/const'
+import { COOKIE_DATA_KEY, FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/_util/_const/const'
+import { getUserDetails } from '@/app/_util/helper/authHelper'
+import API_axiosInstance from '@/external/axios/api_axios_instance'
 import axios_instance from '@/external/axios/axios-instance'
-import { signIn } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
+// import { cookies } from 'next/headers'
+import js_cookies from 'js-cookie'
 import * as yup from 'yup'
+// import { cookies } from 'next/headers'
 
 
 export function loginStepIndexUp(state) {
@@ -13,24 +18,56 @@ export function loginStepDown(state) {
     state((prev) => prev - 1)
 }
 
-export let onLoginSubmit = function (values, successCB, errorCB) {
+export let onLoginSubmit = async function (values, successCB, errorCB) {
 
-    let dataSignIn = { email: values.email }
-    console.log("The data is", dataSignIn);
+    let email = values.email
+    // console.log("The data is", dataSignIn);
 
-    axios_instance.post("/api/user_api/auth/login_cred", dataSignIn).then(async (data) => {
-        console.log(data);
-        let response = await data.data;
+    try {
+
+        let loginRequest = await API_axiosInstance.post("/auth/sign_in", {
+            email
+        })
+        let response = loginRequest.data;
+
+        console.log("The response is:");
         console.log(response);
-        if (response.status) {
-            successCB()
+
+        if (response && response?.status) {
+
+            let token = response.token;
+            if (token) {
+                // let getCookies = cookies()
+                // return new Response(JSON.stringify({ status: true, msg: response?.msg }))
+                js_cookies.set(COOKIE_DATA_KEY.SIGN_IN_DATA, token)
+                successCB();
+            } else {
+                errorCB("Something went wrong")
+            }
         } else {
-            errorCB(response.msg)
+            errorCB(response?.msg)
         }
-    }).catch((err) => {
-        errorCB("Something went wrong")
-        console.log(err);
-    })
+    } catch (e) {
+        let errorMessage = e?.response?.data?.msg ?? "Something went wrong"
+        errorCB(errorMessage)
+    }
+
+
+
+
+    // axios_instance.post("/api/user_api/auth/login_cred", dataSignIn).then(async (data) => {
+    //     console.log(data);
+    //     let response = await data.data;
+    //     console.log(response);
+    //     if (response.status) {
+    //         successCB()
+    //     } else {
+    //         errorCB(response.msg)
+    //     }
+    // }).catch((err) => {
+    //     errorCB("Something went wrong")
+    //     console.log(err);
+    // })
 }
 
 export let otpValidaor = yup.object().shape({
@@ -43,10 +80,19 @@ export let otpInitialValues = {
 
 export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
 
+    // alert("This workds")
+    let user = await getSession();
+    let userDetails = getUserDetails(user)
+    console.log(user);
+
     try {
         let otp_number = values.otp_number
+        console.log("Key");
+        console.log(COOKIE_DATA_KEY.SIGN_IN_DATA);
+        let token = js_cookies.get(COOKIE_DATA_KEY.SIGN_IN_DATA);
 
-        signIn("credentials", { otp_number, redirect: false, auth_type: "user" }).then((data) => {
+        console.log(token);
+        signIn("credentials", { otp_number, redirect: false, auth_type: "user", token: token }).then((data) => {
             if (data.ok) {
                 onsuccessCB()
             } else {
@@ -89,7 +135,8 @@ export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
 }
 
 export function onResetOtp(successCB, errorCB) {
-    console.log("Resend otp request");
+    // console.log("Resend otp request");
+    // alert(FRONT_END_APIENDPOINT.RESENT_USER_SIGN_EMAIL_ID)
     axios_instance.post(FRONT_END_APIENDPOINT.RESENT_USER_SIGN_EMAIL_ID, null).then((data) => {
         let response = data.data;
         if (response.status) {
@@ -98,7 +145,6 @@ export function onResetOtp(successCB, errorCB) {
             errorCB(response.msg)
         }
     }).catch((err) => {
-        console.log(err);
         errorCB("Something went wrong")
     })
 

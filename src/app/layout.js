@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import store from "@/external/redux/store/store";
 import axios_instance from "@/external/axios/axios-instance";
 import { addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError } from "./_util/helper/authHelper";
+import API_axiosInstance from "@/external/axios/api_axios_instance";
 // import { combineReducers } from "@reduxjs/toolkit";
 // import store from "@/external/redux/store/store";
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
   let session = getServerSession();
 
   axios_instance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
+  API_axiosInstance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
 
   return (
     <html lang="en">

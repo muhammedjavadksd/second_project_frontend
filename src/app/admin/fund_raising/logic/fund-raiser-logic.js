@@ -3,14 +3,14 @@ import API_axiosInstance from "@/external/axios/api_axios_instance";
 import axios_instance from "@/external/axios/axios-instance";
 import { getSession } from "next-auth/react";
 
-export async function getAllFundRaisers() {
+export async function getAllFundRaisers(limit = 10, page = 1) {
 
     try {
 
         let session = await getSession();
         let user = getUserDetails(session)
 
-        let getFundRaisers = await axios_instance.get("/api/admin_api/fund_raiser/view/10/1", {
+        let getFundRaisers = await axios_instance.get(`/api/admin_api/fund_raiser/view/${limit}/${page}`, {
             headers: {
                 "authorization": `Bearer ${user.token}`
             }
@@ -29,18 +29,20 @@ export async function getAllFundRaisers() {
     }
 }
 
-export async function getUserForFundRaise() {
+export async function getUserForFundRaise(user_ids) {
 
-    console.log(process.env.NEXT_PUBLIC_API_BASE_URL);
+    console.log(user_ids);
+    let session = await getSession();
+    let user = getUserDetails(session)
 
     try {
 
         console.log(API_axiosInstance);
         let request = await API_axiosInstance.post("/profile/admin/find_users_byids", {
-            user_ids: JSON.stringify(['6669e9aec5a83a0681c931e3'])
+            user_ids: JSON.stringify(user_ids)
         }, {
             headers: {
-                "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWVkamF2YWQxMTkxNDRAZ21haWwuY29tIiwidHlwZSI6IkFETUlOX0FVVEgiLCJpYXQiOjE3MTkyMDQ4ODcsImV4cCI6MTcyMTAwNDg4N30.oOTFtSIjT1ABLataEfc0LzE8JlD51PoMOB0gIJaAVRc"
+                "authorization": `Bearer ${user.token}`
             }
         })
         console.log(request);

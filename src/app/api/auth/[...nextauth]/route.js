@@ -5,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import axios_instance from "@/external/axios/axios-instance"
 import { cookies } from "next/headers"
 import { COOKIE_DATA_KEY } from "@/app/_util/_const/const"
+import API_axiosInstance from "@/external/axios/api_axios_instance"
 
 
 
@@ -37,15 +38,17 @@ let authOptions = {
 
                         let otp_number = credentials.otp_number
 
-                        let getCookies = cookies();
-                        let token = getCookies.get(COOKIE_DATA_KEY.SIGN_IN_DATA)
+
+                        let token = credentials.token;
+                        console.log("Token is");
+                        console.log(token);
 
                         let request = await axios_instance.post("/api/user_api/auth/login_otp", {
                             otp_number
                         }, {
                             headers: {
                                 'Content-Type': 'application/json',
-                                "authorization": `Bearer ${token.value}`
+                                "authorization": `Bearer ${token}`
                             }
                         })
 
@@ -68,7 +71,7 @@ let authOptions = {
                         } else {
                             return null
                         }
-                    } else {
+                    } else if (credentials.auth_type == "admin") {
                         let email_address = credentials.email_address;
                         let password = credentials.password;
 
@@ -98,6 +101,36 @@ let authOptions = {
                             return null
                         }
 
+                    } else {
+                        //if it organization
+                        const email_address = credentials.email_address;
+                        const password = credentials.password;
+
+                        let request = await API_axiosInstance.post("/auth/organization/sign_in", {
+                            email_address,
+                            password
+                        })
+
+                        let response = request.data;
+                        console.log("The response");
+                        console.log(response);
+                        if (response.status) {
+                            console.log("Login success");
+                            console.log({
+                                token: response.token,
+                                name: response.name,
+                                email: email_address,
+                                role: "organization"
+                            });
+                            return {
+                                token: response.token,
+                                name: response.name,
+                                email: email_address,
+                                role: "organization"
+                            }
+                        } else {
+                            return null
+                        }
                     }
                 } catch (E) {
                     return null

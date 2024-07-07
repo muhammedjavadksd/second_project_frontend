@@ -13,13 +13,25 @@ function ViewFundRaising() {
 
     let [fundRaiserData, setFundRaiserdata] = useState([]);
 
+
     async function fetchAllData() {
         try {
 
-            let allFunRaisers = await getAllFundRaisers();
-            let allUsers = await getUserForFundRaise();
-            console.log(allFunRaisers);
-            console.log(allUsers);
+            let allFundRaisers = await getAllFundRaisers(10, 1);
+            let user_ids = allFundRaisers?.map((each) => each.user_id);
+
+            let allUsers = await getUserForFundRaise(user_ids);
+            let allUserProfile = allUsers.profile;
+            console.log(allUserProfile);
+            console.log(allFundRaisers);
+
+            let newMergedData = allFundRaisers?.map((each) => {
+                let indexOfProfile = allUserProfile.find((profile) => each.user_id == profile.user_id);
+                console.log(indexOfProfile);
+                each.creater_profile = indexOfProfile
+                return each
+            })
+            setFundRaiserdata(newMergedData)
         } catch (e) {
             console.log("Error occured");
             console.log(e);
@@ -27,21 +39,12 @@ function ViewFundRaising() {
 
     }
     useEffect(() => {
-
         fetchAllData()
-        // getAllFundRaisers().then((data) => {
-        //     // console.log(data);
-        //     setFundRaiserdata(data)
-        // }).catch((err) => {
-        //     console.log(err);
-        // })
-
-        // getUserForFundRaise().then((data) => {
-        //     console.log(data);
-        // }).catch((err) => {
-        //     console.log(err);
-        // })
     }, [])
+
+    useEffect(() => {
+        console.log(fundRaiserData);
+    }, [fundRaiserData])
 
 
 
@@ -72,31 +75,34 @@ function ViewFundRaising() {
                 </div>
 
                 <div className='mt-5'>
-                    <TableSimple headers={['Raising ID', 'User', 'Target Amount', 'Dead Line', 'Status', 'Action']} data={
-                        fundRaiserData.map((each) => {
-                            return ({
-                                raisingID: each.fund_id,
-                                User: <div className='flex justify-center gap-3'>
-                                    <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48}></img>
-                                    <div className='text-start '>
-                                        <h4>Muhammed Javad</h4>
-                                        <p>muhammedjavad119144@gmail.com</p>
+                    <TableSimple
+
+                        headers={['Raising ID', 'User', 'Target Amount', 'Dead Line', 'Status', 'Action']} data={
+                            fundRaiserData.map((each) => {
+                                return ({
+                                    raisingID: each.fund_id,
+                                    User: (
+                                        each.created_by == "USER" ? < div className='flex justify-center gap-3' >
+                                            <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48}></img>
+                                            <div className='text-start '>
+                                                <h4>Muhammed Javad</h4>
+                                                <p>muhammedjavad119144@gmail.com</p>
+                                            </div>
+                                        </div> : (each.created_by == "ADMIN" ? "Created By Admin" : "Created by organization")),
+                                    // raisingID: each.user_id,
+                                    TargetAmount: `${each.amount}${MONEY_ICON}`,
+                                    deadLine: "12/04/2023",
+                                    status: <span className='bg-green-400 p-3 text-sm text-white rounded-lg'>Active</span>,
+                                    action: <div>
+                                        <Link href={`/admin/fund_raising/detail_view/${each.fund_id}`} className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2'><i class="fa-solid fa-eye"></i> View</Link>
                                     </div>
-                                </div>,
-                                raisingID: each.user_id,
-                                TargetAmount: `${each.amount}${MONEY_ICON}`,
-                                deadLine: "12/04/2023",
-                                status: <span className='bg-green-400 p-3 text-sm text-white rounded-lg'>Active</span>,
-                                action: <div>
-                                    <button className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2'><i class="fa-solid fa-eye"></i> View</button>
-                                </div>
-                            })
-                        })}
+                                })
+                            })}
                     />
                     <PaginationTab />
                 </div>
             </div>
-        </AdminLayout>
+        </AdminLayout >
     )
 }
 

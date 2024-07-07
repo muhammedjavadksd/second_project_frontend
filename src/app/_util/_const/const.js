@@ -22,8 +22,8 @@ export let API_ENDPOINT = {
 }
 
 export let FRONT_END_APIENDPOINT = {
-    RESET_USER_SIGNUP_EMAIL_ID: "/api/auth/sign_up_reset_email",
-    RESENT_USER_SIGN_EMAIL_ID: "/api/auth/sign_resend_otp",
+    RESET_USER_SIGNUP_EMAIL_ID: "/api/user_api/auth/sign_up_reset_email",
+    RESENT_USER_SIGN_EMAIL_ID: "/api/user_api/auth/sign_resend_otp",
 }
 
 export let COOKIE_DATA_KEY = {
@@ -36,6 +36,35 @@ export let AUTH_PROVIDERS = {
     FACEBOOK: "FACEBOOK",
     CREDENTIAL: "CREDENTIAL"
 }
+
+
+export const organizationTypes = [
+    "Corporation",
+    "Partnership",
+    "Sole proprietorship",
+    "Nonprofit organization",
+    "Limited liability company (LLC)",
+    "Cooperative",
+    "Franchise",
+    "Government agency",
+    "Educational institution",
+    "Religious organization",
+    "Charitable organization",
+    "Professional association",
+    "Trade union",
+    "Political party",
+    "Foundation",
+    "Social club",
+    "Research institute",
+    "Consulting firm",
+    "Startup",
+    "Family business",
+    "Joint venture",
+    "Mutual fund",
+    "Trust",
+    "Public company",
+    "Private company"
+];
 
 export let blood_groups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 

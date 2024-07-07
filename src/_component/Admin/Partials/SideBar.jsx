@@ -56,9 +56,9 @@ function AdminSideBar({ isShow }) {
 
                             <div class="space-y-3 ">
                                 <label class="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Fund Raiser</label>
-                                <LinkNav href={"/admin/fund-raiser/add"} icon={addFundRaiserSvgIocn} isActive={true} isSub={false} title={"Add fund raiser"} />
+                                <LinkNav href={"/admin/fund_raising/add"} icon={addFundRaiserSvgIocn} isActive={true} isSub={false} title={"Add fund raiser"} />
                                 <LinkNav href={"/admin/fund_raising/view"} icon={manageFundRaiserSvgIcon} isActive={false} isSub={false} title={"Manage fund raiser"}></LinkNav>
-                                <LinkNav href={"/admin/fund-raiser/payments"} icon={fundRaiserPaymentSvgIcon} isActive={false} isSub={false} title={"Manage Payment's"}></LinkNav>
+                                <LinkNav href={"/admin/fund_raising/payments"} icon={fundRaiserPaymentSvgIcon} isActive={false} isSub={false} title={"Manage Payment's"}></LinkNav>
                             </div>
 
                             <div class="space-y-3 ">

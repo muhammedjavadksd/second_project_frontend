@@ -50,7 +50,7 @@ function Basic({ state }) {
     if (err.statusCode == 401) {
       return navigation.replace("/auth/sign_in")
     }
-    toast.error(err ?? "Something went wrong")
+    toast.error(err?.msg ?? "Something went wrong")
     setLoading(false)
   }
 

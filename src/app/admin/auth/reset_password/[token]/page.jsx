@@ -10,11 +10,13 @@ import { toast } from 'react-toastify'
 import LoadingComponent from '@/_component/Util/LoadingComponent'
 import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
 import { useRouter } from 'next/navigation'
+import { getSession } from 'next-auth/react'
 
 function ResetPassword() {
 
     let [isLoading, setIsLoading] = useState(false)
     let router = useRouter();
+    let session = getSession()
 
     function successCB() {
         toast.success("Password has been updated")
@@ -32,7 +34,7 @@ function ResetPassword() {
     console.log(token);
 
     return (
-        <BlackedRouter>
+        <BlackedRouter session={session}>
             <div>
                 <div>
                     <div className='h-screen'>

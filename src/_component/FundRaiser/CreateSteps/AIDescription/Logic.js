@@ -1,4 +1,5 @@
-import { getUserDetails, objectToUrlQuery } from "@/app/_util/helper/authHelper";
+import { getUserDetails } from "@/app/_util/helper/authHelper";
+import { objectToUrlQuery } from "@/app/_util/helper/utilHelper";
 import { getSession } from "next-auth/react";
 
 const { default: axios_instance } = require("@/external/axios/axios-instance");

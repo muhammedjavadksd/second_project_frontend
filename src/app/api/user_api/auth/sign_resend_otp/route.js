@@ -7,10 +7,10 @@ export async function POST(request) {
 
 
         let cookieData = cookies();
-        let cookieValues = cookieData.get(COOKIE_DATA_KEY.SIGN_UP_DATA);
+        let cookieValues = cookieData.get(COOKIE_DATA_KEY.SIGN_UP_DATA) ?? cookieData.get(COOKIE_DATA_KEY.SIGN_IN_DATA);
 
 
-        console.log("The otp is : " + cookieValues.value);
+        console.log("The otp is : " + cookieValues);
 
         let resendOtpRequest = await API_axiosInstance.post(API_ENDPOINT.RESEND_USER_SIGNUP_EMAIL_ID, {}, {
             headers: {

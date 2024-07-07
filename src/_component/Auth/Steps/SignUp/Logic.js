@@ -3,6 +3,8 @@ import { getCurrentPosition } from '@/app/_util/_const/helperFunctions';
 import axios_instance from '@/external/axios/axios-instance';
 import { toast } from 'react-toastify';
 import * as yup from 'yup'
+import js_cookies from 'js-cookie'
+
 
 function signUpIndexUp(state) {
     state((prev) => prev + 1)

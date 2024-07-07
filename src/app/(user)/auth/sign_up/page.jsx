@@ -5,7 +5,8 @@ import GoogleProviderButton from '@/_component/Auth/Common/ProvideLoginButton/Go
 import SimpleHeader from '@/_component/Header/SimpleHeader'
 import React, { useState } from 'react'
 import { bannerSlider, signUpSteps } from '../AuthData/Data'
-import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
+// import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
+import UserBlackedRouter from '@/_component/LoginComponent/UserBlackedRouter'
 
 function SignUp() {
 
@@ -13,7 +14,7 @@ function SignUp() {
   const SignUpComponentSteps = signUpSteps[signUpStepIndex];
 
   return (
-    <BlackedRouter>
+    <UserBlackedRouter>
       <div className='h-screen  '>
         <SimpleHeader />
 
@@ -40,7 +41,7 @@ function SignUp() {
           </div>
         </div>
       </div>
-    </BlackedRouter>
+    </UserBlackedRouter>
   )
 }
 

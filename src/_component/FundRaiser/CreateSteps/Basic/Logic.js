@@ -21,12 +21,6 @@ async function onInitialCreate(val, successCB, errorCB) {
     let user = getUserDetails(session)
     if (user) {
 
-
-        // console.log(session);
-        // console.log(val);
-        // return;
-
-
         try {
             let { amount, category, sub_category, phone_number, email_id } = val;
             let createRequest = await axios_instance.post("/api/user_api/fund_raiser/create", {
@@ -57,6 +51,7 @@ async function onInitialCreate(val, successCB, errorCB) {
                 }
             }
         } catch (e) {
+            // alert("This work")
             let statusCode = e?.response?.status ?? 500;
             console.log(statusCode);
             console.log(e);
@@ -64,7 +59,7 @@ async function onInitialCreate(val, successCB, errorCB) {
             errorCB({ msg: errorMsg, statusCode })
         }
     } else {
-        errorCB({ msg: response.msg ?? "Something went wrong", statusCode: 401 })
+        errorCB({ msg: "Un Authenticated", statusCode: 401 })
     }
 }
 

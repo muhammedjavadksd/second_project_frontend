@@ -84,7 +84,6 @@ export function isUserLogged(session) {
         return true
 
     } catch (e) {
-        alert("Error")
         return false
     }
 }
@@ -116,12 +115,18 @@ export function getAdminToken(headers) {
 
 export async function addTokenIntoAxiosInterceptor(config) {
 
+
+    // alert("Fdsf")
+
     try {
         let session = await getSession();
         let user = getUserDetails(session)
         let token = user?.token;
         if (token) {
+            console.log(token);
             config.headers.authorization = `Bearer ${token}`;
+        } else {
+            console.log("Token not found");
         }
     } catch (e) {
         console.log("Error on addTokenIntoAxiosInterceptor");
