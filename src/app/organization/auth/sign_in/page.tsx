@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import { onOrganizationSignIn } from './logic'
 import OrganizationBlackRouter from '@/_component/LoginComponent/OrganizationBlackRouter'
+import Link from 'next/link'
 
 function AdminSignIN(): React.ReactElement {
 
@@ -33,7 +34,7 @@ function AdminSignIN(): React.ReactElement {
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 Sign in to your account
                             </h1>
-                            <Formik initialValues={organizationLoginInitialValues} validationSchema={organizationLoginValidation} onSubmit={(val) => { onOrganizationSignIn(val, successCB, errorCb) }}>
+                            <Formik initialValues={organizationLoginInitialValues} validationSchema={organizationLoginValidation} onSubmit={(val, { resetForm }) => { onOrganizationSignIn(val, successCB, (err) => { errorCb(err); resetForm() }) }}>
                                 <Form>
                                     <div className='mb-3'>
                                         <label htmlFor="email_address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
@@ -46,7 +47,7 @@ function AdminSignIN(): React.ReactElement {
                                         <ErrorMessage component={"div"} className='text-red-600 text-sm' name='password'></ErrorMessage>
                                     </div>
                                     <div className="flex items-center justify-between mb-5">
-                                        <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
+                                        <Link href={"/organization/auth/forget_password"} className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</Link>
                                     </div>
                                     <button type="submit" className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
 

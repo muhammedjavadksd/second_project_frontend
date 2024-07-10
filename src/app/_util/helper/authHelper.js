@@ -114,10 +114,6 @@ export function getAdminToken(headers) {
 
 
 export async function addTokenIntoAxiosInterceptor(config) {
-
-
-    // alert("Fdsf")
-
     try {
         let session = await getSession();
         let user = getUserDetails(session)

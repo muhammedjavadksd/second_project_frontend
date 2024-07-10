@@ -57,4 +57,15 @@ interface IOrganizationSignIn {
     password: ""
 }
 
-export type { IOrganizationSignIn, AdminSignIn, AdminResetPassword, AdminForgetPassword, OrganizationInitialValues, FundRaiserFormInitialValues }
+interface IOrganizationForgetPasswordInitialValues {
+    email_address: string
+}
+
+interface IOrganizationResetPassword {
+    password: string,
+    confirm_password: string
+    token: string
+}
+
+
+export type { IOrganizationResetPassword, IOrganizationForgetPasswordInitialValues, IOrganizationSignIn, AdminSignIn, AdminResetPassword, AdminForgetPassword, OrganizationInitialValues, FundRaiserFormInitialValues }
