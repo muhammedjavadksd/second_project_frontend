@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef } from 'react'
+import React, { Ref, useRef } from 'react'
 import AdminLayout from '@/_component/Admin/AdminLayout'
 import AdminPrivateRouter from '@/_component/LoginComponent/AdminPrivateRouter'
 import AdminBreadCrumb from '@/_component/Util/AdminBreadCrumb'

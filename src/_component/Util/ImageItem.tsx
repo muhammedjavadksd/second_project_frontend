@@ -4,10 +4,6 @@ function ImageItem({ imageURL, imageName, onClose }) {
     return (
         <>
 
-
-            {/* text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden; */}
             <div className='w-100 p-2 bg-white rounded-lg'>
                 <div className='flex gap-4 items-center'>
                     {/* <div style={{ backgroundImage: `url(${BASE_PATH + " / " + each})` }}></div> */}
@@ -17,7 +13,7 @@ function ImageItem({ imageURL, imageName, onClose }) {
                             <p className='text-blue-900 text-nowrap underline mb-0 whitespace-nowrap'>{imageName}</p>
                             <span style={{ fontSize: "12px" }}>Tap to view image</span>
                         </div>
-                        <button className='bg-red-800 right-0 top-0 bottom-0 min-w-12 text-white rounded-lg absolute' onClick={onClose}><i class="fa-solid fa-trash"></i></button>
+                        <button className='bg-red-800 right-0 top-0 bottom-0 min-w-12 text-white rounded-lg absolute' onClick={onClose}><i className="fa-solid fa-trash"></i></button>
                     </div>
                     {/* <img src={BASE_PATH + "/" + each} width={"50px"} height={"80px"} style={{ borderRadius: "50%" }} alt="" /> */}
                 </div>

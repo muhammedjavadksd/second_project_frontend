@@ -3,7 +3,6 @@ import { FunctionComponent } from "react";
 
 const { default: SignInOTP } = require("@/_component/Auth/Steps/SignIn/SignInOTP");
 const { default: SignInPhoneNumber } = require("@/_component/Auth/Steps/SignIn/SignInPhoneNumber");
-const { loginStepIndexUp } = require("./Logic");
 const { default: SignUpStart } = require("@/_component/Auth/Steps/SignUp/SignUpStart");
 const { default: SignUpOTP } = require("@/_component/Auth/Steps/SignUp/SignUpOTP");
 const { default: EditPhoneNumber } = require("@/_component/Auth/Steps/SignUp/EditPhoneNumber");

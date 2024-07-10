@@ -31,4 +31,24 @@ interface OrganizationInitialValues {
     pan_card: string
 }
 
-export type { AdminSignIn, AdminResetPassword, AdminForgetPassword, OrganizationInitialValues }
+
+interface FundRaiserFormInitialValues {
+    amount: string,
+    category: string,
+    sub_category: string,
+    phone_number: number,
+    email_id: string,
+    pictures: string[],
+    documents: string[],
+    raiser_name: string,
+    raiser_age: number,
+    benificiary_relation: string,
+    description: string,
+    city: string,
+    pinCode: number,
+    state: string,
+    district: string,
+    fullAddress: string,
+    ai_description: string,
+}
+export type { AdminSignIn, AdminResetPassword, AdminForgetPassword, OrganizationInitialValues, FundRaiserFormInitialValues }

@@ -3,8 +3,6 @@ import FacebookProvider from "next-auth/providers/facebook"
 import NextAuth from "next-auth/next"
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios_instance from "@/external/axios/axios-instance"
-import { cookies } from "next/headers"
-import { COOKIE_DATA_KEY } from "@/app/_util/_const/const"
 import API_axiosInstance from "@/external/axios/api_axios_instance"
 
 

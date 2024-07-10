@@ -9,7 +9,7 @@ import { CChart } from '@coreui/react-chartjs'
 import React from 'react'
 
 
-function FundRaiserView() {
+function FundRaiserView(): React.ReactElement {
 
 
     return (

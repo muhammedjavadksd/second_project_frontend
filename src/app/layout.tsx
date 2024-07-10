@@ -35,7 +35,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body>
         <Provider store={store}>
           <SessionProvider>
-            <ToastContainer>  </ToastContainer>
+            <ToastContainer />
             {children}
           </SessionProvider>
         </Provider>

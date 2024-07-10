@@ -1,14 +1,15 @@
+import { IImageModel } from '@/types/InterFace/PropInterFace'
 import React, { useEffect, useState } from 'react'
 
-function ImageModel({ imageURL, isOpen, onImageClose }) {
+function ImageModel({ imageURL, isOpen, onImageClose }: IImageModel) {
 
-    let [isModelOpen, setModelOpen] = useState(false)
+    let [isModelOpen, setModelOpen] = useState<boolean>(false)
 
     useEffect(() => {
         setModelOpen(isOpen ? true : false)
     }, [isOpen])
 
-    function closeThisModel() {
+    function closeThisModel(): void {
         setModelOpen(false)
         onImageClose()
     }

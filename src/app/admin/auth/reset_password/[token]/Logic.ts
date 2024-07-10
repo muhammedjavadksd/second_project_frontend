@@ -3,7 +3,7 @@ import { AdminResetPassword } from "@/types/InterFace/FormInitialValues";
 
 
 export async function onResetPassword(values: AdminResetPassword, successCB: Function, errorCB: Function): Promise<void> {
-    let { password, confirm_password, token } = values;
+    let { password, token } = values;
 
     try {
 

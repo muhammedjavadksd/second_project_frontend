@@ -10,6 +10,7 @@ export async function onResetPassword(values: AdminForgetPassword, successCB: Fu
         const resetRequest = await axios_instance.post("/api/admin_api/auth/forget_password", {
             email_address
         });
+
         const response = resetRequest.data;
         if (response.status) {
             successCB()

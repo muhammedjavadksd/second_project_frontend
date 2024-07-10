@@ -1,12 +1,13 @@
 import API_axiosInstance from "@/external/axios/api_axios_instance";
+import { NextRequest } from "next/server";
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
 
     try {
 
 
         let body = await request.json();
-        let email_address = body.email_address;
+        let email_address: string = body.email_address;
 
         let reset_password = await API_axiosInstance.post("/auth/admin/forget_password", {
             email_id: email_address

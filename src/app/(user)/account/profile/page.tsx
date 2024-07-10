@@ -12,7 +12,6 @@ import React, { useState } from 'react'
 function page(): React.ReactElement {
 
     let [editPersonalDetails, setEditPersonalDetails] = useState<boolean>(false);
-    // let [editEmailAddress, setEmailAddress] = useState<boolean>(false);
 
 
     return (
