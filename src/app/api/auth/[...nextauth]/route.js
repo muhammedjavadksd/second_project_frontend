@@ -99,7 +99,7 @@ let authOptions = {
                             return null
                         }
 
-                    } else {
+                    } else if (credentials.auth_type == "organization") {
                         //if it organization
                         const email_address = credentials.email_address;
                         const password = credentials.password;
@@ -110,8 +110,6 @@ let authOptions = {
                         })
 
                         let response = request.data;
-                        console.log("The response");
-                        console.log(response);
                         if (response.status) {
                             console.log("Login success");
                             console.log({

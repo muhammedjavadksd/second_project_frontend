@@ -51,4 +51,10 @@ interface FundRaiserFormInitialValues {
     fullAddress: string,
     ai_description: string,
 }
-export type { AdminSignIn, AdminResetPassword, AdminForgetPassword, OrganizationInitialValues, FundRaiserFormInitialValues }
+
+interface IOrganizationSignIn {
+    email_address: "",
+    password: ""
+}
+
+export type { IOrganizationSignIn, AdminSignIn, AdminResetPassword, AdminForgetPassword, OrganizationInitialValues, FundRaiserFormInitialValues }

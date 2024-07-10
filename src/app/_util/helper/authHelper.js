@@ -137,3 +137,36 @@ export async function addTokenIntoAxiosInterceptor(config) {
 export function addTokenIntoAxiosInterceptorError(err) {
     return Promise.reject(err)
 }
+
+export function isOrganizationLogged(session) {
+    try {
+        let token;
+        if (session.data) {
+            token = session?.data?.token
+        } else if (session.token) {
+            token = session.token;
+        } else {
+            return false;
+        }
+
+
+        if (!token) {
+            return false
+        }
+
+        let superUser = token.user;
+        if (!superUser) {
+            return false
+        }
+
+        let role = superUser.role;
+        if (!role || role != 'organization') {
+            return false
+        }
+
+        return true
+
+    } catch (e) {
+        return false
+    }
+}
