@@ -4,6 +4,7 @@ import NextAuth from "next-auth/next"
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios_instance from "@/external/axios/axios-instance"
 import API_axiosInstance from "@/external/axios/api_axios_instance"
+import { IAdminSessionData, IOrganizationSessionData, IUserSessionData } from "@/types/InterFace/UtilInterface"
 
 
 
@@ -22,27 +23,21 @@ let authOptions = {
             credentials: {
                 otp_number: {},
                 auth_type: { type: "hidden" },
+                token: { type: "hidden" },
                 email_address: {},
                 password: {}
             },
             authorize: async (credentials, req) => {
                 try {
 
-                    console.log("Enterd");
-                    console.log(credentials);
-
                     if (credentials.auth_type == "user") {
 
-
                         let otp_number = credentials.otp_number
-
-
                         let token = credentials.token;
-                        console.log("Token is");
-                        console.log(token);
 
-                        let request = await axios_instance.post("/api/user_api/auth/login_otp", {
-                            otp_number
+
+                        let apiCall = await API_axiosInstance.post("/auth/auth_otp_submission", {
+                            otp_number: otp_number
                         }, {
                             headers: {
                                 'Content-Type': 'application/json',
@@ -50,21 +45,23 @@ let authOptions = {
                             }
                         })
 
-                        let response = request.data;
-
+                        let response = apiCall.data;
                         console.log(response);
+
+
                         if (response.status) {
-                            console.log("Login success");
-                            console.log("Storing data")
-                            let storingData = {
-                                token: response.token,
-                                first_name: response.first_name,
-                                last_name: response.last_name,
-                                phone: response.phone,
-                                email: response.email,
+                            const user_data = response.data;
+                            let storingData: IUserSessionData = {
+                                id: user_data.user_id,
+                                token: user_data.jwt,
+                                first_name: user_data.first_name,
+                                last_name: user_data.last_name,
+                                phone: user_data.phone,
+                                email: user_data.email,
                                 role: "user"
                             };
                             console.log(storingData);
+
                             return storingData
                         } else {
                             return null
@@ -73,28 +70,28 @@ let authOptions = {
                         let email_address = credentials.email_address;
                         let password = credentials.password;
 
-                        let request = await axios_instance.post("/api/admin_api/auth/login", {
+                        console.log("Worked this");
+
+
+                        let adminAuth = await API_axiosInstance.post("/auth/admin/sign_in", {
                             email_address,
                             password
                         })
 
-                        let response = request.data;
-                        console.log("The response");
+                        let response = adminAuth.data;
                         console.log(response);
+
                         if (response.status) {
-                            console.log("Login success");
-                            console.log({
-                                token: response.token,
-                                name: response.name,
+                            const data = response.data;
+                            const sessionData: IAdminSessionData = {
+                                id: data.id,
+                                token: data.token,
+                                name: data.name,
                                 email: email_address,
-                                role: "admin"
-                            });
-                            return {
-                                token: response.token,
-                                name: response.name,
-                                email: email_address,
-                                role: "admin"
+                                role: "admin",
                             }
+
+                            return sessionData as IAdminSessionData
                         } else {
                             return null
                         }
@@ -111,19 +108,14 @@ let authOptions = {
 
                         let response = request.data;
                         if (response.status) {
-                            console.log("Login success");
-                            console.log({
-                                token: response.token,
+                            const sessionData: IOrganizationSessionData = {
+                                email: response.email,
+                                id: response.id,
                                 name: response.name,
-                                email: email_address,
-                                role: "organization"
-                            });
-                            return {
-                                token: response.token,
-                                name: response.name,
-                                email: email_address,
-                                role: "organization"
+                                role: "organization",
+                                token: response.token
                             }
+                            return sessionData as IOrganizationSessionData
                         } else {
                             return null
                         }
@@ -136,46 +128,12 @@ let authOptions = {
     ],
     callbacks: {
         async jwt({ token, user, account }) {
-
-
-            console.log(token);
-            console.log(user);
-            console.log(account);
-
             if (user) {
-                console.log("User has ");
-                let insertObject = {
-                    id: user.id,
-                    token: user.token,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    email: user.email,
-                    phone: user.phone,
-                    role: user.role,
-                };
-                console.log("Insert object is");
-                console.log(insertObject);
-                token.user = insertObject
+                token.user = user
             }
-
-
-
-
             return token;
         },
         async session(session) {
-            // session.accessToken = token.accessToken
-            // console.log("The session is:");
-            // console.log(session);
-
-            // console.log("The  token is:");
-            // token.user = user;
-            // console.log(token);
-
-            // console.log("The user is :");
-            // console.log(user);
-
-
             return session
         },
     },

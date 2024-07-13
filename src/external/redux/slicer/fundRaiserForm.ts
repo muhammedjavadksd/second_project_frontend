@@ -39,9 +39,12 @@ let fundRaiserSlicer = createSlice({
             let documents = action.payload.documents ?? [];
             let newDocuments = [...state.documents, ...documents];
             return { ...state, documents: newDocuments }
+        },
+        clearFundRaiserData: (state, action) => {
+            return FUND_RAISER_FORM_INITIAL_VALUES;
         }
     }
 })
 
-export const { updateFundRaiseData, insertPicturs, insertDocuments } = fundRaiserSlicer.actions
+export const { updateFundRaiseData, insertPicturs, insertDocuments, clearFundRaiserData } = fundRaiserSlicer.actions
 export default fundRaiserSlicer.reducer

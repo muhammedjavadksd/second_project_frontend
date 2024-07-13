@@ -1,4 +1,5 @@
-import { getUserDetails } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+import API_axiosInstance from "@/external/axios/api_axios_instance";
 import axios_instance from "@/external/axios/axios-instance";
 import { updateFundRaiseData } from "@/external/redux/slicer/fundRaiserForm";
 import store from "@/external/redux/store/store";
@@ -9,25 +10,31 @@ import { getSession } from "next-auth/react";
 async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
 
     let session = await getSession();
-    let user = getUserDetails(session)
+    let user = userDetailsFromGetSession(session)
 
     let { benificiary_relation, description, raiser_age, raiser_name, currentApplication } = val
 
     if (user) {
 
+        console.log(session);
+        console.log(user);
+        const token = user.token
+        console.log(token);
+
         console.log("User found");
 
         try {
-            let API_request = await axios_instance.patch("/api/user_api/fund_raiser/update", {
+
+            let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
                 benificiary_relation, about: description, age: raiser_age, full_name: raiser_name
             }, {
                 headers: {
-                    "authorization": `Bearer ${user.token}`,
-                    "fund_id": currentApplication
-                }
+                    "authorization": `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                },
             })
 
-            let response = API_request.data;
+            let response = requestAPI.data;
             console.log(response);
             if (response.status) {
                 store.dispatch(updateFundRaiseData({

@@ -38,10 +38,12 @@ function AdminForgetPassword(): ReactElement {
                                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                     Reset password
                                 </h1>
-                                <Formik onSubmit={(values) => {
-                                    setIsLoading(true)
-                                    onResetPassword(values, successCB, errorCB)
-                                }} initialValues={resetPasswordInitialValues} validationSchema={resetPasswordValidation}>
+                                <Formik onSubmit={(values, { resetForm }) => {
+                                    setIsLoading(true),
+                                        (async function () {
+                                            await onResetPassword(values, () => { successCB(), resetForm() }, (err) => { errorCB(err), resetForm() })
+                                        })()
+                                }} initialValues={resetPasswordInitialValues} enableReinitialize validationSchema={resetPasswordValidation}>
                                     <Form className="space-y-4 md:space-y-6" action="#">
                                         <div>
                                             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter email address</label>
@@ -59,7 +61,7 @@ function AdminForgetPassword(): ReactElement {
                     </LoadingComponent>
                 </AdminAuthCard>
             </div>
-        </BlackedRouter>
+        </BlackedRouter >
     )
 }
 

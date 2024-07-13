@@ -1,4 +1,5 @@
-import { getUserDetails } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+import API_axiosInstance from "@/external/axios/api_axios_instance";
 import axios_instance from "@/external/axios/axios-instance";
 // import combineStoreReducers from "@/external/redux/combineSlicer";
 import { updateFundRaiseData } from "@/external/redux/slicer/fundRaiserForm";
@@ -18,34 +19,45 @@ async function onInitialCreate(val, successCB, errorCB) {
 
     // console.log('The values are');
     let session = await getSession();
-    let user = getUserDetails(session)
+    let user = userDetailsFromGetSession(session)
     if (user) {
+        const token = user.token
 
         try {
             let { amount, category, sub_category, phone_number, email_id } = val;
-            let createRequest = await axios_instance.post("/api/user_api/fund_raiser/create", {
-                amount, category, sub_category, phone_number, email_id
-            });
-            let response = createRequest.data;
-            if (response.status) {
+            let createEndPoint = await API_axiosInstance.post("/fund_raise/create", {
+                amount, category, sub_category, phone_number, email: email_id
+            }, {
+                headers: {
+                    "authorization": `Bearer ${token}`
+                }
+            })
+
+            let response = createEndPoint.data;
+            if (response.status && response.data) {
+
                 console.log(response);
-                let fund_id = response.fund_id
+                let fund_id = response.data?.fund_id;
+                if (fund_id) {
 
 
+                    store.dispatch(updateFundRaiseData({
+                        data: {
+                            amount,
+                            category,
+                            sub_category,
+                            phone_number,
+                            email_id
+                        }
+                    }))
+                    console.log(fund_id);
+                    successCB(fund_id);
+                } else {
+                    errorCB({ msg: "Internal sever error", statusCode: 500 })
+                }
 
-                store.dispatch(updateFundRaiseData({
-                    data: {
-                        amount,
-                        category,
-                        sub_category,
-                        phone_number,
-                        email_id
-                    }
-                }))
-                successCB(fund_id);
             } else {
                 if (createRequest.status == 401) {
-                    errorCB({ msg: "Un Authraized", statusCode: 401 })
                 } else {
                     errorCB({ msg: response.msg ?? "Something went wrong", statusCode: createRequest.status ?? 500 })
                 }

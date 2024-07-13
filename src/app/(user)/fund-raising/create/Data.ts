@@ -1,12 +1,10 @@
+import AIDescription from "@/_component/FundRaiser/CreateSteps/AIDescription/AIDescription";
+import Address from "@/_component/FundRaiser/CreateSteps/Address/Address";
+import Basic from "@/_component/FundRaiser/CreateSteps/Basic/Basic";
+import FileUpload from "@/_component/FundRaiser/CreateSteps/FileUpload/FileUpload";
+import PersonalDetails from "@/_component/FundRaiser/CreateSteps/PersonalDetails/PersonalDetails";
 import { FundRaiseCreationBanner } from "@/types/InterFace/PropInterFace";
 import { FunctionComponent } from "react";
-
-const { default: AIDescription } = require("@/_component/FundRaiser/CreateSteps/AIDescription/AIDescription");
-const { default: Address } = require("@/_component/FundRaiser/CreateSteps/Address/Address");
-const { default: Basic } = require("@/_component/FundRaiser/CreateSteps/Basic/Basic");
-const { default: FileUpload } = require("@/_component/FundRaiser/CreateSteps/FileUpload/FileUpload");
-const { default: PersonalDetails } = require("@/_component/FundRaiser/CreateSteps/PersonalDetails/PersonalDetails");
-
 
 let createFormSteps: FunctionComponent[] = [
     Basic,

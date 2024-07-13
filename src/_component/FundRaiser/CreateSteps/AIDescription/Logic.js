@@ -1,5 +1,6 @@
-import { getUserDetails } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
 import { objectToUrlQuery } from "@/app/_util/helper/utilHelper";
+import API_axiosInstance from "@/external/axios/api_axios_instance";
 import { getSession } from "next-auth/react";
 
 const { default: axios_instance } = require("@/external/axios/axios-instance");
@@ -28,23 +29,29 @@ async function getAIDescription(amount, category, sub_category, raiser_name, rai
 async function onDescriptionSubmit(val, successCB, errorCB) {
 
     let session = await getSession();
-    let user = getUserDetails(session)
+    let user = userDetailsFromGetSession(session)
 
-    let { description, currentApplication } = val
+    let { ai_description, currentApplication } = val
 
     if (user) {
+        const token = user.token
 
         console.log("User found");
 
         try {
-            let API_request = await axios_instance.patch("/api/user_api/fund_raiser/update", { description }, {
+
+            let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
+                description: ai_description
+            }, {
                 headers: {
-                    "authorization": `Bearer ${user.token}`,
-                    "fund_id": currentApplication
-                }
+                    "authorization": `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                },
             })
 
-            let response = API_request.data;
+            console.log(currentApplication);
+
+            let response = requestAPI.data;
             console.log(response);
             if (response.status) {
                 successCB()

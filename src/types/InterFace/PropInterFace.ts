@@ -58,7 +58,7 @@ interface IPaginationButton {
 
 interface ILoadingComponent {
     isLoading: boolean,
-    closeOnClick: Function,
+    closeOnClick: boolean,
     children: React.ReactElement,
     paddingNeed: boolean
 }

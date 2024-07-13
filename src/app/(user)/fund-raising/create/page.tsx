@@ -2,7 +2,7 @@
 import BannerForCreating from '@/_component/FundRaiser/BannerForCreating'
 import Header from '@/_component/Header/Header'
 import Footer from '@/_component/Util/Footer'
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { CreateFormComponent } from './Logic'
 import { bannerData } from './Data'
 import OnGoingingFundRaise from '@/app/_util/context/onGoingingFundRaise'
@@ -13,6 +13,8 @@ function CreateFundRaisingPost(): React.ReactElement {
 
   let [createFormIndex, setCreateFormIndex] = useState<number>(0)
   let StepForm: FunctionComponent<FundRaiseCreationStep> = CreateFormComponent(createFormIndex);
+
+
 
   return (
     <OnGoingingFundRaise>

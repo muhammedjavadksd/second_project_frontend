@@ -9,7 +9,7 @@ import { addressInitialValues, addressValidationSchema } from './Data'
 import { onAddressSubmit } from './Logic'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
-import { STATE_WITH_DIST } from '@/app/_util/_const/const'
+import const_data from '@/app/_util/_const/const'
 import { OnGoingApplicationContext } from '@/app/_util/context/Context'
 import LoadingComponent from '@/_component/Util/LoadingComponent'
 import { useSelector } from 'react-redux'
@@ -91,7 +91,7 @@ function Address({ state }) {
                 <label htmlFor="state" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select state :</label>
                 <Field
                   onChange={(e) => {
-                    let newValues = STATE_WITH_DIST[e.target.value];
+                    let newValues = const_data.STATE_WITH_DISTRICT[e.target.value];
                     setFieldValue("state", e.target.value)
                     // console.log(newValues);
                     if (newValues) {
@@ -105,7 +105,7 @@ function Address({ state }) {
                 >
                   <option value="" label="Choose a state" />
                   {
-                    Object.keys(STATE_WITH_DIST).map((item) => {
+                    Object.keys(const_data.STATE_WITH_DISTRICT).map((item) => {
                       return <option value={item}>{item}</option>
                     })
                   }

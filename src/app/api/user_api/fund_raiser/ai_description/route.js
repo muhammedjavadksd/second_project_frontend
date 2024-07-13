@@ -7,9 +7,6 @@ export async function GET(request) {
         let url = new URL(request.url);
         let { searchParams } = url;
 
-
-
-
         let amount = searchParams.get("amount") ?? 5000;
         let category = searchParams.get("category") ?? "Education";
         let subCategory = searchParams.get("sub_category") ?? "Higher Education"

@@ -39,12 +39,7 @@ function Header() {
                         </div>
                         <div class="hidden sm:ml-6 sm:block ml-5">
                             <div class="flex space-x-4">
-                                <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium" >Home</a>
-                                <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">View Blood Bank</a>
-                                <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">View Fund Raiser's</a>
-                                <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Register Organization</a>
-                                <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Event's</a>
-                                <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Nearest Blood Donor's</a>
+                                <NavbarLinks />
                             </div>
                         </div>
                     </div>
@@ -79,12 +74,7 @@ function Header() {
 
             <div class="sm:hidden" id="mobile-menu">
                 <div class="space-y-1 px-2 pb-3 pt-2">
-                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium" >Home</a>
-                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">View Blood Bank</a>
-                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">View Fund Raiser's</a>
-                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Register Organization</a>
-                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Event's</a>
-                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Nearest Blood Donor's</a>
+                    <NavbarLinks />
                 </div>
             </div>
         </nav>

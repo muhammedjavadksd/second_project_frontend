@@ -6,5 +6,5 @@ export const resetPasswordValidation = yup.object().shape({
 })
 
 export const resetPasswordInitialValues: AdminForgetPassword = {
-    email_address: null
+    email_address: ''
 }

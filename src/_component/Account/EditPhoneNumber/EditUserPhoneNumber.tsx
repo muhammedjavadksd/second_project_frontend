@@ -2,33 +2,30 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react'
 import { phoneAndOTPSchema, phoneNumberSchema } from './Data';
 import { onOTPValidate, onPhoneNumberUpdate, phoneNumberInitialValues, phoneNumberWithOTPInitialValues } from './Logic';
-import { getUserDetails } from '@/app/_util/helper/authHelper';
+import { userDetailsFromUseSession } from '@/app/_util/helper/authHelper';
 import { signOut, useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
-function EditUserPhoneNumber() {
+function EditUserPhoneNumber(): React.ReactElement {
 
-    let [editPhoneNumber, setEditPhoneNumber] = useState(false);
-    let [isOtpSend, setOtpSend] = useState(false)
-    let session = useSession();
-    let [user, setUser] = useState({});
-    let [phoneNumber, setPhoneNumber] = useState(null);
-    let router = useRouter();
+    const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
+    const [isOtpSend, setOtpSend] = useState<boolean>(false)
+    const session = useSession();
+    const [phoneNumber, setPhoneNumber] = useState<number>(null);
+    const router = useRouter();
 
     useEffect(() => {
-        let user = getUserDetails(session);
-        setUser(user)
-        console.log(user);
+        const user = userDetailsFromUseSession(session);
         setPhoneNumber(user.phone)
     }, [session])
 
-    function onPhoneNumberSuccess() {
+    function onPhoneNumberSuccess(): void {
         toast.success("OTP has been sent to mail")
         setOtpSend(true)
     }
 
-    function onOTPSucess() {
+    function onOTPSucess(): void {
         toast.success("Phone number has been updated");
         setEditPhoneNumber(false);
         setOtpSend(false)
@@ -39,7 +36,7 @@ function EditUserPhoneNumber() {
         })
     }
 
-    function onError(err) {
+    function onError(err: string) {
         toast.error(err)
     }
 
@@ -48,13 +45,13 @@ function EditUserPhoneNumber() {
         <div className='mt-2'>
             <div className='flex mb-3'>
                 <h2 className='text-1xl'>Phone Number</h2>
-                {!editPhoneNumber && <button onClick={() => setEditPhoneNumber(!editPhoneNumber)} type="button" class="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm   ">
-                    <i class="fa-solid fa-pencil"></i>    Edit Details
+                {!editPhoneNumber && <button onClick={() => setEditPhoneNumber(!editPhoneNumber)} type="button" className="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm   ">
+                    <i className="fa-solid fa-pencil"></i>    Edit Details
                 </button>}
             </div>
-            <Formik enableReinitialize initialValues={isOtpSend ? phoneNumberWithOTPInitialValues(phoneNumber, null) : phoneNumberInitialValues(user.phone)} onSubmit={(val) => {
+            <Formik enableReinitialize initialValues={(isOtpSend ? phoneNumberWithOTPInitialValues(phoneNumber, null) : phoneNumberInitialValues(phoneNumber))} onSubmit={(val) => {
 
-                isOtpSend ? onOTPValidate(val, onOTPSucess, onError) : (
+                isOtpSend ? onOTPValidate(val.otp, onOTPSucess, onError) : (
                     setPhoneNumber(val.phone_number),
                     onPhoneNumberUpdate(val, onPhoneNumberSuccess, onError)
                 )
@@ -71,7 +68,7 @@ function EditUserPhoneNumber() {
                         <ErrorMessage name='otp' className='errorMessage' component={"div"} ></ErrorMessage>
                     </div>}
                     {
-                        editPhoneNumber && <button type="submit" class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit Phone Number</button>
+                        editPhoneNumber && <button type="submit" className="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit Phone Number</button>
                     }
                 </Form>
             </Formik>

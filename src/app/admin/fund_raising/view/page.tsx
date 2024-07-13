@@ -4,28 +4,35 @@ import AdminBreadCrumb from '@/_component/Util/AdminBreadCrumb'
 import AdminDateFilter from '@/_component/Util/AdminDateFilter'
 import PaginationTab from '@/_component/Util/PaginationTab'
 import TableSimple from '@/_component/Util/TableSimple'
-import { MONEY_ICON } from '@/app/_util/_const/const'
+import const_data from '@/app/_util/_const/const'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { getAllFundRaisers, getUserForFundRaise } from '../logic/fund-raiser-logic'
 import { FundRaiserResponse } from '@/types/API Response/FundRaiser'
 import { FormActionResponse } from '@/types/InterFace/UtilInterface'
 import UserResponse from '@/types/API Response/UserInterface'
+import TableRowCount from '@/_component/Util/TableRowCount'
+import TableSearch from '@/_component/Util/TableSearch'
 
 function ViewFundRaising(): React.ReactElement {
 
     let [fundRaiserData, setFundRaiserdata] = useState<FundRaiserResponse[]>([]);
 
 
-    async function fetchAllData(): Promise<void> {
+    async function fetchAllData(limit: number): Promise<void> {
         try {
 
-            let allFundRaisers: FormActionResponse = await getAllFundRaisers(10, 1);;
+            let allFundRaisers: FormActionResponse = await getAllFundRaisers(limit, 1);;
+            console.log(allFundRaisers);
+
             if (allFundRaisers.status) {
                 let response: FundRaiserResponse[] = allFundRaisers.data;
                 let user_ids: string[] = response?.map((each) => each.user_id);
+                console.log(user_ids);
 
                 let allUsers: FormActionResponse = await getUserForFundRaise(user_ids);;
+                console.log(allUsers);
+
                 if (allUsers.status) {
                     const users: UserResponse[] = allUsers.data;
 
@@ -45,12 +52,27 @@ function ViewFundRaising(): React.ReactElement {
 
     }
     useEffect((): void => {
-        fetchAllData()
+        fetchAllData(10)
     }, [])
 
     useEffect((): void => {
         console.log(fundRaiserData);
     }, [fundRaiserData])
+
+    function onSearch(val) {
+        const regex = new RegExp(`\\b${val}\\b`, 'i');
+        let newData = fundRaiserData.filter(product => regex.test(product))
+
+    }
+
+    function onRowChanges(count) {
+        // alert(count)
+        fetchAllData(count)
+    }
+
+    function onPagination(number) {
+
+    }
 
 
 
@@ -82,31 +104,37 @@ function ViewFundRaising(): React.ReactElement {
                 </div>
 
                 <div className='mt-5' >
-                    <TableSimple
+                    <div className='bg-white p-5'>
 
-                        headers={['Raising ID', 'User', 'Target Amount', 'Dead Line', 'Status', 'Action']} data={
-                            fundRaiserData.map((each) => {
-                                return ({
-                                    raisingID: each.fund_id,
-                                    User: (
-                                        each.created_by == "USER" ? <div className='flex justify-center gap-3' >
-                                            <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48} > </img>
-                                            < div className='text-start ' >
-                                                <h4>Muhammed Javad</ h4 >
-                                                <p>muhammedjavad119144@gmail.com</p>
-                                            </div>
-                                        </div> : (each.created_by == "ADMIN" ? "Created By Admin" : "Created by organization")),
-                                    // raisingID: each.user_id,
-                                    TargetAmount: `${each.amount}${MONEY_ICON}`,
-                                    deadLine: "12/04/2023",
-                                    status: <span className='bg-green-400 p-3 text-sm text-white rounded-lg' > Active </span>,
-                                    action: <div>
-                                        <Link href={`/admin/fund_raising/detail_view/${each.fund_id}`} className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2' > <i className="fa-solid fa-eye" > </i> View</Link >
-                                    </div>
-                                })
-                            })}
-                    />
-                    < PaginationTab />
+                        <div className='flex justify-between'>
+                            <TableRowCount onRowChanges={onRowChanges} />
+                            <TableSearch onSearch={onSearch} />
+                        </div>
+                        <TableSimple
+                            headers={['Raising ID', 'User', 'Target Amount', 'Dead Line', 'Status', 'Action']} data={
+                                fundRaiserData.map((each) => {
+                                    return ({
+                                        raisingID: each.fund_id,
+                                        User: (
+                                            each.created_by == "USER" ? <div className='flex justify-center gap-3' >
+                                                <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48} />
+                                                < div className='text-start ' >
+                                                    <h4>Muhammed Javad</ h4 >
+                                                    <p>muhammedjavad119144@gmail.com</p>
+                                                </div>
+                                            </div> : (each.created_by == "ADMIN" ? "Created By Admin" : "Created by organization")),
+                                        // raisingID: each.user_id,
+                                        TargetAmount: `${each.amount}${const_data.MONEY_ICON}`,
+                                        deadLine: "12/04/2023",
+                                        status: <span className='bg-green-400 p-3 text-sm text-white rounded-lg' > Active </span>,
+                                        action: <div>
+                                            <Link href={`/admin/fund_raising/detail_view/${each.fund_id}`} className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2' > <i className="fa-solid fa-eye" > </i> View</Link >
+                                        </div>
+                                    })
+                                })}
+                        />
+                        <PaginationTab from={1} to={5} onClick={() => { }} />
+                    </div>
                 </div>
             </div>
         </AdminLayout >

@@ -1,11 +1,8 @@
-import axios_instance from "@/external/axios/axios-instance";
-import exp from "constants";
 import { getSession } from "next-auth/react";
 
 
 export function isAdminlogged(session) {
 
-    console.log(session);
     try {
         let token;
         if (session.data) {
@@ -13,34 +10,20 @@ export function isAdminlogged(session) {
         } else if (session.token) {
             token = session.token;
         } else {
-            console.log("This 1");
             return false;
         }
 
-        // let user = session?.data ?? session.token;
-        // console.log(user);
-        // if (!user) {
-        //     console.log("This 1");
-        //     return false
-        // }
-
-        // let token = user.token;
-        console.log(token);
         if (!token) {
-            console.log("This 2");
             return false
         }
 
         let superUser = token.user;
-        console.log(superUser);
         if (!superUser) {
-            console.log("This 3");
             return false
         }
 
         let role = superUser.role;
         if (!role || role != 'admin') {
-            console.log("This 4");
             return false
         }
 
@@ -56,28 +39,22 @@ export function isAdminlogged(session) {
 export function isUserLogged(session) {
     try {
         let user = session?.data ?? session.token;
-        console.log(user);
         if (!user) {
-            console.log("This 1");
             return false
         }
 
         let token = user.token;
-        console.log(token);
         if (!token) {
-            console.log("This 2");
             return false
         }
 
         let superUser = token.user;;
         if (!superUser) {
-            console.log("This 3");
             return false
         }
 
         let role = superUser.role;
         if (!role || role != 'user') {
-            console.log("This 4");
             return false
         }
 
@@ -88,13 +65,27 @@ export function isUserLogged(session) {
     }
 }
 
-export function getUserDetails(session) {
-    let data = session?.data ?? session?.token;
+export function userDetailsFromGetSession(session) {
+    let data = session?.token;
     if (!data) return false
-    let token = data?.token ?? data;
+
+    let user = data?.user;
+    if (!user) return false;
+
+    return user;
+}
+
+export function userDetailsFromUseSession(session) {
+
+    let data = session?.data;
+    if (!data) return false
+
+    let token = data?.token;
     if (!token) return false;
-    console.log(token.user);
-    return token.user;
+
+    const user = token?.user;
+    if (!user) return false
+    return user;
 }
 
 export function getAdminToken(headers) {
@@ -116,8 +107,12 @@ export function getAdminToken(headers) {
 export async function addTokenIntoAxiosInterceptor(config) {
     try {
         let session = await getSession();
-        let user = getUserDetails(session)
+        let user = userDetailsFromGetSession(session)
+        console.log(session);
+
         let token = user?.token;
+        console.log(token);
+
         if (token) {
             console.log(token);
             config.headers.authorization = `Bearer ${token}`;
@@ -125,6 +120,8 @@ export async function addTokenIntoAxiosInterceptor(config) {
             console.log("Token not found");
         }
     } catch (e) {
+        console.log(e);
+
         console.log("Error on addTokenIntoAxiosInterceptor");
     }
     return config

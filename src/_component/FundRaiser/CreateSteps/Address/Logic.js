@@ -1,4 +1,5 @@
-import { getUserDetails } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+import API_axiosInstance from "@/external/axios/api_axios_instance";
 import axios_instance from "@/external/axios/axios-instance";
 import { updateFundRaiseData } from "@/external/redux/slicer/fundRaiserForm";
 import store from "@/external/redux/store/store";
@@ -9,7 +10,7 @@ const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
     let { city, pinCode, state, district, fullAddress, currentApplication } = values
 
     let session = await getSession();
-    let user = getUserDetails(session)
+    let user = userDetailsFromGetSession(session)
 
     // let { benificiary_relation, description, raiser_age, raiser_name, currentApplication } = val
 
@@ -17,18 +18,28 @@ const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
 
         console.log("User found");
         console.log(user.token, currentApplication);
+        const token = user.token
 
         try {
-            let API_request = await axios_instance.patch("/api/user_api/fund_raiser/update", {
+            // let API_request = await axios_instance.patch("/api/user_api/fund_raiser/update", {
+            //     city, pincode: pinCode, state, district, full_address: fullAddress
+            // }, {
+            //     headers: {
+            //         "authorization": `Bearer ${user.token}`,
+            //         "fund_id": currentApplication
+            //     }
+            // })
+
+            let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
                 city, pincode: pinCode, state, district, full_address: fullAddress
             }, {
                 headers: {
-                    "authorization": `Bearer ${user.token}`,
-                    "fund_id": currentApplication
-                }
+                    "authorization": `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                },
             })
 
-            let response = API_request.data;
+            let response = requestAPI.data;
             console.log(response);
             if (response.status) {
                 store.dispatch(updateFundRaiseData({

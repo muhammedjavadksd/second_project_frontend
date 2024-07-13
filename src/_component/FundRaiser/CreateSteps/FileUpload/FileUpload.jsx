@@ -6,8 +6,9 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { onFileDelete, onFileUpload } from './Logic';
 import { OnGoingApplicationContext } from '@/app/_util/context/Context';
-import { FUND_RAISE_DOCUMENT_URL, FUND_RAISE_IMAGE_URL } from '@/app/_util/_const/const';
-import { useSelector } from 'react-redux';
+import const_data from '@/app/_util/_const/const';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFundRaiseData } from '@/external/redux/slicer/fundRaiserForm';
 
 function FileUpload({ state }) {
 
@@ -18,6 +19,13 @@ function FileUpload({ state }) {
   let [Documents, setDocuments] = useState([]);
   let [checkValidation, setCheckValidation] = useState(false)
   let selectData = useSelector((store) => store.fund_raiser);
+  const dispatch = useDispatch()
+
+
+  useEffect(() => {
+    console.log("Extra ");
+    console.log(selectData);
+  }, [selectData])
 
   useEffect(() => {
     if (selectData.pictures?.length) {
@@ -26,14 +34,14 @@ function FileUpload({ state }) {
     if (selectData.documents?.length) {
       setDocuments(selectData.documents)
     }
-  }, [])
+  }, [selectData])
 
 
   let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
   let router = useRouter();
 
   function onSuccess(data) {
-    // toast.success("Image uploaded successs")
+    console.log(selectData.documents);
     setPictures(data.pictures);
     setDocuments(data.documents)
   }
@@ -47,7 +55,6 @@ function FileUpload({ state }) {
   }
 
   function onFileDeleted(image_id, type) {
-
     let newImagesData = type == "Pictures" ? pictures : Documents
     let filterData = newImagesData.filter((each) => each != image_id);
     type == "Pictures" ? setPictures(filterData) : setDocuments(filterData);
@@ -58,6 +65,8 @@ function FileUpload({ state }) {
   function onNext() {
     setCheckValidation(true);
     if (Documents.length >= 3 && pictures.length >= 3) {
+      dispatch(updateFundRaiseData({ documents: Documents }))
+      dispatch(updateFundRaiseData({ pictures: pictures }))
       state((prev) => prev + 1)
     }
   }
@@ -85,7 +94,7 @@ function FileUpload({ state }) {
             </div>
             <div className="w-2/4">
               <div className='overflow-auto'>
-                <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Pictures", currentApplication)} data={pictures} BASE_PATH={FUND_RAISE_IMAGE_URL} onDelete={() => { }} />
+                <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Pictures", currentApplication)} data={pictures} BASE_PATH={const_data.FUND_RAISE_IMAGE_URL} onDelete={() => { }} />
               </div>
             </div>
 
@@ -101,14 +110,14 @@ function FileUpload({ state }) {
                 onClick={() => documentRef.current.click()}>
                 <FileSelectBox>
                   <input multiple ref={documentRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
-                    onFileUpload([...e.target.files], onSuccess, onError, ifNotLogged, "Documents", currentApplication)
+                    onFileUpload([...e.target.files], onSuccess, onError, ifNotLogged, "Document", currentApplication)
                     documentRef.current.value = null
                   }} className='hidden' />
                 </FileSelectBox>
               </div>
             </div>
             <div className='w-2/4'>
-              <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Documents", currentApplication)} data={Documents} BASE_PATH={FUND_RAISE_DOCUMENT_URL} onDelete={() => { }} />
+              <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Documents", currentApplication)} data={Documents} BASE_PATH={const_data.FUND_RAISE_DOCUMENT_URL} onDelete={() => { }} />
               {/* <UploadFilePlusButton /> */}
             </div>
           </div>

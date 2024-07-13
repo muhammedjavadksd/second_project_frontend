@@ -1,6 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client"
+import Link from 'next/link';
 import React, { useState } from 'react'
+import NavbarLinks from './NavbarLinks';
 
 function SimpleHeader() {
 
@@ -61,12 +63,13 @@ function SimpleHeader() {
 
             <div class="sm:hidden" id="mobile-menu">
                 <div class="space-y-1 px-2 pb-3 pt-2">
-                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium" >Home</a>
+                    {/* <Link href="/" class=" text-grey rounded-md px-3 py-2 text-sm font-medium" >Home</Link>
                     <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">View Blood Bank</a>
                     <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">View Fund Raiser's</a>
                     <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Register Organization</a>
                     <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Event's</a>
-                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Nearest Blood Donor's</a>
+                    <a href="#" class=" text-grey rounded-md px-3 py-2 text-sm font-medium">Nearest Blood Donor's</a> */}
+                    <NavbarLinks></NavbarLinks>
                 </div>
             </div>
         </nav>

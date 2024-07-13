@@ -1,6 +1,6 @@
 
-import { COOKIE_DATA_KEY, FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/_util/_const/const'
-import { getUserDetails } from '@/app/_util/helper/authHelper'
+import const_data, { COOKIE_DATA_KEY, FRONT_END_APIENDPOINT, OTP_LENGTH } from '@/app/_util/_const/const'
+import { userDetailsFromGetSession } from '@/app/_util/helper/authHelper'
 import API_axiosInstance from '@/external/axios/api_axios_instance'
 import axios_instance from '@/external/axios/axios-instance'
 import { getSession, signIn } from 'next-auth/react'
@@ -21,7 +21,6 @@ export function loginStepDown(state) {
 export let onLoginSubmit = async function (values, successCB, errorCB) {
 
     let email = values.email
-    // console.log("The data is", dataSignIn);
 
     try {
 
@@ -35,11 +34,10 @@ export let onLoginSubmit = async function (values, successCB, errorCB) {
 
         if (response && response?.status) {
 
-            let token = response.token;
+            let { token } = response.data;
+            // console.log(token);
             if (token) {
-                // let getCookies = cookies()
-                // return new Response(JSON.stringify({ status: true, msg: response?.msg }))
-                js_cookies.set(COOKIE_DATA_KEY.SIGN_IN_DATA, token)
+                js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA, token)
                 successCB();
             } else {
                 errorCB("Something went wrong")
@@ -48,6 +46,7 @@ export let onLoginSubmit = async function (values, successCB, errorCB) {
             errorCB(response?.msg)
         }
     } catch (e) {
+        console.log(e);
         let errorMessage = e?.response?.data?.msg ?? "Something went wrong"
         errorCB(errorMessage)
     }
@@ -71,25 +70,22 @@ export let onLoginSubmit = async function (values, successCB, errorCB) {
 }
 
 export let otpValidaor = yup.object().shape({
-    otp_number: yup.number("Please enter valid otp number").required("Otp field is required").test("len", `Please enter ${OTP_LENGTH} digit OTP number`, (val) => val.toString().length == OTP_LENGTH)
+    otp_number: yup.number("Please enter valid otp number").required("Otp field is required").test("len", `Please enter ${const_data.OTP_LENGTH} digit OTP number`, (val) => val.toString().length == const_data.OTP_LENGTH)
 })
 
 export let otpInitialValues = {
-    otp_number: null
+    otp_number: ''
 }
 
 export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
 
-    // alert("This workds")
     let user = await getSession();
-    let userDetails = getUserDetails(user)
+    let userDetails = userDetailsFromGetSession(user)
     console.log(user);
 
     try {
         let otp_number = values.otp_number
-        console.log("Key");
-        console.log(COOKIE_DATA_KEY.SIGN_IN_DATA);
-        let token = js_cookies.get(COOKIE_DATA_KEY.SIGN_IN_DATA);
+        let token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA);
 
         console.log(token);
         signIn("credentials", { otp_number, redirect: false, auth_type: "user", token: token }).then((data) => {
@@ -111,7 +107,7 @@ export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
         // } else {
         //     errorCB(response.msg)
         // }
-    } catch (E) {
+    } catch (e) {
         console.log(e);
         errorCB("Something went wrong")
     }
@@ -134,10 +130,15 @@ export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
     // }
 }
 
-export function onResetOtp(successCB, errorCB) {
-    // console.log("Resend otp request");
-    // alert(FRONT_END_APIENDPOINT.RESENT_USER_SIGN_EMAIL_ID)
-    axios_instance.post(FRONT_END_APIENDPOINT.RESENT_USER_SIGN_EMAIL_ID, null).then((data) => {
+export async function onResetOtp(successCB, errorCB) {
+
+    const token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA);
+    API_axiosInstance.post("auth/resend_otp", {}, {
+        headers: {
+            'Content-Type': 'application/json',
+            "authorization": `Bearer ${token}`
+        }
+    }).then((data) => {
         let response = data.data;
         if (response.status) {
             successCB()

@@ -1,4 +1,5 @@
-import { getUserDetails } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+import API_axiosInstance from "@/external/axios/api_axios_instance";
 import axios_instance from "@/external/axios/axios-instance"
 import { getSession } from "next-auth/react";
 
@@ -15,19 +16,26 @@ export async function onEditProfile(values, successCB, errorCB) {
 
     try {
 
-        let session = await getSession();
-        let user = getUserDetails(session)
+        const { first_name, last_name } = values;
 
-        let editProfileEndPoint = await axios_instance.patch("/api/user_api/profile/edit_profile", {
-            first_name: values.first_name,
-            last_name: values.last_name
+        let session = await getSession();
+        let user = userDetailsFromGetSession(session)
+        let token = user.token;
+        console.log(token);
+
+
+
+        let editProfileEndPoint = await API_axiosInstance.patch("/profile/update_profile", {
+            user_profile: {
+                first_name,
+                last_name
+            }
         }, {
             headers: {
-                "authorization": `Bearer ${user.token}`
+                "authorization": `Bearer ${token}`
             }
-        });
+        })
 
-        console.log("The profile");
 
         let response = editProfileEndPoint.data;
         console.log(response);
@@ -37,7 +45,10 @@ export async function onEditProfile(values, successCB, errorCB) {
             let errorMsg = response.msg ?? "Something went wrong";
             errorCB(errorMsg)
         }
+
     } catch (e) {
+        console.log(e);
+
         let errorMsg = e?.response?.body?.msg ?? "Something went wrong";
         errorCB(errorMsg)
     }

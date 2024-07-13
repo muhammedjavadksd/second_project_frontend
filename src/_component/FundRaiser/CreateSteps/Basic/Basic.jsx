@@ -39,8 +39,9 @@ function Basic({ state }) {
 
   function onSuccess(fund_raiser_id) {
     if (fund_raiser_id) {
-      // console.log("The fund is :" + fund_raiser_id);
+      console.log("The fund is :" + fund_raiser_id);
       setApplication(fund_raiser_id)
+      console.log(state);
       state((prev) => prev + 1)
     }
     setLoading(false)

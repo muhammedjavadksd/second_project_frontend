@@ -1,4 +1,4 @@
-import { getUserDetails } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 import axios_instance from "@/external/axios/axios-instance";
 import { AxiosResponse as CustomeAxiosResponse } from "@/types/API Response/FundRaiser";
@@ -10,21 +10,28 @@ import { getSession } from "next-auth/react";
 
 
 
-export async function getAllFundRaisers(limit: number = 10, page: number = 1): Promise<FormActionResponse> {
+export async function getAllFundRaisers(limit: number, page: number): Promise<FormActionResponse> {
 
 
     try {
 
         let session = await getSession();
-        let user = getUserDetails(session)
+        let user = userDetailsFromGetSession(session)
+        console.log(user);
 
-        let getFundRaisers: AxiosResponse = await axios_instance.get(`/api/admin_api/fund_raiser/view/${limit}/${page}`, {
+        const token = user?.token
+
+        let getAllFundRaisers = await API_axiosInstance.get(`/fund_raise/admin/view/${limit}/1`, {
             headers: {
-                "authorization": `Bearer ${user.token}`
+                "authorization": `Bearer ${token}`
             }
         });
-        let response: CustomeAxiosResponse = getFundRaisers.data;
+
+        let response: CustomeAxiosResponse = getAllFundRaisers.data;
+        console.log(response);
+
         if (response.status) {
+
             return { data: response.data, msg: "Data fetch success", status: true };
         } else {
             return { status: false, msg: response.msg }
@@ -40,7 +47,7 @@ export async function getAllFundRaisers(limit: number = 10, page: number = 1): P
 export async function getUserForFundRaise(user_ids: string[]): Promise<FormActionResponse> {
 
     let session = await getSession();
-    let user = getUserDetails(session)
+    let user = userDetailsFromGetSession(session)
 
     try {
 
@@ -51,8 +58,15 @@ export async function getUserForFundRaise(user_ids: string[]): Promise<FormActio
                 "authorization": `Bearer ${user.token}`
             }
         })
-        console.log(request);
-        return { data: request.data, msg: "Users fetch success", status: true }
+        const response = request.data;
+        console.log(response);
+
+        if (response.status) {
+            let users = response.profile ?? [];
+            return { data: users, msg: "Users fetch success", status: true }
+        } else {
+            return { msg: "No data found", status: false }
+        }
     } catch (e) {
         console.log(e);
         let errorMessage: string = e?.response?.data?.msg ?? "Something went wrong";

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import CreateFormBackground from '../../CreateFormBackground'
 import FormInputWithBg from '../../FormInputWithBg'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import { FUND_RAISER_FOR } from '@/app/_util/_const/const'
+import const_data from '@/app/_util/_const/const'
 import { personalDetailsInitialValues, personalDetailsValidation } from './Data'
 import { onPersonalDetailsSubmit } from './Logic'
 import { OnGoingApplicationContext } from '@/app/_util/context/Context'
@@ -51,14 +51,13 @@ function PersonalDetails({ state }) {
   }
 
   function onNotLogged() {
-    router.push("/auth/sign_in")
+    // router.push("/auth/sign_in")
   }
 
 
   return (
     <LoadingComponent paddingNeed={false} isLoading={isLoading}>
       <CreateFormBackground>
-        {/* The  ddata {currentApplication} */}
 
         <Formik enableReinitialize initialValues={personalDataInitialSet} validationSchema={personalDetailsValidation} onSubmit={
           (val) => {
@@ -83,7 +82,7 @@ function PersonalDetails({ state }) {
               <Field as="select" id="benificiary_relation" name='benificiary_relation' class="mb-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option selected value={""}>Choose a relation</option>
                 {
-                  FUND_RAISER_FOR.map((each) => {
+                  const_data.FUND_RAISER_FOR.map((each) => {
                     return (
                       <option value={each}>{each}</option>
                     )

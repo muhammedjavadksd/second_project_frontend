@@ -2,6 +2,8 @@
 
 import { FunctionComponent } from 'react'
 import { createFormSteps } from './Data'
+import Basic from '@/_component/FundRaiser/CreateSteps/Basic/Basic'
+import { number } from 'yup'
 
 
 function createStepIndexUp(state: Function): void {

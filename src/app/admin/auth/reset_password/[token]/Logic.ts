@@ -1,3 +1,4 @@
+import API_axiosInstance from "@/external/axios/api_axios_instance";
 import axios_instance from "@/external/axios/axios-instance";
 import { AdminResetPassword } from "@/types/InterFace/FormInitialValues";
 
@@ -7,13 +8,13 @@ export async function onResetPassword(values: AdminResetPassword, successCB: Fun
 
     try {
 
-        const passwordReset = await axios_instance.post(`/api/admin_api/auth/reset_password`, { password }, {
-            headers: {
-                "token": token
-            }
-        });
+        let apiRequest = await API_axiosInstance.post(`/auth/admin/reset_password/${token}`, {
+            password: password
+        })
 
-        const response = passwordReset.data;
+
+        const response = apiRequest.data;
+
         if (response.status) {
             successCB()
         } else {

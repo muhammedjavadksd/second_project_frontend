@@ -11,6 +11,7 @@ function EditPhoneNumber({ state }) {
 
     function onError(err) {
         toast.error(err)
+        setIsLoading(false)
     }
 
 
@@ -27,7 +28,7 @@ function EditPhoneNumber({ state }) {
                 <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400"></p>
             </div>
 
-            <LoadingComponent isLoading={isLoading} closeOnClick={false}>
+            <LoadingComponent paddingNeed={true} isLoading={isLoading} closeOnClick={false}>
                 <Formik validationSchema={schangemailIDValidation} onSubmit={(val) => {
                     setIsLoading(true)
                     changeEmailIDHandler(val, onChangedNumber, onError)

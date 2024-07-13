@@ -35,8 +35,8 @@ function SignInPhoneNumber({ state }) {
 
             </div>
 
-            <LoadingComponent closeOnClick={false} isLoading={isLoading}>
-                <Formik class="max-w-sm mt-10" initialValues={loginInitValues} onSubmit={(val) => { setIsLoading(true), onLoginSubmit(val, onComplete, onError) }} validationSchema={loginValidation}>
+            <LoadingComponent paddingNeed={true} closeOnClick={false} isLoading={isLoading}>
+                <Formik class="max-w-sm mt-10" initialValues={loginInitValues} onSubmit={(val, { resetForm }) => { setIsLoading(true), onLoginSubmit(val, onComplete, (err) => { onError(err); resetForm() }) }} validationSchema={loginValidation}>
 
                     <Form>
                         <div class="mb-5">
@@ -44,8 +44,6 @@ function SignInPhoneNumber({ state }) {
                             <Field type="email" id="email" name="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter email address" />
                             <ErrorMessage name='email' component="div" className='text-red-600 mt-2'></ErrorMessage>
                         </div>
-
-                        {/* onClick={() => loginStepIndexUp(state)} */}
 
                         <div className='flex gap-5'>
                             <button type="submit" class="mt-0 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Send OTP</button>
