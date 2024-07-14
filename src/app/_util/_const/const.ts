@@ -21,10 +21,10 @@ interface Iconst_data {
         SIGN_UP_DATA: string,
         SIGN_IN_DATA: string
     },
+    AI_DESCRIPTION_GENERATION: boolean
 }
 
 const const_data: Iconst_data = {
-
     AUTH_PROVIDERS: {
         GOOGLE: "GOOGLE",
         FACEBOOK: "FACEBOOK",
@@ -359,7 +359,8 @@ const const_data: Iconst_data = {
     FUND_RAISE_IMAGE_URL: "http://localhost:7001/api/fund_raise/images/fund_raiser_image",
     MONEY_ICON: '₹',
     OTP_LENGTH: 6,
-    OTP_TIME_SECONDS: 3
+    OTP_TIME_SECONDS: 3,
+    AI_DESCRIPTION_GENERATION: false
 }
 
 export default const_data
