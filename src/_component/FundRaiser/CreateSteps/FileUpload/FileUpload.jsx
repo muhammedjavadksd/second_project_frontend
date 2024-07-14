@@ -117,7 +117,7 @@ function FileUpload({ state }) {
               </div>
             </div>
             <div className='w-2/4'>
-              <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Documents", currentApplication)} data={Documents} BASE_PATH={const_data.FUND_RAISE_DOCUMENT_URL} onDelete={() => { }} />
+              <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Document", currentApplication)} data={Documents} BASE_PATH={const_data.FUND_RAISE_DOCUMENT_URL} onDelete={() => { }} />
               {/* <UploadFilePlusButton /> */}
             </div>
           </div>
