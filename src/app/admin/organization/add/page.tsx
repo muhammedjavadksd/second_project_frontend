@@ -5,9 +5,11 @@ import AdminBreadCrumb from '@/_component/Util/AdminBreadCrumb'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import { initialValues, validationSchema } from './data'
-import { organizationTypes } from '@/app/_util/_const/const'
+// import const_data from '@/app/_util/_const/const' from '@/app/_util/_const/const'
+// const_data
 import { addOrganization } from './logic'
 import { toast } from 'react-toastify'
+import const_data from '@/app/_util/_const/const'
 
 function AdminAddOrganization(): React.ReactElement {
     return (
@@ -67,7 +69,7 @@ function AdminAddOrganization(): React.ReactElement {
                                     <Field as="select" type="text" id="organization_type" name="organization_type" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
                                         <option value="">Select Type</option>
                                         {
-                                            organizationTypes.map((item) => {
+                                            const_data.ORGANIZATION_TYPE.map((item) => {
                                                 return <option value={item}>{item}</option>
                                             })
                                         }

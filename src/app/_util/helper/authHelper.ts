@@ -70,6 +70,8 @@ export function userDetailsFromGetSession(session) {
     if (!data) return false
 
     let user = data?.user;
+
+    
     if (!user) return false;
 
     return user;

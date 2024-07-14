@@ -72,7 +72,8 @@ interface IListImageFile {
 interface IImageModel {
     imageURL: string,
     isOpen: boolean,
-    onImageClose: Function
+    onImageClose: Function,
+    ZIndex: string
 }
 
 export type { IImageModel, IListImageFile, ILoadingComponent, IPaginationButton, ISectionTitle, ISliderComponent, IStaticCard, UserAuthStepInterFace, HomeBannerSlider, BreadCrumbInterFace, FundRaiseCreationBanner, FundRaiseCreationStep, ITableProps }
