@@ -10,7 +10,6 @@ import store from "@/external/redux/store/store";
 import axios_instance from "@/external/axios/axios-instance";
 import { addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError } from "./_util/helper/authHelper";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
-import Head from "next/head";
 // import { Head } from "next/document";
 
 interface RootLayoutProps {
@@ -20,13 +19,11 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
 
 
-
   axios_instance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
   API_axiosInstance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
 
   return (
-    <html lang="en">
-      <Head>
+    <html lang="en"> 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -34,7 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&family=Sedan+SC&display=swap" rel="stylesheet" />
-      </Head>
+     
       <body>
         <Provider store={store}>
           <SessionProvider>
