@@ -33,9 +33,10 @@ export let onLoginSubmit = async function (values, successCB, errorCB) {
         console.log(response);
 
         if (response && response?.status) {
+            console.log(response.data);
 
             let { token } = response.data;
-            // console.log(token);
+            console.log(token);
             if (token) {
                 js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA, token)
                 successCB();
@@ -139,8 +140,11 @@ export async function onResetOtp(successCB, errorCB) {
             "authorization": `Bearer ${token}`
         }
     }).then((data) => {
+        
         let response = data.data;
         if (response.status) {
+            const {token: newToken} = response
+            js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA,newToken);
             successCB()
         } else {
             errorCB(response.msg)
