@@ -1,19 +1,23 @@
 import { isUserLogged } from '@/app/_util/helper/authHelper';
+import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
-function UserBlackedRouter({ children, session }) {
+function UserBlackedRouter({ children }) {
 
-    let [isAuth, setAuth] = useState(false)
-    let router = useRouter();
+    const [isAuth, setAuth] = useState(false)
+    const router = useRouter();
+    const session = getSession()
 
     useEffect(() => {
-        const isLogged = isUserLogged(session);
-        if (isLogged) {
-            router.replace("/");
-        } else {
-            setAuth(true);
-        }
+        session.then((data) => {
+            const isLogged = isUserLogged(data);
+            if (isLogged) {
+                router.replace("/");
+            } else {
+                setAuth(true);
+            }
+        }).catch((err)=>{})
     }, [session])
 
 

@@ -11,12 +11,12 @@ import { UserAuthStepInterFace } from '@/types/InterFace/PropInterFace'
 
 function SignUp(): React.ReactElement {
 
-  let session = useSession()
+  
   let [signUpStepIndex, setSignUpStepIndex] = useState<number>(0)
   const SignUpComponentSteps: FunctionComponent<UserAuthStepInterFace> = signUpSteps[signUpStepIndex];
 
   return (
-    <UserBlackedRouter session={session}>
+    <UserBlackedRouter>
       <div className='h-screen  '>
         <SimpleHeader />
 

@@ -10,6 +10,8 @@ import store from "@/external/redux/store/store";
 import axios_instance from "@/external/axios/axios-instance";
 import { addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError } from "./_util/helper/authHelper";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
+import Head from "next/head";
+// import { Head } from "next/document";
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -24,14 +26,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en">
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      <link rel="stylesheet" href={`${process.env.NEXT_PUBLIC_CSS_PATH}/style.css`}></link>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&family=Sedan+SC&display=swap" rel="stylesheet" />
-
+      <Head>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="stylesheet" href={`${process.env.NEXT_PUBLIC_CSS_PATH}/style.css`}></link>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&family=Sedan+SC&display=swap" rel="stylesheet" />
+      </Head>
       <body>
         <Provider store={store}>
           <SessionProvider>
@@ -42,10 +45,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </body>
 
 
-      <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://cdn.tailwindcss.com" async></script>
 
-      <Script src="https://kit.fontawesome.com/046dc73391.js" crossOrigin="anonymous"></Script>
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></Script>
+      <Script async src="https://kit.fontawesome.com/046dc73391.js" crossOrigin="anonymous"></Script>
+      <Script async src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></Script>
 
     </html>
   );

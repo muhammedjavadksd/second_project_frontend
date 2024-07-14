@@ -19,56 +19,48 @@ function page(): React.ReactElement {
             <Header />
             <div className="container mx-auto mt-5 mb-5">
                 <div className="mb-5">
-                    {
-                        <BreadCrumb path={['Profile', 'View Profile']}></BreadCrumb>
-                    }
+                    <BreadCrumb path={['Profile', 'View Profile']} />
                 </div>
                 <div className="flex gap-5">
-                    <div className='w-1/4'>
-                        <AccountTab />
+                    <div className="w-1/4">
+                    <AccountTab />
                     </div>
-                    <div className='w-4/5'>
+                    <div className="w-4/5">
+                    <div>
+                        <h4 className="font-medium text-3xl mb-2">Hi, Muhammed Javad</h4>
+                        <p>Here is your daily activities, and history</p>
+                    </div>
+                    <div className="mt-5">
+                        <div className="bg-white shadow mt-3 mb-5 p-5 pt-5">
                         <div>
-                            <h4 className='font-medium text-3xl mb-2'>Hi, Muhammed Javad</h4>
-                            <p>Here is your daily activities, and history</p>
-                        </div>
-                        <div className='mt-5'>
-
-
-                            <div className="bg-white shadow mt-3 mb-5 p-5 pt-5">
-                                <div>
-                                    <div className='flex mb-3'>
-                                        <h2 className='text-1xl'>Personal Details</h2>
-                                        {!editPersonalDetails && <button onClick={() => setEditPersonalDetails(!editPersonalDetails)} type="button" className="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm   ">
-                                            <i className="fa-solid fa-pencil"></i>    Edit Details
-                                        </button>}
-                                    </div>
-
-                                    <EditProfileComponent editPersonalDetails={editPersonalDetails}></EditProfileComponent>
-                                </div>
+                            <div className="flex mb-3">
+                            <h2 className="text-1xl">Personal Details</h2>
+                            {!editPersonalDetails && (
+                                <button
+                                onClick={() => setEditPersonalDetails(!editPersonalDetails)}
+                                type="button"
+                                className="ml-auto text-black flex gap-2 items-center bg-transparent font-medium rounded-lg text-sm"
+                                >
+                                <i className="fa-solid fa-pencil"></i> Edit Details
+                                </button>
+                            )}
                             </div>
-
-
-
-                            <div className="grid grid-cols-2 flex gap-5">
-                                <div className="bg-white shadow  p-5 pt-5 mt-1 h-fit">
-
-                                    {/* <EditPhoneNumber></EditPhoneNumber> */}
-                                    <EditUserPhoneNumber></EditUserPhoneNumber>
-                                </div>
-
-                                <div className="bg-white shadow  p-5 pt-5 mt-1 h-fit">
-
-                                    <EditUserEmailAddress></EditUserEmailAddress>
-                                </div>
-                            </div>
-
-
+                            <EditProfileComponent editPersonalDetails={editPersonalDetails} />
                         </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-5">
+                        <div className="bg-white shadow p-5 pt-5 mt-1 h-fit">
+                            <EditUserPhoneNumber />
+                        </div>
+                        <div className="bg-white shadow p-5 pt-5 mt-1 h-fit">
+                            <EditUserEmailAddress />
+                        </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
-            </div >
-            <Footer />
+                <Footer />
+            </div>
         </UserPrivateRouter>
     )
 }

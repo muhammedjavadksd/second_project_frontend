@@ -13,14 +13,14 @@ import { UserAuthStepInterFace } from '@/types/InterFace/PropInterFace'
 function SignIn(): React.ReactElement {
 
   let [loginStepIndex, setLoginStepIndex] = useState<number>(0)
-  let session = useSession()
+  // let session = useSession()
 
   const LoginStepComponent: FunctionComponent<UserAuthStepInterFace> = loginSteps[loginStepIndex];
 
 
 
   return (
-    <UserBlackedRouter session={session}>
+    <UserBlackedRouter>
       <div className='h-screen  '>
         <SimpleHeader />
 
