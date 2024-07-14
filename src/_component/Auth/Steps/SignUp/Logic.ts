@@ -193,10 +193,16 @@ async function changeEmailIDHandler(values, successCB, errorCB) {
                 "authorization": `Bearer ${token}`
             }
         });
-
+        
         let response = requestToResetEmailID.data;
         if (response.status) {
-            successCB()
+            const { token } = response.data;
+            if (token) {
+                js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA, token);
+                successCB()
+            } else {
+                toast.error("Please try again...")
+            }
         } else {
             errorCB(response.msg)
         }
