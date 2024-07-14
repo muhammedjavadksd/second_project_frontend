@@ -2,6 +2,7 @@ import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
 import { objectToUrlQuery } from "@/app/_util/helper/utilHelper";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 import { getSession } from "next-auth/react";
+import const_data from "@/app/_util/_const/const";
 
 const { default: axios_instance } = require("@/external/axios/axios-instance");
 
@@ -11,16 +12,22 @@ async function getAIDescription(amount, category, sub_category, raiser_name, rai
     let query = objectToUrlQuery(urlParamsObject);
 
     try {
-        let data = await axios_instance.get(`/api/user_api/fund_raiser/ai_description?${query}`)
+        if (const_data.AI_DESCRIPTION_GENERATION) {
+            let data = await axios_instance.get(`/api/user_api/fund_raiser/ai_description?${query}`)
 
-        let response = data?.data;
-        if (response.status) {
-            let AI_Description = response.data
-            return AI_Description
+            let response = data?.data;
+            if (response.status) {
+                let AI_Description = response.data
+                return AI_Description
+            } else {
+                return false
+            }
         } else {
-            return false
+            
+            return `Could you please consider making a donation to support my ${benificiary_relation}? Your contribution would greatly assist in the area of ${category}. Thank you for your generosity.`
         }
     } catch (e) {
+        console.log(e);
         return false;
     }
 }
