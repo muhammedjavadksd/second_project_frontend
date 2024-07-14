@@ -11,7 +11,7 @@ export async function onEmailUpdate(values: { email: string }, successCB: Functi
         const session = await getSession();
         const user = userDetailsFromGetSession(session)
         const token = user.token;
-        let emailUpdate = await API_axiosInstance.patch("/profile/update_email_id", {
+        const emailUpdate = await API_axiosInstance.patch("/profile/update_email_id", {
             new_email_id: email
         }, {
             headers: {
@@ -27,7 +27,7 @@ export async function onEmailUpdate(values: { email: string }, successCB: Functi
             errorCB(response.msg)
         }
     } catch (e) {
-        let ErrorMsg: string = e?.response?.data?.msg ?? "Something went wrong";
+        const ErrorMsg: string = e?.response?.data?.msg ?? "Something went wrong";
         errorCB(ErrorMsg)
     }
 }
@@ -39,7 +39,7 @@ export async function onOTPValidate(values: { otp: number }, successCB: Function
         const user = userDetailsFromGetSession(session)
         const token = user.token;
         const { otp } = values;
-        let otpValidate = await API_axiosInstance.patch("/profile/profile_update_otp_submission", {
+        const otpValidate = await API_axiosInstance.patch("/profile/profile_update_otp_submission", {
             otp_number: otp,
             otp_type: "EMAIL",
         }, {
@@ -47,6 +47,7 @@ export async function onOTPValidate(values: { otp: number }, successCB: Function
                 "authorization": `Bearer ${token}`
             }
         })
+        
 
 
         const response = otpValidate.data;
@@ -56,7 +57,7 @@ export async function onOTPValidate(values: { otp: number }, successCB: Function
             errorCB(response.msg)
         }
     } catch (e) {
-        let ErrorMsg: string = e?.response?.data?.msg ?? "Something went wrong";
+        const ErrorMsg: string = e?.response?.data?.msg ?? "Something went wrong";
         errorCB(ErrorMsg)
     }
 }

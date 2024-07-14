@@ -13,15 +13,15 @@ import { clearFundRaiserData, updateFundRaiseData } from '@/external/redux/slice
 
 function AIDescription({ state }) {
 
-    let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+    const { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
 
-    let [initialValues, setInitialValues] = useState({});
-    let [isLoading, setLoading] = useState(true)
-    let router = useRouter();
-    let currentApplicationData = useSelector((state) => state.fund_raiser);
+    const [initialValues, setInitialValues] = useState({});
+    const [isLoading, setLoading] = useState(true)
+    const router = useRouter();
+    const currentApplicationData = useSelector((state) => state.fund_raiser);
     const dispatch = useDispatch()
-    let isWorking = false;
-    let fetchAIData = () => {
+    const isWorking = false;
+    const fetchAIData = () => {
         console.log(currentApplicationData);
         if (currentApplicationData.amount && currentApplicationData.documents.length && !isWorking) {
             // setLoading(true)

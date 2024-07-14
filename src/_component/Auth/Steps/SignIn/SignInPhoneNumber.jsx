@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 function SignInPhoneNumber({ state }) {
 
-    let [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     function onComplete() {
         setIsLoading(false)

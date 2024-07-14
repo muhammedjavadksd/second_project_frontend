@@ -23,19 +23,19 @@ async function signUpDataHandler(data) {
 
 
     try {
-        let { first_name, last_name, phone_number, email_address, blood_group, location } = data
+        const { first_name, last_name, phone_number, email_address, blood_group, location } = data
 
-        let auth_id = "";
-        let auth_provider = const_data.AUTH_PROVIDERS['CREDENTIAL'] //AUTH_PROVIDERS.CREDENTIAL
+        const auth_id = "";
+        const auth_provider = const_data.AUTH_PROVIDERS['CREDENTIAL'] //AUTH_PROVIDERS.CREDENTIAL
 
-        let dataSignUp = { phone_number, email_address, auth_id, auth_provider, first_name, last_name, location, blood_group }
+        const dataSignUp = { phone_number, email_address, auth_id, auth_provider, first_name, last_name, location, blood_group }
 
-        let signUpRequets: AxiosResponse = await API_axiosInstance.post("/auth/sign_up", dataSignUp)
-        let signUpResponse: CustomeAxiosResponse = signUpRequets.data;
+        const signUpRequets: AxiosResponse = await API_axiosInstance.post("/auth/sign_up", dataSignUp)
+        const signUpResponse: CustomeAxiosResponse = signUpRequets.data;
         console.log(signUpResponse);
 
         if (signUpResponse.status) {
-            let token = signUpResponse.data?.token;
+            const token = signUpResponse.data?.token;
             js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA, token);
 
             return { status: true, msg: "Account initiated success" }
@@ -47,7 +47,7 @@ async function signUpDataHandler(data) {
         
         console.log(e);
 
-        let errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
         console.log(errorMsg);
         
         return {
@@ -59,7 +59,7 @@ async function signUpDataHandler(data) {
 
 
 function onSignUpHandler(values, successCB, onSignUpError) {
-    let userSignUpData = {
+    const userSignUpData = {
         first_name: values.first_name,
         last_name: values.last_name,
         email_address: values.email_address,
@@ -81,7 +81,7 @@ function onSignUpHandler(values, successCB, onSignUpError) {
         }
         try {
 
-            let data = await signUpDataHandler(userSignUpData)
+            const data = await signUpDataHandler(userSignUpData)
             console.log({ data });
             if (data.status) {
                 toast.success("Check your email for the OTP number");
@@ -95,12 +95,12 @@ function onSignUpHandler(values, successCB, onSignUpError) {
 
             console.log(e);
 
-            let errorMessage = e?.response?.data?.msg ?? "Something went wrong"
+            const errorMessage = e?.response?.data?.msg ?? "Something went wrong"
             onSignUpError(errorMessage);
         }
     }, async (err) => {
         console.log(err);
-        let data = await signUpDataHandler(userSignUpData)
+        const data = await signUpDataHandler(userSignUpData)
         console.log(data);
         console.log("API after error");
         if (data.status) {
@@ -114,7 +114,7 @@ function onSignUpHandler(values, successCB, onSignUpError) {
 
 }
 
-let signUpValidator = yup.object().shape({
+const signUpValidator = yup.object().shape({
     phone_number: yup.number().typeError("Please enter number").test("len", "Enter 10 digit phone number", (val) => val.toString().length == 10),
     first_name: yup.string().typeError("Please enter valid first name").required("First name is required"),
     last_name: yup.string().typeError("Please enter valid last name").required("Last name is required"),
@@ -123,7 +123,7 @@ let signUpValidator = yup.object().shape({
 })
 
 
-let signUpInitialValues = {
+const signUpInitialValues = {
     first_name: null,
     last_name: null,
     email_address: null,
@@ -131,25 +131,25 @@ let signUpInitialValues = {
     bloodGroup: null,
 }
 
-let signUpOtpInitialValues = {
+const signUpOtpInitialValues = {
     otp_number: null,
 }
 
-let otpValidator = yup.object().shape({
+const otpValidator = yup.object().shape({
     otp_number: yup.number().typeError("Please enter valid otp number").test("len", `Please enter ${const_data.OTP_LENGTH} digit OTP Number`, (val) => val.toString().length == const_data.OTP_LENGTH).required("Otp number is required"),
 })
 
-let signUpOtpHandler = async function (val, successCB, errorCB) {
-    let { otp_number, email_id } = val;
+const signUpOtpHandler = async function (val, successCB, errorCB) {
+    const { otp_number, email_id } = val;
     console.log(val);
 
     try {
 
 
-        let token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA);
+        const token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA);
         console.log(token);
 
-        let otpSubmissionRequest = await API_axiosInstance.post("/auth/auth_otp_submission", {
+        const otpSubmissionRequest = await API_axiosInstance.post("/auth/auth_otp_submission", {
             otp_number,
             email_id
         }, {
@@ -159,7 +159,7 @@ let signUpOtpHandler = async function (val, successCB, errorCB) {
             }
         })
 
-        let response = otpSubmissionRequest.data;
+        const response = otpSubmissionRequest.data;
         console.log(response);
 
 
@@ -171,7 +171,7 @@ let signUpOtpHandler = async function (val, successCB, errorCB) {
         }
     } catch (e) {
         console.log(e);
-        let errorMsg = e?.response?.data?.msg ?? "Something went wrong"
+        const errorMsg = e?.response?.data?.msg ?? "Something went wrong"
         errorCB(errorMsg)
     }
 }
@@ -180,12 +180,12 @@ let signUpOtpHandler = async function (val, successCB, errorCB) {
 
 async function changeEmailIDHandler(values, successCB, errorCB) {
 
-    let { email_id } = values;
+    const { email_id } = values;
 
     try {
 
-        let token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA);
-        let requestToResetEmailID = await API_axiosInstance.put("auth/edit_auth_phone", {
+        const token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA);
+        const requestToResetEmailID = await API_axiosInstance.put("auth/edit_auth_phone", {
             email_id
         }, {
             headers: {
@@ -194,7 +194,7 @@ async function changeEmailIDHandler(values, successCB, errorCB) {
             }
         });
         
-        let response = requestToResetEmailID.data;
+        const response = requestToResetEmailID.data;
         if (response.status) {
             const { token } = response.data;
             if (token) {
@@ -213,11 +213,11 @@ async function changeEmailIDHandler(values, successCB, errorCB) {
 }
 
 
-let changeEmailIDInitialValues = {
+const changeEmailIDInitialValues = {
     email_id: null,
 }
 
-let changemailIDValidation = yup.object().shape({
+const changemailIDValidation = yup.object().shape({
     email_id: yup.string().typeError("Please enter valid email id").email("Please enter valid email id").required("Email field is required")
 })
 
@@ -226,8 +226,8 @@ async function resendOtpHandler(successCB, errorCB) {
 
     try {
         console.log("Resend otp request");
-        let token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA);
-        let resendOtpRequest = (await API_axiosInstance.post("auth/resend_otp", {}, {
+        const token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA);
+        const resendOtpRequest = (await API_axiosInstance.post("auth/resend_otp", {}, {
             headers: {
                 'Content-Type': 'application/json',
                 "authorization": `Bearer ${token}`

@@ -15,13 +15,13 @@ import { useSelector } from 'react-redux'
 
 function Basic({ state }) {
 
-  let [createInitialValue, setInitialValues] = useState(initialValuesForCreate)
+  const [createInitialValue, setInitialValues] = useState(initialValuesForCreate)
 
-  let navigation = useRouter();
-  let [isLoading, setLoading] = useState(false)
-  let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
-  let currentApplicationData = useSelector((state) => state.fund_raiser);
-  let [subCategory, setSubCategory] = useState([]);
+  const navigation = useRouter();
+  const [isLoading, setLoading] = useState(false)
+  const { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+  const currentApplicationData = useSelector((state) => state.fund_raiser);
+  const [subCategory, setSubCategory] = useState([]);
 
   useEffect(() => {
     if (currentApplicationData.amount) {

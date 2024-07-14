@@ -18,14 +18,14 @@ export async function onEditProfile(values, successCB, errorCB) {
 
         const { first_name, last_name } = values;
 
-        let session = await getSession();
-        let user = userDetailsFromGetSession(session)
-        let token = user.token;
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session)
+        const token = user.token;
         console.log(token);
 
 
 
-        let editProfileEndPoint = await API_axiosInstance.patch("/profile/update_profile", {
+        const editProfileEndPoint = await API_axiosInstance.patch("/profile/update_profile", {
             user_profile: {
                 first_name,
                 last_name
@@ -37,19 +37,19 @@ export async function onEditProfile(values, successCB, errorCB) {
         })
 
 
-        let response = editProfileEndPoint.data;
+        const response = editProfileEndPoint.data;
         console.log(response);
         if (response.status) {
             successCB()
         } else {
-            let errorMsg = response.msg ?? "Something went wrong";
+            const errorMsg = response.msg ?? "Something went wrong";
             errorCB(errorMsg)
         }
 
     } catch (e) {
         console.log(e);
 
-        let errorMsg = e?.response?.body?.msg ?? "Something went wrong";
+        const errorMsg = e?.response?.body?.msg ?? "Something went wrong";
         errorCB(errorMsg)
     }
 

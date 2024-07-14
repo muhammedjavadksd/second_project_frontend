@@ -11,9 +11,9 @@ import { useRouter } from 'next/navigation'
 
 function SignUpOTP({ state }) {
 
-    let [isLoading, setIsLoading] = useState(false);
-    let [isTimeEnd, setIsTimeEnd] = useState(false);
-    let router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const [isTimeEnd, setIsTimeEnd] = useState(false);
+    const router = useRouter();
     function otpCompleted() {
         toast.success("OTP has been verified")
         setIsTimeEnd(false)

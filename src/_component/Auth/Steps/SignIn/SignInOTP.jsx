@@ -9,9 +9,9 @@ import { useRouter } from 'next/navigation'
 
 function SignInOTP({ state }) {
 
-  let [isLoading, setIsLoading] = useState(false);
-  let [isTimeEnd, setIsTimeEnd] = useState(false)
-  let navigate = useRouter()
+  const [isLoading, setIsLoading] = useState(false);
+  const [isTimeEnd, setIsTimeEnd] = useState(false)
+  const navigate = useRouter()
 
   function onSuccess() {
     toast.success("OTP has been verified")

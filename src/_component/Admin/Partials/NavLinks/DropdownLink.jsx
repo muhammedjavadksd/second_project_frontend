@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 
 function DropdownLink({ title, icon, isActive, children }) {
 
-    let [isOpen, setIsOpen] = useState(isActive);
+    const [isOpen, setIsOpen] = useState(isActive);
 
     return (
         <li>

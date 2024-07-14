@@ -7,10 +7,10 @@ import { getSession } from "next-auth/react";
 
 const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
     console.log(values);
-    let { city, pinCode, state, district, fullAddress, currentApplication } = values
+    const { city, pinCode, state, district, fullAddress, currentApplication } = values
 
-    let session = await getSession();
-    let user = userDetailsFromGetSession(session)
+    const session = await getSession();
+    const user = userDetailsFromGetSession(session)
 
     // let { benificiary_relation, description, raiser_age, raiser_name, currentApplication } = val
 
@@ -30,7 +30,7 @@ const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
             //     }
             // })
 
-            let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
+            const requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
                 city, pincode: pinCode, state, district, full_address: fullAddress
             }, {
                 headers: {
@@ -39,7 +39,7 @@ const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
                 },
             })
 
-            let response = requestAPI.data;
+            const response = requestAPI.data;
             console.log(response);
             if (response.status) {
                 store.dispatch(updateFundRaiseData({
@@ -57,7 +57,7 @@ const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
             }
 
         } catch (e) {
-            let errorMessage = e?.response?.body?.msg;
+            const errorMessage = e?.response?.body?.msg;
             console.log(e);
             console.log(errorMessage);
             errorCB(errorMessage)

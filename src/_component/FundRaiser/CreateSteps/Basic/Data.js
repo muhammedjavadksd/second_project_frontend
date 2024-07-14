@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 
-let initialValuesForCreate = {
+const initialValuesForCreate = {
     amount: null,
     category: null,
     sub_category: null,
@@ -8,7 +8,7 @@ let initialValuesForCreate = {
     email_id: null,
 }
 
-let createInitialValidation = yup.object().shape({
+const createInitialValidation = yup.object().shape({
     amount: yup.number("Please enter valid number").min(2000, "Please enter minimum 2000-/").required("Amount field is required"),
     category: yup.string("Please select valid category").required("category field is required"),
     sub_category: yup.string("Please select valid sub category").required("sub category field is required"),

@@ -4,7 +4,7 @@ import React from 'react'
 
 function AccountTab() {
 
-    let router = useRouter()
+    const router = useRouter()
     return (
         <div>
             <h2>Profile editing</h2>

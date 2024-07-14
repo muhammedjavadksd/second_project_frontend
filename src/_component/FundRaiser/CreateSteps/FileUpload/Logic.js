@@ -7,8 +7,8 @@ import { getSession } from "next-auth/react";
 
 
 async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
-    let session = await getSession();
-    let user = userDetailsFromGetSession(session)
+    const session = await getSession();
+    const user = userDetailsFromGetSession(session)
 
 
 
@@ -21,13 +21,13 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
         // type, edit_id, image_id
         try {
 
-            let API_request = await API_axiosInstance.delete(`/fund_raise/delete_image/${type}/${edit_id}/${image_id}`, {
+            const API_request = await API_axiosInstance.delete(`/fund_raise/delete_image/${type}/${edit_id}/${image_id}`, {
                 headers: {
                     "authorization": `Bearer ${token}`,
                 }
             })
  
-            let response = API_request.data;
+            const response = API_request.data;
             console.log(response);
             if (response.status) {
                 onSuccess(image_id, type)
@@ -36,7 +36,7 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
             }
 
         } catch (e) {
-            let errorMessage = e?.response?.body?.msg;
+            const errorMessage = e?.response?.body?.msg;
             console.log(e);
             console.log(errorMessage);
             onError(errorMessage)
@@ -48,8 +48,8 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
 
 async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fundRaiseID) {
     console.log(my_files);
-    let session = await getSession();
-    let user = userDetailsFromGetSession(session)
+    const session = await getSession();
+    const user = userDetailsFromGetSession(session)
 
 
     console.log(my_files);
@@ -65,7 +65,7 @@ async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fun
 
 
 
-        let formData = new FormData();
+        const formData = new FormData();
 
         formData.append("image_type", type);
         // formData.append("images", my_files);
@@ -81,7 +81,7 @@ async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fun
         // console.log(formData.getAll());
 
         try {
-            let API_request = await API_axiosInstance.patch(`/fund_raise/upload_images/${fundRaiseID}`, formData, {
+            const API_request = await API_axiosInstance.patch(`/fund_raise/upload_images/${fundRaiseID}`, formData, {
                 headers: {
                     "authorization": `Bearer ${token}`,
                     "fund_id": fundRaiseID,

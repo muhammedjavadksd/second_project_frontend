@@ -14,7 +14,7 @@ export async function onPhoneNumberUpdate(values: { phone_number: number }, succ
         const { phone_number } = values;
         const token = user.token
 
-        let changePhoneNumber = await API_axiosInstance.patch("/profile/update_phone_number", {
+        const changePhoneNumber = await API_axiosInstance.patch("/profile/update_phone_number", {
             new_phone_number: phone_number
         }, {
             headers: {
@@ -29,7 +29,7 @@ export async function onPhoneNumberUpdate(values: { phone_number: number }, succ
             errorCB(response.msg)
         }
     } catch (e) {
-        let ErrorMsg: string = e?.response?.data?.msg ?? "Something went wrong";
+        const ErrorMsg: string = e?.response?.data?.msg ?? "Something went wrong";
         errorCB(ErrorMsg)
     }
 }
@@ -41,7 +41,7 @@ export async function onOTPValidate(otp: number, successCB: Function, errorCB: F
         const user = userDetailsFromGetSession(session)
         const token = user.token
 
-        let otpValidate = await API_axiosInstance.patch("/profile/profile_update_otp_submission", {
+        const otpValidate = await API_axiosInstance.patch("/profile/profile_update_otp_submission", {
             otp_number: otp,
             otp_type: "PHONE",
         }, {
@@ -58,7 +58,7 @@ export async function onOTPValidate(otp: number, successCB: Function, errorCB: F
             errorCB(response.msg)
         }
     } catch (e) {
-        let ErrorMsg: string = e?.response?.data?.msg ?? "Something went wrong";
+        const ErrorMsg: string = e?.response?.data?.msg ?? "Something went wrong";
         errorCB(ErrorMsg)
     }
 }

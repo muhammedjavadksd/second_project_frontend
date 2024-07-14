@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 function EditPhoneNumber({ state }) {
 
-    let [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     function onError(err) {

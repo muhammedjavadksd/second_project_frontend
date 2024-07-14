@@ -23,7 +23,7 @@ function EditProfileComponent({ editPersonalDetails }): React.ReactElement {
     useEffect(() => {
         console.log(session);
 
-        let profile = userDetailsFromUseSession(session);
+        const profile = userDetailsFromUseSession(session);
         console.log(profile);
 
         if (profile) {

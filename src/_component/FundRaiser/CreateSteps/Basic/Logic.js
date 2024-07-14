@@ -18,14 +18,14 @@ async function onInitialCreate(val, successCB, errorCB) {
     console.log("Data has been transferd");
 
     // console.log('The values are');
-    let session = await getSession();
-    let user = userDetailsFromGetSession(session)
+    const session = await getSession();
+    const user = userDetailsFromGetSession(session)
     if (user) {
         const token = user.token
 
         try {
-            let { amount, category, sub_category, phone_number, email_id } = val;
-            let createEndPoint = await API_axiosInstance.post("/fund_raise/create", {
+            const { amount, category, sub_category, phone_number, email_id } = val;
+            const createEndPoint = await API_axiosInstance.post("/fund_raise/create", {
                 amount, category, sub_category, phone_number, email: email_id
             }, {
                 headers: {
@@ -33,11 +33,11 @@ async function onInitialCreate(val, successCB, errorCB) {
                 }
             })
 
-            let response = createEndPoint.data;
+            const response = createEndPoint.data;
             if (response.status && response.data) {
 
                 console.log(response);
-                let fund_id = response.data?.fund_id;
+                const fund_id = response.data?.fund_id;
                 if (fund_id) {
 
 
@@ -64,10 +64,9 @@ async function onInitialCreate(val, successCB, errorCB) {
             }
         } catch (e) {
             // alert("This work")
-            let statusCode = e?.response?.status ?? 500;
-            console.log(statusCode);
+            const statusCode = e?.response?.status ?? 500;
             console.log(e);
-            let errorMsg = e?.response?.data?.msg ?? "Something went wrong";
+            const errorMsg = e?.response?.data?.msg ?? "Something went wrong";
             errorCB({ msg: errorMsg, statusCode })
         }
     } else {

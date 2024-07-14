@@ -18,16 +18,17 @@ export function loginStepDown(state) {
     state((prev) => prev - 1)
 }
 
-export let onLoginSubmit = async function (values, successCB, errorCB) {
+export const onLoginSubmit = async function (values, successCB, errorCB) {
 
-    let email = values.email
+    const email = values.email
 
     try {
 
-        let loginRequest = await API_axiosInstance.post("/auth/sign_in", {
+        const loginRequest = await API_axiosInstance.post("/auth/sign_in", {
             email
         })
-        let response = loginRequest.data;
+        const response = loginRequest.data;
+         
 
         console.log("The response is:");
         console.log(response);
@@ -35,7 +36,7 @@ export let onLoginSubmit = async function (values, successCB, errorCB) {
         if (response && response?.status) {
             console.log(response.data);
 
-            let { token } = response.data;
+            const { token } = response.data;
             console.log(token);
             if (token) {
                 js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA, token)
@@ -48,7 +49,7 @@ export let onLoginSubmit = async function (values, successCB, errorCB) {
         }
     } catch (e) {
         console.log(e);
-        let errorMessage = e?.response?.data?.msg ?? "Something went wrong"
+        const errorMessage = e?.response?.data?.msg ?? "Something went wrong"
         errorCB(errorMessage)
     }
 
@@ -70,23 +71,22 @@ export let onLoginSubmit = async function (values, successCB, errorCB) {
     // })
 }
 
-export let otpValidaor = yup.object().shape({
+export const otpValidaor = yup.object().shape({
     otp_number: yup.number("Please enter valid otp number").required("Otp field is required").test("len", `Please enter ${const_data.OTP_LENGTH} digit OTP number`, (val) => val.toString().length == const_data.OTP_LENGTH)
 })
 
-export let otpInitialValues = {
+export const otpInitialValues = {
     otp_number: ''
 }
 
 export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
 
-    let user = await getSession();
-    let userDetails = userDetailsFromGetSession(user)
+    const user = await getSession();
     console.log(user);
 
     try {
-        let otp_number = values.otp_number
-        let token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA);
+        const otp_number = values.otp_number
+        const token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA);
 
         console.log(token);
         signIn("credentials", { otp_number, redirect: false, auth_type: "user", token: token }).then((data) => {
@@ -141,7 +141,7 @@ export async function onResetOtp(successCB, errorCB) {
         }
     }).then((data) => {
         
-        let response = data.data;
+        const response = data.data;
         if (response.status) {
             const {token: newToken} = response
             js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA,newToken);

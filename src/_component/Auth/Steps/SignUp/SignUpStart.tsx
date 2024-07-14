@@ -10,7 +10,7 @@ import Link from 'next/link'
 
 function SignUpStart({ state }) {
 
-    let [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     function onSignUpFormSubmit() {
         state((prev) => prev + 1)

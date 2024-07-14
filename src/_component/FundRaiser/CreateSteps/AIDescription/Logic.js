@@ -8,16 +8,16 @@ const { default: axios_instance } = require("@/external/axios/axios-instance");
 
 async function getAIDescription(amount, category, sub_category, raiser_name, raiser_age, benificiary_relation, description, city, pinCode, state, district) {
 
-    let urlParamsObject = { amount, category, sub_category, raiser_name, raiser_age, benificiary_relation, description, city, pinCode, state, district };
-    let query = objectToUrlQuery(urlParamsObject);
+    const urlParamsObject = { amount, category, sub_category, raiser_name, raiser_age, benificiary_relation, description, city, pinCode, state, district };
+    const query = objectToUrlQuery(urlParamsObject);
 
     try {
         if (const_data.AI_DESCRIPTION_GENERATION) {
-            let data = await axios_instance.get(`/api/user_api/fund_raiser/ai_description?${query}`)
+            const data = await axios_instance.get(`/api/user_api/fund_raiser/ai_description?${query}`)
 
-            let response = data?.data;
+            const response = data?.data;
             if (response.status) {
-                let AI_Description = response.data
+                const AI_Description = response.data
                 return AI_Description
             } else {
                 return false
@@ -35,10 +35,10 @@ async function getAIDescription(amount, category, sub_category, raiser_name, rai
 
 async function onDescriptionSubmit(val, successCB, errorCB) {
 
-    let session = await getSession();
-    let user = userDetailsFromGetSession(session)
+    const session = await getSession();
+    const user = userDetailsFromGetSession(session)
 
-    let { ai_description, currentApplication } = val
+    const { ai_description, currentApplication } = val
 
     if (user) {
         const token = user.token
@@ -47,7 +47,7 @@ async function onDescriptionSubmit(val, successCB, errorCB) {
 
         try {
 
-            let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
+            const requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
                 description: ai_description
             }, {
                 headers: {
@@ -58,7 +58,7 @@ async function onDescriptionSubmit(val, successCB, errorCB) {
 
             console.log(currentApplication);
 
-            let response = requestAPI.data;
+            const response = requestAPI.data;
             console.log(response);
             if (response.status) {
                 successCB()
@@ -67,8 +67,7 @@ async function onDescriptionSubmit(val, successCB, errorCB) {
             }
 
         } catch (e) {
-            let errorMessage = e?.response?.body?.msg;
-            let statusCode = e?.response?.status;
+            const errorMessage = e?.response?.body?.msg;
             console.log(e);
             console.log(errorMessage);
             errorCB(errorMessage)

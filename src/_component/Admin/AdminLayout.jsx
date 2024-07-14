@@ -9,7 +9,7 @@ function AdminLayout({ children }) {
 
 
 
-    let [navbarToggler, setNavbarToggler] = useState(true)
+    const [navbarToggler, setNavbarToggler] = useState(true)
 
     return (
         <div className='adminBody'>

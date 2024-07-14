@@ -38,7 +38,7 @@ function EditUserEmailAddress(): React.ReactElement {
 
 
     useEffect(() => {
-        let user = userDetailsFromUseSession(session);
+        const user = userDetailsFromUseSession(session);
         if (user) {
             setUserEmailAddress(user.email);
         }

@@ -16,12 +16,12 @@ import { useSelector } from 'react-redux'
 
 function Address({ state }) {
 
-  let [isLoading, setLoding] = useState(false)
-  let router = useRouter()
-  let [district, setDistrict] = useState([])
-  let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
-  let [addressDataInitialValues, setInitialValues] = useState(addressInitialValues)
-  let selectData = useSelector((store) => store.fund_raiser);
+  const [isLoading, setLoding] = useState(false)
+  const router = useRouter()
+  const [district, setDistrict] = useState([])
+  const { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+  const [addressDataInitialValues, setInitialValues] = useState(addressInitialValues)
+  const selectData = useSelector((store) => store.fund_raiser);
 
 
   useEffect(() => {
@@ -91,7 +91,7 @@ function Address({ state }) {
                 <label htmlFor="state" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select state :</label>
                 <Field
                   onChange={(e) => {
-                    let newValues = const_data.STATE_WITH_DISTRICT[e.target.value];
+                    const newValues = const_data.STATE_WITH_DISTRICT[e.target.value];
                     setFieldValue("state", e.target.value)
                     // console.log(newValues);
                     if (newValues) {

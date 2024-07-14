@@ -12,13 +12,13 @@ import { updateFundRaiseData } from '@/external/redux/slicer/fundRaiserForm';
 
 function FileUpload({ state }) {
 
-  let imageRef = useRef(null);
-  let documentRef = useRef(null);
+  const imageRef = useRef(null);
+  const documentRef = useRef(null);
 
-  let [pictures, setPictures] = useState([]);
-  let [Documents, setDocuments] = useState([]);
-  let [checkValidation, setCheckValidation] = useState(false)
-  let selectData = useSelector((store) => store.fund_raiser);
+  const [pictures, setPictures] = useState([]);
+  const [Documents, setDocuments] = useState([]);
+  const [checkValidation, setCheckValidation] = useState(false)
+  const selectData = useSelector((store) => store.fund_raiser);
   const dispatch = useDispatch()
 
 
@@ -37,8 +37,8 @@ function FileUpload({ state }) {
   }, [selectData])
 
 
-  let { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
-  let router = useRouter();
+  const { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
+  const router = useRouter();
 
   function onSuccess(data) {
     console.log(selectData.documents);
@@ -55,8 +55,8 @@ function FileUpload({ state }) {
   }
 
   function onFileDeleted(image_id, type) {
-    let newImagesData = type == "Pictures" ? pictures : Documents
-    let filterData = newImagesData.filter((each) => each != image_id);
+    const newImagesData = type == "Pictures" ? pictures : Documents
+    const filterData = newImagesData.filter((each) => each != image_id);
     type == "Pictures" ? setPictures(filterData) : setDocuments(filterData);
     toast.success("Image deleted success")
   }
