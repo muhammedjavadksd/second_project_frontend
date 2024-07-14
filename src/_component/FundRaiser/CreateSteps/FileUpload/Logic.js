@@ -1,7 +1,7 @@
 import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
 import API_axiosInstance from "@/external/axios/api_axios_instance";
 import axios_instance from "@/external/axios/axios-instance";
-import { insertDocuments, insertPicturs, updateFundRaiseData } from "@/external/redux/slicer/fundRaiserForm";
+import { resetDocuments, resetPictures, updateFundRaiseData } from "@/external/redux/slicer/fundRaiserForm";
 import store from "@/external/redux/store/store";
 import { getSession } from "next-auth/react";
 
@@ -26,49 +26,10 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
                     "authorization": `Bearer ${token}`,
                 }
             })
-
-            // '/api/user_api/fund_raiser/create'
-            // let API_request = await axios_instance.delete(
-            //     `/api/user_api/fund_raiser/delete_image`,
-            //     {
-            //         headers: {
-            //             "authorization": `Bearer ${user.token}`,
-            //         },
-            //         params: {
-            //             type: type,
-            //             edit_id: edit_id,
-            //             image_id: image_id
-            //         }
-            //     }
-            // );
-
-
+ 
             let response = API_request.data;
             console.log(response);
             if (response.status) {
-                // let updateStore = store.getState().fund_raiser;
-                // if (updateStore) {
-                //     console.log(image_id);
-                //     if (type == "Documents") {
-
-                //         const newDocs = updateStore.documents?.filter(function (each) {
-                //             if (each == image_id) {
-                //                 console.log(each, image_id);
-                //                 console.log("Found");
-                //             }
-                //             return each != image_id
-                //         })
-                //         console.log("New docs");
-                //         console.log(newDocs);
-                //         store.dispatch(updateFundRaiseData({ documents: newDocs }))
-                //     } else {
-                //         const newDocs = updateStore.pictures?.filter((each) => each != image_id)
-                //         store.dispatch(updateFundRaiseData({ pictures: newDocs }))
-                //     }
-                //     console.log(updateStore);
-                // } else {
-                //     onError("Please try again")
-                // }
                 onSuccess(image_id, type)
             } else {
                 onError(response.msg)
@@ -140,16 +101,11 @@ async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fun
                 console.log(documents);
                 console.log(pictures);
 
-                if (newDocs) {
-                    // store.dispatch(updateFundRaiseData({
-                    //     pictures: pictures,
-                    //     documents: documents
-                    // }))
-                    // console.log(type);
+                if (newDocs) { 
                     if (type == "Document") {
-                        store.dispatch(insertDocuments({ documents }))
+                        store.dispatch(resetDocuments({ documents }))
                     } else {
-                        store.dispatch(insertPicturs({ pictures }))
+                        store.dispatch(resetPictures({ pictures }))
                     }
                 }
                 onSuccess({
