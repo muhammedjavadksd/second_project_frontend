@@ -74,7 +74,7 @@ function AIDescription({ state }) {
     return (
         <CreateFormBackground>
             <div className='w-full mb-2 ml-auto' style={{ display: "flex" }}>
-                <button onClick={reGenerateAIDescription} class="bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                <button disabled={isLoading} onClick={reGenerateAIDescription} class="disabled:cursor-not-allowed disabled:opacity-50 bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                     Re-generate FROM AI
                 </button>
             </div>
