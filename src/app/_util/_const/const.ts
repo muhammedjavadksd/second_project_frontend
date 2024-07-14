@@ -359,7 +359,7 @@ const const_data: Iconst_data = {
     FUND_RAISE_IMAGE_URL: "http://localhost:7001/api/fund_raise/images/fund_raiser_image",
     MONEY_ICON: '₹',
     OTP_LENGTH: 6,
-    OTP_TIME_SECONDS: 60
+    OTP_TIME_SECONDS: 3
 }
 
 export default const_data

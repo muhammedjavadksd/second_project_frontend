@@ -43,9 +43,13 @@ async function signUpDataHandler(data) {
             return { status: true, msg: signUpResponse.msg ?? "Something went wrong" }
         }
     } catch (e) {
+        console.log("hlo");
+        
         console.log(e);
 
-        let errorMsg = e.response?.data?.response?.msg ?? "Something went wrong"
+        let errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        console.log(errorMsg);
+        
         return {
             status: false,
             msg: errorMsg
@@ -211,21 +215,30 @@ let changemailIDValidation = yup.object().shape({
     email_id: yup.string().typeError("Please enter valid email id").email("Please enter valid email id").required("Email field is required")
 })
 
-function resendOtpHandler(successCB, errorCB) {
+async function resendOtpHandler(successCB, errorCB) {
 
 
-    console.log("Resend otp request");
-    axios_instance.post(const_data.FRONT_END_APIENDPOINT.RESENT_USER_SIGN_EMAIL_ID, null).then((data) => {
-        let response = data.data;
-        if (response.status) {
+    try {
+        console.log("Resend otp request");
+        let token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA);
+        let resendOtpRequest = (await API_axiosInstance.post("auth/resend_otp", {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                "authorization": `Bearer ${token}`
+            }
+        })).data
+    
+        if (resendOtpRequest.status) {
+            js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA, resendOtpRequest.token)
             successCB()
         } else {
-            errorCB(response.msg)
+            errorCB(resendOtpRequest?.msg ?? "Something went wrong")
         }
-    }).catch((err) => {
-        console.log(err);
-        errorCB("Something went wrong")
-    })
+    } catch (e) {
+        const errorMessage = e?.response?.data?.msg ?? "Something went wrong";
+        errorCB(errorMessage)
+    }
+    
 }
 
 export {
