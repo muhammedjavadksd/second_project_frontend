@@ -14,7 +14,9 @@ function Header() {
     useEffect(() => {
         session.then((data) => {
             const isLogged = userDetailsFromGetSession(data);
-            isLogged &&  setUser(isLogged)
+            if (isLogged && isLogged?.role == "user") {
+                setUser(isLogged)
+            }
         }).catch(()=>{})
     },[])
 
