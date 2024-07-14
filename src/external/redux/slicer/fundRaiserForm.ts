@@ -30,14 +30,24 @@ let fundRaiserSlicer = createSlice({
             let payloadData: FundRaiserFormInitialValues = action.payload.data;
             return { ...state, ...payloadData };
         },
-        insertPicturs: (state, action): FundRaiserFormInitialValues => {
+        SetPicturs: (state, action): FundRaiserFormInitialValues => {
             let pictures: string[] = action.payload.pictures ?? [];
             let newPictures: string[] = [...state.pictures, ...pictures];
             return { ...state, pictures: newPictures }
         },
-        insertDocuments: (state, action): FundRaiserFormInitialValues => {
+        setDocuments: (state, action): FundRaiserFormInitialValues => {
             let documents = action.payload.documents ?? [];
             let newDocuments = [...state.documents, ...documents];
+            return { ...state, documents: newDocuments }
+        },
+        resetPictures: (state, action): FundRaiserFormInitialValues => {
+            let pictures: string[] = action.payload.pictures ?? [];
+            let newPictures: string[] = [...pictures];
+            return { ...state, pictures: newPictures }
+        },
+        resetDocuments: (state, action): FundRaiserFormInitialValues => {
+            let documents = action.payload.documents ?? [];
+            let newDocuments = [...documents];
             return { ...state, documents: newDocuments }
         },
         clearFundRaiserData: (state, action) => {
@@ -46,5 +56,5 @@ let fundRaiserSlicer = createSlice({
     }
 })
 
-export const { updateFundRaiseData, insertPicturs, insertDocuments, clearFundRaiserData } = fundRaiserSlicer.actions
+export const { updateFundRaiseData, SetPicturs, setDocuments,resetPictures, resetDocuments, clearFundRaiserData } = fundRaiserSlicer.actions
 export default fundRaiserSlicer.reducer
