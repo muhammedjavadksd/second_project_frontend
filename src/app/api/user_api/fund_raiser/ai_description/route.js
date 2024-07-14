@@ -39,7 +39,7 @@ export async function GET(request) {
 
 
         const openai = new OpenAI({
-            apiKey: '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',
+            apiKey: process.env.NEXT_PUBLIC_NVIDIA_API,
             baseURL: 'https://integrate.api.nvidia.com/v1',
         })
 
