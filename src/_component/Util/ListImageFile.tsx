@@ -1,4 +1,3 @@
-import { FUND_RAISE_IMAGE_URL } from '@/app/_util/_const/const'
 import React, { useState } from 'react'
 import ImageItem from './ImageItem'
 import ImageModel from './ImageModel'
@@ -19,7 +18,7 @@ function ListImageFile({ data = [], BASE_PATH, onClose }: IListImageFile) {
   return (
     <div>
 
-      <ImageModel imageURL={currentImage} isOpen={currentImage != null} onImageClose={() => setCurrentImage(null)} />
+      <ImageModel ZIndex='999' imageURL={currentImage} isOpen={currentImage != null} onImageClose={() => setCurrentImage(null)} />
 
       <div className="">
 
