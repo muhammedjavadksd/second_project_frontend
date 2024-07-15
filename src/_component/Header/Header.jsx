@@ -3,14 +3,16 @@
 import React, { useEffect, useState } from 'react'
 import NavbarLinks from './NavbarLinks';
 import Image from 'next/image';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { isUserLogged, userDetailsFromGetSession } from '@/app/_util/helper/authHelper';
+import { useRouter } from 'next/navigation';
 
 function Header() {
 
     const [user, setUser] = useState(false);
-    let session = getSession();
+  let session = getSession();
+  const router = useRouter()
     useEffect(() => {
         session.then((data) => {
             const isLogged = userDetailsFromGetSession(data);
@@ -145,6 +147,11 @@ function Header() {
                   </a>
                   <a
                     href="#"
+                    onClick={() => {
+                      signOut({ redirect: false }).then((data) => {
+                          router.replace("auth/sign_in")
+                      }).catch((Err)=>{})
+                    }}
                     className="block px-4 py-2 text-sm text-gray-700"
                     role="menuitem"
                     tabIndex="-1"

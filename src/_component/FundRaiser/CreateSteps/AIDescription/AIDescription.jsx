@@ -20,7 +20,7 @@ function AIDescription({ state }) {
     const router = useRouter();
     const currentApplicationData = useSelector((state) => state.fund_raiser);
     const dispatch = useDispatch()
-    const isWorking = false;
+    let isWorking = false;
     const fetchAIData = () => {
         console.log(currentApplicationData);
         if (currentApplicationData.amount && currentApplicationData.documents.length && !isWorking) {
