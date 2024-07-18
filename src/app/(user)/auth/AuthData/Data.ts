@@ -3,7 +3,7 @@ import SignInPhoneNumber from "@/_component/Auth/Steps/SignIn/SignInPhoneNumber"
 import EditPhoneNumber from "@/_component/Auth/Steps/SignUp/EditPhoneNumber";
 import SignUpOTP from "@/_component/Auth/Steps/SignUp/SignUpOTP";
 import SignUpStart from "@/_component/Auth/Steps/SignUp/SignUpStart";
-import { HomeBannerSlider, UserAuthStepInterFace } from "@/types/InterFace/PropInterFace";
+import { HomeBannerSlider, UserAuthStepInterFace } from "@/util/types/InterFace/PropInterFace";
 import { FunctionComponent } from "react";
 
 // const { default: SignInOTP } = require("@/_component/Auth/Steps/SignIn/SignInOTP");

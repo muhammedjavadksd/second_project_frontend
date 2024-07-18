@@ -1,14 +1,17 @@
 "use client"
-import HomeHero from "@/_component/Hero/HomeHero";
-import FundRaiserSlider from "@/_section/Home/FundRaiserSlider";
+// import HomeHero from "@/_component/Hero/HomeHero";
+// HomeHero
+import FundRaiserSlider from "@/component/section/Home/FundRaiserSlider";
 import './global.css'
-import CouldHelp from "@/_section/Home/CouldHelp";
-import BloodReqSlider from "@/_section/Home/BloodReqSlider";
-import EventPromo from "@/_section/Home/EventPromo";
-import NewsSlider from "@/_section/Home/NewsSlider";
-import Header from "@/_component/Header/Header";
-import Footer from "@/_component/Util/Footer";
+import CouldHelp from "@/component/section/Home/CouldHelp";
+import BloodReqSlider from "@/component/section/Home/BloodReqSlider";
+import EventPromo from "@/component/section/Home/EventPromo";
+import NewsSlider from "@/component/section/Home/NewsSlider";
+// import Header from "@/_component/Header/Header";
+import Footer from "@/component/Util/Footer";
 import { SessionProvider } from "next-auth/react"
+import HomeHero from "@/component/Hero/HomeHero";
+import Header from "@/component/Header/Header";
 
 
 

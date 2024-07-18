@@ -1,5 +1,5 @@
 
-import { IOrganizationSignIn } from '@/types/InterFace/FormInitialValues'
+import { IOrganizationSignIn } from '@/util/types/InterFace/FormInitialValues'
 import * as yup from 'yup'
 
 export let organizationLoginInitialValues: IOrganizationSignIn = {

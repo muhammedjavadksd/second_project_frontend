@@ -3,7 +3,7 @@ import Address from "@/_component/FundRaiser/CreateSteps/Address/Address";
 import Basic from "@/_component/FundRaiser/CreateSteps/Basic/Basic";
 import FileUpload from "@/_component/FundRaiser/CreateSteps/FileUpload/FileUpload";
 import PersonalDetails from "@/_component/FundRaiser/CreateSteps/PersonalDetails/PersonalDetails";
-import { FundRaiseCreationBanner } from "@/types/InterFace/PropInterFace";
+import { FundRaiseCreationBanner } from "@/util/types/InterFace/PropInterFace";
 import { FunctionComponent } from "react";
 
 let createFormSteps: FunctionComponent[] = [

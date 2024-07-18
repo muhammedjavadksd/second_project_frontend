@@ -2,8 +2,8 @@
 import Header from '@/_component/Header/Header'
 import Footer from '@/_component/Util/Footer'
 import TabItem from '@/_component/Util/TabItem'
-import { MONEY_ICON } from '@/app/_util/_const/const'
-import { FundRaiserTabItems } from '@/types/Enums/BasicEnums'
+import { MONEY_ICON } from '@/util/data/const'
+import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
 import React, { useState } from 'react'
 
 function ViewFundRaising(): React.ReactElement {

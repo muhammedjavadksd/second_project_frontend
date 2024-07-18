@@ -1,4 +1,4 @@
-import { IOrganizationResetPassword } from "@/types/InterFace/FormInitialValues";
+import { IOrganizationResetPassword } from "@/util/types/InterFace/FormInitialValues";
 import * as yup from 'yup'
 
 const OrganizationResetPasswordInitialValues: IOrganizationResetPassword = {

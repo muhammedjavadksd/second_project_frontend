@@ -1,6 +1,6 @@
-import API_axiosInstance from "@/external/axios/api_axios_instance";
-import axios_instance from "@/external/axios/axios-instance";
-import { AdminResetPassword } from "@/types/InterFace/FormInitialValues";
+import API_axiosInstance from "@/util/external/axios/api_axios_instance";
+import axios_instance from "@/util/external/axios/axios-instance";
+import { AdminResetPassword } from "@/util/types/InterFace/FormInitialValues";
 
 
 export async function onResetPassword(values: AdminResetPassword, successCB: Function, errorCB: Function): Promise<void> {

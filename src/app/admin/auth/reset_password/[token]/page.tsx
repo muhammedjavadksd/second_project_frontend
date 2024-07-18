@@ -11,7 +11,7 @@ import LoadingComponent from '@/_component/Util/LoadingComponent'
 import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
 import { useRouter } from 'next/navigation'
 import { getSession } from 'next-auth/react'
-import { AdminResetPassword } from '@/types/InterFace/FormInitialValues'
+import { AdminResetPassword } from '@/util/types/InterFace/FormInitialValues'
 
 function ResetPassword(): React.ReactElement {
 

@@ -1,5 +1,5 @@
-import { AxiosResponse as CustomeAxiosResponse } from "@/types/API Response/FundRaiser";
-import { OrganizationInitialValues } from "@/types/InterFace/FormInitialValues";
+import { AxiosResponse as CustomeAxiosResponse } from "@/util/types/API Response/FundRaiser";
+import { OrganizationInitialValues } from "@/util/types/InterFace/FormInitialValues";
 import { AxiosResponse } from "axios";
 // import { AxiosResponse } f;
 

@@ -1,9 +1,9 @@
 import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
-import API_axiosInstance from "@/external/axios/api_axios_instance";
-import axios_instance from "@/external/axios/axios-instance";
-import { AxiosResponse as CustomeAxiosResponse } from "@/types/API Response/FundRaiser";
+import API_axiosInstance from "@/util/external/axios/api_axios_instance";
+import axios_instance from "@/util/external/axios/axios-instance";
+import { AxiosResponse as CustomeAxiosResponse } from "@/util/types/API Response/FundRaiser";
 // import { AxiosResponse } from "axios/ty";
-import { FormActionResponse } from "@/types/InterFace/UtilInterface";
+import { FormActionResponse } from "@/util/types/InterFace/UtilInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { getSession } from "next-auth/react";
 

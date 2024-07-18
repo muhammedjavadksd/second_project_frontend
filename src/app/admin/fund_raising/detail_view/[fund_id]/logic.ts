@@ -1,4 +1,4 @@
-import { AxiosResponse, FundRaiserResponse } from "@/types/API Response/FundRaiser";
+import { AxiosResponse, FundRaiserResponse } from "@/util/types/API Response/FundRaiser";
 
 const { default: API_axiosInstance } = require("@/external/axios/api_axios_instance");
 

@@ -1,4 +1,4 @@
-import { AdminForgetPassword } from '@/types/InterFace/FormInitialValues';
+import { AdminForgetPassword } from '@/util/types/InterFace/FormInitialValues';
 import * as yup from 'yup';
 
 export const resetPasswordValidation = yup.object().shape({

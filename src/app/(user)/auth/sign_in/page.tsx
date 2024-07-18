@@ -8,7 +8,7 @@ import FacebookProviderButton from '@/_component/Auth/Common/ProvideLoginButton/
 import UserBlackedRouter from '@/_component/LoginComponent/UserBlackedRouter'
 import { useSession } from 'next-auth/react'
 import { Session } from 'next-auth'
-import { UserAuthStepInterFace } from '@/types/InterFace/PropInterFace'
+import { UserAuthStepInterFace } from '@/util/types/InterFace/PropInterFace'
 
 function SignIn(): React.ReactElement {
 

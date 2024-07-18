@@ -2,9 +2,9 @@ import GoogleProvider from "next-auth/providers/google"
 import FacebookProvider from "next-auth/providers/facebook"
 import NextAuth from "next-auth/next"
 import CredentialsProvider from 'next-auth/providers/credentials'
-import axios_instance from "@/external/axios/axios-instance"
-import API_axiosInstance from "@/external/axios/api_axios_instance"
-import { IAdminSessionData, IOrganizationSessionData, IUserSessionData } from "@/types/InterFace/UtilInterface"
+import axios_instance from "@/util/external/axios/axios-instance"
+import API_axiosInstance from "@/util/external/axios/api_axios_instance"
+import { IAdminSessionData, IOrganizationSessionData, IUserSessionData } from "@/util/types/InterFace/UtilInterface"
 
 
 

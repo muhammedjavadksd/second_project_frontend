@@ -1,4 +1,4 @@
-import { OrganizationInitialValues } from '@/types/InterFace/FormInitialValues';
+import { OrganizationInitialValues } from '@/util/types/InterFace/FormInitialValues';
 import * as Yup from 'yup'
 
 export const initialValues: OrganizationInitialValues = {

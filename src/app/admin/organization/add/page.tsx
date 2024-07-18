@@ -9,7 +9,7 @@ import { initialValues, validationSchema } from './data'
 // const_data
 import { addOrganization } from './logic'
 import { toast } from 'react-toastify'
-import const_data from '@/app/_util/_const/const'
+import const_data from '@/util/data/const'
 
 function AdminAddOrganization(): React.ReactElement {
     return (

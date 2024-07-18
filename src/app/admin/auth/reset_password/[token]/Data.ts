@@ -1,4 +1,4 @@
-import { AdminResetPassword } from '@/types/InterFace/FormInitialValues';
+import { AdminResetPassword } from '@/util/types/InterFace/FormInitialValues';
 import * as yup from 'yup';
 
 export let resetPasswordInitialValues: AdminResetPassword = {

@@ -1,6 +1,6 @@
-import API_axiosInstance from "@/external/axios/api_axios_instance";
-import { AxiosResponse as CustomeAxiosResponse } from "@/types/API Response/FundRaiser";
-import { IOrganizationForgetPasswordInitialValues } from "@/types/InterFace/FormInitialValues";
+import API_axiosInstance from "@/util/external/axios/api_axios_instance";
+import { AxiosResponse as CustomeAxiosResponse } from "@/util/types/API Response/FundRaiser";
+import { IOrganizationForgetPasswordInitialValues } from "@/util/types/InterFace/FormInitialValues";
 import { AxiosResponse } from "axios";
 
 

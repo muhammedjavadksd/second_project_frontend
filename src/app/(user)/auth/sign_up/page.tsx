@@ -7,7 +7,7 @@ import React, { FunctionComponent, useState } from 'react'
 import { bannerSlider, signUpSteps } from '../AuthData/Data'
 import UserBlackedRouter from '@/_component/LoginComponent/UserBlackedRouter'
 import { useSession } from 'next-auth/react'
-import { UserAuthStepInterFace } from '@/types/InterFace/PropInterFace'
+import { UserAuthStepInterFace } from '@/util/types/InterFace/PropInterFace'
 
 function SignUp(): React.ReactElement {
 

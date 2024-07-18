@@ -5,8 +5,8 @@ import Footer from '@/_component/Util/Footer'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { CreateFormComponent } from './Logic'
 import { bannerData } from './Data'
-import OnGoingingFundRaise from '@/app/_util/context/onGoingingFundRaise'
-import { FundRaiseCreationStep } from '@/types/InterFace/PropInterFace'
+import OnGoingingFundRaise from '@/util/context/onGoingingFundRaise'
+import { FundRaiseCreationStep } from '@/util/types/InterFace/PropInterFace'
 
 
 function CreateFundRaisingPost(): React.ReactElement {

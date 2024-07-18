@@ -1,5 +1,5 @@
-import axios_instance from "@/external/axios/axios-instance";
-import { AdminForgetPassword } from "@/types/InterFace/FormInitialValues";
+import axios_instance from "@/util/external/axios/axios-instance";
+import { AdminForgetPassword } from "@/util/types/InterFace/FormInitialValues";
 
 
 export async function onResetPassword(values: AdminForgetPassword, successCB: Function, errorCB: Function): Promise<void> {

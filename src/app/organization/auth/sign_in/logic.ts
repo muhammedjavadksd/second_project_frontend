@@ -1,4 +1,4 @@
-import { IOrganizationSignIn } from "@/types/InterFace/FormInitialValues";
+import { IOrganizationSignIn } from "@/util/types/InterFace/FormInitialValues";
 import { signIn } from "next-auth/react";
 
 

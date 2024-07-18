@@ -1,5 +1,5 @@
 
-import { IOrganizationForgetPasswordInitialValues } from '@/types/InterFace/FormInitialValues'
+import { IOrganizationForgetPasswordInitialValues } from '@/util/types/InterFace/FormInitialValues'
 import * as yup from 'yup'
 
 let organizationForgetPasswordInitialValues: IOrganizationForgetPasswordInitialValues = {

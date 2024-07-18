@@ -1,4 +1,4 @@
-import { AdminSignIn } from '@/types/InterFace/FormInitialValues'
+import { AdminSignIn } from '@/util/types/InterFace/FormInitialValues'
 import * as yup from 'yup'
 
 
