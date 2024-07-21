@@ -1,10 +1,10 @@
 "use client"
-import AccountTab from '@/_component/Account/AccountTab'
-import Header from '@/_component/Header/Header'
-import BreadCrumb from '@/_component/Util/BreadCrumb'
-import Footer from '@/_component/Util/Footer'
-import SliderComponent from '@/_component/Util/SliderComponent'
-import StatisticCard from '@/_component/Util/StatisticCard'
+import AccountTab from '@/component/Account/AccountTab'
+import Header from '@/component/Header/Header'
+import BreadCrumb from '@/component/Util/BreadCrumb'
+import Footer from '@/component/Util/Footer'
+import SliderComponent from '@/component/Util/SliderComponent'
+import StatisticCard from '@/component/Util/StatisticCard'
 import { CChart } from '@coreui/react-chartjs'
 import React from 'react'
 

@@ -1,7 +1,7 @@
 "use client"
-import AdminLayout from '@/_component/Admin/AdminLayout'
-import AdminBreadCrumb from '@/_component/Util/AdminBreadCrumb'
-import DashboardCard from '@/_component/Util/DashboardCard'
+import AdminLayout from '@/component/Admin/AdminLayout'
+import AdminBreadCrumb from '@/component/Util/AdminBreadCrumb'
+import DashboardCard from '@/component/Util/DashboardCard'
 import { MONEY_ICON } from '@/util/data/const'
 import CanvasJSReact from '@canvasjs/react-charts/canvasjs.react.js'
 import React, { useEffect, useState } from 'react'

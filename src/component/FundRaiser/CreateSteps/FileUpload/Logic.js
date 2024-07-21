@@ -1,4 +1,5 @@
-import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+// import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios_instance from "@/util/external/axios/axios-instance";
 import { resetDocuments, resetPictures, updateFundRaiseData } from "@/util/external/redux/slicer/fundRaiserForm";
@@ -26,7 +27,7 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
                     "authorization": `Bearer ${token}`,
                 }
             })
- 
+
             const response = API_request.data;
             console.log(response);
             if (response.status) {
@@ -101,7 +102,7 @@ async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fun
                 console.log(documents);
                 console.log(pictures);
 
-                if (newDocs) { 
+                if (newDocs) {
                     if (type == "Document") {
                         store.dispatch(resetDocuments({ documents }))
                     } else {

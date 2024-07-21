@@ -1,7 +1,7 @@
-import AccountTab from '@/_component/Account/AccountTab'
-import BloodDonationHistoryCard from '@/_component/Blood/BloodDonationHistoryCard'
-import Header from '@/_component/Header/Header'
-import BreadCrumb from '@/_component/Util/BreadCrumb'
+import AccountTab from '@/component/Account/AccountTab'
+import BloodDonationHistoryCard from '@/component/Blood/BloodDonationHistoryCard'
+import Header from '@/component/Header/Header'
+import BreadCrumb from '@/component/Util/BreadCrumb'
 import React from 'react'
 
 function BloodDonationHistory(): React.ReactElement {

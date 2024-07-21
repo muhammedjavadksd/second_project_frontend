@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { loginStepDown, otpInitialValues, otpValidaor, onLoginOtpSubmit, onResetOtp } from './Logic'
-import LoadingComponent from '@/_component/Util/LoadingComponent';
+import LoadingComponent from '@/component/Util/LoadingComponent';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import Timer from "@amplication/react-compound-timer";

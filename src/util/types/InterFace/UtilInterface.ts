@@ -1,3 +1,5 @@
+import { Slice } from "@reduxjs/toolkit";
+import { FundRaiserFormInitialValues } from "./FormInitialValues";
 
 
 interface FormActionResponse {
@@ -28,6 +30,15 @@ interface IUserSessionData extends IUser {
     phone: number,
 }
 
+interface IOnGoingApplocation {
+    currentApplication: string,
+    setApplication: Function
+}
+
+interface IStore {
+    fund_raiser: FundRaiserFormInitialValues
+}
+
 // interface ITokenInterface {
 //     token: {
 //         user: {
@@ -42,4 +53,4 @@ interface IUserSessionData extends IUser {
 // }
 
 
-export type { FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData }
+export type { FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore }

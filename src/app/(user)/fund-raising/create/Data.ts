@@ -1,8 +1,8 @@
-import AIDescription from "@/_component/FundRaiser/CreateSteps/AIDescription/AIDescription";
-import Address from "@/_component/FundRaiser/CreateSteps/Address/Address";
-import Basic from "@/_component/FundRaiser/CreateSteps/Basic/Basic";
-import FileUpload from "@/_component/FundRaiser/CreateSteps/FileUpload/FileUpload";
-import PersonalDetails from "@/_component/FundRaiser/CreateSteps/PersonalDetails/PersonalDetails";
+import AIDescription from "@/component/FundRaiser/CreateSteps/AIDescription/AIDescription";
+import Address from "@/component/FundRaiser/CreateSteps/Address/Address";
+import Basic from "@/component/FundRaiser/CreateSteps/Basic/Basic";
+import FileUpload from "@/component/FundRaiser/CreateSteps/FileUpload/FileUpload";
+import PersonalDetails from "@/component/FundRaiser/CreateSteps/PersonalDetails/PersonalDetails";
 import { FundRaiseCreationBanner } from "@/util/types/InterFace/PropInterFace";
 import { FunctionComponent } from "react";
 

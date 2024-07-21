@@ -5,8 +5,8 @@ import NavbarLinks from './NavbarLinks';
 import Image from 'next/image';
 import { getSession, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { userDetailsFromGetSession } from '@/app/_util/helper/authHelper';
 import { useRouter } from 'next/navigation';
+import { userDetailsFromGetSession } from '@/util/data/helper/authHelper';
 
 function Header() {
 

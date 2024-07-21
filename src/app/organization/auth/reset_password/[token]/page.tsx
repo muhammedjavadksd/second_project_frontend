@@ -1,6 +1,6 @@
 "use client"
-import AdminAuthBg from '@/_component/Auth/Common/AdminAuthBg'
-import AdminAuthCard from '@/_component/Auth/Common/AdminAuthCard'
+import AdminAuthBg from '@/component/Auth/Common/AdminAuthBg'
+import AdminAuthCard from '@/component/Auth/Common/AdminAuthCard'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import { OrganizationResetPasswordInitialValues, OrganizationResetPasswordValidation } from './data'

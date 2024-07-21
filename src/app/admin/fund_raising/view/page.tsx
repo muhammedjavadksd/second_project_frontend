@@ -1,9 +1,9 @@
 "use client"
-import AdminLayout from '@/_component/Admin/AdminLayout'
-import AdminBreadCrumb from '@/_component/Util/AdminBreadCrumb'
-import AdminDateFilter from '@/_component/Util/AdminDateFilter'
-import PaginationTab from '@/_component/Util/PaginationTab'
-import TableSimple from '@/_component/Util/TableSimple'
+import AdminLayout from '@/component/Admin/AdminLayout'
+import AdminBreadCrumb from '@/component/Util/AdminBreadCrumb'
+import AdminDateFilter from '@/component/Util/AdminDateFilter'
+import PaginationTab from '@/component/Util/PaginationTab'
+import TableSimple from '@/component/Util/TableSimple'
 import const_data from '@/util/data/const'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -11,8 +11,8 @@ import { getAllFundRaisers, getUserForFundRaise } from '../logic/fund-raiser-log
 import { FundRaiserResponse } from '@/util/types/API Response/FundRaiser'
 import { FormActionResponse } from '@/util/types/InterFace/UtilInterface'
 import UserResponse from '@/util/types/API Response/UserInterface'
-import TableRowCount from '@/_component/Util/TableRowCount'
-import TableSearch from '@/_component/Util/TableSearch'
+import TableRowCount from '@/component/Util/TableRowCount'
+import TableSearch from '@/component/Util/TableSearch'
 
 function ViewFundRaising(): React.ReactElement {
 
@@ -61,8 +61,7 @@ function ViewFundRaising(): React.ReactElement {
 
     function onSearch(val) {
         const regex = new RegExp(`\\b${val}\\b`, 'i');
-        let newData = fundRaiserData.filter(product => regex.test(product))
-
+        // let newData = fundRaiserData.filter(product => regex.test(product))
     }
 
     function onRowChanges(count) {
@@ -119,8 +118,8 @@ function ViewFundRaising(): React.ReactElement {
                                             each.created_by == "USER" ? <div className='flex justify-center gap-3' >
                                                 <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48} />
                                                 < div className='text-start ' >
-                                                    <h4>Muhammed Javad</ h4 >
-                                                    <p>muhammedjavad119144@gmail.com</p>
+                                                    <h4>{each.creater_profile.first_name + each.creater_profile.last_name}</ h4 >
+                                                    <p>{each.email_id}</p>
                                                 </div>
                                             </div> : (each.created_by == "ADMIN" ? "Created By Admin" : "Created by organization")),
                                         // raisingID: each.user_id,

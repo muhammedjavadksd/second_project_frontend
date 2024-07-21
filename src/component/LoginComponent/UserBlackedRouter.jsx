@@ -1,4 +1,4 @@
-import { isUserLogged } from '@/app/_util/helper/authHelper';
+import { isUserLogged } from '@/util/data/helper/authHelper';
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -17,7 +17,7 @@ function UserBlackedRouter({ children }) {
             } else {
                 setAuth(true);
             }
-        }).catch((err)=>{})
+        }).catch((err) => { })
     }, [session])
 
 

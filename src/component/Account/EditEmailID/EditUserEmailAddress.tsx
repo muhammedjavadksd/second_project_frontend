@@ -1,4 +1,3 @@
-import { userDetailsFromUseSession } from '@/app/_util/helper/authHelper';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { signOut, useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react'
@@ -7,6 +6,7 @@ import { emailAddressEditInitialValues, onEmailUpdate, onOTPValidate } from './L
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { IUserSessionData } from '@/util/types/InterFace/UtilInterface';
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper';
 
 function EditUserEmailAddress(): React.ReactElement {
 

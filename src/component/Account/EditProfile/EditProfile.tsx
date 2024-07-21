@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { onEditProfile } from './Logic'
 import { editProfileValidation } from './Data'
 import { useSession } from 'next-auth/react'
-import { userDetailsFromUseSession } from '@/app/_util/helper/authHelper'
+// import { userDetailsFromUseSession } from '@/app/_util/helper/authHelper'
 import { toast } from 'react-toastify'
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 
 function EditProfileComponent({ editPersonalDetails }): React.ReactElement {
 

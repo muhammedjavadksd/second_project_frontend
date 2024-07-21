@@ -42,6 +42,7 @@ interface FundRaiserFormInitialValues {
     documents: string[],
     raiser_name: string,
     raiser_age: number,
+    deadline: Date
     benificiary_relation: string,
     description: string,
     city: string,

@@ -12,6 +12,7 @@ const FUND_RAISER_FORM_INITIAL_VALUES: FundRaiserFormInitialValues = {
     documents: [],
     raiser_name: null,
     raiser_age: null,
+    deadline: new Date,
     benificiary_relation: null,
     description: null,
     city: null,
@@ -56,5 +57,5 @@ let fundRaiserSlicer = createSlice({
     }
 })
 
-export const { updateFundRaiseData, SetPicturs, setDocuments,resetPictures, resetDocuments, clearFundRaiserData } = fundRaiserSlicer.actions
+export const { updateFundRaiseData, SetPicturs, setDocuments, resetPictures, resetDocuments, clearFundRaiserData } = fundRaiserSlicer.actions
 export default fundRaiserSlicer.reducer

@@ -1,4 +1,5 @@
-import SectionTitle from '@/_component/Util/SectionTitle'
+// import SectionTitle from '@/component/Util/SectionTitle'
+import SectionTitle from '@/component/Util/SectionTitle'
 import React from 'react'
 
 function CouldHelp() {
@@ -18,7 +19,7 @@ function CouldHelp() {
 
                 <div class="text-center  block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <div className='justify-center flex mb-3'>
-                        <img src="images/icons/spread_love.png" alt="" width={"60px"}  height={"32px"} />
+                        <img src="images/icons/spread_love.png" alt="" width={"60px"} height={"32px"} />
                     </div>
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Call for donation</h5>
                     <p class="font-normal text-gray-700 dark:text-gray-400">You can contribute your time, skills and knowledge through volunteering with the UN.</p>
@@ -26,7 +27,7 @@ function CouldHelp() {
                 </div>
 
 
-                
+
                 <div class="text-center  block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <div className='justify-center flex mb-3'>
                         <img src="images/icons/spread_love.png" alt="" width={"60px"} height={"32px"} />

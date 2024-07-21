@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import CreateFormBackground from '../../CreateFormBackground'
-import FileSelectBox from '@/_component/Util/FileSelectBox'
-import ListImageFile from '@/_component/Util/ListImageFile'
+import FileSelectBox from '@/component/Util/FileSelectBox'
+import ListImageFile from '@/component/Util/ListImageFile'
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { onFileDelete, onFileUpload } from './Logic';

@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { signUpIndexUp } from './Logic'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { signUpOtpInitialValues, signUpOtpHandler, otpValidator, resendOtpHandler } from './Logic'
-import LoadingComponent from '@/_component/Util/LoadingComponent'
+import LoadingComponent from '@/component/Util/LoadingComponent'
 import { toast } from 'react-toastify'
 import Timer from "@amplication/react-compound-timer";
 import const_data, { OTP_TIME_SECONDS } from '@/util/data/const'

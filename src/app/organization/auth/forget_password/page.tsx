@@ -1,7 +1,7 @@
 "use client"
-import AdminAuthBg from '@/_component/Auth/Common/AdminAuthBg'
-import AdminAuthCard from '@/_component/Auth/Common/AdminAuthCard'
-import OrganizationBlackRouter from '@/_component/LoginComponent/OrganizationBlackRouter'
+import AdminAuthBg from '@/component/Auth/Common/AdminAuthBg'
+import AdminAuthCard from '@/component/Auth/Common/AdminAuthCard'
+import OrganizationBlackRouter from '@/component/LoginComponent/OrganizationBlackRouter'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import { organizationForgetPasswordInitialValues, organizationForgetPasswordValidation } from './Data'

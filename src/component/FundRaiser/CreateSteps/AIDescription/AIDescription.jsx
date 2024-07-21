@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import getAIDescription, { onDescriptionSubmit } from './Logic';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { AI_description_validation } from './Data';
-import LoadingComponent from '@/_component/Util/LoadingComponent';
+import LoadingComponent from '@/component/Util/LoadingComponent';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { OnGoingApplicationContext } from '@/util/context/Context';

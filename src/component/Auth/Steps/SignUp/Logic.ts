@@ -1,5 +1,5 @@
 // import { AUTH_PROVIDERS, ERROR_MSG, FRONT_END_APIENDPOINT, OTP_LENGTH, blood_groups } from '@/app/_util/_const/const';
-import { getCurrentPosition } from '@/app/_util/_const/helperFunctions';
+// import { getCurrentPosition } from '@/app/_util/_const/helperFunctions';
 import axios_instance from '@/util/external/axios/axios-instance';
 import { toast } from 'react-toastify';
 import * as yup from 'yup'
@@ -44,12 +44,12 @@ async function signUpDataHandler(data) {
         }
     } catch (e) {
         console.log("hlo");
-        
+
         console.log(e);
 
         const errorMsg = e.response?.data?.msg ?? "Something went wrong"
         console.log(errorMsg);
-        
+
         return {
             status: false,
             msg: errorMsg
@@ -193,7 +193,7 @@ async function changeEmailIDHandler(values, successCB, errorCB) {
                 "authorization": `Bearer ${token}`
             }
         });
-        
+
         const response = requestToResetEmailID.data;
         if (response.status) {
             const { token } = response.data;
@@ -233,7 +233,7 @@ async function resendOtpHandler(successCB, errorCB) {
                 "authorization": `Bearer ${token}`
             }
         })).data
-    
+
         if (resendOtpRequest.status) {
             js_cookies.set(const_data.COOKIE_DATA_KEY.SIGN_UP_DATA, resendOtpRequest.token)
             successCB()
@@ -244,7 +244,7 @@ async function resendOtpHandler(successCB, errorCB) {
         const errorMessage = e?.response?.data?.msg ?? "Something went wrong";
         errorCB(errorMessage)
     }
-    
+
 }
 
 export {

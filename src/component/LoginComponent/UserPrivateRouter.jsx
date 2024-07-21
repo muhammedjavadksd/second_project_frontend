@@ -1,4 +1,5 @@
-import { isUserLogged, userDetailsFromGetSession } from '@/app/_util/helper/authHelper';
+import { isUserLogged, userDetailsFromGetSession } from '@/util/data/helper/authHelper';
+// import { isUserLogged, userDetailsFromGetSession } from '@/app/_util/helper/authHelper';
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -16,15 +17,15 @@ function UserPrivateRouter({ children }) {
             } else {
                 router.replace("/auth/sign_in");
             }
-        }).catch((err)=>{})
-    },[session])
+        }).catch((err) => { })
+    }, [session])
 
 
     return (
 
         <div>
             {
-                isAuth ? children :  <h2>Fallback loading1</h2>
+                isAuth ? children : <h2>Fallback loading1</h2>
             }
         </div>
     )

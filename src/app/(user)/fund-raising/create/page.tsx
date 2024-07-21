@@ -1,7 +1,7 @@
 "use client"
-import BannerForCreating from '@/_component/FundRaiser/BannerForCreating'
-import Header from '@/_component/Header/Header'
-import Footer from '@/_component/Util/Footer'
+import BannerForCreating from '@/component/FundRaiser/BannerForCreating'
+import Header from '@/component/Header/Header'
+import Footer from '@/component/Util/Footer'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { CreateFormComponent } from './Logic'
 import { bannerData } from './Data'

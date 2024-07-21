@@ -1,4 +1,5 @@
-import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+// import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios_instance from "@/util/external/axios/axios-instance";
 // import combineStoreReducers from "@/external/redux/combineSlicer";
@@ -20,6 +21,8 @@ async function onInitialCreate(val, successCB, errorCB) {
     // console.log('The values are');
     const session = await getSession();
     const user = userDetailsFromGetSession(session)
+    console.log("Check");
+    console.log(user);
     if (user) {
         const token = user.token
 

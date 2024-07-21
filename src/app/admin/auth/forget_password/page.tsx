@@ -1,13 +1,13 @@
 "use client"
-import AdminAuthBg from '@/_component/Auth/Common/AdminAuthBg'
-import AdminAuthCard from '@/_component/Auth/Common/AdminAuthCard'
+import AdminAuthBg from '@/component/Auth/Common/AdminAuthBg'
+import AdminAuthCard from '@/component/Auth/Common/AdminAuthCard'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { ReactElement, useState } from 'react'
 import { onResetPassword } from './Logic'
 import { resetPasswordInitialValues, resetPasswordValidation } from './Data'
 import { toast } from 'react-toastify'
-import LoadingComponent from '@/_component/Util/LoadingComponent'
-import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
+import LoadingComponent from '@/component/Util/LoadingComponent'
+import BlackedRouter from '@/component/LoginComponent/BlackedRouter'
 import { getSession } from 'next-auth/react'
 
 function AdminForgetPassword(): ReactElement {

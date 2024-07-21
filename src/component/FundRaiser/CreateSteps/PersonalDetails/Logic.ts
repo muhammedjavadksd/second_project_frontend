@@ -1,4 +1,5 @@
-import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+// import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios_instance from "@/util/external/axios/axios-instance";
 import { updateFundRaiseData } from "@/util/external/redux/slicer/fundRaiserForm";
@@ -12,7 +13,7 @@ async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
     let session = await getSession();
     let user = userDetailsFromGetSession(session)
 
-    let { benificiary_relation, description, raiser_age, raiser_name, currentApplication } = val
+    let { benificiary_relation, description, raiser_age, raiser_name, currentApplication, deadline } = val
 
     if (user) {
 
@@ -26,7 +27,7 @@ async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
         try {
 
             let requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
-                benificiary_relation, about: description, age: raiser_age, full_name: raiser_name
+                benificiary_relation, about: description, age: raiser_age, full_name: raiser_name, deadline
             }, {
                 headers: {
                     "authorization": `Bearer ${token}`,
@@ -47,7 +48,7 @@ async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
                 }))
                 successCB()
             } else {
-                if (API_request.status == 401) {
+                if (requestAPI.status == 401) {
                     onNotLogged()
                 } else {
                     errorCB(response.msg)

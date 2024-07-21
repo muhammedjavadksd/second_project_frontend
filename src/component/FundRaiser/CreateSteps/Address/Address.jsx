@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import const_data from '@/util/data/const'
 import { OnGoingApplicationContext } from '@/util/context/Context'
-import LoadingComponent from '@/_component/Util/LoadingComponent'
+import LoadingComponent from '@/component/Util/LoadingComponent'
 import { useSelector } from 'react-redux'
 
 function Address({ state }) {

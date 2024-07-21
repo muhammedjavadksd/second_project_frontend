@@ -1,15 +1,15 @@
 "use client"
-import AdminLayout from '@/_component/Admin/AdminLayout'
-import DashboardCard from '@/_component/Util/DashboardCard'
+import AdminLayout from '@/component/Admin/AdminLayout'
+import DashboardCard from '@/component/Util/DashboardCard'
 import React from 'react'
 import CanvasJSReact from '@canvasjs/react-charts'
 import { MONEY_ICON } from '@/util/data/const'
 import { userGrowthGraph, userTypeOptions } from './data'
-import TableSimple from '@/_component/Util/TableSimple'
-import PaginationTab from '@/_component/Util/PaginationTab'
-import AdminDateFilter from '@/_component/Util/AdminDateFilter'
+import TableSimple from '@/component/Util/TableSimple'
+import PaginationTab from '@/component/Util/PaginationTab'
+import AdminDateFilter from '@/component/Util/AdminDateFilter'
 import { useSession } from 'next-auth/react'
-import AdminPrivateRouter from '@/_component/LoginComponent/AdminPrivateRouter'
+import AdminPrivateRouter from '@/component/LoginComponent/AdminPrivateRouter'
 
 function DashboardPage(): React.ReactElement {
 

@@ -1,6 +1,6 @@
 "use client"
-import AdminAuthBg from '@/_component/Auth/Common/AdminAuthBg'
-import AdminAuthCard from '@/_component/Auth/Common/AdminAuthCard'
+import AdminAuthBg from '@/component/Auth/Common/AdminAuthBg'
+import AdminAuthCard from '@/component/Auth/Common/AdminAuthCard'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { ReactElement } from 'react'
 import { adminSignInInitialValues, adminSignInValidation } from './Data'
@@ -8,7 +8,7 @@ import { onAdminSignInHandler } from './Logic'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import BlackedRouter from '@/_component/LoginComponent/BlackedRouter'
+import BlackedRouter from '@/component/LoginComponent/BlackedRouter'
 import { getSession, useSession } from 'next-auth/react'
 import { Session } from 'inspector'
 

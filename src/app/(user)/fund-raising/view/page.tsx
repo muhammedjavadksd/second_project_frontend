@@ -1,7 +1,7 @@
 "use client"
-import Header from '@/_component/Header/Header'
-import Footer from '@/_component/Util/Footer'
-import TabItem from '@/_component/Util/TabItem'
+import Header from '@/component/Header/Header'
+import Footer from '@/component/Util/Footer'
+import TabItem from '@/component/Util/TabItem'
 import { MONEY_ICON } from '@/util/data/const'
 import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
 import React, { useState } from 'react'

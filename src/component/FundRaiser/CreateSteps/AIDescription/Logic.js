@@ -1,8 +1,10 @@
-import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
-import { objectToUrlQuery } from "@/app/_util/helper/utilHelper";
+// import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+// import { objectToUrlQuery } from "@/app/_util/helper/utilHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { getSession } from "next-auth/react";
 import const_data from "@/util/data/const";
+import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
+import { objectToUrlQuery } from "@/util/data/helper/utilHelper";
 
 const { default: axios_instance } = require("@/util/external/axios/axios-instance");
 
@@ -23,7 +25,7 @@ async function getAIDescription(amount, category, sub_category, raiser_name, rai
                 return false
             }
         } else {
-            
+
             return `Could you please consider making a donation to support my ${benificiary_relation}? Your contribution would greatly assist in the area of ${category}. Thank you for your generosity.`
         }
     } catch (e) {

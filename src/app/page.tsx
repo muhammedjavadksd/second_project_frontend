@@ -1,5 +1,5 @@
 "use client"
-// import HomeHero from "@/_component/Hero/HomeHero";
+// import HomeHero from "@/component/Hero/HomeHero";
 // HomeHero
 import FundRaiserSlider from "@/component/section/Home/FundRaiserSlider";
 import './global.css'
@@ -7,7 +7,7 @@ import CouldHelp from "@/component/section/Home/CouldHelp";
 import BloodReqSlider from "@/component/section/Home/BloodReqSlider";
 import EventPromo from "@/component/section/Home/EventPromo";
 import NewsSlider from "@/component/section/Home/NewsSlider";
-// import Header from "@/_component/Header/Header";
+// import Header from "@/component/Header/Header";
 import Footer from "@/component/Util/Footer";
 import { SessionProvider } from "next-auth/react"
 import HomeHero from "@/component/Hero/HomeHero";
@@ -15,12 +15,15 @@ import Header from "@/component/Header/Header";
 
 
 
-const Home: React.FC = () => {
+const Home: React.FC<{ name: string }> = ({ name }) => {
 
     return (
         <SessionProvider>
             <main className="flex min-h-screen flex-col">
                 <div>
+                    {
+                        "name  :" + name
+                    }
                     <Header />
                     <HomeHero />
                     <FundRaiserSlider />
@@ -43,6 +46,15 @@ const Home: React.FC = () => {
             </main >
         </SessionProvider >
     );
+}
+
+
+export function getServerSideProps() {
+    return {
+        props: {
+            name: "Javad"
+        }
+    }
 }
 
 export default Home

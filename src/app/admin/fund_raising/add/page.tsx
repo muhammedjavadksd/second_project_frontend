@@ -1,8 +1,8 @@
 'use client'
 import React, { useRef } from 'react'
-import AdminLayout from '@/_component/Admin/AdminLayout'
-import AdminPrivateRouter from '@/_component/LoginComponent/AdminPrivateRouter'
-import AdminBreadCrumb from '@/_component/Util/AdminBreadCrumb'
+import AdminLayout from '@/component/Admin/AdminLayout'
+import AdminPrivateRouter from '@/component/LoginComponent/AdminPrivateRouter'
+import AdminBreadCrumb from '@/component/Util/AdminBreadCrumb'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 
 function AdminFundRaiseAdd(): React.ReactElement {

@@ -1,10 +1,10 @@
 "use client"
-import AccountTab from '@/_component/Account/AccountTab'
-import BlockModel from '@/_component/FundRaiser/BlockModel'
-import MyFundRaisingItem from '@/_component/FundRaiser/MyFundRaisingItem'
-import Header from '@/_component/Header/Header'
-import BreadCrumb from '@/_component/Util/BreadCrumb'
-import Footer from '@/_component/Util/Footer'
+import AccountTab from '@/component/Account/AccountTab'
+import BlockModel from '@/component/FundRaiser/BlockModel'
+import MyFundRaisingItem from '@/component/FundRaiser/MyFundRaisingItem'
+import Header from '@/component/Header/Header'
+import BreadCrumb from '@/component/Util/BreadCrumb'
+import Footer from '@/component/Util/Footer'
 import React, { useState } from 'react'
 
 function MyFundRaising(): React.ReactElement {

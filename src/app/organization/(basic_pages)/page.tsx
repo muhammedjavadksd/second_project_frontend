@@ -1,14 +1,14 @@
 "use client"
-import AdminLayout from '@/_component/Admin/AdminLayout'
-import DashboardCard from '@/_component/Util/DashboardCard'
+import AdminLayout from '@/component/Admin/AdminLayout'
+import DashboardCard from '@/component/Util/DashboardCard'
 import React from 'react'
 import CanvasJSReact from '@canvasjs/react-charts'
 import { MONEY_ICON } from '@/util/data/const'
 import { userGrowthGraph, userTypeOptions } from './data'
-import TableSimple from '@/_component/Util/TableSimple'
-import PaginationTab from '@/_component/Util/PaginationTab'
-import OrganizationBlackRouter from '@/_component/LoginComponent/OrganizationBlackRouter'
-import OrganizationPrivateRouter from '@/_component/LoginComponent/OrganizationPrivateRouter'
+import TableSimple from '@/component/Util/TableSimple'
+import PaginationTab from '@/component/Util/PaginationTab'
+import OrganizationBlackRouter from '@/component/LoginComponent/OrganizationBlackRouter'
+import OrganizationPrivateRouter from '@/component/LoginComponent/OrganizationPrivateRouter'
 
 function DashboardPage(): React.ReactElement {
 

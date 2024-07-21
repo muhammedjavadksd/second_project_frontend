@@ -1,13 +1,13 @@
 "use client"
-import AdminAuthBg from '@/_component/Auth/Common/AdminAuthBg'
-import AdminAuthCard from '@/_component/Auth/Common/AdminAuthCard'
+import AdminAuthBg from '@/component/Auth/Common/AdminAuthBg'
+import AdminAuthCard from '@/component/Auth/Common/AdminAuthCard'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import { organizationLoginInitialValues, organizationLoginValidation } from './data'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import { onOrganizationSignIn } from './logic'
-import OrganizationBlackRouter from '@/_component/LoginComponent/OrganizationBlackRouter'
+import OrganizationBlackRouter from '@/component/LoginComponent/OrganizationBlackRouter'
 import Link from 'next/link'
 
 function AdminSignIN(): React.ReactElement {

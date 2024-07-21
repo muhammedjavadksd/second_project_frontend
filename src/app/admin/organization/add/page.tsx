@@ -1,7 +1,7 @@
 "use client"
-import AdminLayout from '@/_component/Admin/AdminLayout'
-import AdminPrivateRouter from '@/_component/LoginComponent/AdminPrivateRouter'
-import AdminBreadCrumb from '@/_component/Util/AdminBreadCrumb'
+import AdminLayout from '@/component/Admin/AdminLayout'
+import AdminPrivateRouter from '@/component/LoginComponent/AdminPrivateRouter'
+import AdminBreadCrumb from '@/component/Util/AdminBreadCrumb'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import { initialValues, validationSchema } from './data'

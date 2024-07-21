@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { onSignUpHandler, signUpInitialValues, signUpValidator } from './Logic'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import const_data from '@/util/data/const'
-import LoadingComponent from '@/_component/Util/LoadingComponent'
+import LoadingComponent from '@/component/Util/LoadingComponent'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
 

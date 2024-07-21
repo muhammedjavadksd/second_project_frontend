@@ -1,8 +1,8 @@
-import AccountTab from '@/_component/Account/AccountTab'
-import FundDonatedHistoryCard from '@/_component/FundRaiser/FundDonatedHistoryCard'
-import Header from '@/_component/Header/Header'
-import BreadCrumb from '@/_component/Util/BreadCrumb'
-import Footer from '@/_component/Util/Footer'
+import AccountTab from '@/component/Account/AccountTab'
+import FundDonatedHistoryCard from '@/component/FundRaiser/FundDonatedHistoryCard'
+import Header from '@/component/Header/Header'
+import BreadCrumb from '@/component/Util/BreadCrumb'
+import Footer from '@/component/Util/Footer'
 import React from 'react'
 
 function FundDonationHistory(): React.ReactElement {

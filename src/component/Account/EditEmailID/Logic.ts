@@ -1,6 +1,6 @@
 // import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
 
-import { getUserDetails } from "@/util/data/helper/authHelper";
+import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios_instance from "@/util/external/axios/axios-instance";
 import { getSession } from "next-auth/react";
@@ -11,7 +11,7 @@ export async function onEmailUpdate(values: { email: string }, successCB: Functi
     try {
         const { email } = values;
         const session = await getSession();
-        const user = getUserDetails(session)
+        const user = userDetailsFromGetSession(session)
         const token = user.token;
         const emailUpdate = await API_axiosInstance.patch("/profile/update_email_id", {
             new_email_id: email

@@ -2,10 +2,11 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react'
 import { phoneAndOTPSchema, phoneNumberSchema } from './Data';
 import { onOTPValidate, onPhoneNumberUpdate, phoneNumberInitialValues, phoneNumberWithOTPInitialValues } from './Logic';
-import { userDetailsFromUseSession } from '@/app/_util/helper/authHelper';
+// import { userDetailsFromUseSession } from '@/app/_util/helper/authHelper';
 import { signOut, useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper';
 
 function EditUserPhoneNumber(): React.ReactElement {
 

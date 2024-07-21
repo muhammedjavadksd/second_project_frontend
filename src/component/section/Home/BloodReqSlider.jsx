@@ -1,6 +1,9 @@
-import BloodRequirementSingleItem from '@/_component/Blood/BloodRequirementSingleItem'
-import SectionTitle from '@/_component/Util/SectionTitle'
-import SliderComponent from '@/_component/Util/SliderComponent'
+// import BloodRequirementSingleItem from '@/component/Blood/BloodRequirementSingleItem'
+// import SectionTitle from '@/component/Util/SectionTitle'
+// import SliderComponent from '@/component/Util/SliderComponent'
+import BloodRequirementSingleItem from '@/component/Blood/BloodRequirementSingleItem'
+import SectionTitle from '@/component/Util/SectionTitle'
+import SliderComponent from '@/component/Util/SliderComponent'
 import React from 'react'
 
 function BloodReqSlider() {

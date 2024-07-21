@@ -1,4 +1,4 @@
-import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
+import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios_instance from "@/util/external/axios/axios-instance";
 import { AxiosResponse as CustomeAxiosResponse } from "@/util/types/API Response/FundRaiser";

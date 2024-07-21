@@ -1,4 +1,4 @@
-import LoadingComponent from '@/_component/Util/LoadingComponent'
+import LoadingComponent from '@/component/Util/LoadingComponent'
 import React, { useState } from 'react'
 import { schangemailIDValidation, changeEmailIDInitialValues, changeEmailIDHandler, signUpIndexDown } from './Logic'
 import { ErrorMessage, Field, Form, Formik } from 'formik';
