@@ -20,10 +20,10 @@ function ViewFundRaising(): React.ReactElement {
     let [tempFundRaiserData, setTempFundRaiserData] = useState<FundRaiserResponse[]>([]);
 
 
-    async function fetchAllData(limit: number): Promise<void> {
+    async function fetchAllData(limit: number, page: number): Promise<void> {
         try {
 
-            let allFundRaisers: FormActionResponse = await getAllFundRaisers(limit, 1);;
+            let allFundRaisers: FormActionResponse = await getAllFundRaisers(limit, page);;
             console.log(allFundRaisers);
 
             if (allFundRaisers.status) {
@@ -54,7 +54,7 @@ function ViewFundRaising(): React.ReactElement {
 
     }
     useEffect((): void => {
-        fetchAllData(2)
+        fetchAllData(10, 1)
     }, [])
 
     useEffect((): void => {
@@ -62,20 +62,25 @@ function ViewFundRaising(): React.ReactElement {
     }, [fundRaiserData])
 
     function onSearch(val) {
-        const regex = new RegExp(`\\b${val}\\b`, 'i');
-        // let newData = fundRaiserData.filter(product => regex.test(product))
+        if (val == "" || val == null) {
+            setFundRaiserData(tempFundRaiserData)
+        } else {
+            const regex = new RegExp(val, 'i');
+            let newData = tempFundRaiserData.filter(product => (regex.test(product.creater_profile?.first_name) || regex.test(product.fund_id)))
+            setFundRaiserData(newData)
+        }
     }
 
     function onRowChanges(count) {
         if (count < tempFundRaiserData.length) {
             setFundRaiserData(tempFundRaiserData.slice(0, count))
         } else {
-            fetchAllData(count);
+            fetchAllData(count, 1);
         }
     }
 
     function onPagination(number) {
-
+        fetchAllData(10, number)
     }
 
 
@@ -137,7 +142,7 @@ function ViewFundRaising(): React.ReactElement {
                                     })
                                 })}
                         />
-                        <PaginationTab from={1} to={5} onClick={() => { }} />
+                        <PaginationTab from={1} to={5} onClick={(number) => onPagination(number)} />
                     </div>
                 </div>
             </div>
