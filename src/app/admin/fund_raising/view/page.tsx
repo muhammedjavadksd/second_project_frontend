@@ -20,6 +20,8 @@ function ViewFundRaising(): React.ReactElement {
     const [tempFundRaiserData, setTempFundRaiserData] = useState<FundRaiserResponse[]>([]);
     const [tableLimit, setTableLimit] = useState<number>(5)
     const [tablePage, setTablePage] = useState<number>(1)
+    const [totalPages, setTotalPages] = useState<number>(10)
+    const [selectedItem, setSelectedItems] = useState<string[]>([])
 
 
     async function fetchAllData(limit: number, page: number): Promise<void> {
@@ -30,17 +32,18 @@ function ViewFundRaising(): React.ReactElement {
             console.log(allFundRaisers);
 
             if (allFundRaisers.status) {
-                let response: FundRaiserResponse[] = allFundRaisers.data;
-                let user_ids: string[] = response?.map((each) => each.user_id);
-                console.log(user_ids);
+                let response = allFundRaisers.data;
+                const pagination = response?.pagination;
+                const profile: FundRaiserResponse[] = response.profiles
+                let user_ids: string[] = profile?.map((each) => each.user_id);
 
                 let allUsers: FormActionResponse = await getUserForFundRaise(user_ids);;
                 console.log(allUsers);
 
                 if (allUsers.status) {
-                    const users: UserResponse[] = allUsers.data;
+                    const users: UserResponse[] = allUsers.data ?? [];
 
-                    let newMergedData: FundRaiserResponse[] = response?.map((each) => {
+                    let newMergedData: FundRaiserResponse[] = profile?.map((each) => {
                         let indexOfProfile = users.find((profile) => each.user_id == profile.user_id);
                         console.log(indexOfProfile);
                         each.creater_profile = indexOfProfile
@@ -49,6 +52,7 @@ function ViewFundRaising(): React.ReactElement {
                     setFundRaiserData(newMergedData)
                     setTempFundRaiserData(newMergedData)
                 }
+                // setTotalPages(pagination?.total_pages)
             }
         } catch (e) {
             console.log("Error occured");
@@ -100,6 +104,9 @@ function ViewFundRaising(): React.ReactElement {
             </div>
 
 
+            {
+                "Se" + selectedItem
+            }
 
             <div className='mt-5' >
                 <div className='grid grid-cols-2'>
@@ -121,7 +128,22 @@ function ViewFundRaising(): React.ReactElement {
                             <TableSearch onSearch={onSearch} />
                         </div>
                         <TableSimple
-                            headers={['Raising ID', 'User', 'Target Amount', 'Dead Line', 'Status', 'Action']} data={
+                            onItemChecked={(val) => {
+                                const indexOf = selectedItem.indexOf(val);
+                                if (indexOf === -1) {
+                                    setSelectedItems((prev) => [...prev, val])
+                                } else {
+                                    const newDocs = [...selectedItem];
+                                    newDocs.splice(indexOf, 1)
+                                    setSelectedItems(newDocs)
+                                }
+                            }}
+                            onAllItemCheck={(val) => {
+                                setSelectedItems(val)
+                            }}
+                            selectedItem={selectedItem}
+                            headers={['Raising ID', 'User', 'Target Amount', 'Dead Line', 'Status', 'Action']}
+                            data={
                                 fundRaiserData.map((each) => {
                                     return ({
                                         raisingID: each.fund_id,
@@ -143,7 +165,7 @@ function ViewFundRaising(): React.ReactElement {
                                     })
                                 })}
                         />
-                        <PaginationTab from={1} to={5} onClick={(number) => onPagination(number)} />
+                        <PaginationTab from={1} to={totalPages} onClick={(number) => onPagination(number)} />
                     </div>
                 </div>
             </div>

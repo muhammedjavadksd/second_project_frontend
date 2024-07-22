@@ -25,7 +25,10 @@ interface FundRaiseCreationBanner {
 
 interface ITableProps {
     headers: string[]
-    data: object[]
+    data: object[],
+    onItemChecked: Function
+    onAllItemCheck: Function,
+    selectedItem: string[]
 }
 
 interface IStaticCard {
