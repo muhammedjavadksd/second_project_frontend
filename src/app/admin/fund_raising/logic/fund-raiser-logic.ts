@@ -21,7 +21,7 @@ export async function getAllFundRaisers(limit: number, page: number): Promise<Fo
 
         const token = user?.token
 
-        let getAllFundRaisers = await API_axiosInstance.get(`/fund_raise/admin/view/${limit}/1`, {
+        let getAllFundRaisers = await API_axiosInstance.get(`/fund_raise/admin/view/${limit}/${page}`, {
             headers: {
                 "authorization": `Bearer ${token}`
             }

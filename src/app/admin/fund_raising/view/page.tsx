@@ -16,12 +16,15 @@ import TableSearch from '@/component/Util/TableSearch'
 
 function ViewFundRaising(): React.ReactElement {
 
-    let [fundRaiserData, setFundRaiserData] = useState<FundRaiserResponse[]>([]);
-    let [tempFundRaiserData, setTempFundRaiserData] = useState<FundRaiserResponse[]>([]);
+    const [fundRaiserData, setFundRaiserData] = useState<FundRaiserResponse[]>([]);
+    const [tempFundRaiserData, setTempFundRaiserData] = useState<FundRaiserResponse[]>([]);
+    const [tableLimit, setTableLimit] = useState<number>(5)
+    const [tablePage, setTablePage] = useState<number>(1)
 
 
     async function fetchAllData(limit: number, page: number): Promise<void> {
         try {
+
 
             let allFundRaisers: FormActionResponse = await getAllFundRaisers(limit, page);;
             console.log(allFundRaisers);
@@ -54,12 +57,8 @@ function ViewFundRaising(): React.ReactElement {
 
     }
     useEffect((): void => {
-        fetchAllData(10, 1)
+        fetchAllData(tableLimit, tablePage)
     }, [])
-
-    useEffect((): void => {
-        console.log(fundRaiserData);
-    }, [fundRaiserData])
 
     function onSearch(val) {
         if (val == "" || val == null) {
@@ -75,12 +74,14 @@ function ViewFundRaising(): React.ReactElement {
         if (count < tempFundRaiserData.length) {
             setFundRaiserData(tempFundRaiserData.slice(0, count))
         } else {
-            fetchAllData(count, 1);
+            fetchAllData(count, tablePage);
+            setTableLimit(count)
         }
     }
 
     function onPagination(number) {
-        fetchAllData(10, number)
+        setTablePage(number)
+        fetchAllData(tableLimit, number)
     }
 
 
