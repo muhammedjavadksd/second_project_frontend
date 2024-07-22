@@ -16,7 +16,8 @@ import TableSearch from '@/component/Util/TableSearch'
 
 function ViewFundRaising(): React.ReactElement {
 
-    let [fundRaiserData, setFundRaiserdata] = useState<FundRaiserResponse[]>([]);
+    let [fundRaiserData, setFundRaiserData] = useState<FundRaiserResponse[]>([]);
+    let [tempFundRaiserData, setTempFundRaiserData] = useState<FundRaiserResponse[]>([]);
 
 
     async function fetchAllData(limit: number): Promise<void> {
@@ -42,7 +43,8 @@ function ViewFundRaising(): React.ReactElement {
                         each.creater_profile = indexOfProfile
                         return each
                     })
-                    setFundRaiserdata(newMergedData)
+                    setFundRaiserData(newMergedData)
+                    setTempFundRaiserData(newMergedData)
                 }
             }
         } catch (e) {
@@ -52,7 +54,7 @@ function ViewFundRaising(): React.ReactElement {
 
     }
     useEffect((): void => {
-        fetchAllData(10)
+        fetchAllData(2)
     }, [])
 
     useEffect((): void => {
@@ -65,8 +67,11 @@ function ViewFundRaising(): React.ReactElement {
     }
 
     function onRowChanges(count) {
-        // alert(count)
-        fetchAllData(count)
+        if (count < tempFundRaiserData.length) {
+            setFundRaiserData(tempFundRaiserData.slice(0, count))
+        } else {
+            fetchAllData(count);
+        }
     }
 
     function onPagination(number) {

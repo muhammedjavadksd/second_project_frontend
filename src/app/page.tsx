@@ -15,15 +15,13 @@ import Header from "@/component/Header/Header";
 
 
 
-const Home: React.FC<{ name: string }> = ({ name }) => {
+const Home: React.FC = () => {
 
     return (
         <SessionProvider>
             <main className="flex min-h-screen flex-col">
                 <div>
-                    {
-                        "name  :" + name
-                    }
+
                     <Header />
                     <HomeHero />
                     <FundRaiserSlider />
@@ -46,15 +44,6 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
             </main >
         </SessionProvider >
     );
-}
-
-
-export function getServerSideProps() {
-    return {
-        props: {
-            name: "Javad"
-        }
-    }
 }
 
 export default Home
