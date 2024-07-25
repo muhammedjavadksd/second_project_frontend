@@ -13,6 +13,7 @@ import { FormActionResponse } from '@/util/types/InterFace/UtilInterface'
 import UserResponse from '@/util/types/API Response/UserInterface'
 import TableRowCount from '@/component/Util/TableRowCount'
 import TableSearch from '@/component/Util/TableSearch'
+import { FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
 
 function ViewFundRaising(): React.ReactElement {
 
@@ -88,6 +89,16 @@ function ViewFundRaising(): React.ReactElement {
         fetchAllData(tableLimit, number)
     }
 
+    function filterFundRaise(status: FundRaiserStatus) {
+        if (status == null) {
+            const filterData = tempFundRaiserData.slice((tableLimit * (tablePage - 1)), tableLimit);
+            setFundRaiserData(filterData)
+        } else {
+            const filterData = tempFundRaiserData.filter((each) => each.status == status)
+            setFundRaiserData(filterData);
+        }
+    }
+
 
 
     return (
@@ -109,15 +120,13 @@ function ViewFundRaising(): React.ReactElement {
             }
 
             <div className='mt-5' >
-                <div className='grid grid-cols-2'>
-                    <AdminDateFilter />
-                    <div className='buttonGroups flex items-center justify-end gap-3' >
-                        <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' > <i className="fa-solid fa-bars" > </i> All case's</button >
-
-                        <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' > <i className="fa-solid fa-bars" > </i> Pending Verification</button >
-                        <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' > <i className="fa-solid fa-bars" > </i> Verified </button >
-                        <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' > <i className="fa-solid fa-bars" > </i> Closed </button >
-                    </div>
+                <AdminDateFilter />
+                <div className='buttonGroups flex items-center justify-start mt-3 gap-3' >
+                    <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(null)} > <i className="fa-solid fa-bars" > </i> All case's</button >
+                    <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.INITIATED)} > <i className="fa-solid fa-bars" > </i> Initiated Cases</button >
+                    <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.CLOSED)}> <i className="fa-solid fa-bars" > </i> Closed Cased </button >
+                    <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.REJECTED)} > <i className="fa-solid fa-bars" > </i> Rejected Case </button >
+                    <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.APPROVED)} > <i className="fa-solid fa-bars" > </i> Approved Case </button >
                 </div>
 
                 <div className='mt-5' >
@@ -156,7 +165,7 @@ function ViewFundRaising(): React.ReactElement {
                                                 </div>
                                             </div> : (each.created_by == "ADMIN" ? "Created By Admin" : "Created by organization")),
                                         // raisingID: each.user_id,
-                                        TargetAmount: `${each.amount}${const_data.MONEY_ICON}`,
+                                        TargetAmount: `${each.status}${const_data.MONEY_ICON}`,
                                         deadLine: "12/04/2023",
                                         status: <span className='bg-green-400 p-3 text-sm text-white rounded-lg' > Active </span>,
                                         action: <div>
