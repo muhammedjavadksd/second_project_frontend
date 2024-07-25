@@ -18,6 +18,10 @@ function BloodAccountStart(): React.ReactElement {
         toast.error(err)
     }
 
+    function onLocationSelect() {
+
+    }
+
     return (
         <div className='bg-white min-h-10 min-w-96 '>
             <div className="flex items-center px-5 py-3 justify-between border-b rounded-t border-gray-600">
@@ -45,8 +49,9 @@ function BloodAccountStart(): React.ReactElement {
                         </div>
                         <div className='mb-5'>
                             <label htmlFor="" className='text-sm'>Select location</label>
-                            <Field placeholder="Select the location" name="location" id="location" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
-                            <ErrorMessage name='location' component={"div"} className='errorMessage'></ErrorMessage>
+                            <div className='min-h-10 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light'><span>Select the location</span></div>
+                            {/* <Field placeholder="Select the location" name="location" id="location" className="" />
+                            <ErrorMessage name='location' component={"div"} className='errorMessage'></ErrorMessage> */}
                         </div>
                         <div>
                             <label htmlFor="" className='text-sm'>Select your blood group</label>
