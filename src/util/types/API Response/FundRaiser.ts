@@ -1,3 +1,4 @@
+import { FundRaiserStatus } from "../Enums/BasicEnums"
 
 
 
@@ -17,7 +18,7 @@ interface FundRaiserResponse {
     picture: string[],
     documents: string[],
     closed: boolean,
-    status: boolean,
+    status: FundRaiserStatus,
     about: string,
     age: number,
     benificiary_relation: string,
