@@ -33,7 +33,8 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
         console.log(response);
 
         if (response.status) {
-            successCB()
+            const { donor_id } = response.data
+            successCB(donor_id)
         } else {
             errorCb(response.msg)
         }

@@ -2,33 +2,76 @@ import { bloodDonatationFormValues } from '@/util/external/yup/initialValues'
 import { bloodDonatationFormValidation } from '@/util/external/yup/yupValidations'
 import { BloodGroup } from '@/util/types/Enums/BasicEnums'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { onBloodDonationSubmit } from './Logic'
 import { toast } from 'react-toastify'
+import ModelHeader from '@/component/Util/Model/ModelHeader'
+import { useSession } from 'next-auth/react'
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
+import { getServerSession } from 'next-auth'
+import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 
 
 
 function BloodAccountStart(): React.ReactElement {
 
-    function successCB() {
+    // const { update } = useSession()
+    const session = useSession()
+
+    async function successCB(donor_id: string) {
+        const user = userDetailsFromUseSession(session)
+        console.log(user);
+
+        const updateProfile = await API_axiosInstance.patch("/profile/update_profile", { user_profile: { blood_donor_id: donor_id } }, { headers: { authorization: `Bearer ${user.token}` } })
+        console.log(updateProfile);
+
+        // alert(donor_id)
+
+        // console.log("Suppose data");
+        // console.log(session.data.token);
+
+        // console.log({ ...session.data.token.user, blood_donor_id: donor_id });
+        // const updatedUser = {
+        //     ...session.data.token.user,
+        //     blood_donor_id: donorId
+        // };
+
+        // console.log({ ...session, user: { ...session.data, blood_donor_id: donor_id } });
+
+        // const updatedSession = { ...session, data: { ...session.data, token: { ...session.data.token, user: { ...session.data.token, blood: "das" } } } };
+        // const updateSession = await session.update(updatedSession);
+
+        // console.log(updateSession);
+
         toast.success("Blood donation profile is opened")
+        console.log(session);
+
     }
+
+    useEffect(() => {
+        console.log("Session updated:", session);
+        console.log("User details from session:", userDetailsFromUseSession(session));
+    }, [session]);
 
     function errorCB(err) {
         toast.error(err)
     }
 
     function onLocationSelect() {
+        navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+            const { latitude, longitude } = coords
+            console.log(coords);
 
+            const res = await fetch(`https://openmensa.org/api/v2/canteens?near[lat]=${latitude}&near[lng]=${longitude}&near[dist]=10000`);
+            const data = await res.json();
+            console.log(data);
+
+        })
     }
 
     return (
-        <div className='bg-white min-h-10 min-w-96 '>
-            <div className="flex items-center px-5 py-3 justify-between border-b rounded-t border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-500 dark:text-white">
-                    Create donor profile
-                </h3>
-            </div>
+        <div className='bg-white  rounded-t  rounded-b min-h-10 min-w-96 '>
+            <ModelHeader />
             <div className='p-5'>
                 <Formik initialValues={bloodDonatationFormValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => { onBloodDonationSubmit(val, successCB, errorCB) }}>
                     <Form>
@@ -49,7 +92,7 @@ function BloodAccountStart(): React.ReactElement {
                         </div>
                         <div className='mb-5'>
                             <label htmlFor="" className='text-sm'>Select location</label>
-                            <div className='min-h-10 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light'><span>Select the location</span></div>
+                            <div onClick={onLocationSelect} className='min-h-10 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light'><span>Select the location</span></div>
                             {/* <Field placeholder="Select the location" name="location" id="location" className="" />
                             <ErrorMessage name='location' component={"div"} className='errorMessage'></ErrorMessage> */}
                         </div>

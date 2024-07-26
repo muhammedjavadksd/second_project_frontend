@@ -1,14 +1,19 @@
-import { signIn, signOut } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import ImageModel from '../Util/ImageModel'
 import ModelItem from '../Util/ModelItem'
 import BloodAccountStart from '../Blood/bloodAccountStart/BloodAccountStart'
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 
 function AccountTab(): React.ReactElement {
 
     const router = useRouter()
     const [isBloodAccountStart, setBloodAccountStart] = useState<boolean>(false);
+    const session = useSession();
+    const profile = userDetailsFromUseSession(session);
+    console.log(profile);
+
 
     return (
         <div>

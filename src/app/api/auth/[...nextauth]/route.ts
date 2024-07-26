@@ -58,7 +58,8 @@ let authOptions = {
                                 last_name: user_data.last_name,
                                 phone: user_data.phone,
                                 email: user_data.email,
-                                role: "user"
+                                role: "user",
+                                blood_donor_id: null
                             };
                             console.log(storingData);
 
@@ -128,6 +129,10 @@ let authOptions = {
     ],
     callbacks: {
         async jwt({ token, user, account }) {
+            console.log("Worked");
+            
+            console.log(token, user, account);
+
             if (user) {
                 token.user = user
             }
