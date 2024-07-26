@@ -31,6 +31,11 @@ interface IUserSessionData extends IUser {
     phone: number,
 }
 
+interface IBloodDonorForm {
+    donor_id: string
+    setDonor: Function
+}
+
 interface IOnGoingApplocation {
     currentApplication: string,
     setApplication: Function
@@ -54,4 +59,4 @@ interface IStore {
 // }
 
 
-export type { FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore }
+export type { FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm }

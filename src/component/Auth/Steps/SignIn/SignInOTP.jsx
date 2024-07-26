@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { loginStepDown, otpInitialValues, otpValidaor, onLoginOtpSubmit, onResetOtp } from './Logic'
 import LoadingComponent from '@/component/Util/LoadingComponent';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import Timer from "@amplication/react-compound-timer";
 import { useRouter } from 'next/navigation'
+import { BloodDonorFormContext } from '@/util/context/Context';
+import { IBloodDonorForm } from '@/util/types/InterFace/UtilInterface';
 // import { useRouter } from 'next/nav';
 
 function SignInOTP({ state }) {
@@ -12,10 +14,12 @@ function SignInOTP({ state }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeEnd, setIsTimeEnd] = useState(false)
   const navigate = useRouter()
+  const bloodDonor = useContext(BloodDonorFormContext);
 
-  function onSuccess() {
+
+  function onSuccess(blood_donor) {
     toast.success("OTP has been verified")
-
+    bloodDonor && bloodDonor.setDonor(blood_donor)
     setIsLoading(false)
     navigate.replace("/")
   }

@@ -2,14 +2,16 @@ import { bloodDonatationFormValues } from '@/util/external/yup/initialValues'
 import { bloodDonatationFormValidation } from '@/util/external/yup/yupValidations'
 import { BloodGroup } from '@/util/types/Enums/BasicEnums'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { onBloodDonationSubmit } from './Logic'
 import { toast } from 'react-toastify'
 import ModelHeader from '@/component/Util/Model/ModelHeader'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 import { getServerSession } from 'next-auth'
 import API_axiosInstance from '@/util/external/axios/api_axios_instance'
+import BloodDonorForm from '@/util/context/BloodDonorForm'
+import { BloodDonorFormContext } from '@/util/context/Context'
 
 
 
@@ -17,35 +19,16 @@ function BloodAccountStart(): React.ReactElement {
 
     // const { update } = useSession()
     const session = useSession()
+    const { donor_id } = useContext(BloodDonorFormContext)
+
+
 
     async function successCB(donor_id: string) {
         const user = userDetailsFromUseSession(session)
-        console.log(user);
-
-        const updateProfile = await API_axiosInstance.patch("/profile/update_profile", { user_profile: { blood_donor_id: donor_id } }, { headers: { authorization: `Bearer ${user.token}` } })
-        console.log(updateProfile);
-
-        // alert(donor_id)
-
-        // console.log("Suppose data");
-        // console.log(session.data.token);
-
-        // console.log({ ...session.data.token.user, blood_donor_id: donor_id });
-        // const updatedUser = {
-        //     ...session.data.token.user,
-        //     blood_donor_id: donorId
-        // };
-
-        // console.log({ ...session, user: { ...session.data, blood_donor_id: donor_id } });
-
-        // const updatedSession = { ...session, data: { ...session.data, token: { ...session.data.token, user: { ...session.data.token, blood: "das" } } } };
-        // const updateSession = await session.update(updatedSession);
-
-        // console.log(updateSession);
-
+        await API_axiosInstance.patch("/profile/update_profile", { user_profile: { blood_donor_id: donor_id } }, { headers: { authorization: `Bearer ${user.token}` } })
+        // signIn("credentials", { redirect: false })
         toast.success("Blood donation profile is opened")
         console.log(session);
-
     }
 
     useEffect(() => {
@@ -72,6 +55,9 @@ function BloodAccountStart(): React.ReactElement {
     return (
         <div className='bg-white  rounded-t  rounded-b min-h-10 min-w-96 '>
             <ModelHeader />
+            {
+                donor_id && "Already created donor profile"
+            }
             <div className='p-5'>
                 <Formik initialValues={bloodDonatationFormValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => { onBloodDonationSubmit(val, successCB, errorCB) }}>
                     <Form>

@@ -11,6 +11,7 @@ import axios_instance from "@/util/external/axios/axios-instance";
 // import { addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError } from "./_util/helper/authHelper";
 // import { } from '../util/data/'
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
+import BloodDonorForm from "@/util/context/BloodDonorForm";
 // import { Head } from "next/document";
 
 interface RootLayoutProps {
@@ -35,10 +36,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
       <body>
         <Provider store={store}>
-          <SessionProvider>
-            <ToastContainer />
-            {children}
-          </SessionProvider>
+          <BloodDonorForm>
+            <SessionProvider>
+              <ToastContainer />
+              {children}
+            </SessionProvider>
+          </BloodDonorForm>
         </Provider>
       </body>
 

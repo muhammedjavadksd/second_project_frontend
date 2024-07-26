@@ -1,6 +1,7 @@
 import { createContext } from "react";
-import { IOnGoingApplocation } from "../types/InterFace/UtilInterface";
+import { IBloodDonorForm, IOnGoingApplocation } from "../types/InterFace/UtilInterface";
 
 let OnGoingApplicationContext = createContext<IOnGoingApplocation>(undefined);
+let BloodDonorFormContext = createContext<IBloodDonorForm>(undefined);
 
-export { OnGoingApplicationContext }
+export { OnGoingApplicationContext, BloodDonorFormContext }

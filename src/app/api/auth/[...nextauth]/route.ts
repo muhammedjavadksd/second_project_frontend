@@ -24,17 +24,22 @@ let authOptions = {
                 otp_number: {},
                 auth_type: { type: "hidden" },
                 token: { type: "hidden" },
+                blood_donor_id: { type: "hidden" },
                 email_address: {},
                 password: {}
             },
             authorize: async (credentials, req) => {
                 try {
 
+
                     if (credentials.auth_type == "user") {
 
                         let otp_number = credentials.otp_number
+                        let blood_donor_id = credentials.blood_donor_id
                         let token = credentials.token;
 
+
+                        console.log(token);
 
                         let apiCall = await API_axiosInstance.post("/auth/auth_otp_submission", {
                             otp_number: otp_number
@@ -44,12 +49,21 @@ let authOptions = {
                                 "authorization": `Bearer ${token}`
                             }
                         })
+                        console.log("Eneterd123");
 
                         let response = apiCall.data;
+                        console.log("This ");
+
                         console.log(response);
 
 
                         if (response.status) {
+                            console.log("track1");
+
+
+                            console.log("track1");
+
+
                             const user_data = response.data;
                             let storingData: IUserSessionData = {
                                 id: user_data.user_id,
@@ -59,11 +73,13 @@ let authOptions = {
                                 phone: user_data.phone,
                                 email: user_data.email,
                                 role: "user",
-                                blood_donor_id: null
-                            };
+                                blood_donor_id: blood_donor_id
+                            }
                             console.log(storingData);
 
                             return storingData
+
+
                         } else {
                             return null
                         }
@@ -122,6 +138,8 @@ let authOptions = {
                         }
                     }
                 } catch (E) {
+                    console.log(E);
+
                     return null
                 }
             }
@@ -130,7 +148,7 @@ let authOptions = {
     callbacks: {
         async jwt({ token, user, account }) {
             console.log("Worked");
-            
+
             console.log(token, user, account);
 
             if (user) {
@@ -139,6 +157,10 @@ let authOptions = {
             return token;
         },
         async session(session) {
+            console.log("thus");
+
+            console.log(session);
+
             return session
         },
     },
