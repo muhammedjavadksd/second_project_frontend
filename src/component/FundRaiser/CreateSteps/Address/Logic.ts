@@ -4,10 +4,10 @@ import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios_instance from "@/util/external/axios/axios-instance";
 import { updateFundRaiseData } from "@/util/external/redux/slicer/fundRaiserForm";
 import store from "@/util/external/redux/store/store";
+import { IAddressFormInitialValues } from "@/util/types/InterFace/FormInitialValues";
 import { getSession } from "next-auth/react";
 
-const onAddressSubmit = async (values, successCB, errorCB, ifNotLogged) => {
-    console.log(values);
+const onAddressSubmit = async (values: IAddressFormInitialValues, successCB: Function, errorCB: Function, ifNotLogged: Function) => {
     const { city, pinCode, state, district, fullAddress, currentApplication } = values
 
     const session = await getSession();

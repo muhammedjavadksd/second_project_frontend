@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import CreateFormBackground from '../../CreateFormBackground';
 import { useDispatch, useSelector } from 'react-redux';
 import getAIDescription, { onDescriptionSubmit } from './Logic';
@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { OnGoingApplicationContext } from '@/util/context/Context';
 import { clearFundRaiserData, updateFundRaiseData } from '@/util/external/redux/slicer/fundRaiserForm';
+import { IReduxStore } from '@/util/types/InterFace/UtilInterface';
+import { IAIDescriptionInitialValues } from '@/util/types/InterFace/FormInitialValues';
 // import CreateFormBackground from '../CreateFormBackground'
 
 function AIDescription({ state }) {
@@ -18,7 +20,7 @@ function AIDescription({ state }) {
     const [initialValues, setInitialValues] = useState({});
     const [isLoading, setLoading] = useState(true)
     const router = useRouter();
-    const currentApplicationData = useSelector((state) => state.fund_raiser);
+    const currentApplicationData = useSelector((state: IReduxStore) => state.fund_raiser);
     const dispatch = useDispatch()
     let isWorking = false;
     const fetchAIData = () => {
@@ -74,30 +76,32 @@ function AIDescription({ state }) {
     return (
         <CreateFormBackground>
             <div className='w-full mb-2 ml-auto' style={{ display: "flex" }}>
-                <button disabled={isLoading} onClick={reGenerateAIDescription} class="disabled:cursor-not-allowed disabled:opacity-50 bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                <button disabled={isLoading} onClick={reGenerateAIDescription} className="disabled:cursor-not-allowed disabled:opacity-50 bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                     Re-generate FROM AI
                 </button>
             </div>
-            <Formik onSubmit={(val) => {
+            <Formik onSubmit={(val: IAIDescriptionInitialValues) => {
                 val.currentApplication = currentApplication
                 onDescriptionSubmit(val, successCB, errorCB)
             }} initialValues={initialValues} enableReinitialize validationSchema={AI_description_validation}>
                 <Form>
-                    <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                    <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
 
                         <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false}>
-                            <label for="comment" class="sr-only">Your comment</label>
-                            <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
-                                <Field id="ai_description" rows='15' name="ai_description" as="textarea" className="w-full *:first-letter:first-line:w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeHolder="Enter detail description" />
-                                <ErrorMessage name='ai_description' component={"div"} className='text-red-600'></ErrorMessage>
-                            </div>
+                            <Fragment>
+                                <label htmlFor="comment" className="sr-only">Your comment</label>
+                                <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+                                    <Field id="ai_description" rows='15' name="ai_description" as="textarea" className="w-full *:first-letter:first-line:w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeHolder="Enter detail description" />
+                                    <ErrorMessage name='ai_description' component={"div"} className='text-red-600'></ErrorMessage>
+                                </div>
+                            </Fragment>
                         </LoadingComponent>
                     </div>
 
 
                     <div className='ml-auto w-full overflow-hidden gap-3 flex justify-end'>
-                        <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)}><i class="fa-solid fa-chevron-left"></i> Prev </button>
-                        <button type="submit" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Submit </button>
+                        <button type="button" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)}><i className="fa-solid fa-chevron-left"></i> Prev </button>
+                        <button type="submit" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Submit </button>
                     </div>
                 </Form>
             </Formik>

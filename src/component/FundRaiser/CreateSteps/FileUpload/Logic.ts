@@ -4,6 +4,7 @@ import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios_instance from "@/util/external/axios/axios-instance";
 import { resetDocuments, resetPictures, updateFundRaiseData } from "@/util/external/redux/slicer/fundRaiserForm";
 import store from "@/util/external/redux/store/store";
+import { FundRaiserFormInitialValues } from "@/util/types/InterFace/FormInitialValues";
 import { getSession } from "next-auth/react";
 
 
@@ -43,7 +44,7 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
             onError(errorMessage)
         }
     } else {
-        ifNotLogged()
+        onError("Something went wrong")
     }
 }
 
@@ -51,10 +52,10 @@ async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fun
     console.log(my_files);
     const session = await getSession();
     const user = userDetailsFromGetSession(session)
+    const storeData = store.getState().fund_raiser;
+    console.log(storeData);
 
-
-    console.log(my_files);
-
+    // const docsPresignedUrl = presignedUrl.
 
     if (user) {
 

@@ -1,21 +1,21 @@
-// import { userDetailsFromGetSession } from "@/app/_util/helper/authHelper";
-// import { objectToUrlQuery } from "@/app/_util/helper/utilHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { getSession } from "next-auth/react";
 import const_data from "@/util/data/const";
 import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 import { objectToUrlQuery } from "@/util/data/helper/utilHelper";
+import axios_instance from "@/util/external/axios/axios-instance";
+import { AxiosResponse } from "@/util/types/API Response/FundRaiser";
+import { IAIDescriptionInitialValues } from "@/util/types/InterFace/FormInitialValues";
 
-const { default: axios_instance } = require("@/util/external/axios/axios-instance");
 
-async function getAIDescription(amount, category, sub_category, raiser_name, raiser_age, benificiary_relation, description, city, pinCode, state, district) {
+async function getAIDescription(amount: number, category: string, sub_category: string, raiser_name: string, raiser_age: number, benificiary_relation: string, description: string, city: string, pinCode: number, state: string, district: string) {
 
     const urlParamsObject = { amount, category, sub_category, raiser_name, raiser_age, benificiary_relation, description, city, pinCode, state, district };
     const query = objectToUrlQuery(urlParamsObject);
 
     try {
         if (const_data.AI_DESCRIPTION_GENERATION) {
-            const data = await axios_instance.get(`/api/user_api/fund_raiser/ai_description?${query}`)
+            const data: AxiosResponse = await axios_instance.get(`/api/user_api/fund_raiser/ai_description?${query}`)
 
             const response = data?.data;
             if (response.status) {
@@ -35,7 +35,7 @@ async function getAIDescription(amount, category, sub_category, raiser_name, rai
 }
 
 
-async function onDescriptionSubmit(val, successCB, errorCB) {
+async function onDescriptionSubmit(val: IAIDescriptionInitialValues, successCB: Function, errorCB: Function) {
 
     const session = await getSession();
     const user = userDetailsFromGetSession(session)
@@ -49,7 +49,7 @@ async function onDescriptionSubmit(val, successCB, errorCB) {
 
         try {
 
-            const requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
+            const requestAPI: AxiosResponse = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
                 description: ai_description
             }, {
                 headers: {

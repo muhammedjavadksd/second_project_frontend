@@ -13,6 +13,8 @@ import const_data from '@/util/data/const'
 import { OnGoingApplicationContext } from '@/util/context/Context'
 import LoadingComponent from '@/component/Util/LoadingComponent'
 import { useSelector } from 'react-redux'
+import { IReduxStore } from '@/util/types/InterFace/UtilInterface'
+import { IAddressFormInitialValues } from '@/util/types/InterFace/FormInitialValues'
 
 function Address({ state }) {
 
@@ -21,7 +23,7 @@ function Address({ state }) {
   const [district, setDistrict] = useState([])
   const { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
   const [addressDataInitialValues, setInitialValues] = useState(addressInitialValues)
-  const selectData = useSelector((store) => store.fund_raiser);
+  const selectData = useSelector((store: IReduxStore) => store.fund_raiser);
 
 
   useEffect(() => {
@@ -55,9 +57,9 @@ function Address({ state }) {
           enableReinitialize
           initialValues={addressDataInitialValues}
           validationSchema={addressValidationSchema}
-          onSubmit={(e) => {
-            e.currentApplication = currentApplication
-            onAddressSubmit(e, onSuccess, onError, ifNotLogged)
+          onSubmit={(val: IAddressFormInitialValues) => {
+            val.currentApplication = currentApplication
+            onAddressSubmit(val, onSuccess, onError, ifNotLogged)
           }}
         >
           {({ setFieldValue }) => (

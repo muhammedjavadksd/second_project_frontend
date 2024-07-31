@@ -1,5 +1,7 @@
-import { Slice } from "@reduxjs/toolkit";
+import { Reducer, Slice } from "@reduxjs/toolkit";
 import { FundRaiserFormInitialValues } from "./FormInitialValues";
+
+
 
 
 interface FormActionResponse {
@@ -8,6 +10,10 @@ interface FormActionResponse {
     data?: any
 }
 
+
+interface IReduxStore {
+    fund_raiser: any
+}
 
 interface IUser {
     id: string;
@@ -59,4 +65,4 @@ interface IStore {
 // }
 
 
-export type { FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm }
+export type { IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm }

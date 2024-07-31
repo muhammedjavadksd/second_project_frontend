@@ -9,6 +9,7 @@ import { OnGoingApplicationContext } from '@/util/context/Context';
 import const_data from '@/util/data/const';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFundRaiseData } from '@/util/external/redux/slicer/fundRaiserForm';
+import { IReduxStore } from '@/util/types/InterFace/UtilInterface';
 
 function FileUpload({ state }) {
 
@@ -18,7 +19,7 @@ function FileUpload({ state }) {
   const [pictures, setPictures] = useState([]);
   const [Documents, setDocuments] = useState([]);
   const [checkValidation, setCheckValidation] = useState(false)
-  const selectData = useSelector((store) => store.fund_raiser);
+  const selectData = useSelector((store: IReduxStore) => store.fund_raiser);
   const dispatch = useDispatch()
 
 
@@ -94,7 +95,7 @@ function FileUpload({ state }) {
             </div>
             <div className="w-2/4">
               <div className='overflow-auto'>
-                <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Pictures", currentApplication)} data={pictures} BASE_PATH={const_data.FUND_RAISE_IMAGE_URL} onDelete={() => { }} />
+                <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Pictures", currentApplication)} data={pictures} BASE_PATH={const_data.FUND_RAISE_IMAGE_URL} />
               </div>
             </div>
 
@@ -117,7 +118,7 @@ function FileUpload({ state }) {
               </div>
             </div>
             <div className='w-2/4'>
-              <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Document", currentApplication)} data={Documents} BASE_PATH={const_data.FUND_RAISE_DOCUMENT_URL} onDelete={() => { }} />
+              <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Document", currentApplication)} data={Documents} BASE_PATH={const_data.FUND_RAISE_DOCUMENT_URL} />
               {/* <UploadFilePlusButton /> */}
             </div>
           </div>
@@ -127,8 +128,8 @@ function FileUpload({ state }) {
 
 
         <div className='ml-auto mt-5 w-full overflow-hidden gap-3 flex justify-end'>
-          <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)} ><i class="fa-solid fa-chevron-left"></i> Prev </button>
-          <button type="button" class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={onNext}>Next <i class="fa-solid fa-chevron-right"></i></button>
+          <button type="button" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)} ><i className="fa-solid fa-chevron-left"></i> Prev </button>
+          <button type="button" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={onNext}>Next <i className="fa-solid fa-chevron-right"></i></button>
         </div>
 
 

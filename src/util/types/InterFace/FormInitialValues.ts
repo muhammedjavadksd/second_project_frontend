@@ -32,6 +32,21 @@ interface OrganizationInitialValues {
 }
 
 
+interface IAIDescriptionInitialValues {
+    ai_description: string,
+    currentApplication?: string
+}
+
+
+interface IAddressFormInitialValues {
+    city: string,
+    pinCode: number,
+    state: string,
+    district: string,
+    fullAddress: string,
+    currentApplication?: string
+}
+
 interface FundRaiserFormInitialValues {
     amount: string,
     category: string,
@@ -71,4 +86,4 @@ interface IOrganizationResetPassword {
 }
 
 
-export type { IOrganizationResetPassword, IOrganizationForgetPasswordInitialValues, IOrganizationSignIn, AdminSignIn, AdminResetPassword, AdminForgetPassword, OrganizationInitialValues, FundRaiserFormInitialValues }
+export type { IOrganizationResetPassword, IAIDescriptionInitialValues, IAddressFormInitialValues, IOrganizationForgetPasswordInitialValues, IOrganizationSignIn, AdminSignIn, AdminResetPassword, AdminForgetPassword, OrganizationInitialValues, FundRaiserFormInitialValues }

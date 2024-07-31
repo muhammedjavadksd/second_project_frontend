@@ -41,7 +41,13 @@ async function onInitialCreate(val, successCB, errorCB) {
 
                 console.log(response);
                 const fund_id = response.data?.fund_id;
+                let imagesUpload = response?.data?.upload_images
                 if (fund_id) {
+
+                    console.log(imagesUpload);
+
+
+                    let { documents, pictures } = imagesUpload
 
 
                     store.dispatch(updateFundRaiseData({
@@ -50,7 +56,9 @@ async function onInitialCreate(val, successCB, errorCB) {
                             category,
                             sub_category,
                             phone_number,
-                            email_id
+                            email_id,
+                            pictures_presigned_url: pictures,
+                            documents_presigned_url: documents
                         }
                     }))
                     console.log(fund_id);
@@ -60,9 +68,9 @@ async function onInitialCreate(val, successCB, errorCB) {
                 }
 
             } else {
-                if (createRequest.status == 401) {
+                if (createEndPoint.status == 401) {
                 } else {
-                    errorCB({ msg: response.msg ?? "Something went wrong", statusCode: createRequest.status ?? 500 })
+                    errorCB({ msg: response.msg ?? "Something went wrong", statusCode: createEndPoint.status ?? 500 })
                 }
             }
         } catch (e) {
