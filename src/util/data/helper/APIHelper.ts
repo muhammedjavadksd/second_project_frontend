@@ -10,6 +10,8 @@ function getLimitedFundRaiserPost(limit, page, successCB, errorCB) {
             successCB(responseData)
         }
     }).catch((err) => {
+        console.log(err);
+        // alert("Data fetched")
         errorCB()
     })
 }

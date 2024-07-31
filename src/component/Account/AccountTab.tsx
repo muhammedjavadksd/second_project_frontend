@@ -1,25 +1,25 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ImageModel from '../Util/ImageModel'
 import ModelItem from '../Util/ModelItem'
 import BloodAccountStart from '../Blood/bloodAccountStart/BloodAccountStart'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
+import LoadingComponent from '../Util/LoadingComponent'
+import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 
 function AccountTab(): React.ReactElement {
 
     const router = useRouter()
     const [isBloodAccountStart, setBloodAccountStart] = useState<boolean>(false);
-    const session = useSession();
-    const profile = userDetailsFromUseSession(session);
-    console.log(profile);
+
 
 
     return (
         <div>
 
-            <ModelItem ZIndex={999} isOpen={isBloodAccountStart} onClose={() => setBloodAccountStart(false)}>
-                <BloodAccountStart></BloodAccountStart>
+            <ModelItem ZIndex={1} isOpen={isBloodAccountStart} onClose={() => setBloodAccountStart(false)}>
+                <BloodAccountStart onComplete={() => setBloodAccountStart(false)}></BloodAccountStart>
             </ModelItem>
 
             {/* <h2>Profile editing</h2> */}

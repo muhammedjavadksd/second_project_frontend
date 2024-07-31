@@ -24,7 +24,6 @@ let authOptions = {
                 otp_number: {},
                 auth_type: { type: "hidden" },
                 token: { type: "hidden" },
-                blood_donor_id: { type: "hidden" },
                 email_address: {},
                 password: {}
             },
@@ -35,7 +34,6 @@ let authOptions = {
                     if (credentials.auth_type == "user") {
 
                         let otp_number = credentials.otp_number
-                        let blood_donor_id = credentials.blood_donor_id
                         let token = credentials.token;
 
 
@@ -60,25 +58,35 @@ let authOptions = {
                         if (response.status) {
                             console.log("track1");
 
-
+                            let profileApi = await API_axiosInstance.get("/profile/get_profile", {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    "authorization": `Bearer ${response?.data?.jwt}`
+                                }
+                            })
                             console.log("track1");
+                            const data = profileApi.data;
+                            console.log(profileApi);
 
+                            if (data.status) {
+                                const { profile } = data.data;
+                                const user_data = response.data;
+                                let storingData: IUserSessionData = {
+                                    id: user_data.user_id,
+                                    token: user_data.jwt,
+                                    first_name: user_data.first_name,
+                                    last_name: user_data.last_name,
+                                    phone: user_data.phone,
+                                    email: user_data.email,
+                                    role: "user",
+                                    blood_donor_id: profile.blood_donor_id
+                                }
+                                console.log(storingData);
 
-                            const user_data = response.data;
-                            let storingData: IUserSessionData = {
-                                id: user_data.user_id,
-                                token: user_data.jwt,
-                                first_name: user_data.first_name,
-                                last_name: user_data.last_name,
-                                phone: user_data.phone,
-                                email: user_data.email,
-                                role: "user",
-                                blood_donor_id: blood_donor_id
+                                return storingData
+                            } else {
+                                return null
                             }
-                            console.log(storingData);
-
-                            return storingData
-
 
                         } else {
                             return null

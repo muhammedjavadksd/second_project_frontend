@@ -34,6 +34,8 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
 
         if (response.status) {
             const { donor_id } = response.data
+            const { token } = response.data
+            await API_axiosInstance.patch("/auth/update_auth", { blood_token: token }, { headers: { authorization: `Bearer ${token}` } })
             successCB(donor_id)
         } else {
             errorCb(response.msg)
@@ -46,4 +48,12 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
 
 }
 
-export { onBloodDonationSubmit }
+async function OnBloodGroupUpdate(val, successCB, errorCB) {
+    console.log(val);
+
+    const updateBloodGroup = await API_axiosInstance.post("/blood/group_change_request", {})
+
+
+}
+
+export { onBloodDonationSubmit, OnBloodGroupUpdate }

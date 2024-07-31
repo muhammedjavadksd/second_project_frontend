@@ -10,13 +10,15 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { OnGoingApplicationContext } from '@/util/context/Context'
 import LoadingComponent from '@/component/Util/LoadingComponent'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getMainCategory, getSubCategory } from '@/util/data/helper/utilHelper'
+import { setDocsPresignedUrl, setPicturesPresignedUrl, updateFundRaiseData } from '@/util/external/redux/slicer/fundRaiserForm'
 // import { OnGoingApplicationContext } from '@/app/_util/context/onGoingingFundRaise'
 
 function Basic({ state }) {
 
   const [createInitialValue, setInitialValues] = useState(initialValuesForCreate)
+  const dispatch = useDispatch();
 
   const navigation = useRouter();
   const [isLoading, setLoading] = useState(false)
@@ -38,12 +40,15 @@ function Basic({ state }) {
     }
   }, [])
 
-  function onSuccess(fund_raiser_id) {
+  function onSuccess(fund_raiser_id, pictures_presigned_url, docs_presigned_url) {
     if (fund_raiser_id) {
+      dispatch(updateFundRaiseData(setPicturesPresignedUrl({ pictures: pictures_presigned_url })))
+      dispatch(updateFundRaiseData(setDocsPresignedUrl({ documents: docs_presigned_url })))
       console.log("The fund is :" + fund_raiser_id);
       setApplication(fund_raiser_id)
       console.log(state);
       state((prev) => prev + 1)
+
     }
     setLoading(false)
   }

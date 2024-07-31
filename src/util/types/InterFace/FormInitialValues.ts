@@ -40,6 +40,8 @@ interface FundRaiserFormInitialValues {
     email_id: string,
     pictures: string[],
     documents: string[],
+    pictures_presigned_url: string[],
+    documents_presigned_url: string[],
     raiser_name: string,
     raiser_age: number,
     deadline: Date

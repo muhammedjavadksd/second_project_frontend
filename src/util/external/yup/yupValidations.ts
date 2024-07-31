@@ -10,4 +10,9 @@ const bloodDonatationFormValidation = yup.object().shape({
     blood_group: yup.string().typeError("Please select valid blood group").oneOf(Object.values(BloodGroup), "Please select valid blood group").required("Blood group is required")
 })
 
-export { bloodDonatationFormValidation }
+const updateBloodGroupValidation = yup.object().shape({
+    blood_group: yup.string().typeError("Please select valid blood group").oneOf(Object.values(BloodGroup), "Please select valid blood group").required("Blood group is required"),
+    certificate: yup.mixed().required("Please upload certificate")
+})
+
+export { bloodDonatationFormValidation, updateBloodGroupValidation }

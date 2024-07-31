@@ -21,6 +21,8 @@ const FUND_RAISER_FORM_INITIAL_VALUES: FundRaiserFormInitialValues = {
     district: null,
     fullAddress: null,
     ai_description: null,
+    documents_presigned_url: [],
+    pictures_presigned_url: [],
 }
 
 let fundRaiserSlicer = createSlice({
@@ -41,6 +43,16 @@ let fundRaiserSlicer = createSlice({
             let newDocuments = [...state.documents, ...documents];
             return { ...state, documents: newDocuments }
         },
+        setPicturesPresignedUrl: (state, action): FundRaiserFormInitialValues => {
+            let pictures: string[] = action.payload.pictures ?? [];
+            let newPictures: string[] = [...state.pictures, ...pictures];
+            return { ...state, pictures_presigned_url: newPictures }
+        },
+        setDocsPresignedUrl: (state, action): FundRaiserFormInitialValues => {
+            let documents = action.payload.documents ?? [];
+            let newDocuments = [...state.documents, ...documents];
+            return { ...state, documents_presigned_url: newDocuments }
+        },
         resetPictures: (state, action): FundRaiserFormInitialValues => {
             let pictures: string[] = action.payload.pictures ?? [];
             let newPictures: string[] = [...pictures];
@@ -57,5 +69,5 @@ let fundRaiserSlicer = createSlice({
     }
 })
 
-export const { updateFundRaiseData, SetPicturs, setDocuments, resetPictures, resetDocuments, clearFundRaiserData } = fundRaiserSlicer.actions
+export const { updateFundRaiseData, SetPicturs, setDocuments, resetPictures, resetDocuments, clearFundRaiserData, setPicturesPresignedUrl, setDocsPresignedUrl } = fundRaiserSlicer.actions
 export default fundRaiserSlicer.reducer

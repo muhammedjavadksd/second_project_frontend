@@ -44,6 +44,25 @@ export async function getAllFundRaisers(limit: number, page: number): Promise<Fo
     }
 }
 
+
+export async function getSingleUser(profile_id: string) {
+
+    try {
+
+        const profileApi: AxiosResponse = await API_axiosInstance.get(`profile/${profile_id}`);
+        const responseProfile = profileApi.data;
+        if (responseProfile.status) {
+            const profile = responseProfile.profile;
+            return profile;
+        } else {
+            return null
+        }
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
+
 export async function getUserForFundRaise(user_ids: string[]): Promise<FormActionResponse> {
 
     let session = await getSession();

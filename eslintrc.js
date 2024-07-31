@@ -14,5 +14,9 @@ module.exports = {
         browser: true,
         node: true,
         es6: true
+    },
+    rules: {
+        "eqeqeq": ["error", "always"],
+        "no-eval": "error"
     }
 };

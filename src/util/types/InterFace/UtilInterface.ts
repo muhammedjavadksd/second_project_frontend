@@ -27,8 +27,8 @@ interface IOrganizationSessionData extends IUser {
 interface IUserSessionData extends IUser {
     first_name?: string,
     last_name?: string,
-    blood_donor_id?: string,
     phone: number,
+    blood_donor_id?: string
 }
 
 interface IBloodDonorForm {

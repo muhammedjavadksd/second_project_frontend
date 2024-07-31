@@ -3,7 +3,7 @@ import AdminLayout from '@/component/Admin/AdminLayout'
 import DashboardCard from '@/component/Util/DashboardCard'
 import React from 'react'
 import CanvasJSReact from '@canvasjs/react-charts'
-import { MONEY_ICON } from '@/util/data/const'
+import const_data from '@/util/data/const'
 import { userGrowthGraph, userTypeOptions } from './data'
 import TableSimple from '@/component/Util/TableSimple'
 import PaginationTab from '@/component/Util/PaginationTab'
@@ -64,7 +64,7 @@ function DashboardPage(): React.ReactElement {
               <div className="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
                 <div className="flex justify-between">
                   <div>
-                    <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32,000{MONEY_ICON}</h5>
+                    <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32,000{const_data.MONEY_ICON}</h5>
                     <p className="text-base font-normal text-gray-500 dark:text-gray-400">Total Fund Raised</p>
                   </div>
                   <div
@@ -120,7 +120,7 @@ function DashboardPage(): React.ReactElement {
 
 
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <TableSimple headers={['Product Name', 'Color', 'Category', 'Price', 'Action']} data={[{
+            <TableSimple onAllItemCheck={() => { }} onItemChecked={() => { }} selectedItem={[]} headers={['Product Name', 'Color', 'Category', 'Price', 'Action']} data={[{
               name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action: <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
             }, {
               name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action: <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>

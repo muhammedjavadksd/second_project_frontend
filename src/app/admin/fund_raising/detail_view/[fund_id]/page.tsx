@@ -2,13 +2,15 @@
 import AdminLayout from '@/component/Admin/AdminLayout'
 import AdminBreadCrumb from '@/component/Util/AdminBreadCrumb'
 import DashboardCard from '@/component/Util/DashboardCard'
-import { MONEY_ICON } from '@/util/data/const'
+import const_data from '@/util/data/const'
 import CanvasJSReact from '@canvasjs/react-charts/canvasjs.react.js'
 import React, { useEffect, useState } from 'react'
 import { fundRaiserGraph } from './data'
 import { useParams } from 'next/navigation'
 import { getSingleFundRaisingProfile } from './logic'
 import { FundRaiserResponse, AxiosResponse } from '@/util/types/API Response/FundRaiser'
+import { useRouter } from 'next/navigation'
+import { getSingleUser } from '../../logic/fund-raiser-logic'
 // import { AxiosResponse } from 'axios'
 // import { profile } from 'console'
 
@@ -17,17 +19,22 @@ function FundRaiserDetailView(): React.ReactElement {
     let [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse | null>(null)
 
     let params = useParams();
+    let router = useRouter()
     const fund_id: string = Array.isArray(params.fund_id) ? params.fund_id[0] : params.fund_id
 
     async function fetchProfile(): Promise<void> {
         try {
             const profile: AxiosResponse | null = await getSingleFundRaisingProfile(fund_id)
-            if (profile.status) {
+            console.log(profile);
+
+            if (profile && profile.status) {
                 const fund_raiser_profile: FundRaiserResponse = profile.data
+                const findSingleProfile = await getSingleUser(fund_raiser_profile.created_by);
                 setFundRaiserProfile(fund_raiser_profile)
                 console.log(fund_raiser_profile);
             } else {
-                console.log(profile.data?.msg ?? "Something went wrong");
+                router.back()
+                // console.log(profile.data?.msg ?? "Something went wrong");
             }
         } catch (e) {
             console.log(e);
@@ -40,7 +47,7 @@ function FundRaiserDetailView(): React.ReactElement {
 
 
     return (
-        fundRaiserProfile instanceof FundRaiserDetailView ? < AdminLayout >
+        fundRaiserProfile ? < AdminLayout >
             <div className='grid grid-cols-2'>
                 <div>
                     <AdminBreadCrumb root={{ title: "Dashboard", href: "/" }} title={`Detail view for ${fundRaiserProfile.full_name}`} paths={[{ title: "Manage Fund Raiser's", href: "/" }, { title: "View Fund Raiser", href: "/" }]} />
@@ -57,7 +64,7 @@ function FundRaiserDetailView(): React.ReactElement {
                 <div className='w-1/4'>
                     <div className="bg-white shadow-xl rounded-lg py-3">
                         <div className="photo-wrapper p-2">
-                            <img className="w-32 h-32 rounded-full mx-auto" src={`${process.env.NEXT_PUBLIC_FUND_RAISE_PATH}/${fundRaiserProfile.picture?.length && fundRaiserProfile.picture[0]}`} alt="John Doe" />
+                            <img className="w-32 h-32 rounded-full mx-auto" src={`${process.env.NEXT_PUBLIC_FUNDRAISE_IMAGE}/${fundRaiserProfile.picture?.length && fundRaiserProfile.picture[0]}`} alt="John Doe" />
                         </div>
                         <div className="p-2">
                             <h3 className="text-center text-xl text-gray-900 font-medium leading-8">{fundRaiserProfile.full_name}</h3>
@@ -76,7 +83,7 @@ function FundRaiserDetailView(): React.ReactElement {
                                     </tr>
                                     <tr>
                                         <td className="px-2 py-2 text-gray-500 font-semibold">Email</td>
-                                        <td className="px-2 py-2">{fundRaiserProfile.email_id}</td>
+                                        <td className="px-2 py-2  break-all">{fundRaiserProfile.email_id}</td>
                                     </tr>
                                 </tbody></table>
 
@@ -92,6 +99,10 @@ function FundRaiserDetailView(): React.ReactElement {
                         <div className="text-left rtl:text-right w-full">
                             <div className="mb-1 text-xs">Created By</div>
                             <div className="-mt-1 font-sans text-sm font-semibold">{fundRaiserProfile.created_by}</div>
+                            <div className="-mt-1 font-sans text-sm font-semibold">
+                                {/* {console.log(fundRaiserProfile.created_by)} */}
+                                {fundRaiserProfile.created_by}
+                            </div>
                         </div>
                     </a>
                     <a href="#" className="gap-5 flex mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
@@ -103,7 +114,7 @@ function FundRaiserDetailView(): React.ReactElement {
                                 <div className="text-left rtl:text-right w-fit">
                                     <div className="mb-1 text-xs">Contact Details</div>
                                     <div className="-mt-1 font-sans text-sm font-semibold">{fundRaiserProfile.phone_number ?? ""}</div>
-                                    <div className="-mt-1 font-sans text-sm font-semibold text-ellipsis ">{fundRaiserProfile.email_id ?? ""}</div>
+                                    <div className="-mt-1 font-sans text-sm font-semibold text-ellipsis break-all ">{fundRaiserProfile.email_id ?? ""}</div>
                                 </div>
                             </div>
                         </div>
@@ -115,14 +126,14 @@ function FundRaiserDetailView(): React.ReactElement {
                 </div>
                 <div className='w-3/4'>
                     <div className='grid grid-cols-3 flex gap-5 '>
-                        <DashboardCard title={"Target"} data={`${fundRaiserProfile.amount}${MONEY_ICON}`} />
-                        <DashboardCard title={"Collected"} data={`${fundRaiserProfile.collected}${MONEY_ICON}`} />
+                        <DashboardCard title={"Target"} data={`${fundRaiserProfile.amount}${const_data.MONEY_ICON}`} />
+                        <DashboardCard title={"Collected"} data={`${fundRaiserProfile.collected}${const_data.MONEY_ICON}`} />
                         <DashboardCard title={"Deadline"} data={`12/02/2024`} />
                     </div>
                     <div className="mt-5 w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
                         <div className="flex justify-between">
                             <div>
-                                <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">23,533 {MONEY_ICON}</h5>
+                                <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">23,533 {const_data.MONEY_ICON}</h5>
                                 <p className="text-base font-normal text-gray-500 dark:text-gray-400">has been collected</p>
                             </div>
                             <div

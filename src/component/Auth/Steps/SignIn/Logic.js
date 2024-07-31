@@ -90,26 +90,22 @@ export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
         const token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA);
 
         console.log(token);
-        let profileApi = await API_axiosInstance.get("/profile/get_profile", {
-            headers: {
-                'Content-Type': 'application/json',
-                "authorization": `Bearer ${token}`
+        // let profileApi = await API_axiosInstance.get("/profile/get_profile", {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         "authorization": `Bearer ${token}`
+        //     }
+        // }) 
+        signIn("credentials", { otp_number, redirect: false, auth_type: "user", token: token, }).then((data) => {
+            if (data.ok) {
+                onsuccessCB()
+            } else {
+                errorCB("Invalid OTP or OTP has been expired")
             }
+        }).catch((err) => {
+            console.log(err);
+            errorCB("Something went wrong")
         })
-        const response = profileApi.data;
-        if (response.status) {
-            const { profile } = response.data;
-            signIn("credentials", { otp_number, redirect: false, auth_type: "user", token: token, blood_donor_id: profile.blood_donor_id }).then((data) => {
-                if (data.ok) {
-                    onsuccessCB(profile.blood_donor_id)
-                } else {
-                    errorCB("Invalid OTP or OTP has been expired")
-                }
-            }).catch((err) => {
-                console.log(err);
-                errorCB("Something went wrong")
-            })
-        }
 
         // let request = await axios_instance.post("/api/auth/login_otp", {
         //     otp_number

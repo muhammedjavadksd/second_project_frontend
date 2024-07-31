@@ -360,7 +360,7 @@ const const_data: Iconst_data = {
     MONEY_ICON: '₹',
     OTP_LENGTH: 6,
     OTP_TIME_SECONDS: 3,
-    AI_DESCRIPTION_GENERATION: true
+    AI_DESCRIPTION_GENERATION: false
 }
 
 export default const_data

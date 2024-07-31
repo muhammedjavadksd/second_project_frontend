@@ -8,4 +8,9 @@ const bloodDonatationFormValues = {
     blood_group: '',
 }
 
-export { bloodDonatationFormValues }
+const updateBloodGroupInitialValues = {
+    blood_group: null,
+    certificate: null
+}
+
+export { bloodDonatationFormValues, updateBloodGroupInitialValues }

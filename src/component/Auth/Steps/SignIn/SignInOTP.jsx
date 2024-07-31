@@ -14,12 +14,12 @@ function SignInOTP({ state }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeEnd, setIsTimeEnd] = useState(false)
   const navigate = useRouter()
-  const bloodDonor = useContext(BloodDonorFormContext);
+  // const bloodDonor = useContext(BloodDonorFormContext);
 
 
-  function onSuccess(blood_donor) {
+  function onSuccess() {
     toast.success("OTP has been verified")
-    bloodDonor && bloodDonor.setDonor(blood_donor)
+    // bloodDonor && bloodDonor.setDonor(blood_donor)
     setIsLoading(false)
     navigate.replace("/")
   }

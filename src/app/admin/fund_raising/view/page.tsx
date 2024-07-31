@@ -160,8 +160,8 @@ function ViewFundRaising(): React.ReactElement {
                                             each.created_by == "USER" ? <div className='flex justify-center gap-3' >
                                                 <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48} />
                                                 < div className='text-start ' >
-                                                    <h4>{each.creater_profile.first_name + each.creater_profile.last_name}</ h4 >
-                                                    <p>{each.email_id}</p>
+                                                    <h4>{each?.creater_profile?.first_name + each?.creater_profile?.last_name}</ h4 >
+                                                    <p>{each?.email_id}</p>
                                                 </div>
                                             </div> : (each.created_by == "ADMIN" ? "Created By Admin" : "Created by organization")),
                                         // raisingID: each.user_id,

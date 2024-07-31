@@ -3,8 +3,10 @@ import SuccessBanner from '@/component/FundRaiser/SuccessBanner'
 import Header from '@/component/Header/Header'
 import Footer from '@/component/Util/Footer'
 import TabItem from '@/component/Util/TabItem'
-import { MONEY_ICON } from '@/util/data/const'
-import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
+import const_data from '@/util/data/const'
+// import { MONEY_ICON } from '@/util/data/const'
+import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
+// import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
 import React, { useState } from 'react'
 
 function FundRaiseCreatedSuccessPage(): React.ReactElement {
@@ -89,8 +91,8 @@ function FundRaiseCreatedSuccessPage(): React.ReactElement {
                                     <button className='w-full font-medium text-white p-3 text-lg bg-blue-600 mt-3 rounded-lg'>Spred to The World</button>
                                 </div>
                                 <div className='mt-3'>
-                                    <h4 className='text-3xl font-medium'>{MONEY_ICON}34,000 </h4>
-                                    <p>Raised of {MONEY_ICON}20,000,0000</p>
+                                    <h4 className='text-3xl font-medium'>{const_data.MONEY_ICON}34,000 </h4>
+                                    <p>Raised of {const_data.MONEY_ICON}20,000,0000</p>
                                 </div>
                                 <div className='raisingRange shadow h-3 rounded-lg w-full bg-slate-400'>
                                     <div style={{ width: "80%" }} className='rounded-lg bg-white h-full'></div>

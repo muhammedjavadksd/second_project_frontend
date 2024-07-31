@@ -8,6 +8,7 @@ import { AxiosResponse as CustomeAxiosResponse } from '@/util/types/API Response
 import { AxiosResponse } from 'axios';
 import const_data from '@/util/data/const';
 import js_cookies from 'js-cookie'
+import { getCurrentPosition } from '@/util/data/helper/utilHelper';
 
 
 function signUpIndexUp(state) {
@@ -67,6 +68,10 @@ function onSignUpHandler(values, successCB, onSignUpError) {
         phone_number: values.phone_number,
         location: {}
     }
+
+
+    console.log(userSignUpData);
+
 
 
 
