@@ -34,13 +34,17 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
 
         if (response.status) {
             const { donor_id } = response.data
-            const { token } = response.data
+            const { token } = user;
+            // console.log(user);
+
             await API_axiosInstance.patch("/auth/update_auth", { blood_token: token }, { headers: { authorization: `Bearer ${token}` } })
             successCB(donor_id)
         } else {
             errorCb(response.msg)
         }
     } catch (e) {
+        console.log(e);
+
         const errorMsg = e?.response?.body?.msg ?? "Something went wrong";
         errorCb(errorMsg)
     }

@@ -44,7 +44,11 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
                         const profileData = response.data;
                         if (profileData) {
                             bloodId = profileData.blood_donor_id
+                        } else {
+                            return false
                         }
+                    } else {
+                        return false
                     }
                 }
 
