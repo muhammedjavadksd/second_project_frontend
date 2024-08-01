@@ -1,10 +1,11 @@
 import GoogleProvider from "next-auth/providers/google"
 import FacebookProvider from "next-auth/providers/facebook"
-import NextAuth from "next-auth/next"
+import NextAuth, { getServerSession } from "next-auth/next"
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios_instance from "@/util/external/axios/axios-instance"
 import API_axiosInstance from "@/util/external/axios/api_axios_instance"
 import { IAdminSessionData, IOrganizationSessionData, IUserSessionData } from "@/util/types/InterFace/UtilInterface"
+import { userDetailsFromGetSession } from "@/util/data/helper/authHelper"
 
 
 
@@ -91,7 +92,34 @@ let authOptions = {
                         } else {
                             return null
                         }
-                    } else if (credentials.auth_type == "admin") {
+                    } else if (credentials.auth_type == "user_login_with_token") {
+                        const session = await getServerSession()
+                        const user = userDetailsFromGetSession(session);
+                        const auth_token = user.token;
+
+                        let adminAuth = await API_axiosInstance.post("/auth/auth_otp_submission", {}, {
+                            headers: {
+                                authorization: `Bearer ${auth_token}`
+                            }
+                        })
+                        const response = adminAuth.data;
+                        if (response?.status) {
+                            const profile = response.profile;
+                            let storingData: IUserSessionData = {
+                                id: profile.user_id,
+                                token: profile.jwt,
+                                first_name: profile.first_name,
+                                last_name: profile.last_name,
+                                phone: profile.phone,
+                                email: profile.email,
+                                role: "user",
+                                blood_donor_id: profile.blood_donor_id
+                            }
+                        } else {
+                            return null
+                        }
+                    }
+                    else if (credentials.auth_type == "admin") {
                         let email_address = credentials.email_address;
                         let password = credentials.password;
 

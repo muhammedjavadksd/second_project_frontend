@@ -98,10 +98,22 @@ async function OnBloodGroupUpdate(val, successCB, errorCB) {
             })
             console.log(uploadFile);
             // const imageNameFromPresignedUrl = uti
+            console.log(user);
+
             const updateBloodGroup = await API_axiosInstance.post("/blood/group_change_request", {
                 blood_group,
                 presigned_url: presignedUrl
+            }, {
+                headers: {
+                    authorization: `Bearer ${user.token}`
+                }
             })
+            const data = updateBloodGroup.data;
+            if (data.status) {
+                successCB("Blood change request has been changed")
+            } else {
+                successCB(data?.msg ?? "Something went wrong")
+            }
         }
     } else {
         errorCB("Something went wrong")
