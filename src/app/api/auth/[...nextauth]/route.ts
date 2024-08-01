@@ -83,8 +83,10 @@ let authOptions = {
                                     email: user_data.email,
                                     role: "user",
                                     blood_donor_id: profile.blood_donor_id,
-                                    blood_token: profile.blood_token
+                                    blood_token: response.blood_token
                                 }
+                                console.log("Storing data");
+
                                 console.log(storingData);
 
                                 return storingData

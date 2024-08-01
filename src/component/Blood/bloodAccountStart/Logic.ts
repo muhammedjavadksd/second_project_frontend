@@ -36,10 +36,11 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
         if (response.status) {
             const { donor_id } = response.data
             const { token } = user;
+            const { token: blood_token } = response.data;
             // console.log(user);
 
             // alert(token)
-            await API_axiosInstance.patch("/auth/update_auth", { blood_token: token }, { headers: { authorization: `Bearer ${token}` } })
+            await API_axiosInstance.patch("/auth/update_auth", { blood_token: blood_token }, { headers: { authorization: `Bearer ${token}` } })
             await signIn("credentials", { redirect: false, auth_type: "user_login_with_token", token })
             successCB(donor_id)
         } else {
