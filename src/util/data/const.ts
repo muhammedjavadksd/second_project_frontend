@@ -10,6 +10,7 @@ interface Iconst_data {
     FUND_RAISER_FOR: string[]
     FUND_RAISE_DOCUMENT_URL: string,
     FUND_RAISE_IMAGE_URL: string,
+    S3_IMAGE_PATH: string,
     MONEY_ICON: string
     OTP_LENGTH: number
     OTP_TIME_SECONDS: number,
@@ -357,6 +358,7 @@ const const_data: Iconst_data = {
     ],
     FUND_RAISE_DOCUMENT_URL: "http://localhost:7001/api/fund_raise/images/fund_raise_document",
     FUND_RAISE_IMAGE_URL: "http://localhost:7001/api/fund_raise/images/fund_raiser_image",
+    S3_IMAGE_PATH: "http://localhost:4566/",
     MONEY_ICON: '₹',
     OTP_LENGTH: 6,
     OTP_TIME_SECONDS: 3,

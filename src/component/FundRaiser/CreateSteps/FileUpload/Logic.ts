@@ -5,6 +5,7 @@ import axios_instance from "@/util/external/axios/axios-instance";
 import { resetDocuments, resetPictures, updateFundRaiseData } from "@/util/external/redux/slicer/fundRaiserForm";
 import store from "@/util/external/redux/store/store";
 import { FundRaiserFormInitialValues } from "@/util/types/InterFace/FormInitialValues";
+import axios from "axios";
 import { getSession } from "next-auth/react";
 
 
@@ -49,81 +50,93 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
 }
 
 async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fundRaiseID) {
-    console.log(my_files);
     const session = await getSession();
     const user = userDetailsFromGetSession(session)
-    const storeData = store.getState().fund_raiser;
-    console.log(storeData);
+    const storeData = store.getState().fund_raiser as FundRaiserFormInitialValues;
 
-    // const docsPresignedUrl = presignedUrl.
 
     if (user) {
 
         const token = user.token;
-        console.log("User found");
-
-        console.log(my_files);
-        console.log(type);
-
+        let uploadImagePromises: Promise<any>[] = []
+        const presignedUrl = type == "Pictures" ? storeData.pictures_presigned_url : storeData.documents_presigned_url
+        console.log(presignedUrl);
 
 
-        const formData = new FormData();
-
-        formData.append("image_type", type);
-        // formData.append("images", my_files);
-        console.log("The length is : " + my_files.length);
         for (let fileIndex = 0; fileIndex < my_files.length; fileIndex++) {
-            formData.append(`images_${fileIndex}`, my_files[fileIndex]);
-        }
+            console.log('Uploading file:', my_files[fileIndex]);
+            console.log('Using presigned URL:', presignedUrl[fileIndex]);
 
-
-
-
-
-        // console.log(formData.getAll());
-
-        try {
-            const API_request = await API_axiosInstance.patch(`/fund_raise/upload_images/${fundRaiseID}`, formData, {
-                headers: {
-                    "authorization": `Bearer ${token}`,
-                    "fund_id": fundRaiseID,
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-
-            let response = API_request.data;
-            console.log(response);
-            if (response.status) {
-                const newDocs = response.data;
-                const documents = newDocs?.documents ?? [];
-                const pictures = newDocs?.picture ?? [];
-
-                console.log(newDocs);
-
-                console.log(documents);
-                console.log(pictures);
-
-                if (newDocs) {
-                    if (type == "Document") {
-                        store.dispatch(resetDocuments({ documents }))
-                    } else {
-                        store.dispatch(resetPictures({ pictures }))
+            uploadImagePromises.push(
+                axios.put(presignedUrl[fileIndex], my_files[fileIndex], {
+                    headers: {
+                        "Content-Type": my_files[fileIndex].type || "application/octet-stream"
                     }
-                }
-                onSuccess({
-                    documents: documents,
-                    pictures: pictures
+                }).catch(error => {
+                    console.error(`Error uploading file ${fileIndex}:`, error.response ? error.response.data : error.message);
                 })
-            } else {
-                onError(response.msg)
-            }
-
-        } catch (e) {
-            let errorMessage = e?.response?.body?.msg;
-            console.log(e);
-            console.log(errorMessage);
-            onError(errorMessage)
+            );
         }
+
+
+        console.log(uploadImagePromises);
+
+
+        Promise.all(uploadImagePromises).then(async () => {
+            try {
+
+
+
+                const API_request = await API_axiosInstance.patch(`/fund_raise/upload_images/${fundRaiseID}`, {
+                    image_type: type,
+                    presigned_url: presignedUrl.slice(0, my_files.length)
+                }, {
+                    headers: {
+                        "authorization": `Bearer ${token}`,
+                        "fund_id": fundRaiseID,
+                        // 'Content-Type': 'multipart/form-data'
+                    }
+                })
+
+                console.log(API_request);
+
+
+                let response = API_request.data;
+                console.log(response);
+                if (response.status) {
+                    const newDocs = response.data;
+                    const documents = newDocs?.documents ?? [];
+                    const pictures = newDocs?.picture ?? [];
+
+                    console.log(newDocs);
+
+                    console.log(documents);
+                    console.log(pictures);
+
+                    if (newDocs) {
+                        if (type == "Document") {
+                            store.dispatch(resetDocuments({ documents }))
+                        } else {
+                            store.dispatch(resetPictures({ pictures }))
+                        }
+                    }
+                    onSuccess({
+                        documents: documents,
+                        pictures: pictures
+                    })
+                } else {
+                    onError(response.msg)
+                }
+
+            } catch (e) {
+                let errorMessage = e?.response?.body?.msg;
+                console.log(e);
+                console.log(errorMessage);
+                onError(errorMessage)
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
     } else {
         ifNotLogged()
     }
