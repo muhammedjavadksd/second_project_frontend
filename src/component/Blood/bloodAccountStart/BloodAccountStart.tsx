@@ -40,10 +40,11 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
 
                     const findProfile = await API_axiosInstance.get(`/profile/get_profile`, { headers: { authorization: `Bearer ${token}` } });
                     const response = findProfile.data;
+
                     if (response.status) {
-                        const profileData = response.data;
-                        if (profileData) {
-                            bloodId = profileData.blood_donor_id
+                        const { profile } = response.data;
+                        if (profile) {
+                            bloodId = profile.blood_donor_id
                         } else {
                             return false
                         }
@@ -53,7 +54,6 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
                 }
 
 
-                console.log(profile.token);
 
                 const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile/${bloodId}`, { headers: { authorization: `Bearer ${token}` } });
                 const response = findBloodDonor.data;
@@ -70,6 +70,10 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
             setBloodDonorFormLoading(false)
         }
     }
+
+    useEffect(() => {
+        console.log(bloodDonorDetails);
+    }, [bloodDonorDetails])
 
     useEffect(() => {
         findDonorDetails()

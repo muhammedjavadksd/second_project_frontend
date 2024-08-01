@@ -13,6 +13,7 @@ export function getCurrentPosition(successCB: Function, errorDB: Function): void
     })
 }
 
+
 export function getMainCategory(): string[] {
     return Object.keys(const_data.FUNDRAISER_CATEGORY)
 }
