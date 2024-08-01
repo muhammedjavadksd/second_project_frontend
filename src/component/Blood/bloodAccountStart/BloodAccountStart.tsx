@@ -21,6 +21,8 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
 
     // const { update } = useSession()
     const session = useSession()
+    console.log(userDetailsFromUseSession(session));
+
     const { donor_id, setDonor } = useContext(BloodDonorFormContext)
     const [isBloodDonorFormLoading, setBloodDonorFormLoading] = useState(true)
 

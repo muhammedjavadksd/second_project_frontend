@@ -1,7 +1,7 @@
 import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios from "axios";
-import { getSession } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 
 
 async function onBloodDonationSubmit(val, successCB, errorCb) {
@@ -38,7 +38,9 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
             const { token } = user;
             // console.log(user);
 
+            // alert(token)
             await API_axiosInstance.patch("/auth/update_auth", { blood_token: token }, { headers: { authorization: `Bearer ${token}` } })
+            await signIn("credentials", { redirect: false, auth_type: "user_login_with_token", token })
             successCB(donor_id)
         } else {
             errorCb(response.msg)

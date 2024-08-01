@@ -6,6 +6,8 @@ import axios_instance from "@/util/external/axios/axios-instance"
 import API_axiosInstance from "@/util/external/axios/api_axios_instance"
 import { IAdminSessionData, IOrganizationSessionData, IUserSessionData } from "@/util/types/InterFace/UtilInterface"
 import { userDetailsFromGetSession } from "@/util/data/helper/authHelper"
+import { getSession } from "next-auth/react"
+import { headers } from "next/headers"
 
 
 
@@ -80,7 +82,8 @@ let authOptions = {
                                     phone: user_data.phone,
                                     email: user_data.email,
                                     role: "user",
-                                    blood_donor_id: profile.blood_donor_id
+                                    blood_donor_id: profile.blood_donor_id,
+                                    blood_token: profile.blood_token
                                 }
                                 console.log(storingData);
 
@@ -93,28 +96,49 @@ let authOptions = {
                             return null
                         }
                     } else if (credentials.auth_type == "user_login_with_token") {
-                        const session = await getServerSession()
-                        const user = userDetailsFromGetSession(session);
-                        const auth_token = user.token;
+                        // const session = await getSession()
+                        // const user = userDetailsFromGetSession(session);
+                        // const headers_data = headers();
+                        // console.log(headers_data);
 
-                        let adminAuth = await API_axiosInstance.post("/auth/auth_otp_submission", {}, {
+
+                        const auth_token = credentials.token;
+
+                        console.log("Token is");
+                        console.log("The user");
+                        console.log(auth_token);
+
+
+                        let adminAuth = await API_axiosInstance.post("/auth/sign_in_with_token", {}, {
                             headers: {
                                 authorization: `Bearer ${auth_token}`
                             }
                         })
+
                         const response = adminAuth.data;
+                        console.log(response);
+
                         if (response?.status) {
-                            const profile = response.profile;
+                            // const profile = response.profile;
+                            const { profile } = response.data;
+                            console.log(profile);
+
                             let storingData: IUserSessionData = {
-                                id: profile.user_id,
+                                id: profile?.user_id,
                                 token: profile.jwt,
                                 first_name: profile.first_name,
                                 last_name: profile.last_name,
                                 phone: profile.phone,
                                 email: profile.email,
                                 role: "user",
-                                blood_donor_id: profile.blood_donor_id
+                                blood_donor_id: profile.blood_donor_id,
+                                blood_token: profile.blood_token
                             }
+                            console.log("Login completed");
+                            console.log(storingData);
+
+
+                            return storingData
                         } else {
                             return null
                         }

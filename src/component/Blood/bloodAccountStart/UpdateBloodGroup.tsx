@@ -4,8 +4,15 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useContext, useEffect, useState } from 'react'
 import { onBloodDonationSubmit, OnBloodGroupUpdate } from './Logic'
 import { BloodGroup } from '@/util/types/Enums/BasicEnums'
+import { useSession } from 'next-auth/react'
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 
 function UpdateBloodGroup(): React.ReactElement {
+
+
+    const session = useSession();
+    const user = userDetailsFromUseSession(session)
+    console.log(user);
 
 
 
