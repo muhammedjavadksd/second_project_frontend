@@ -4,6 +4,43 @@ import axios from "axios";
 import { getSession, signIn } from "next-auth/react";
 
 
+
+async function OnDonorPersonDataEditSubmit(val, successCB, errorCB) {
+
+
+    try {
+        const {
+            full_name,
+            phone_number,
+            email_address,
+            location
+        } = val;
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session)
+        const { blood_token } = user;
+
+        const editDonor = await API_axiosInstance.patch("/blood/update_donor", {
+            email_address: email_address,
+            full_name,
+            locatedAt: location,
+            phoneNumber: phone_number
+        }, {
+            headers: {
+                authorization: `Bearer ${blood_token}`
+            }
+        })
+        const response = editDonor.data;
+        if (response.status) {
+            successCB('Blood donor updation success')
+        } else {
+            errorCB(response.msg)
+        }
+    } catch (e) {
+        const errorMsg = e?.response?.body?.msg ?? "Something went wrong";
+        errorCB(errorMsg)
+    }
+}
+
 async function onBloodDonationSubmit(val, successCB, errorCb) {
 
     try {
@@ -128,4 +165,4 @@ async function OnBloodGroupUpdate(val, successCB, errorCB) {
     }
 }
 
-export { onBloodDonationSubmit, OnBloodGroupUpdate }
+export { onBloodDonationSubmit, OnBloodGroupUpdate, OnDonorPersonDataEditSubmit }

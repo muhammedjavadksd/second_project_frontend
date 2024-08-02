@@ -21,7 +21,7 @@ function ViewDonorProfile({ profile }) {
             </ModelItem>
 
             <ModelItem ZIndex={999} isOpen={isPersonalDetailsOpen} onClose={() => setPersonalDetailsOpen(false)}>
-                <UpdatePersonalDetails></UpdatePersonalDetails>
+                <UpdatePersonalDetails onComplete={() => setPersonalDetailsOpen(false)} profile={profile}></UpdatePersonalDetails>
             </ModelItem>
 
             <div className="px-4 py-5 sm:px-6">
