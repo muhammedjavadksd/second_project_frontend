@@ -58,68 +58,73 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
 
 async function OnBloodGroupUpdate(val, successCB, errorCB) {
 
-    console.log(val);
+    try {
+        console.log(val);
 
 
-    const certificate: File = val.certificate
-    const blood_group: File = val.blood_group
-    if (!certificate) {
-        alert("Please upload valid file");
-        return;
-    }
-
-    console.log(val);
-
-    const session = await getSession();
-    const user = userDetailsFromGetSession(session)
-
-    const createdPresignedUrl = await API_axiosInstance.post("/blood/presigned_url_blood_group_change", {}, {
-        headers: {
-            authorization: `Bearer ${user.token}`
+        const certificate: File = val.certificate
+        const blood_group: File = val.blood_group
+        if (!certificate) {
+            alert("Please upload valid file");
+            return;
         }
-    })
-    const data = createdPresignedUrl?.data?.data;
-    console.log(data);
 
-    if (data && data.certificate_upload_url) {
-        const presignedUrl = data?.certificate_upload_url;
+        console.log(val);
 
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session)
+
+        const createdPresignedUrl = await API_axiosInstance.post("/blood/presigned_url_blood_group_change", {}, {
+            headers: {
+                authorization: `Bearer ${user.token}`
+            }
+        })
+        const data = createdPresignedUrl?.data?.data;
         console.log(data);
 
-        if (presignedUrl) {
+        if (data && data.certificate_upload_url) {
+            const presignedUrl = data?.certificate_upload_url;
 
-            // const file = await yupValidLoader(certificate)
-            // console.log(file);
+            console.log(data);
 
-            const buffer = await certificate.arrayBuffer()
-            console.log(buffer);
+            if (presignedUrl) {
 
-            const uploadFile = await axios.put(presignedUrl, buffer, {
-                headers: {
-                    "Content-Type": certificate.type
+                // const file = await yupValidLoader(certificate)
+                // console.log(file);
+
+                const buffer = await certificate.arrayBuffer()
+                console.log(buffer);
+
+                const uploadFile = await axios.put(presignedUrl, buffer, {
+                    headers: {
+                        "Content-Type": certificate.type
+                    }
+                })
+                console.log(uploadFile);
+                // const imageNameFromPresignedUrl = uti
+                console.log(user);
+
+                const updateBloodGroup = await API_axiosInstance.post("/blood/group_change_request", {
+                    blood_group,
+                    presigned_url: presignedUrl
+                }, {
+                    headers: {
+                        authorization: `Bearer ${user.blood_token}`
+                    }
+                })
+                const data = updateBloodGroup.data;
+                if (data.status) {
+                    successCB("Blood change request has been changed")
+                } else {
+                    errorCB(data?.msg ?? "Something went wrong")
                 }
-            })
-            console.log(uploadFile);
-            // const imageNameFromPresignedUrl = uti
-            console.log(user);
-
-            const updateBloodGroup = await API_axiosInstance.post("/blood/group_change_request", {
-                blood_group,
-                presigned_url: presignedUrl
-            }, {
-                headers: {
-                    authorization: `Bearer ${user.token}`
-                }
-            })
-            const data = updateBloodGroup.data;
-            if (data.status) {
-                successCB("Blood change request has been changed")
-            } else {
-                successCB(data?.msg ?? "Something went wrong")
             }
+        } else {
+            errorCB("Something went wrong")
         }
-    } else {
-        errorCB("Something went wrong")
+    } catch (e) {
+        const err = e?.response?.data?.msg ?? "Something went wrong"
+        errorCB(err)
     }
 }
 

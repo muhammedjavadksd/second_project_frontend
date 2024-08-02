@@ -6,8 +6,9 @@ import { onBloodDonationSubmit, OnBloodGroupUpdate } from './Logic'
 import { BloodGroup } from '@/util/types/Enums/BasicEnums'
 import { useSession } from 'next-auth/react'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
+import { toast } from 'react-toastify'
 
-function UpdateBloodGroup(): React.ReactElement {
+function UpdateBloodGroup({ onComplete }: { onComplete: Function }): React.ReactElement {
 
 
     const session = useSession();
@@ -16,12 +17,14 @@ function UpdateBloodGroup(): React.ReactElement {
 
 
 
-    function successCB() {
-
+    function successCB(msg: string) {
+        toast.success(msg)
+        onComplete()
     }
 
     function errorCb(msg: string) {
-
+        toast.error(msg)
+        onComplete()
     }
 
 

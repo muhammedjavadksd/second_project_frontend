@@ -10,12 +10,14 @@ function ViewDonorProfile({ profile }) {
     const [isBloodGroupChangeOpen, setBloodGroupOpen] = useState<boolean>(false)
     const [isPersonalDetailsOpen, setPersonalDetailsOpen] = useState<boolean>(false)
 
+
+
     return (
         <div className="bg-white overflow-hidden shadow rounded-lg border px-2 min-w-96">
 
 
             <ModelItem ZIndex={999} isOpen={isBloodGroupChangeOpen} onClose={() => setBloodGroupOpen(false)}>
-                <UpdateBloodGroup></UpdateBloodGroup>
+                <UpdateBloodGroup onComplete={() => setBloodGroupOpen(false)}></UpdateBloodGroup>
             </ModelItem>
 
             <ModelItem ZIndex={999} isOpen={isPersonalDetailsOpen} onClose={() => setPersonalDetailsOpen(false)}>
