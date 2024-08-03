@@ -7,17 +7,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { onBloodRequestPersonalDetailSubmit } from "./Logic";
 import { toast } from "react-toastify";
 import const_data from "@/util/data/const";
-import { OnGoingBloodRequestContext } from "@/util/context/Context";
 import { IOnGoingBloodRequest, IOnGoingBloodRequestProvider } from "@/util/types/InterFace/UtilInterface";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
+import { log } from "console";
+import { SessionStorageKeys } from "@/util/types/Enums/BasicEnums";
 
 
 function BloodPersonalDetails({ state }): React.ReactElement {
 
 
-    const { bloodRequestFirstPhase, setFirstPhase } = useContext<IOnGoingBloodRequestProvider>(OnGoingBloodRequestContext)
+    const bloodRequestFirstPhase = JSON.parse(sessionStorage.getItem(SessionStorageKeys.BloodRequestFormPhase) ?? '{}') // useContext<IOnGoingBloodRequestProvider>(OnGoingBloodRequestContext)
     const [initialValues, setInitialValues] = useState({
         patient_name: "",
         relation: "",
@@ -43,25 +44,28 @@ function BloodPersonalDetails({ state }): React.ReactElement {
         }
     }, [])
 
+
+
     async function onSubmit(val) {
         const session = await getSession();
         const user = userDetailsFromGetSession(session);
 
 
         try {
-            setFirstPhase({
+
+            sessionStorage.setItem(SessionStorageKeys.BloodRequestFormPhase, JSON.stringify({
                 address: val.address,
                 age: val.age,
                 gender: val.gender,
                 patient_name: val.patient_name,
                 phone_number: val.phone_number,
                 relation: val.relation
-            } as IOnGoingBloodRequest)
-            if (!user) {
-                router.replace("/auth/sign_up?next=blood/request&step_index=1")
-                return;
-            } else {
+            } as IOnGoingBloodRequest))
+
+            if (user) {
                 state((prev) => prev + 1)
+            } else {
+                router.push("/auth/sign_up?next=blood/request&step_index=1")
             }
         } catch (e) {
             toast.error("Something went wrong")

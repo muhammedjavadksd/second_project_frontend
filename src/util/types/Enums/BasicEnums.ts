@@ -7,6 +7,10 @@ enum FundRaiserTabItems {
     COMMENT
 }
 
+enum SessionStorageKeys {
+    BloodRequestFormPhase = "BloodRequestFormPhase"
+}
+
 enum FundRaiserStatus {
     CREATED = "CREATED",
     INITIATED = "INITIATED",
@@ -27,4 +31,4 @@ enum BloodGroup {
     O_NEGATIVE = "O-"
 }
 
-export { FundRaiserTabItems, FundRaiserStatus, BloodGroup }
+export { FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys }

@@ -3,17 +3,21 @@ import AuthSideCanvas from '@/component/Auth/Common/AuthSideCanvas'
 import FacebookProviderButton from '@/component/Auth/Common/ProvideLoginButton/FacebookProviderButton'
 import GoogleProviderButton from '@/component/Auth/Common/ProvideLoginButton/GoogleProviderButton'
 import SimpleHeader from '@/component/Header/SimpleHeader'
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useContext, useState } from 'react'
 import { bannerSlider, signUpSteps } from '../AuthData/Data'
 import UserBlackedRouter from '@/component/LoginComponent/UserBlackedRouter'
 import { useSession } from 'next-auth/react'
 import { UserAuthStepInterFace } from '@/util/types/InterFace/PropInterFace'
+// import { OnGoingBloodRequestContext } from '@/util/context/Context'
 
 function SignUp(): React.ReactElement {
 
 
   let [signUpStepIndex, setSignUpStepIndex] = useState<number>(0)
   const SignUpComponentSteps: FunctionComponent<UserAuthStepInterFace> = signUpSteps[signUpStepIndex];
+  // const data = useContext(OnGoingBloodRequestContext);
+
+  // console.log(data);
 
   return (
     <UserBlackedRouter>

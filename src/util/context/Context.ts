@@ -3,6 +3,6 @@ import { IBloodDonorForm, IOnGoingApplocation, IOnGoingBloodRequest, IOnGoingBlo
 
 let OnGoingApplicationContext = createContext<IOnGoingApplocation>(undefined);
 let BloodDonorFormContext = createContext<IBloodDonorForm>(undefined);
-let OnGoingBloodRequestContext = createContext<IOnGoingBloodRequestProvider>(null);
+// let OnGoingBloodRequestContext = createContext<IOnGoingBloodRequestProvider>(null);
 
-export { OnGoingApplicationContext, BloodDonorFormContext, OnGoingBloodRequestContext }
+export { OnGoingApplicationContext, BloodDonorFormContext }

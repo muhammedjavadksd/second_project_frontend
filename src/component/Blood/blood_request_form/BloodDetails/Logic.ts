@@ -33,14 +33,20 @@ async function onBloodDetailsSubmit(val, successCallback, errorCallback, notLogg
                     blood_group: val.blood_group,
                     relationship: personDetails.relation,
                     locatedAt: {
-                        hospital_name: "",
-                        hospital_id: ""
+                        hospital_name: "Arimala",
+                        hospital_id: "dsfds"
                     },
                     address: personDetails.address,
                     phoneNumber: personDetails.phone_number,
                     enquired_with_others: enquired_with_others
+                }, {
+                    headers: {
+                        authorization: `Bearer ${user.token}`
+                    }
                 })
                 const { data: response } = createBloodRequest;
+                console.log(response);
+
                 if (response.status) {
                     successCallback("Blood request created success")
                 } else {
@@ -54,7 +60,9 @@ async function onBloodDetailsSubmit(val, successCallback, errorCallback, notLogg
             return;
         }
     } catch (e) {
-        let errorMessage: string = e?.response?.body?.msg;
+        console.log(e);
+
+        let errorMessage: string = e?.response?.data?.msg;
         errorCallback(errorMessage)
     }
 }

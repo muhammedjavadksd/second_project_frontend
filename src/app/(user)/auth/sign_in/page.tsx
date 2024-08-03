@@ -1,6 +1,6 @@
 "use client"
 import SimpleHeader from '@/component/Header/SimpleHeader'
-import React, { useState, FunctionComponent } from 'react'
+import React, { useState, FunctionComponent, useContext } from 'react'
 import { bannerSlider, loginSteps } from '../AuthData/Data'
 import AuthSideCanvas from '@/component/Auth/Common/AuthSideCanvas'
 import GoogleProviderButton from '@/component/Auth/Common/ProvideLoginButton/GoogleProviderButton'
@@ -9,11 +9,14 @@ import UserBlackedRouter from '@/component/LoginComponent/UserBlackedRouter'
 import { useSession } from 'next-auth/react'
 import { Session } from 'next-auth'
 import { UserAuthStepInterFace } from '@/util/types/InterFace/PropInterFace'
+// import { OnGoingBloodRequestContext } from '@/util/context/Context'
+import { SessionStorageKeys } from '@/util/types/Enums/BasicEnums'
 
 function SignIn(): React.ReactElement {
 
   let [loginStepIndex, setLoginStepIndex] = useState<number>(0)
-  // let session = useSession()
+  const data = sessionStorage.getItem(SessionStorageKeys.BloodRequestFormPhase)//  useContext(OnGoingBloodRequestContext);
+
 
   const LoginStepComponent: FunctionComponent<UserAuthStepInterFace> = loginSteps[loginStepIndex];
 

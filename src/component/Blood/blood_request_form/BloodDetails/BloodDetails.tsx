@@ -8,9 +8,10 @@ import { bloodRequestDetailsInitialVaues, bloodRequestPersonalDetailsInitialValu
 import { bloodRequestDetailsValidation } from "@/util/external/yup/yupValidations"
 import { SelectedHospital } from "@/util/types/InterFace/UtilInterface"
 import LocationItem from "@/component/Util/LocationItem"
-import { OnGoingBloodRequestContext } from "@/util/context/Context"
+// import { OnGoingBloodRequestContext } from "@/util/context/Context"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
+import { SessionStorageKeys } from "@/util/types/Enums/BasicEnums"
 
 
 
@@ -18,15 +19,18 @@ function BloodRequestDetails({ state }): React.ReactElement {
 
     const [isLoading, setLoding] = useState<boolean>(false)
     const [selectedLocation, setSelectedLocation] = useState<SelectedHospital>({ display_name: null, location: { lat: null, lon: null }, name: null, place_id: null, type: null });
-    const { bloodRequestFirstPhase } = useContext(OnGoingBloodRequestContext)
+    const bloodRequestFirstPhase = JSON.parse(sessionStorage.getItem(SessionStorageKeys.BloodRequestFormPhase) ?? '{}')
     const router = useRouter()
+
+
 
     function ifNotLogged() {
         router.replace("/auth/sign_up?next=blood/request&step_index=1")
     }
 
-    function successCallback() {
-
+    function successCallback(msg: string) {
+        toast.success(msg);
+        router.replace("/");
     }
 
     function errorCallback(msg: string) {
