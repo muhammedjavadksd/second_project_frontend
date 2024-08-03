@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 import const_data from "@/util/data/const";
 import { OnGoingBloodRequestContext } from "@/util/context/Context";
 import { IOnGoingBloodRequest, IOnGoingBloodRequestProvider } from "@/util/types/InterFace/UtilInterface";
+import { useRouter } from "next/navigation";
+import { getSession } from "next-auth/react";
+import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 
 
 function BloodPersonalDetails({ state }): React.ReactElement {
@@ -23,6 +26,7 @@ function BloodPersonalDetails({ state }): React.ReactElement {
         address: "",
         phone_number: ""
     })
+    const router = useRouter()
 
     useEffect(() => {
         console.log(bloodRequestFirstPhase);
@@ -39,7 +43,11 @@ function BloodPersonalDetails({ state }): React.ReactElement {
         }
     }, [])
 
-    function onSubmit(val) {
+    async function onSubmit(val) {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session);
+
+
         try {
             setFirstPhase({
                 address: val.address,
@@ -49,7 +57,12 @@ function BloodPersonalDetails({ state }): React.ReactElement {
                 phone_number: val.phone_number,
                 relation: val.relation
             } as IOnGoingBloodRequest)
-            state((prev) => prev + 1)
+            if (!user) {
+                router.replace("/auth/sign_up?next=blood/request&step_index=1")
+                return;
+            } else {
+                state((prev) => prev + 1)
+            }
         } catch (e) {
             toast.error("Something went wrong")
         }

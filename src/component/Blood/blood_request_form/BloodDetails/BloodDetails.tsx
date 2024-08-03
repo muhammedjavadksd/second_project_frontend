@@ -2,12 +2,15 @@ import CreateFormBackground from "@/component/FundRaiser/CreateFormBackground"
 import LoadingComponent from "@/component/Util/LoadingComponent"
 import const_data from "@/util/data/const"
 import { ErrorMessage, Field, Form, Formik } from "formik"
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { onBloodDetailsSubmit } from "./Logic"
 import { bloodRequestDetailsInitialVaues, bloodRequestPersonalDetailsInitialValue } from "@/util/external/yup/initialValues"
 import { bloodRequestDetailsValidation } from "@/util/external/yup/yupValidations"
 import { SelectedHospital } from "@/util/types/InterFace/UtilInterface"
 import LocationItem from "@/component/Util/LocationItem"
+import { OnGoingBloodRequestContext } from "@/util/context/Context"
+import { useRouter } from "next/navigation"
+import { toast } from "react-toastify"
 
 
 
@@ -15,23 +18,30 @@ function BloodRequestDetails({ state }): React.ReactElement {
 
     const [isLoading, setLoding] = useState<boolean>(false)
     const [selectedLocation, setSelectedLocation] = useState<SelectedHospital>({ display_name: null, location: { lat: null, lon: null }, name: null, place_id: null, type: null });
+    const { bloodRequestFirstPhase } = useContext(OnGoingBloodRequestContext)
+    const router = useRouter()
 
-
-
+    function ifNotLogged() {
+        router.replace("/auth/sign_up?next=blood/request&step_index=1")
+    }
 
     function successCallback() {
 
     }
 
-    function errorCallback() {
-
+    function errorCallback(msg: string) {
+        toast.error(msg)
     }
 
     return (
         <>
             <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false} >
                 <CreateFormBackground>
-                    <Formik onSubmit={(val) => onBloodDetailsSubmit(val, successCallback, errorCallback)} initialValues={bloodRequestDetailsInitialVaues} validationSchema={bloodRequestDetailsValidation}>
+                    <Formik onSubmit={(val) => {
+                        val.personal_details = bloodRequestFirstPhase;
+                        onBloodDetailsSubmit(val, successCallback, errorCallback, ifNotLogged)
+                    }
+                    } initialValues={bloodRequestDetailsInitialVaues} validationSchema={bloodRequestDetailsValidation}>
                         <Form>
                             <div className="mb-5">
                                 <label htmlFor="blood_group" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select the blood group</label>
@@ -52,7 +62,7 @@ function BloodRequestDetails({ state }): React.ReactElement {
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Needed for Blood</label>
-                                <Field type="text" id="needed_date" name="needed_date" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                                <Field type="date" id="needed_date" name="needed_date" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
                                 <ErrorMessage name="needed_date" component="div" className="errorMessage" />
                             </div>
 

@@ -7,10 +7,15 @@ import const_data from '@/util/data/const'
 import LoadingComponent from '@/component/Util/LoadingComponent'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 function SignUpStart({ state }) {
 
+
     const [isLoading, setIsLoading] = useState(false);
+    const params = useSearchParams();
+    const next = params.get("next")
+    const step_index = params.get("step_index")
 
     function onSignUpFormSubmit() {
         state((prev) => prev + 1)
@@ -32,7 +37,7 @@ function SignUpStart({ state }) {
 
             <div className="headingSection mb-5">
                 <h1 className="mb-4 text-5xl font-extrabold leading-none tracking-tight text-gray-900   dark:text-white">Create your <span className="text-blue-600 dark:text-blue-500"> Account</span></h1>
-                <span className="font-normal text-black">Already have an account? <Link href="/auth/sign_in" className='text-blue-600 hover:underline'>Login here!</Link> </span>
+                <span className="font-normal text-black">Already have an account? <Link href={`/auth/sign_in${next ? `?next=${next}` : ''}&${step_index ? `step_index=${step_index}` : ''}`} className='text-blue-600 hover:underline'>Login here!</Link> </span>
             </div>
 
 
@@ -95,7 +100,7 @@ function SignUpStart({ state }) {
                     }}
                 </Formik>
             </LoadingComponent>
-        </div>
+        </div >
     )
 }
 

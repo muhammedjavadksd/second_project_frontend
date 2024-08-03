@@ -7,10 +7,14 @@ import { onLoginSubmit, loginStepIndexUp, loginStepDown } from './Logic'
 import LoadingComponent from '@/component/Util/LoadingComponent';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 function SignInPhoneNumber({ state }) {
 
     const [isLoading, setIsLoading] = useState(false);
+    const params = useSearchParams();
+    const next = params.get("next")
+    const step_index = params.get("step_index")
 
     function onComplete() {
         setIsLoading(false)
@@ -31,7 +35,7 @@ function SignInPhoneNumber({ state }) {
 
             <div className="headingSection mb-10">
                 <h1 class="mb-4 text-5xl font-extrabold leading-none tracking-tight text-gray-900   dark:text-white">Login into your <span class="text-blue-600 dark:text-blue-500"> Account</span></h1>
-                <span class="font-normal text-black">Do not have an account?  <Link href="/auth/sign_up" className='text-blue-600 hover:underline'>Create now!</Link> </span>
+                <span class="font-normal text-black">Do not have an account?  <Link href={`/auth/sign_up${next ? `?next=${next}` : ''}&${step_index ? `step_index=${step_index}` : ''}`} className='text-blue-600 hover:underline'>Create now!</Link> </span>
 
             </div>
 

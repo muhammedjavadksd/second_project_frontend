@@ -13,12 +13,23 @@ function SignUpOTP({ state }) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [isTimeEnd, setIsTimeEnd] = useState(false);
+    const params = useSearchParams();
+    const next = params.get("next");
+    const stepIndex = params.get("step_index") ?? 1
+
+
+
+
     const router = useRouter();
     function otpCompleted() {
         toast.success("OTP has been verified")
         setIsTimeEnd(false)
         setIsLoading(false)
-        router.replace("/auth/sign_in")
+        if (next) {
+            navigate.replace(`/${next}?step_index=${stepIndex}`)
+        } else {
+            router.replace("/auth/sign_in")
+        }
 
         // signUpIndexDown(state)
     }

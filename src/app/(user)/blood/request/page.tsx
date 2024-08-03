@@ -8,6 +8,7 @@ import { requestBanner } from './Data'
 import { CreateFormComponent } from './Logic'
 import { FundRaiseCreationStep } from '@/util/types/InterFace/PropInterFace'
 import OnGoingBloodRequest from '@/util/context/OnGoingBloodRequest'
+import { useSearchParams } from 'next/navigation'
 
 
 // Patient name
@@ -22,7 +23,10 @@ import OnGoingBloodRequest from '@/util/context/OnGoingBloodRequest'
 
 function CreateFundRaisingPost(): React.ReactElement {
 
-    let [step, setStep] = useState<number>(0)
+    const params = useSearchParams();
+    const stepIndex = +params.get("step_index") ?? 0
+
+    let [step, setStep] = useState<number>(stepIndex)
     let StepForm: FunctionComponent<FundRaiseCreationStep> = CreateFormComponent(step);
 
 

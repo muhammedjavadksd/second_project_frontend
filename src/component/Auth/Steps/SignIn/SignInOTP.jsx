@@ -4,7 +4,7 @@ import LoadingComponent from '@/component/Util/LoadingComponent';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import Timer from "@amplication/react-compound-timer";
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { BloodDonorFormContext } from '@/util/context/Context';
 import { IBloodDonorForm } from '@/util/types/InterFace/UtilInterface';
 // import { useRouter } from 'next/nav';
@@ -14,14 +14,21 @@ function SignInOTP({ state }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeEnd, setIsTimeEnd] = useState(false)
   const navigate = useRouter()
+  const params = useSearchParams();
+  const next = params.get("next")
+  const stepIndex = params.get("step_index") ?? 1
   // const bloodDonor = useContext(BloodDonorFormContext);
 
 
   function onSuccess() {
     toast.success("OTP has been verified")
-    // bloodDonor && bloodDonor.setDonor(blood_donor)
+    if (next) {
+      // alert(next)
+      navigate.replace(`/${next}?step_index=${stepIndex}`)
+    } else {
+      navigate.replace("/")
+    }
     setIsLoading(false)
-    navigate.replace("/")
   }
 
   function onResendSuccess() {
