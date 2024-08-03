@@ -22,7 +22,7 @@ const updateBloodGroupValidation = yup.object().shape({
     certificate: yup.mixed().required("Please upload certificate")
 })
 
-const bloodRequestPersonalDetailsInitialValue = yup.object().shape({
+const bloodRequestPersonalDetailsValidation = yup.object().shape({
     patient_name: yup.string().typeError("Please enter valid name").required("Patient name is required"),
     relation: yup.string().typeError("Please select valid relation").required("Relation with patient is required"),
     address: yup.string().typeError("Please enter valid address").required("Please enter valid address"),
@@ -30,4 +30,4 @@ const bloodRequestPersonalDetailsInitialValue = yup.object().shape({
 })
 
 
-export { bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsInitialValue }
+export { bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation }

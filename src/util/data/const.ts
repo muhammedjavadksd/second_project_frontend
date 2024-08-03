@@ -7,7 +7,7 @@ interface Iconst_data {
     BLOOD_GROUPS: string[]
     FUNDRAISER_CATEGORY: object
     STATE_WITH_DISTRICT: object
-    FUND_RAISER_FOR: string[]
+    RELATIONSHIP: string[]
     FUND_RAISE_DOCUMENT_URL: string,
     FUND_RAISE_IMAGE_URL: string,
     S3_IMAGE_PATH: string,
@@ -334,7 +334,7 @@ const const_data: Iconst_data = {
         "Ladakh": ["Kargil", "Leh"],
         "Jammu and Kashmir": ["Anantnag", "Bandipora", "Baramulla", "Budgam", "Doda", "Ganderbal", "Jammu", "Kathua", "Kishtwar", "Kulgam", "Kupwara", "Poonch", "Pulwama", "Rajouri", "Ramban", "Reasi", "Samba", "Shopian", "Srinagar", "Udhampur"]
     },
-    FUND_RAISER_FOR: [
+    RELATIONSHIP: [
         "Myself",
         "Father",
         "Mother",
