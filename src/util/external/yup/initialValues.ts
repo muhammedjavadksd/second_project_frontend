@@ -29,8 +29,8 @@ const bloodRequestPersonalDetailsInitialValue = {
     patient_name: "",
     relation: "",
     address: "",
-    phone_number:""
+    phone_number: ""
 }
 
 
-export { bloodDonatationFormValues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues }
+export { bloodDonatationFormValues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }
