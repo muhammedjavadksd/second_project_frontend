@@ -39,6 +39,7 @@ const bloodRequestDetailsInitialVaues = {
     unit: '',
     needed_date: '',
     hospital_name: '',
+    enquired_with_others: '',
     hospital_id: ''
 }
 

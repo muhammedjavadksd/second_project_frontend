@@ -40,7 +40,8 @@ const bloodRequestDetailsValidation = yup.object().shape({
         .typeError("Please select a valid date")
         .min(new Date(), "Please select a date in the future"),
     hospital_name: yup.string().typeError("Please select valid hospital name").required("Please select valid hospital name"),
-    hospital_id: yup.string().typeError("Please select valid hospital name").required("Please select valid hospital name")
+    hospital_id: yup.string().typeError("Please select valid hospital name").required("Please select valid hospital name"),
+    enquired_with_others: yup.string().typeError("Please select enquired details").required("Please select enquired details")
 })
 
 

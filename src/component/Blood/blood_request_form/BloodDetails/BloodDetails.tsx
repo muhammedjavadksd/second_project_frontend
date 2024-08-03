@@ -4,7 +4,8 @@ import const_data from "@/util/data/const"
 import { ErrorMessage, Field, Form, Formik } from "formik"
 import React, { useState } from "react"
 import { onBloodDetailsSubmit } from "./Logic"
-import { bloodRequestPersonalDetailsInitialValue } from "@/util/external/yup/initialValues"
+import { bloodRequestDetailsInitialVaues, bloodRequestPersonalDetailsInitialValue } from "@/util/external/yup/initialValues"
+import { bloodRequestDetailsValidation } from "@/util/external/yup/yupValidations"
 
 
 
@@ -24,55 +25,47 @@ function BloodRequestDetails(): React.ReactElement {
         <>
             <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false} >
                 <CreateFormBackground>
-                    <Formik onSubmit={(val) => onBloodDetailsSubmit(val, successCallback, errorCallback)} initialValues={bloodRequestPersonalDetailsInitialValue} validationSchema={bloodRequestPersonalDetailsValidation}>
+                    <Formik onSubmit={(val) => onBloodDetailsSubmit(val, successCallback, errorCallback)} initialValues={bloodRequestDetailsInitialVaues} validationSchema={bloodRequestDetailsValidation}>
                         <Form>
                             <div className="mb-5">
-                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Patient name</label>
-                                <Field type="text" id="patient_name" name="patient_name" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Patient name" />
-                                <ErrorMessage name="patient_name" component="div" className="errorMessage" />
-                            </div>
-                            <div className="mb-5">
-                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Relationship</label>
-                                <Field type="text" id="relation" name="relation" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" as="select">
-                                    <option value="">Select the relationship</option>
+                                <label htmlFor="blood_group" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select the blood group</label>
+                                <Field as="select" type="text" id="blood_group" name="blood_group" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
+                                    <option value="">Select the blood group</option>
                                     {
-                                        const_data.RELATIONSHIP.map((relation) => {
-                                            return <option value={relation}>{relation}</option>
+                                        const_data.BLOOD_GROUPS.map((bgroup) => {
+                                            return <option value={bgroup}>{bgroup}</option>
                                         })
                                     }
                                 </Field>
-                                <ErrorMessage name="relation" component="div" className="errorMessage" />
+                                <ErrorMessage name="blood_group" component="div" className="errorMessage" />
                             </div>
                             <div className="mb-5">
-                                <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select the gender</label>
-                                <Field type="text" id="gender" name="gender" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" as="select">
-                                    <option value="">Select the gender</option>
-                                    {
-                                        const_data.GENDERS.map((gender) => {
-                                            return <option value={gender}>{gender}</option>
-                                        })
-                                    }
+                                <label htmlFor="unit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select the unit</label>
+                                <Field type="text" id="unit" name="unit" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"></Field>
+                                <ErrorMessage name="unit" component="div" className="errorMessage" />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Needed for Blood</label>
+                                <Field type="text" id="needed_date" name="needed_date" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                                <ErrorMessage name="needed_date" component="div" className="errorMessage" />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Needed for Blood</label>
+                                <Field type="text" id="needed_date" name="needed_date" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                                <ErrorMessage name="needed_date" component="div" className="errorMessage" />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Has the patient sought out neighbors, friends, and relatives to get the blood donors they need?</label>
+                                <Field as="select" type="text" id="enquired_with_others" name="enquired_with_others" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+                                    <option>Select</option>
+                                    <option value={'true'}>Yes</option>
+                                    <option value={'false'}>No</option>
                                 </Field>
-                                <ErrorMessage name="gender" component="div" className="errorMessage" />
+                                <ErrorMessage name="enquired_with_others" component="div" className="errorMessage" />
                             </div>
 
 
-                            <div className="mb-5">
-                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Patient Age</label>
-                                <Field type="text" id="age" name="age" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="age" />
-                                <ErrorMessage name="age" component="div" className="errorMessage" />
-                            </div>
 
-                            <div className="mb-5">
-                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
-                                <Field type="text" id="phone_number" name="phone_number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter phone number" />
-                                <ErrorMessage name="phone_number" component="div" className="errorMessage" />
-                            </div>
-                            <div className="mb-5">
-                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                                <Field type="text" id="address" name="address" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter full address" />
-                                <ErrorMessage name="address" component="div" className="errorMessage" />
-                            </div>
                             <div className="overflow-hidden">
                                 <button
                                     type="submit"
