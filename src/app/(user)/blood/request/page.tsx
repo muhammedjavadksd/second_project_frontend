@@ -5,6 +5,8 @@ import React, { FunctionComponent, useState } from 'react'
 import OnGoingingFundRaise from '@/util/context/onGoingingFundRaise'
 import BannerForCreating from '@/component/FundRaiser/BannerForCreating'
 import { requestBanner } from './Data'
+import { CreateFormComponent } from './Logic'
+import { FundRaiseCreationStep } from '@/util/types/InterFace/PropInterFace'
 
 
 // Patient name
@@ -20,7 +22,7 @@ import { requestBanner } from './Data'
 function CreateFundRaisingPost(): React.ReactElement {
 
     let [step, setStep] = useState<number>(0)
-    let StepForm: FunctionComponent<FundRaiseCreationStep> = CreateFormComponent(createFormIndex);
+    let StepForm: FunctionComponent<FundRaiseCreationStep> = CreateFormComponent(step);
 
 
     return (
@@ -33,7 +35,7 @@ function CreateFundRaisingPost(): React.ReactElement {
                             <BannerForCreating circle_image_design={true} image={requestBanner[step].image} title={requestBanner[step].title} subTitle={requestBanner[step].sub_title} />
                         </div>
                         <div className='w-full'>
-                            {/* <StepForm state={step} /> */}
+                            <StepForm state={setStep} />
                         </div>
                     </div>
                 </div>

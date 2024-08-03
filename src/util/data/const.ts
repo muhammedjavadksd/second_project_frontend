@@ -8,6 +8,7 @@ interface Iconst_data {
     FUNDRAISER_CATEGORY: object
     STATE_WITH_DISTRICT: object
     RELATIONSHIP: string[]
+    GENDERS: string[]
     FUND_RAISE_DOCUMENT_URL: string,
     FUND_RAISE_IMAGE_URL: string,
     S3_IMAGE_PATH: string,
@@ -355,6 +356,11 @@ const const_data: Iconst_data = {
         "Partner",
         "Spouse",
         "In-law"
+    ],
+    GENDERS: [
+        "Male",
+        "Female",
+        "Other",
     ],
     FUND_RAISE_DOCUMENT_URL: "http://localhost:7001/api/fund_raise/images/fund_raise_document",
     FUND_RAISE_IMAGE_URL: "http://localhost:7001/api/fund_raise/images/fund_raiser_image",

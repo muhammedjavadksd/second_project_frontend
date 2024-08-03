@@ -1,3 +1,5 @@
+import BloodRequestDetails from "@/component/Blood/blood_request_form/BloodDetails/BloodDetails";
+import BloodPersonalDetails from "@/component/Blood/blood_request_form/PersonalDetails/PersonalDetails";
 import { ReactElement, ReactFragment } from "react";
 
 const requestBanner = [
@@ -20,6 +22,8 @@ const requestBanner = [
 
 
 const BloodRequestStepByForm = [
+    BloodPersonalDetails,
+    BloodRequestDetails
 ]
 
-export { requestBanner };
+export { requestBanner, BloodRequestStepByForm };
