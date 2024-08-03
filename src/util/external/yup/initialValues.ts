@@ -28,9 +28,19 @@ function updateBloodDonorPersonalDetailsValues(profile) {
 const bloodRequestPersonalDetailsInitialValue = {
     patient_name: "",
     relation: "",
+    age: '',
+    gender: "",
     address: "",
     phone_number: ""
 }
 
+const bloodRequestDetailsInitialVaues = {
+    blood_group: '',
+    unit: '',
+    needed_date: '',
+    hospital_name: '',
+    hospital_id: ''
+}
 
-export { bloodDonatationFormValues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }
+
+export { bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }
