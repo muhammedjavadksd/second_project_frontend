@@ -38,9 +38,23 @@ interface IUserSessionData extends IUser {
     blood_token?: string
 }
 
+interface IOnGoingBloodRequest {
+    patient_name: "",
+    relation: "",
+    age: '',
+    gender: "",
+    address: "",
+    phone_number: "",
+}
+
 interface IBloodDonorForm {
     donor_id: string
     setDonor: Function
+}
+
+interface IOnGoingBloodRequestProvider {
+    bloodRequestFirstPhase: IOnGoingBloodRequest,
+    setFirstPhase: Function
 }
 
 interface IOnGoingApplocation {
@@ -51,6 +65,29 @@ interface IOnGoingApplocation {
 interface IStore {
     fund_raiser: FundRaiserFormInitialValues
 }
+
+interface SelectedHospital {
+    place_id: number,
+    location: {
+        lat: string,
+        lon: string,
+    }
+    type: string,
+    name: string,
+    display_name: string
+}
+
+interface MapApiResponse {
+    place_id: number,
+    licence: string,
+    lat: string,
+    lon: string,
+    class: string,
+    type: string,
+    name: string,
+    display_name: string
+}
+
 
 // interface ITokenInterface {
 //     token: {
@@ -66,4 +103,4 @@ interface IStore {
 // }
 
 
-export type { IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm }
+export type { IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }
