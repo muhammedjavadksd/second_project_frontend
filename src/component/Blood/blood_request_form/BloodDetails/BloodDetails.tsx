@@ -11,7 +11,7 @@ import LocationItem from "@/component/Util/LocationItem"
 
 
 
-function BloodRequestDetails(): React.ReactElement {
+function BloodRequestDetails({ state }): React.ReactElement {
 
     const [isLoading, setLoding] = useState<boolean>(false)
     const [selectedLocation, setSelectedLocation] = useState<SelectedHospital>({ display_name: null, location: { lat: null, lon: null }, name: null, place_id: null, type: null });
@@ -77,14 +77,20 @@ function BloodRequestDetails(): React.ReactElement {
 
 
 
-                            <div className="overflow-hidden">
+                            <div className="overflow-hidden ">
                                 <button
                                     type="submit"
-                                    className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    className="ml-5 float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 >
                                     Next <i className="fa-solid fa-chevron-right"></i>
                                 </button>
+                                <button type="button" onClick={() => state((prev) => prev - 1)} className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                                    <i className="fa-solid fa-chevron-left me-5"></i>
+                                    Prev
+                                </button>
+
                             </div>
+
                         </Form>
                     </Formik>
                 </CreateFormBackground>

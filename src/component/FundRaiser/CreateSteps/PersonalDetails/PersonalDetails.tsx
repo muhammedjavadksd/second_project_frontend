@@ -90,7 +90,7 @@ function PersonalDetails({ state }) {
               <Field as="select" id="benificiary_relation" name='benificiary_relation' className="mb-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option selected value={""}>Choose a relation</option>
                 {
-                  const_data.FUND_RAISER_FOR.map((each) => {
+                  const_data.RELATIONSHIP.map((each) => {
                     return (
                       <option value={each}>{each}</option>
                     )

@@ -3,22 +3,59 @@ import LoadingComponent from "@/component/Util/LoadingComponent";
 import { bloodRequestPersonalDetailsInitialValue } from "@/util/external/yup/initialValues";
 import { bloodRequestPersonalDetailsValidation } from "@/util/external/yup/yupValidations";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { onBloodRequestPersonalDetailSubmit } from "./Logic";
 import { toast } from "react-toastify";
 import const_data from "@/util/data/const";
+import { OnGoingBloodRequestContext } from "@/util/context/Context";
+import { IOnGoingBloodRequest, IOnGoingBloodRequestProvider } from "@/util/types/InterFace/UtilInterface";
 
 
 function BloodPersonalDetails({ state }): React.ReactElement {
 
 
-    function successCallback() {
-        state((prev) => prev + 1)
+    const { bloodRequestFirstPhase, setFirstPhase } = useContext<IOnGoingBloodRequestProvider>(OnGoingBloodRequestContext)
+    const [initialValues, setInitialValues] = useState({
+        patient_name: "",
+        relation: "",
+        age: '',
+        gender: "",
+        address: "",
+        phone_number: ""
+    })
+
+    useEffect(() => {
+        console.log(bloodRequestFirstPhase);
+
+        if (bloodRequestFirstPhase && bloodRequestFirstPhase.patient_name != "" && bloodRequestFirstPhase.patient_name != null) {
+            setInitialValues({
+                patient_name: bloodRequestFirstPhase.patient_name,
+                relation: bloodRequestFirstPhase.relation,
+                age: bloodRequestFirstPhase.age,
+                gender: bloodRequestFirstPhase.gender,
+                address: bloodRequestFirstPhase.address,
+                phone_number: bloodRequestFirstPhase.phone_number
+            })
+        }
+    }, [])
+
+    function onSubmit(val) {
+        try {
+            setFirstPhase({
+                address: val.address,
+                age: val.age,
+                gender: val.gender,
+                patient_name: val.patient_name,
+                phone_number: val.phone_number,
+                relation: val.relation
+            } as IOnGoingBloodRequest)
+            state((prev) => prev + 1)
+        } catch (e) {
+            toast.error("Something went wrong")
+        }
     }
 
-    function errorCallback(err: string) {
-        toast.error(err)
-    }
+
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -26,7 +63,7 @@ function BloodPersonalDetails({ state }): React.ReactElement {
         <>
             <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false} >
                 <CreateFormBackground>
-                    <Formik onSubmit={(val) => onBloodRequestPersonalDetailSubmit(val, successCallback, errorCallback)} initialValues={bloodRequestPersonalDetailsInitialValue} validationSchema={bloodRequestPersonalDetailsValidation}>
+                    <Formik onSubmit={onSubmit} enableReinitialize initialValues={initialValues} validationSchema={bloodRequestPersonalDetailsValidation}>
                         <Form>
                             <div className="mb-5">
                                 <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Patient name</label>
@@ -76,6 +113,7 @@ function BloodPersonalDetails({ state }): React.ReactElement {
                                 <ErrorMessage name="address" component="div" className="errorMessage" />
                             </div>
                             <div className="overflow-hidden">
+
                                 <button
                                     type="submit"
                                     className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

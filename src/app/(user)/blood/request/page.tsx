@@ -7,6 +7,7 @@ import BannerForCreating from '@/component/FundRaiser/BannerForCreating'
 import { requestBanner } from './Data'
 import { CreateFormComponent } from './Logic'
 import { FundRaiseCreationStep } from '@/util/types/InterFace/PropInterFace'
+import OnGoingBloodRequest from '@/util/context/OnGoingBloodRequest'
 
 
 // Patient name
@@ -25,6 +26,7 @@ function CreateFundRaisingPost(): React.ReactElement {
     let StepForm: FunctionComponent<FundRaiseCreationStep> = CreateFormComponent(step);
 
 
+
     return (
         <OnGoingingFundRaise>
             <div>
@@ -35,7 +37,9 @@ function CreateFundRaisingPost(): React.ReactElement {
                             <BannerForCreating circle_image_design={true} image={requestBanner[step].image} title={requestBanner[step].title} subTitle={requestBanner[step].sub_title} />
                         </div>
                         <div className='w-full'>
-                            <StepForm state={setStep} />
+                            <OnGoingBloodRequest>
+                                <StepForm state={setStep} />
+                            </OnGoingBloodRequest>
                         </div>
                     </div>
                 </div>
