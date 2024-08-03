@@ -25,4 +25,12 @@ function updateBloodDonorPersonalDetailsValues(profile) {
     return initData
 }
 
+const bloodRequestPersonalDetailsInitialValue = {
+    patient_name: "",
+    relation: "",
+    address: "",
+    phone_number:""
+}
+
+
 export { bloodDonatationFormValues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues }

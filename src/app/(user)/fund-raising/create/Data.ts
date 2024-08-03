@@ -6,6 +6,8 @@ import PersonalDetails from "@/component/FundRaiser/CreateSteps/PersonalDetails/
 import { FundRaiseCreationBanner } from "@/util/types/InterFace/PropInterFace";
 import { FunctionComponent } from "react";
 
+
+
 let createFormSteps: FunctionComponent[] = [
     Basic,
     PersonalDetails,
