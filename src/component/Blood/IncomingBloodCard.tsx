@@ -1,6 +1,6 @@
 import React from 'react'
 
-function BloodCard({ group, unit, deadLine, username, onDonateBlood, location }): React.ReactElement {
+function IncomingBloodCard({ group, unit, deadLine, username, onDonateBlood, location }): React.ReactElement {
     return (
         <div className="p-6 bg-gray-50 shadow-lg rounded-lg">
 
@@ -47,4 +47,4 @@ function BloodCard({ group, unit, deadLine, username, onDonateBlood, location })
     )
 }
 
-export default BloodCard
+export default IncomingBloodCard

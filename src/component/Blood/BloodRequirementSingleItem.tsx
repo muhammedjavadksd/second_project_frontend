@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { toast } from 'react-toastify';
-import BloodCard from './BloodCard';
+import BloodCard from './IncomingBloodCard';
 
 function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, username }) {
 

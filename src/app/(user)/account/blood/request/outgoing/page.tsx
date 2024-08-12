@@ -1,13 +1,14 @@
 "use client"
 import AccountTab from '@/component/Account/AccountTab'
-import BloodCard from '@/component/Blood/BloodCard'
+import OutGoingBloodCard from '@/component/Blood/OutGoingBloodCard'
+// import OutGoingBloodCard from '@/component/Blood/OutGoingBloodCard'
 import Header from '@/component/Header/Header'
 import UserPrivateRouter from '@/component/LoginComponent/UserPrivateRouter'
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import Footer from '@/component/Util/Footer'
 import React from 'react'
 
-const ViewBloodRequest = () => {
+const ViewOutGoingBloodRequest = () => {
     return (
         <>
             <UserPrivateRouter>
@@ -28,10 +29,10 @@ const ViewBloodRequest = () => {
                             <div className="mt-5">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="bg-white">
-                                        <BloodCard deadLine={"12/07/2005"} group={"A+"} location={"Kasaragod"} onDonateBlood={() => { }} unit={"2"} username={"Muhammed Javad"} ></BloodCard>
+                                        <OutGoingBloodCard deadLine={"12/07/2005"} group={"A+"} location={"Kasaragod"} onDonateBlood={() => { }} unit={"2"} username={"Muhammed Javad"} ></OutGoingBloodCard>
                                     </div>
                                     <div className="bg-white">
-                                        <BloodCard deadLine={"12/07/2005"} group={"A+"} location={"Kasaragod"} onDonateBlood={() => { }} unit={"2"} username={"Muhammed Javad"} ></BloodCard>
+                                        <OutGoingBloodCard deadLine={"12/07/2005"} group={"A+"} location={"Kasaragod"} onDonateBlood={() => { }} unit={"2"} username={"Muhammed Javad"} ></OutGoingBloodCard>
                                     </div>
                                 </div>
                             </div>
@@ -44,4 +45,4 @@ const ViewBloodRequest = () => {
     )
 }
 
-export default ViewBloodRequest
+export default ViewOutGoingBloodRequest

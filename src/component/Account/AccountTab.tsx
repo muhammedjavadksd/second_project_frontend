@@ -45,9 +45,16 @@ function AccountTab(): React.ReactElement {
                     </li>
 
                     <li>
-                        <Link href="/account/blood/request/view" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
+                        <Link href="/account/blood/request/incoming" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
                             <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
-                            Donate Your Blood
+                            Donate My Blood
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link href="/account/blood/request/outgoing" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
+                            <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
+                            My Blood Request
                         </Link>
                     </li>
 
