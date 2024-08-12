@@ -12,6 +12,7 @@ import Footer from "@/component/Util/Footer";
 import { SessionProvider } from "next-auth/react"
 import HomeHero from "@/component/Hero/HomeHero";
 import Header from "@/component/Header/Header";
+import BloodAvailabilitySection from "@/component/section/Home/BloodAvailabilityView";
 
 
 const Home: React.FC<{ name: string }> = ({ name }) => {
@@ -30,6 +31,11 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
                     <section className="mt-10">
                         <div className='container mx-auto'>
                             <CouldHelp />
+                        </div>
+                    </section>
+                    <section className="mt-10">
+                        <div className='container mx-auto'>
+                            <BloodAvailabilitySection />
                         </div>
                     </section>
 
