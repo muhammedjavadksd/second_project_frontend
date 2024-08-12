@@ -11,6 +11,29 @@ enum SessionStorageKeys {
     BloodRequestFormPhase = "BloodRequestFormPhase"
 }
 
+enum Relationship {
+    MYSELF = "Myself",
+    FATHER = "Father",
+    MOTHER = "Mother",
+    BROTHER = "Brother",
+    SISTER = "Sister",
+    CHILD = "Child",
+    FRIEND = "Friend",
+    NEIGHBOR = "Neighbor",
+    COWORKER = "Co-worker",
+    RELATIVE = "Relative",
+    GRANDFATHER = "Grandfather",
+    GRANDMOTHER = "Grandmother",
+    UNCLE = "Uncle",
+    AUNT = "Aunt",
+    NIECE = "Niece",
+    NEPHEW = "Nephew",
+    COUSIN = "Cousin",
+    PARTNER = "Partner",
+    SPOUSE = "Spouse",
+    INLAW = "In-law"
+}
+
 enum FundRaiserStatus {
     CREATED = "CREATED",
     INITIATED = "INITIATED",
@@ -31,4 +54,10 @@ enum BloodGroup {
     O_NEGATIVE = "O-"
 }
 
-export { FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys }
+
+enum BloodStatus {
+    Pending = 'pending',
+    Cancelled = "cancelled",
+    Completed = "completed"
+}
+export { FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship }

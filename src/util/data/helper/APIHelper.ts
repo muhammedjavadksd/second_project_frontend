@@ -1,7 +1,10 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
+import IBloodReq from "@/util/types/API Response/Blood";
 import { MapApiResponse } from "@/util/types/InterFace/UtilInterface";
 import axios from "axios";
 import { STATUS_CODES } from "http";
+import { getSession, useSession } from "next-auth/react";
+import { userDetailsFromGetSession } from "./authHelper";
 
 
 function getLimitedFundRaiserPost(limit, page, successCB, errorCB) {
@@ -36,4 +39,39 @@ async function searchHealthCenters(query: string): Promise<MapApiResponse[] | nu
 }
 
 
-export { getLimitedFundRaiserPost, searchHealthCenters }
+async function getPaginatedBloodReq(limit: number, page: number): Promise<IBloodReq[]> {
+
+    try {
+        const findReq = await API_axiosInstance.get(`blood/get_blood_requirements/${page}/${limit}`);
+        const response = findReq.data;
+        if (response.status) {
+            const { profile } = response.data;
+            return profile;
+        } else {
+            return []
+        }
+    } catch (e) {
+        return []
+    }
+}
+
+
+async function showIntrestForDonateBlood(req_id: string, successCB: Function, errorCB: Function) {
+    const session = await getSession();
+    const user = userDetailsFromGetSession(session);
+    const { blood_token } = user
+
+    API_axiosInstance.post(`/blood/intrest/${req_id}`, {}, { headers: { authorization: `Bearer ${blood_token}` } }).then((response) => {
+        const { data } = response;
+        if (data.status) {
+            successCB()
+        } else {
+            errorCB(data.msg)
+        }
+    }).catch((err) => {
+        const msg = err?.response?.data?.msg ?? "Something went wrong";
+        errorCB(msg)
+    })
+}
+
+export { getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }

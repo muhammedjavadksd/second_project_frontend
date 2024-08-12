@@ -12,11 +12,12 @@ import Footer from "@/component/Util/Footer";
 import { SessionProvider } from "next-auth/react"
 import HomeHero from "@/component/Hero/HomeHero";
 import Header from "@/component/Header/Header";
-import BloodDonorForm from "@/util/context/BloodDonorForm";
+
+
+const Home: React.FC<{ name: string }> = ({ name }) => {
 
 
 
-const Home: React.FC = () => {
 
     return (
         <SessionProvider>
@@ -31,6 +32,7 @@ const Home: React.FC = () => {
                             <CouldHelp />
                         </div>
                     </section>
+
                     <BloodReqSlider />
                     <section className="mt-10 bg-gray-100">
                         <EventPromo />

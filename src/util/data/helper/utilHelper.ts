@@ -13,6 +13,17 @@ export function getCurrentPosition(successCB: Function, errorDB: Function): void
     })
 }
 
+export function formatDateToMonthNameAndDate(date) {
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const d = new Date(date);
+    const monthName = months[d.getMonth()];
+    const day = d.getDate();
+    return `${monthName} ${day}`;
+}
+
 
 export function getMainCategory(): string[] {
     return Object.keys(const_data.FUNDRAISER_CATEGORY)

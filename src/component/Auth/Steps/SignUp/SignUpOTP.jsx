@@ -6,7 +6,7 @@ import LoadingComponent from '@/component/Util/LoadingComponent'
 import { toast } from 'react-toastify'
 import Timer from "@amplication/react-compound-timer";
 import const_data, { OTP_TIME_SECONDS } from '@/util/data/const'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 
 function SignUpOTP({ state }) {
@@ -26,7 +26,7 @@ function SignUpOTP({ state }) {
         setIsTimeEnd(false)
         setIsLoading(false)
         if (next) {
-            navigate.replace(`/${next}?step_index=${stepIndex}`)
+            router.replace(`/${next}?step_index=${stepIndex}`)
         } else {
             router.replace("/auth/sign_in")
         }

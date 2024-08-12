@@ -30,7 +30,8 @@ function BloodRequestDetails({ state }): React.ReactElement {
 
     function successCallback(msg: string) {
         toast.success(msg);
-        router.replace("/");
+        router.replace("/blood/request/success");
+        sessionStorage.clear();
     }
 
     function errorCallback(msg: string) {

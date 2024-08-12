@@ -66,6 +66,8 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
                 console.log(profile);
 
                 setBloodDonorFormLoading(false)
+            } else {
+                setBloodDonorFormLoading(false)
             }
         } catch (e) {
             console.log(e);
