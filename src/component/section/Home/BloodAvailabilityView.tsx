@@ -1,8 +1,23 @@
 import SectionTitle from '@/component/Util/SectionTitle'
+import API_axiosInstance from '@/util/external/axios/api_axios_instance';
 import { BloodGroup } from '@/util/types/Enums/BasicEnums'
 import React, { useEffect, useState } from 'react'
 
 function BloodAvailabilitySection() {
+
+
+    let [bloodStatics, setBloodStatics] = useState({});
+    useEffect(() => {
+        API_axiosInstance.get("blood/blood_availability", {}).then((data) => {
+            let response = data.data;
+            if (response.status) {
+                let profile = response.data
+                setBloodStatics(profile)
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, [])
 
 
 
@@ -20,7 +35,7 @@ function BloodAvailabilitySection() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
                     {
-                        Object.values(BloodGroup).map((each) => {
+                        Object.keys(bloodStatics).map((each) => {
                             return (
                                 <div className="flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-xs mx-auto transform hover:scale-105 transition-transform duration-300">
                                     <div className="flex items-center justify-center py-5 space-x-4">
@@ -28,7 +43,7 @@ function BloodAvailabilitySection() {
                                             <span className="text-white text-4xl font-extrabold">{each}</span>
                                         </div>
                                         <div className="flex flex-col items-center justify-center">
-                                            <div className="text-gray-900 dark:text-gray-200 text-5xl font-bold mb-2">{Math.floor(Math.random() * 20)}</div>
+                                            <div className="text-gray-900 dark:text-gray-200 text-5xl font-bold mb-2">{bloodStatics[each]}</div>
                                             <div className="text-gray-600 dark:text-gray-400 text-base font-medium">Donors</div>
                                         </div>
                                     </div>
