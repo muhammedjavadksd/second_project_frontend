@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 import { toast } from 'react-toastify';
 import BloodCard from './IncomingBloodCard';
+import { StatusCode } from '@/util/types/Enums/BasicEnums';
 
 function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, username }) {
 
@@ -13,18 +14,19 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
     const router = useRouter();
     function onDonateBlood() {
         const userDetails = userDetailsFromUseSession(session);
-        console.log(userDetails);
-        alert("Check log")
 
         if (userDetails) {
             if (userDetails.blood_donor_id) {
                 showIntrestForDonateBlood(req_id, () => {
-                    router.push("/blood/intrest/success")
-                }, (msg) => {
-                    // alert("This works")
-                    // console.log(msg);
-                    // toast.error(msg)
-                    router.push("/account/profile?open_donor_model=true")
+                    toast.success("You have showed intrest")
+                    router.push("/account/blood-account/expressed-intrest")
+                }, (msg, statusCode) => {
+                    console.log(msg);
+                    if (statusCode == StatusCode.BAD_REQUEST) {
+                        toast.error(msg)
+                    } else {
+                        router.push("/account/profile?open_donor_model=true")
+                    }
                 }).catch((err) => {
                     console.log(err);
                     toast.error("Something went wrong")

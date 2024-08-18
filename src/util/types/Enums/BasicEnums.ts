@@ -60,4 +60,16 @@ enum BloodStatus {
     Cancelled = "cancelled",
     Completed = "completed"
 }
-export { FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship }
+
+enum StatusCode {
+    OK = 200,
+    CREATED = 201,
+    UNAUTHORIZED = 401,
+    BAD_REQUEST = 400,
+    NOT_FOUND = 404,
+    SERVER_ERROR = 500,
+    FORBIDDEN = 403,
+    CONFLICT = 409,
+}
+
+export { FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

@@ -68,11 +68,11 @@ async function showIntrestForDonateBlood(req_id: string, successCB: Function, er
         if (data.status) {
             successCB()
         } else {
-            errorCB(data.msg)
+            errorCB(data.msg, response.status)
         }
     }).catch((err) => {
         const msg = err?.response?.data?.msg ?? "Something went wrong";
-        errorCB(msg)
+        errorCB(msg, err.response.status)
     })
 }
 
