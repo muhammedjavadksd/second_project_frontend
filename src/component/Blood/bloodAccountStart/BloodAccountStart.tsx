@@ -34,7 +34,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
     async function findDonorDetails() {
         try {
             let bloodId = profile.blood_donor_id;
-            const token = profile.token;
+            const token = profile.blood_token;
             if (token) {
                 // alert("The token" + token)
                 if (!bloodId) {
@@ -57,7 +57,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
 
 
 
-                const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile/${bloodId}`, { headers: { authorization: `Bearer ${token}` } });
+                const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile`, { headers: { authorization: `Bearer ${token}` } });
                 const response = findBloodDonor.data;
                 if (response.status) {
                     const profile = response.profile;
@@ -82,6 +82,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
     useEffect(() => {
         findDonorDetails()
     }, [profile])
+
 
 
     async function successCB(donor_id: string) {

@@ -1,5 +1,5 @@
 "use client"
-import AccountTab from '@/component/Account/AccountTab'
+import AccountTab from '@/component/Account/AccountTab/ProfileTab'
 import OutGoingBloodCard from '@/component/Blood/OutGoingBloodCard'
 // import OutGoingBloodCard from '@/component/Blood/OutGoingBloodCard'
 import Header from '@/component/Header/Header'

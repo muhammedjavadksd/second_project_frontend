@@ -1,4 +1,4 @@
-import AccountTab from '@/component/Account/AccountTab'
+import AccountTab from '@/component/Account/AccountTab/ProfileTab'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import Footer from '@/component/Util/Footer'

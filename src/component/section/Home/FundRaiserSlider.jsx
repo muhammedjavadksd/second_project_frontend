@@ -32,7 +32,7 @@ function FundRaiserSlider() {
                 <SliderComponent slidesToScroll={1} slidesToShow={4} dots={true}>
                     {
                         fundRaiserList.map((each) => {
-                            <FundRaiserSingleItem></FundRaiserSingleItem>
+                            return <FundRaiserSingleItem fund_id={each.fund_id}></FundRaiserSingleItem>
                         })
                     }
                 </SliderComponent>

@@ -65,18 +65,12 @@ function OutGoingBloodCard({ group, unit, deadLine, username, onDonateBlood, loc
             </Link>
 
 
-            <div className="bg-white mt-5 p-5 rounded-lg shadow-md flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                    <svg className="w-6 h-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                        <path fillRule="evenodd" d="M12 2a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H7.5A2.5 2.5 0 0 1 5 13.5V8a5 5 0 0 1 5-5h5Zm-1 4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-5Z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-base font-medium text-gray-800">{username}</span>
-                </div>
-                <button onClick={onDonateBlood} type="button" className="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
-                    Cancel Request
+            <div className="flex justify-end">
+                <button onClick={onDonateBlood} type="button" className="mt-5 text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+                    Close Request
                 </button>
-            </div>
 
+            </div>
         </div>
 
     )

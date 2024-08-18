@@ -1,5 +1,5 @@
 "use client";
-import AccountTab from '@/component/Account/AccountTab'
+import AccountTab from '@/component/Account/AccountTab/ProfileTab'
 import EditUserEmailAddress from '@/component/Account/EditEmailID/EditUserEmailAddress';
 import EditUserPhoneNumber from '@/component/Account/EditPhoneNumber/EditUserPhoneNumber';
 import EditProfileComponent from '@/component/Account/EditProfile/EditProfile';
@@ -59,8 +59,8 @@ function page(): React.ReactElement {
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
+            <Footer />
         </UserPrivateRouter>
     )
 }

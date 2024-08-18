@@ -8,6 +8,7 @@ import { IAdminSessionData, IOrganizationSessionData, IUserSessionData } from "@
 import { userDetailsFromGetSession } from "@/util/data/helper/authHelper"
 import { getSession } from "next-auth/react"
 import { headers } from "next/headers"
+import { log, profile } from "console"
 
 
 
@@ -124,6 +125,10 @@ let authOptions = {
                             // const profile = response.profile;
                             const { profile } = response.data;
                             console.log(profile);
+                            let bloodAuth = await API_axiosInstance.get(`/blood/get_profile/`, { headers: { authorization: `Bearer ${profile.blood_token}` } })
+                            let { profile: blood_profile } = bloodAuth.data
+                            console.log(bloodAuth);
+
 
                             let storingData: IUserSessionData = {
                                 id: profile?.user_id,
@@ -133,7 +138,7 @@ let authOptions = {
                                 phone: profile.phone,
                                 email: profile.email,
                                 role: "user",
-                                blood_donor_id: profile.blood_donor_id,
+                                blood_donor_id: blood_profile.donor_id,
                                 blood_token: profile.blood_token
                             }
                             console.log("Login completed");

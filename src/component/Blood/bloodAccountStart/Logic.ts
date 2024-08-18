@@ -85,7 +85,6 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
         }
     } catch (e) {
         console.log(e);
-
         const errorMsg = e?.response?.body?.msg ?? "Something went wrong";
         errorCb(errorMsg)
     }

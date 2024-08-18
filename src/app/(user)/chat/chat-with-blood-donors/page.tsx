@@ -1,5 +1,5 @@
 "use client"
-import AccountTab from "@/component/Account/AccountTab";
+import AccountTab from "@/component/Account/AccountTab/ProfileTab";
 import Header from "@/component/Header/Header";
 import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter";
 import BreadCrumb from "@/component/Util/BreadCrumb";

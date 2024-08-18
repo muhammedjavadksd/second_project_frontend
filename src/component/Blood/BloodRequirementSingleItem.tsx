@@ -13,13 +13,18 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
     const router = useRouter();
     function onDonateBlood() {
         const userDetails = userDetailsFromUseSession(session);
+        console.log(userDetails);
+        alert("Check log")
+
         if (userDetails) {
             if (userDetails.blood_donor_id) {
                 showIntrestForDonateBlood(req_id, () => {
                     router.push("/blood/intrest/success")
                 }, (msg) => {
-                    console.log(msg);
-                    toast.error(msg)
+                    // alert("This works")
+                    // console.log(msg);
+                    // toast.error(msg)
+                    router.push("/account/profile?open_donor_model=true")
                 }).catch((err) => {
                     console.log(err);
                     toast.error("Something went wrong")

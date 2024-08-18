@@ -1,15 +1,15 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import ImageModel from '../Util/ImageModel'
-import ModelItem from '../Util/ModelItem'
-import BloodAccountStart from '../Blood/bloodAccountStart/BloodAccountStart'
+import ImageModel from '../../Util/ImageModel'
+import ModelItem from '../../Util/ModelItem'
+import BloodAccountStart from '../../Blood/bloodAccountStart/BloodAccountStart'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
-import LoadingComponent from '../Util/LoadingComponent'
+import LoadingComponent from '../../Util/LoadingComponent'
 import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import Link from 'next/link'
 
-function AccountTab(): React.ReactElement {
+function Profil(): React.ReactElement {
 
     const router = useRouter()
     const params = useSearchParams();
@@ -37,7 +37,7 @@ function AccountTab(): React.ReactElement {
                         </Link>
                     </li>
 
-                    <li>
+                    {/* <li>
                         <a href="#" onClick={() => setBloodAccountStart(true)} className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
                             <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
                             Open Blood Account
@@ -56,7 +56,7 @@ function AccountTab(): React.ReactElement {
                             <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
                             My Blood Request
                         </Link>
-                    </li>
+                    </li> */}
 
                     <li>
                         <a href="#" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
@@ -96,4 +96,4 @@ function AccountTab(): React.ReactElement {
     )
 }
 
-export default AccountTab
+export default Profil

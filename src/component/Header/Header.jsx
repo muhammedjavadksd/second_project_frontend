@@ -28,7 +28,7 @@ function Header() {
   let [showToggle, setShowToggle] = useState(false);
 
   return (
-    <nav className="bg-white pt-3 pb-3">
+    <nav className="bg-white pt-3 pb-3 shadow-md">
       <div className="container mx-auto">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -134,6 +134,24 @@ function Header() {
                   id="user-menu-item-0"
                 >
                   {user?.first_name + "'s Profile" ?? "Profile"}
+                </Link>
+                <Link
+                  href="/account/blood-account"
+                  className="block px-4 py-2 text-sm text-gray-700"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="user-menu-item-0"
+                >
+                  Blood Account
+                </Link>
+                <Link
+                  href="/account/fund-raiser-account"
+                  className="block px-4 py-2 text-sm text-gray-700"
+                  role="menuitem"
+                  tabIndex="-1"
+                  id="user-menu-item-0"
+                >
+                  Fund Raiser Account
                 </Link>
                 <a
                   href="#"

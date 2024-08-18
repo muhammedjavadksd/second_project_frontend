@@ -15,14 +15,16 @@ import Header from "@/component/Header/Header";
 import BloodAvailabilitySection from "@/component/section/Home/BloodAvailabilityView";
 
 
+
 const Home: React.FC<{ name: string }> = ({ name }) => {
 
 
 
-
     return (
+
+
         <SessionProvider>
-            <main className="flex min-h-screen flex-col">
+            <main className="flex min-h-screen flex-col bg-white">
                 <div>
 
                     <Header />

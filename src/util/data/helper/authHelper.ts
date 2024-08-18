@@ -85,6 +85,10 @@ export function userDetailsFromUseSession(session) {
 
     const user = token?.user;
     if (!user) return false
+
+    if (user.role != "user") {
+        return false
+    }
     return user;
 }
 

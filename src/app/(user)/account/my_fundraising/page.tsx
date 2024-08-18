@@ -1,5 +1,5 @@
 "use client"
-import AccountTab from '@/component/Account/AccountTab'
+import AccountTab from '@/component/Account/AccountTab/ProfileTab'
 import BlockModel from '@/component/FundRaiser/BlockModel'
 import MyFundRaisingItem from '@/component/FundRaiser/MyFundRaisingItem'
 import Header from '@/component/Header/Header'
