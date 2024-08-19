@@ -81,10 +81,17 @@ enum StatusCode {
 }
 
 
+enum TableFilterByDate {
+    AllTime = "All time",
+    OneMonth = "1 Month",
+    SixMonth = "6 Month",
+    OneYear = "1 Year",
+}
+
 enum FundRaiserFileType {
     Document = "Document",
     Pictures = "Pictures"
 }
 
 
-export { AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }
+export { TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

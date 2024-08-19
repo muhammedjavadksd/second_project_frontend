@@ -16,7 +16,7 @@ export async function getAllFundRaisers(limit: number, page: number): Promise<Fo
     try {
 
         let session = await getSession();
-        let user = userDetailsFromGetSession(session)
+        let user = userDetailsFromGetSession(session, "admin")
         console.log(user);
 
         const token = user?.token
@@ -66,7 +66,7 @@ export async function getSingleUser(profile_id: string) {
 export async function getUserForFundRaise(user_ids: string[]): Promise<FormActionResponse> {
 
     let session = await getSession();
-    let user = userDetailsFromGetSession(session)
+    let user = userDetailsFromGetSession(session, "admin")
 
     try {
 

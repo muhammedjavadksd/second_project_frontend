@@ -13,7 +13,7 @@ import { FormActionResponse } from '@/util/types/InterFace/UtilInterface'
 import UserResponse from '@/util/types/API Response/UserInterface'
 import TableRowCount from '@/component/Util/TableRowCount'
 import TableSearch from '@/component/Util/TableSearch'
-import { FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
+import { FundRaiserStatus, TableFilterByDate } from '@/util/types/Enums/BasicEnums'
 
 function ViewFundRaising(): React.ReactElement {
 
@@ -99,6 +99,24 @@ function ViewFundRaising(): React.ReactElement {
         }
     }
 
+    function onDateChange(date: TableFilterByDate) {
+        let dateData;
+        let todayDate = new Date()
+        if (date == TableFilterByDate.AllTime) {
+            dateData = tempFundRaiserData.slice((tableLimit * (tablePage - 1)), tableLimit)
+        } else {
+            if (date == TableFilterByDate.OneMonth) {
+                todayDate.setMonth(todayDate.getMonth() - 1)
+            } else if (date == TableFilterByDate.OneYear) {
+                todayDate.setFullYear(todayDate.getFullYear() - 1)
+            } else if (date == TableFilterByDate.SixMonth) {
+                todayDate.setMonth(todayDate.getMonth() - 6)
+            }
+            dateData = tempFundRaiserData.filter((each) => each.created_date < todayDate);
+        }
+        setFundRaiserData(dateData)
+    }
+
 
 
     return (
@@ -110,17 +128,17 @@ function ViewFundRaising(): React.ReactElement {
                 </div>
                 < div className='buttonGroups flex items-center justify-end gap-3' >
                     <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' > <i className="fa-solid fa-download" > </i> Export </button >
-                    <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' > + Add Fund Raiser </button>
+                    <Link href={"add"} className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' > + Add Fund Raiser </Link>
                 </div>
             </div>
 
-
+            {/* 
             {
                 "Se" + selectedItem
-            }
+            } */}
 
             <div className='mt-5' >
-                <AdminDateFilter />
+                <AdminDateFilter onDateSelect={onDateChange} />
                 <div className='buttonGroups flex items-center justify-start mt-3 gap-3' >
                     <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(null)} > <i className="fa-solid fa-bars" > </i> All case's</button >
                     <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.INITIATED)} > <i className="fa-solid fa-bars" > </i> Initiated Cases</button >
@@ -158,23 +176,23 @@ function ViewFundRaising(): React.ReactElement {
                                         raisingID: each.fund_id,
                                         User: (
                                             each.created_by == "USER" ? <div className='flex justify-center gap-3' >
-                                                <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48} />
+                                                {/* <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48} /> */}
                                                 < div className='text-start ' >
                                                     <h4>{each?.creater_profile?.first_name + each?.creater_profile?.last_name}</ h4 >
                                                     <p>{each?.email_id}</p>
                                                 </div>
                                             </div> : (each.created_by == "ADMIN" ? "Created By Admin" : "Created by organization")),
                                         // raisingID: each.user_id,
-                                        TargetAmount: `${each.status}${const_data.MONEY_ICON}`,
+                                        TargetAmount: `${each.amount}${const_data.MONEY_ICON}`,
                                         deadLine: "12/04/2023",
-                                        status: <span className='bg-green-400 p-3 text-sm text-white rounded-lg' > Active </span>,
+                                        status: <span className='bg-green-400 p-3 text-sm text-white rounded-lg' > {each.status} </span>,
                                         action: <div>
                                             <Link href={`/admin/fund_raising/detail_view/${each.fund_id}`} className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2' > <i className="fa-solid fa-eye" > </i> View</Link >
                                         </div>
                                     })
                                 })}
                         />
-                        <PaginationTab from={1} to={totalPages} onClick={(number) => onPagination(number)} />
+                        <PaginationTab total_pages={10} total_records={10} from={1} to={totalPages} onClick={(number) => onPagination(number)} />
                     </div>
                 </div>
             </div>
