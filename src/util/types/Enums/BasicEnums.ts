@@ -34,6 +34,14 @@ enum Relationship {
     INLAW = "In-law"
 }
 
+
+enum AdminCreateFundRaiserStatus {
+    INITIATED = "INITIATED",
+    APPROVED = "APPROVED",
+    HOLD = "HOLD",
+    CLOSED = "CLOSED"
+}
+
 enum FundRaiserStatus {
     CREATED = "CREATED",
     INITIATED = "INITIATED",
@@ -79,4 +87,4 @@ enum FundRaiserFileType {
 }
 
 
-export { FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }
+export { AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

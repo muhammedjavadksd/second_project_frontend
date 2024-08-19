@@ -65,12 +65,16 @@ export function isUserLogged(session) {
     }
 }
 
-export function userDetailsFromGetSession(session) {
+export function userDetailsFromGetSession(session, role) {
     let data = session?.token;
     if (!data) return false
 
     let user = data?.user;
     if (!user) return false;
+
+    if (user.role != role) {
+        return false
+    }
 
     return user;
 }
@@ -111,7 +115,7 @@ export function getAdminToken(headers) {
 export async function addTokenIntoAxiosInterceptor(config) {
     try {
         let session = await getSession();
-        let user = userDetailsFromGetSession(session)
+        let user = userDetailsFromGetSession(session, "user")
         console.log(session);
 
         let token = user?.token;
