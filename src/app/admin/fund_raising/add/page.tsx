@@ -9,9 +9,12 @@ import FileSelectBox from '@/component/Util/FileSelectBox'
 import { AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
 import ListImageFile from '@/component/Util/ListImageFile'
 import const_data from '@/util/data/const'
-import { addFundRaiserValidation, addFundRasierInitialValue } from './data'
+import { addFundRaiserValidation, addFundRasierInitialValue, aiDescriptionValidation } from './data'
 import { toast } from 'react-toastify'
 import { onFundRaiserSubmit } from './logic'
+import getAIDescription from '@/component/FundRaiser/CreateSteps/AIDescription/Logic'
+import ModelItem from '@/component/Util/ModelItem'
+import ModelHeader from '@/component/Util/Model/ModelHeader'
 
 function AdminFundRaiseAdd(): React.ReactElement {
 
@@ -21,6 +24,10 @@ function AdminFundRaiseAdd(): React.ReactElement {
 
     let [selectedPicturesAsNames, setSelectedPicturesAsNames] = useState([])
     let [selectedDocumentsAsName, setSelectedDocumentsAsName] = useState([])
+    let [aiDescription, setAiDescription] = useState(null);
+    let addFundRaiserRef = useRef(null);
+    let [isDescriptionOpen, setDescriptionOpen] = useState(false)
+    let [currentFormState, setCurrentFormState] = useState({})
 
 
     let [subCategory, setSubCategory] = useState([])
@@ -74,37 +81,114 @@ function AdminFundRaiseAdd(): React.ReactElement {
         }
     }
 
+    function onSuccess() {
+        toast.success("Fund raiser created success")
+        setSelectedDocumentsAsName([]);
+        setSelectedPicturesAsNames([])
+        setPictures([])
+        setDocuments([])
+        addFundRaiserRef.current.resetForm();
+        setDescriptionOpen(false)
+    }
+
+    function onError(msg) {
+        toast.error(msg)
+    }
+
+
+    async function submitFundRaiserForm(val) {
+        setCurrentFormState(val);
+        setDescriptionOpen(val);
+        // let validateForm = await addFundRaiserRef.current.validateForm();
+        // console.log(validateForm);
+
+        // if (Object.keys(validateForm).length > 0) {
+        //     console.log("Form is not validated");
+        //     addFundRaiserRef.current.setErrors(validateForm)
+        // } else {
+        //     setDescriptionOpen(true)
+        // }
+
+        // onFundRaiserSubmit(val, () => {
+
+
+        // }, (msg) => {
+
+        // }, selectedPicturesAsBlob, selectedDocumentsAsBlob)
+    }
+
+    function onAiDescriptionSubmit({ description }) {
+        currentFormState['description'] = description;
+        console.log(currentFormState);
+        onFundRaiserSubmit(currentFormState, onSuccess, onError, selectedPicturesAsBlob, selectedDocumentsAsBlob)
+        // onSuccess();
+    }
+
+    async function generateAIDescription(values) {
+
+        try {
+            let { amount, category, sub_category, full_name, age, description, city, pin_code, state, district } = values;
+            const ai_description = await getAIDescription(amount, category, sub_category, full_name, age, "(created by admin)", description, city, pin_code, state, district)
+            return ai_description
+        } catch (e) {
+            toast.error("Please fill the form properly")
+        }
+    }
+
     return (
         <AdminPrivateRouter>
             <AdminLayout>
+                <ModelItem ZIndex={1} isOpen={isDescriptionOpen} onClose={() => { }} closeOnOutSideClock={false}>
+                    <div style={{ width: "500px" }} className="relative p-4  max-h-full">
+                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <ModelHeader title={"Fund raiser description"}></ModelHeader>
+
+                            <div className="p-4 md:p-5">
+                                <Formik enableReinitialize initialValues={{ description: "" }} validationSchema={aiDescriptionValidation} onSubmit={onAiDescriptionSubmit} className="space-y-4" action="#">
+                                    {({ values, setFieldValue }) => (
+                                        <Form>
+                                            <div>
+                                                <div className="flex justify-between w-full">
+                                                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Write a description for fund raiser</label>
+                                                    <label onClick={async () => {
+                                                        let description = await generateAIDescription(values);
+                                                        setFieldValue("description", description);
+                                                    }} htmlFor="ai-description" style={{ fontSize: "10px" }} className=" mb-2 block text-white bg-gray-600 cursor-pointer font-mono py-1 px-2 rounded-lg shadow hover:bg-blue-700 transition-colors">
+                                                        Generate AI Description!
+                                                    </label>
+                                                </div>
+                                                <Field as="textarea" rows={5} name="description" id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Write a description" />
+                                                <ErrorMessage component={"div"} className='errorMessage' name='description'></ErrorMessage>
+                                            </div>
+                                            <button type="submit" className="mt-5 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save & Submit</button>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </div>
+                        </div>
+                    </div>
+                </ModelItem>
                 <AdminBreadCrumb title={"Add Fund Raiser"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Fund Raiser's", href: "/fund_raising" }, { title: "Add", href: "/admin/fund_raising/add" }]} />
                 {/* <button onClick={() => onFundRaiserSubmit({}, () => { }, () => { })}>Click</button> */}
                 <div className='mt-5'>
                     <div className="flex gap-10">
                         <div className="w-4/5">
                             <Formik
+                                innerRef={addFundRaiserRef}
                                 onSubmit={(val, { resetForm }) => {
                                     if (selectedDocumentsAsBlob.length < 2) {
                                         toast.error("Please upload minimum 3 documents")
                                     } else if (selectedDocumentsAsBlob.length < 2) {
                                         toast.error("Please upload minimum 3 pictures")
                                     } else {
-                                        onFundRaiserSubmit(val, () => {
-                                            resetForm();
-                                            toast.success("Fund raiser created success")
-                                            setSelectedDocumentsAsName([]);
-                                            setSelectedPicturesAsNames([])
-                                            setPictures([])
-                                            setDocuments([])
-                                        }, (msg) => {
-                                            toast.error(msg)
-                                        }, selectedPicturesAsBlob, selectedDocumentsAsBlob)
+                                        submitFundRaiserForm(val)
+                                        // resetForm();
                                     }
                                 }}
                                 validationSchema={addFundRaiserValidation}
                                 initialValues={addFundRasierInitialValue}
                             >
-                                {({ values, setFieldValue, setFieldTouched, handleSubmit }) => (
+                                {({ errors, values, setFieldValue, setFieldTouched, handleSubmit }) => (
                                     <Form>
                                         <div className="grid flex gap-10 grid-cols-2 mb-5">
                                             <div>
@@ -166,12 +250,14 @@ function AdminFundRaiseAdd(): React.ReactElement {
                                         <div className="grid gap-10 grid-cols-2 mb-5">
                                             <div>
                                                 <label htmlFor="" className='text-sm mb-2 block'>About</label>
-                                                <Field rows={5} name="about" id="about" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="About the fund raiser" />
+                                                <Field as="textarea" rows={5} name="about" id="about" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="About the fund raiser" />
                                                 <ErrorMessage className='errorMessage' component={"div"} name='about'></ErrorMessage>
                                             </div>
                                             <div>
-                                                <label htmlFor="" className='text-sm mb-2 block'>Description</label>
-                                                <Field rows={5} name="description" id="description" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Write a description about the fund raiser" />
+                                                <div className='flex w-full justify-between'>
+                                                    <label htmlFor="" className='text-sm mb-2 block'>Description</label>
+                                                </div>
+                                                <Field as="textarea" rows={5} name="description" id="description" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Write a description about the fund raiser" />
                                                 <ErrorMessage className='errorMessage' component={"div"} name='description'></ErrorMessage>
 
                                             </div>

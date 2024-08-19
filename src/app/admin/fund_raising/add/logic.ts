@@ -19,6 +19,7 @@ async function onFundRaiserSubmit(val, successCallback, errorCallback, pictures:
                 category: val.category,
                 sub_category: val.sub_category,
                 phone_number: val.phone_number,
+                description: val.description,
                 email_id: val.email,
                 age: val.age,
                 about: val.about,

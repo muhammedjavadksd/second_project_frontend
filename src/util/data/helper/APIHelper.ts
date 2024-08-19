@@ -60,7 +60,7 @@ async function getPaginatedBloodReq(limit: number, page: number): Promise<IBlood
 
 async function showIntrestForDonateBlood(req_id: string, successCB: Function, errorCB: Function) {
     const session = await getSession();
-    const user = userDetailsFromGetSession(session);
+    const user = userDetailsFromGetSession(session, "user");
     const { blood_token } = user
 
     API_axiosInstance.post(`/blood/intrest/${req_id}`, {}, { headers: { authorization: `Bearer ${blood_token}` } }).then((response) => {

@@ -1,5 +1,9 @@
 import * as yup from 'yup'
 
+let aiDescriptionValidation = yup.object().shape({
+    description: yup.string().typeError("Write a description").required("Description is required")
+})
+
 let addFundRaiserValidation = yup.object().shape({
     amount: yup.number().typeError("Please enter valid amount").required("Amount is required"),
     category: yup.string().typeError("Please enter valid category").required("Category is required"),
@@ -39,4 +43,4 @@ let addFundRasierInitialValue = {
     status: "",
 }
 
-export { addFundRaiserValidation, addFundRasierInitialValue }
+export { addFundRaiserValidation, addFundRasierInitialValue, aiDescriptionValidation }

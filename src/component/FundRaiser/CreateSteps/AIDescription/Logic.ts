@@ -38,7 +38,7 @@ async function getAIDescription(amount: number, category: string, sub_category: 
 async function onDescriptionSubmit(val: IAIDescriptionInitialValues, successCB: Function, errorCB: Function) {
 
     const session = await getSession();
-    const user = userDetailsFromGetSession(session)
+    const user = userDetailsFromGetSession(session, "user")
 
     const { ai_description, currentApplication } = val
 
