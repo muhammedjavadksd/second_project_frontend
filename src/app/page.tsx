@@ -13,7 +13,8 @@ import { SessionProvider } from "next-auth/react"
 import HomeHero from "@/component/Hero/HomeHero";
 import Header from "@/component/Header/Header";
 import BloodAvailabilitySection from "@/component/section/Home/BloodAvailabilityView";
-
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+// import 'react-confirm-alert/src/'
 
 
 const Home: React.FC<{ name: string }> = ({ name }) => {

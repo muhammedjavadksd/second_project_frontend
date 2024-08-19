@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 
-function OutGoingBloodCard({ group, unit, deadLine, username, onDonateBlood, location }) {
+function OutGoingBloodCard({ group, unit, deadLine, onClose, location }) {
     return (
         <div className="p-6 bg-gray-50 shadow-lg rounded-lg">
 
@@ -66,7 +66,7 @@ function OutGoingBloodCard({ group, unit, deadLine, username, onDonateBlood, loc
 
 
             <div className="flex justify-end">
-                <button onClick={onDonateBlood} type="button" className="mt-5 text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+                <button onClick={onClose} type="button" className="mt-5 text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
                     Close Request
                 </button>
 

@@ -4,11 +4,14 @@ import ExpressIntrestItem from "@/component/Blood/BloodAccountTabItems/Expressed
 import Header from "@/component/Header/Header"
 import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter"
 import BreadCrumb from "@/component/Util/BreadCrumb"
+import EmptyScreen from "@/component/Util/EmptyScreen"
 import Footer from "@/component/Util/Footer"
+import PaginationSection from "@/component/Util/PaginationSection"
 import { userDetailsFromUseSession } from "@/util/data/helper/authHelper"
 import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper"
 import API_axiosInstance from "@/util/external/axios/api_axios_instance"
 import IBloodReq from "@/util/types/API Response/Blood"
+import { BloodGroup } from "@/util/types/Enums/BasicEnums"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 
@@ -20,12 +23,10 @@ function ExpressedIntrest() {
     const [showenIntrest, setShowenIntrest] = useState([])
     const session = useSession();
 
-    useEffect(() => {
+
+    function getExpressedIntrest(limit, page) {
         const user = userDetailsFromUseSession(session)
         const bloodToken = user.blood_token;
-        console.log(bloodToken);
-        console.log(user);
-
         if (bloodToken) {
             API_axiosInstance.get("blood/interested_blood_requirements", { headers: { authorization: `Bearer ${bloodToken}` } }).then((data) => {
                 let response = data.data;
@@ -38,10 +39,11 @@ function ExpressedIntrest() {
             }).catch((err) => {
                 console.log(err);
             })
-        } else {
-            console.log("Not authraized");
-
         }
+    }
+
+    useEffect(() => {
+        getExpressedIntrest(6, 1)
     }, [session])
 
     return (
@@ -53,21 +55,31 @@ function ExpressedIntrest() {
                 </div>
                 <BloodAccountTab />
                 <div className="mt-5">
-                    <div className="grid grid-cols-3">
-                        {
-                            showenIntrest.map((item: IBloodReq) => {
-                                return (
-                                    <ExpressIntrestItem blood_group={item.blood_group} deadLine={formatDateToMonthNameAndDate(item.neededAt)} full_name={item.patientName} location={item.locatedAt.hospital_name} unit={item.unit} ></ExpressIntrestItem>
-                                )
-                            })
-                        }
-                    </div>
+                    {/* <PaginationSection total_pages={100} total_records={100} onPaginated={getExpressedIntrest}>
+                        <div className="grid grid-cols-3 gap-10">
+                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
+                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
+                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
+                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
+                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
+                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
+                        </div>
+                    </PaginationSection> */}
+                    <EmptyScreen />
+
 
                 </div>
             </div>
             <Footer />
-        </UserPrivateRouter>
+        </UserPrivateRouter >
     )
 }
 
+{
+    // showenIntrest.map((item: IBloodReq) => {
+    //     return (
+    //         <ExpressIntrestItem blood_group={item.blood_group} deadLine={formatDateToMonthNameAndDate(item.neededAt)} full_name={item.patientName} location={item.locatedAt.hospital_name} unit={item.unit} ></ExpressIntrestItem>
+    //     )
+    // })
+}
 export default ExpressedIntrest

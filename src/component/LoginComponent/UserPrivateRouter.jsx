@@ -3,6 +3,7 @@ import { isUserLogged, userDetailsFromGetSession } from '@/util/data/helper/auth
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import SpalshScreen from '../Util/SplashScreen';
 
 function UserPrivateRouter({ children }) {
     let session = getSession();
@@ -25,7 +26,8 @@ function UserPrivateRouter({ children }) {
 
         <div>
             {
-                isAuth ? children : <h2>Fallback loading1</h2>
+                isAuth ? children : <SpalshScreen /> // <h2>Fallback loading1</h2>
+                // <SpalshScreen /> // <h2>Fallback loading1</h2>
             }
         </div>
     )

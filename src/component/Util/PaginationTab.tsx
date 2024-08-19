@@ -1,10 +1,12 @@
 import { IPaginationButton } from '@/util/types/InterFace/PropInterFace'
 import React, { useEffect, useState } from 'react'
 
-function PaginationTab({ from, onClick, to }: IPaginationButton) {
+function PaginationTab({ from, onClick, to, total_pages, total_records }: IPaginationButton) {
 
   const [fromPage, setFromPage] = useState<number>(from)
   const [toPage, setToPage] = useState<number>(from + 5)
+  let paginationButtonLength = 5
+  let [currentPage, setCurrentPage] = useState<number>(1);
 
   function onPrev() {
     if (from > 1) {
@@ -18,35 +20,33 @@ function PaginationTab({ from, onClick, to }: IPaginationButton) {
     }
   }
 
-  function onPageSelect(page: number) {
-    setFromPage(page)
-  }
+  // function onPageSelect(page: number) {
+  //   setFromPage(page)
+  // }
 
   useEffect(() => {
     setToPage(fromPage + 5)
   }, [fromPage])
 
   return (
-    <div>
-      <nav className="flex bg-white p-5 pb-2 pt-2 items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-        <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span className="font-semibold text-gray-900 dark:text-white">1000</span></span>
+    <div className='flex flex-col justify-end mt-5'>
+      <span className="text-sm text-end font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span className="font-semibold text-gray-900 dark:text-white">1000</span></span>
+      <nav className="flex bg-white p-5 pt-2 pb-2 pt-2 items-center flex-column flex-wrap md:flex-row justify-end pe-0" aria-label="Table navigation">
         <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
           <li key={0} onClick={() => onClick(0)}>
-            <a href="#" onClick={onPrev} className={`${(from <= 1 && "pointer-events-all cursor-not-allowed ")}	flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
+            <button onClick={onPrev} className={`${(from <= 1 && "pointer-events-all cursor-not-allowed ")}	flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
               Prev
-            </a>
+            </button>
           </li>
+
           {
-            Array.from({ length: toPage - fromPage }).map((_, index) => {
-              const pageNumber = index + fromPage;
+            Array.from({ length: paginationButtonLength }).map((_, page: number) => {
+              let currentButton = (currentPage * page) + 1;
               return (
-                <li key={pageNumber} onClick={() => {
-                  onClick(pageNumber);
-                  onPageSelect(pageNumber)
-                }}>
-                  <a href="#" className="	 flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    {pageNumber}
-                  </a>
+                <li key={page} onClick={() => { onClick(currentButton) }}>
+                  <button className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    {currentButton}
+                  </button>
                 </li>
               );
             })
@@ -55,9 +55,9 @@ function PaginationTab({ from, onClick, to }: IPaginationButton) {
             {
 
             }
-            <a href="#" onClick={onNext} className={`${((toPage - fromPage) >= from && "pointer-events-all cursor-not-allowed ")} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
+            <button onClick={onNext} className={`${((toPage - fromPage) >= from && "pointer-events-all cursor-not-allowed ")} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
               Next
-            </a>
+            </button>
           </li>
         </ul>
       </nav>
