@@ -8,6 +8,8 @@ function ListImageFile({ data = [], BASE_PATH, onClose }: IListImageFile) {
   let [currentImage, setCurrentImage] = useState<string>(null)
 
   function onImageClose(image_id: string) {
+    console.log(data);
+
     if (confirm("Are you sure want to delete this file?")) {
       onClose(image_id)
     }
@@ -22,20 +24,22 @@ function ListImageFile({ data = [], BASE_PATH, onClose }: IListImageFile) {
 
       <div className="">
 
-        <ul style={{ height: "186px", overflow: "auto" }}>
+        <ul style={{ maxHeight: "186px", overflow: "auto" }}>
           {
             data.map((each) => {
+
+              let image = BASE_PATH ? BASE_PATH + "/" + each : each
               return (
 
                 <li>
                   <div className='cursor-pointer mb-3' onClick={() => {
-                    setCurrentImage(BASE_PATH + "/" + each)
+                    setCurrentImage(image)
                   }}
                   >
                     <ImageItem onClose={(e) => {
                       e.stopPropagation()
                       onImageClose(each)
-                    }} imageName={each} imageURL={BASE_PATH + "/" + each}></ImageItem>
+                    }} imageName={each} imageURL={image}></ImageItem>
                   </div>
                 </li>
               )

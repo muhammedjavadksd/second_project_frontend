@@ -3,6 +3,7 @@ import { isAdminlogged } from '@/util/data/helper/authHelper';
 import { getSession, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import SpalshScreen from '../Util/SplashScreen';
 
 function AdminPrivateRouter({ children }) {
     let session = getSession();
@@ -30,7 +31,7 @@ function AdminPrivateRouter({ children }) {
 
         <div>
             {
-                !isAuth ? <h2>Fallback loading</h2> : children
+                !isAuth ? <SpalshScreen /> : children
             }
         </div>
     )

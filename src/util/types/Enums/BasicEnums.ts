@@ -72,4 +72,11 @@ enum StatusCode {
     CONFLICT = 409,
 }
 
-export { FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }
+
+enum FundRaiserFileType {
+    Document = "Document",
+    Pictures = "Pictures"
+}
+
+
+export { FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

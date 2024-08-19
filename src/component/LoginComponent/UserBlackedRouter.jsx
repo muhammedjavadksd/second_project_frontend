@@ -2,6 +2,7 @@ import { isUserLogged } from '@/util/data/helper/authHelper';
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import SpalshScreen from '../Util/SplashScreen';
 
 function UserBlackedRouter({ children }) {
 
@@ -22,7 +23,7 @@ function UserBlackedRouter({ children }) {
 
 
     if (!isAuth) {
-        return <h2>Loading</h2>
+        return <SpalshScreen />
     }
 
     return (

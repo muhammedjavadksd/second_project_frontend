@@ -10,6 +10,7 @@ import const_data from '@/util/data/const';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFundRaiseData } from '@/util/external/redux/slicer/fundRaiserForm';
 import { IReduxStore } from '@/util/types/InterFace/UtilInterface';
+import { FundRaiserFileType } from '@/util/types/Enums/BasicEnums';
 
 function FileUpload({ state }) {
 
@@ -84,7 +85,7 @@ function FileUpload({ state }) {
             <div className='w-2/4'>
               <div
                 onClick={() => imageRef.current.click()}>
-                <FileSelectBox>
+                <FileSelectBox id={FundRaiserFileType.Pictures} onFileSelect={() => { }}>
                   <input multiple ref={imageRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
                     // console.log(e.target.files);
                     onFileUpload([...e.target.files], onSuccess, onError, ifNotLogged, "Pictures", currentApplication)
@@ -109,7 +110,7 @@ function FileUpload({ state }) {
             <div className='w-2/4'>
               <div
                 onClick={() => documentRef.current.click()}>
-                <FileSelectBox>
+                <FileSelectBox id={FundRaiserFileType.Document} onFileSelect={() => { }}>
                   <input multiple ref={documentRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
                     onFileUpload([...e.target.files], onSuccess, onError, ifNotLogged, "Document", currentApplication)
                     documentRef.current.value = null

@@ -26,8 +26,7 @@ function UserPrivateRouter({ children }) {
 
         <div>
             {
-                isAuth ? children : <SpalshScreen /> // <h2>Fallback loading1</h2>
-                // <SpalshScreen /> // <h2>Fallback loading1</h2>
+                isAuth ? children : <SpalshScreen />
             }
         </div>
     )
