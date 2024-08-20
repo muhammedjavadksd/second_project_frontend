@@ -45,4 +45,12 @@ const bloodRequestDetailsInitialVaues = {
 }
 
 
-export { bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }
+const newTicketRaiseInitialValues = {
+    title: "",
+    description: "",
+    priority: "",
+    category: "",
+    attachment: "",
+}
+
+export { newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }

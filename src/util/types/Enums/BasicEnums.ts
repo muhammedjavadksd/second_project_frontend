@@ -93,5 +93,19 @@ enum FundRaiserFileType {
     Pictures = "Pictures"
 }
 
+enum TicketPriority {
+    Critical = 'Critical',
+    High = 'High',
+    Medium = 'Medium',
+    Low = 'Low'
+}
 
-export { TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }
+enum TicketCategory {
+    BloodAccount = "Blood Account",
+    FundRaiserAccount = "Fund Raiser Account",
+    PaymentRelated = "Payment Related",
+    Technical = "Technichal related",
+    Other = "Other"
+}
+
+export { TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

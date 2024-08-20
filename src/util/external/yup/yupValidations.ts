@@ -40,8 +40,15 @@ const bloodRequestDetailsValidation = yup.object().shape({
         .typeError("Please select a valid date")
         .min(new Date(), "Please select a date in the future"),
     hospital_name: yup.string().typeError("Please select valid hospital name").required("Please select valid hospital name"),
-    // hospital_id: yup.string().typeError("Please select valid hospital name").required("Please select valid hospital name"),
     enquired_with_others: yup.string().typeError("Please select enquired details").required("Please select enquired details")
+})
+
+const newTicketRaiseValidation = yup.object().shape({
+    title: yup.string().typeError("Please enter valid title").required("Title is required"),
+    description: yup.string().typeError("Please enter valid description").required("description is required"),
+    priority: yup.string().typeError("Please enter valid priority").required("Priority is required"),
+    category: yup.string().typeError("Please enter valid category").required("Categorys is required"),
+    attachment: yup.string().typeError("Please select valid file").nullable(),
 })
 
 
@@ -51,4 +58,4 @@ const bloodRequestDetailsValidation = yup.object().shape({
 // hospital_name
 // hospital_id
 
-export { bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }
+export { newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }

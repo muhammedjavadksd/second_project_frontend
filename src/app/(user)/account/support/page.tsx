@@ -2,17 +2,30 @@
 import AccountTab from '@/component/Account/AccountTab/ProfileTab'
 import Header from '@/component/Header/Header'
 import UserPrivateRouter from '@/component/LoginComponent/UserPrivateRouter';
+import NewTicketForm from '@/component/Ticket/NewTicket';
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import Footer from '@/component/Util/Footer'
+import ModelHeader from '@/component/Util/Model/ModelHeader';
+import ModelItem from '@/component/Util/ModelItem';
+import { TicketCategory, TicketPriority } from '@/util/types/Enums/BasicEnums';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useState } from 'react'
 
 function SupportTicket(): React.ReactElement {
+
+    let [isNewTicketOpen, setTicketOpen] = useState<boolean>(true)
 
 
 
     return (
         <UserPrivateRouter>
             <Header />
+            <ModelItem ZIndex={10} closeOnOutSideClock={true} isOpen={isNewTicketOpen} onClose={() => setTicketOpen(false)} >
+                <ModelHeader title={"New Ticket"}></ModelHeader>
+                <div className="bg-white min-w-96 min-h-96 p-5">
+                    <NewTicketForm />
+                </div>
+            </ModelItem>
             <div className="container mx-auto mt-5 mb-5">
                 <div className="mb-5">
                     <BreadCrumb path={['Profile', 'View Profile']} />
