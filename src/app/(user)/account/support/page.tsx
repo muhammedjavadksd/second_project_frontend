@@ -9,6 +9,7 @@ import ModelHeader from '@/component/Util/Model/ModelHeader';
 import ModelItem from '@/component/Util/ModelItem';
 import { TicketCategory, TicketPriority } from '@/util/types/Enums/BasicEnums';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import Link from 'next/link';
 import React, { useState } from 'react'
 
 function SupportTicket(): React.ReactElement {
@@ -106,7 +107,7 @@ function SupportTicket(): React.ReactElement {
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
                                             <th scope="col" className="px-6 py-3">
-                                                Ticket ID
+                                                ID
                                             </th>
                                             <th scope="col" className="px-6 py-3">
                                                 Title
@@ -122,6 +123,9 @@ function SupportTicket(): React.ReactElement {
                                             </th>
                                             <th scope="col" className="px-6 py-3">
                                                 Updated Date
+                                            </th>
+                                            <th scope="col" className="px-6 py-3">
+                                                Action
                                             </th>
                                         </tr>
                                     </thead>
@@ -145,45 +149,8 @@ function SupportTicket(): React.ReactElement {
                                             <td className="px-6 py-4">
                                                 12 May
                                             </td>
-                                        </tr>
-                                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <td className="w-4 p-4">
-                                                #T18333
-                                            </td>
-                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Why my account blocked
-                                            </th>
                                             <td className="px-6 py-4">
-                                                Medium
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                Blood Account
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className='bg-green-400 text-white rounded-lg px-3 py-2'>Answered</span>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                12 May
-                                            </td>
-                                        </tr>
-                                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <td className="w-4 p-4">
-                                                #T18333
-                                            </td>
-                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Why my account blocked
-                                            </th>
-                                            <td className="px-6 py-4">
-                                                Medium
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                Blood Account
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className='bg-green-400 text-white rounded-lg px-3 py-2'>Answered</span>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                12 May
+                                                <Link href={`support/T-${(Math.random() * 10000).toFixed(0)}`} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View</Link>
                                             </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -205,6 +172,9 @@ function SupportTicket(): React.ReactElement {
                                             <td className="px-6 py-4">
                                                 12 May
                                             </td>
+                                            <td className="px-6 py-4">
+                                                <Link href={`support/T-${(Math.random() * 10000).toFixed(0)}`} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View</Link>
+                                            </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <td className="w-4 p-4">
@@ -225,6 +195,9 @@ function SupportTicket(): React.ReactElement {
                                             <td className="px-6 py-4">
                                                 12 May
                                             </td>
+                                            <td className="px-6 py-4">
+                                                <Link href={`support/T-${(Math.random() * 10000).toFixed(0)}`} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View</Link>
+                                            </td>
                                         </tr>
                                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <td className="w-4 p-4">
@@ -244,6 +217,55 @@ function SupportTicket(): React.ReactElement {
                                             </td>
                                             <td className="px-6 py-4">
                                                 12 May
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <Link href={`support/T-${(Math.random() * 10000).toFixed(0)}`} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View</Link>
+                                            </td>
+                                        </tr>
+                                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <td className="w-4 p-4">
+                                                #T18333
+                                            </td>
+                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Why my account blocked
+                                            </th>
+                                            <td className="px-6 py-4">
+                                                Medium
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                Blood Account
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className='bg-green-400 text-white rounded-lg px-3 py-2'>Answered</span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                12 May
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <Link href={`support/T-${(Math.random() * 10000).toFixed(0)}`} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View</Link>
+                                            </td>
+                                        </tr>
+                                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <td className="w-4 p-4">
+                                                #T18333
+                                            </td>
+                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                Why my account blocked
+                                            </th>
+                                            <td className="px-6 py-4">
+                                                Medium
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                Blood Account
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className='bg-green-400 text-white rounded-lg px-3 py-2'>Answered</span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                12 May
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <Link href={`support/T-${(Math.random() * 10000).toFixed(0)}`} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>View</Link>
                                             </td>
                                         </tr>
                                     </tbody>
