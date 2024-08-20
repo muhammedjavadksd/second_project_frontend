@@ -9,7 +9,7 @@ async function onBloodDetailsSubmit(val, successCallback, errorCallback, notLogg
     // alert("Hello world")
     console.log(val);
     const session = await getSession();
-    const user = userDetailsFromGetSession(session);
+    const user = userDetailsFromGetSession(session, "user");
 
     console.log(user);
 

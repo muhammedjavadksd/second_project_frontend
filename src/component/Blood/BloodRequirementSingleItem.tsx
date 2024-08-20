@@ -13,7 +13,7 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
     const session = useSession();
     const router = useRouter();
     function onDonateBlood() {
-        const userDetails = userDetailsFromUseSession(session);
+        const userDetails = userDetailsFromUseSession(session, "user");
 
         if (userDetails) {
             if (userDetails.blood_donor_id) {

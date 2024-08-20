@@ -16,7 +16,7 @@ async function OnDonorPersonDataEditSubmit(val, successCB, errorCB) {
             location
         } = val;
         const session = await getSession();
-        const user = userDetailsFromGetSession(session)
+        const user = userDetailsFromGetSession(session, "user")
         const { blood_token } = user;
 
         const editDonor = await API_axiosInstance.patch("/blood/update_donor", {
@@ -53,7 +53,7 @@ async function onBloodDonationSubmit(val, successCB, errorCb) {
         } = val;
 
         const session = await getSession();
-        const user = userDetailsFromGetSession(session)
+        const user = userDetailsFromGetSession(session, "user")
         const token = user.token;
 
         const openAccountApi = await API_axiosInstance.post("/blood/create", {
@@ -108,7 +108,7 @@ async function OnBloodGroupUpdate(val, successCB, errorCB) {
         console.log(val);
 
         const session = await getSession();
-        const user = userDetailsFromGetSession(session)
+        const user = userDetailsFromGetSession(session, "user")
 
         const createdPresignedUrl = await API_axiosInstance.post("/blood/presigned_url_blood_group_change", {}, {
             headers: {

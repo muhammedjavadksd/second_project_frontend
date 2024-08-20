@@ -20,7 +20,7 @@ function MyRequirements() {
 
 
     useEffect(() => {
-        const user = userDetailsFromUseSession(session);
+        const user = userDetailsFromUseSession(session, "user");
         if (user) {
             const token = user.token
             API_axiosInstance.get("/blood/blood-requests", { headers: { authorization: `Bearer ${token}` } }).then((data) => {

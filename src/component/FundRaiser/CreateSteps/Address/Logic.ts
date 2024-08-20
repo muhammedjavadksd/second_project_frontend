@@ -11,7 +11,7 @@ const onAddressSubmit = async (values: IAddressFormInitialValues, successCB: Fun
     const { city, pinCode, state, district, fullAddress, currentApplication } = values
 
     const session = await getSession();
-    const user = userDetailsFromGetSession(session)
+    const user = userDetailsFromGetSession(session, "user")
 
     // let { benificiary_relation, description, raiser_age, raiser_name, currentApplication } = val
 

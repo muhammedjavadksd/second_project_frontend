@@ -48,7 +48,7 @@ function BloodPersonalDetails({ state }): React.ReactElement {
 
     async function onSubmit(val) {
         const session = await getSession();
-        const user = userDetailsFromGetSession(session);
+        const user = userDetailsFromGetSession(session, "user");
 
 
         try {

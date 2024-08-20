@@ -15,7 +15,7 @@ function Header() {
   const router = useRouter()
   useEffect(() => {
     session.then((data) => {
-      const isLogged = userDetailsFromGetSession(data);
+      const isLogged = userDetailsFromGetSession(data, "user");
       if (isLogged && isLogged?.role == "user") {
         setUser(isLogged)
       }

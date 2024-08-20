@@ -17,7 +17,7 @@ function EditUserPhoneNumber(): React.ReactElement {
     const router = useRouter();
 
     useEffect(() => {
-        const user = userDetailsFromUseSession(session);
+        const user = userDetailsFromUseSession(session, "user");
         setPhoneNumber(user.phone)
     }, [session])
 

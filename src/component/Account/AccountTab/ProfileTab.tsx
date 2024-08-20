@@ -20,7 +20,7 @@ function Profil(): React.ReactElement {
     return (
         <div>
 
-            <ModelItem ZIndex={1} isOpen={isBloodAccountStart} onClose={() => setBloodAccountStart(false)}>
+            <ModelItem closeOnOutSideClock={false} ZIndex={1} isOpen={isBloodAccountStart} onClose={() => setBloodAccountStart(false)}>
                 {isBloodAccountStart ? "s" : "n"}
                 <BloodAccountStart onComplete={() => setBloodAccountStart(false)}></BloodAccountStart>
             </ModelItem>
@@ -44,19 +44,13 @@ function Profil(): React.ReactElement {
                         </a>
                     </li>
 
-                    <li>
-                        <Link href="/account/blood/request/incoming" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
-                            <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
-                            Donate My Blood
-                        </Link>
-                    </li>
 
-                    <li>
-                        <Link href="/account/blood/request/outgoing" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
-                            <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
-                            My Blood Request
-                        </Link>
-                    </li> */}
+                    // <li>
+                    //     <Link href="/account/blood/request/outgoing" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
+                    //         <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
+                    //         My Blood Request
+                    //     </Link>
+                    // </li> */}
 
                     <li>
                         <a href="#" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
@@ -74,6 +68,14 @@ function Profil(): React.ReactElement {
                             </svg>
                             Settings
                         </a>
+                    </li>
+
+
+                    <li>
+                        <Link href="/account/support" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
+                            <i className="fa-solid fa-headset mr-3"></i>
+                            Support  & Ticket
+                        </Link>
                     </li>
 
                     <li>

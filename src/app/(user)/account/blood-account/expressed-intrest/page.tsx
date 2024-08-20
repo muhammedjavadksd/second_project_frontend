@@ -25,7 +25,7 @@ function ExpressedIntrest() {
 
 
     function getExpressedIntrest(limit, page) {
-        const user = userDetailsFromUseSession(session)
+        const user = userDetailsFromUseSession(session, "user")
         const bloodToken = user.blood_token;
         if (bloodToken) {
             API_axiosInstance.get("blood/interested_blood_requirements", { headers: { authorization: `Bearer ${bloodToken}` } }).then((data) => {

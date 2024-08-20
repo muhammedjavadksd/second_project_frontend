@@ -11,7 +11,7 @@ import { getSession } from "next-auth/react";
 async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
 
     let session = await getSession();
-    let user = userDetailsFromGetSession(session)
+    let user = userDetailsFromGetSession(session, "user")
 
     let { benificiary_relation, description, raiser_age, raiser_name, currentApplication, deadline } = val
 

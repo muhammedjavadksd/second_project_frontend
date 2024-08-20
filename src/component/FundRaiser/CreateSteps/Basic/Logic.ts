@@ -20,7 +20,7 @@ async function onInitialCreate(val, successCB, errorCB) {
 
     // console.log('The values are');
     const session = await getSession();
-    const user = userDetailsFromGetSession(session)
+    const user = userDetailsFromGetSession(session, "user")
     console.log("Check");
     console.log(user);
     if (user) {

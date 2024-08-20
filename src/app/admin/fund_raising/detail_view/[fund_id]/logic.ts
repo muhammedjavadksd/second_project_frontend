@@ -11,7 +11,7 @@ export async function getSingleFundRaisingProfile(fundraiser_id: string): Promis
 
     try {
         const session = await getSession();
-        const adminDetail = userDetailsFromGetSession(session);
+        const adminDetail = userDetailsFromGetSession(session, "user");
         let profile = await API_axiosInstance.get(`/fund_raise/admin/view/${fundraiser_id}`, {
             headers: {
                 "authorization": `Bearer ${adminDetail.token}`

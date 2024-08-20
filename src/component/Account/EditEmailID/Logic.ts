@@ -11,7 +11,7 @@ export async function onEmailUpdate(values: { email: string }, successCB: Functi
     try {
         const { email } = values;
         const session = await getSession();
-        const user = userDetailsFromGetSession(session)
+        const user = userDetailsFromGetSession(session, "user")
         const token = user.token;
         const emailUpdate = await API_axiosInstance.patch("/profile/update_email_id", {
             new_email_id: email
@@ -38,7 +38,7 @@ export async function onOTPValidate(values: { otp: number }, successCB: Function
     try {
 
         const session = await getSession();
-        const user = userDetailsFromGetSession(session)
+        const user = userDetailsFromGetSession(session, "user")
         const token = user.token;
         const { otp } = values;
         const otpValidate = await API_axiosInstance.patch("/profile/profile_update_otp_submission", {

@@ -79,7 +79,7 @@ export function userDetailsFromGetSession(session, role) {
     return user;
 }
 
-export function userDetailsFromUseSession(session) {
+export function userDetailsFromUseSession(session, role) {
 
     let data = session?.data;
     if (!data) return false
@@ -90,7 +90,7 @@ export function userDetailsFromUseSession(session) {
     const user = token?.user;
     if (!user) return false
 
-    if (user.role != "user") {
+    if (user.role != role) {
         return false
     }
     return user;

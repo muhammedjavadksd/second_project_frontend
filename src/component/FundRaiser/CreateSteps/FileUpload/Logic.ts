@@ -11,7 +11,7 @@ import { getSession } from "next-auth/react";
 
 async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
     const session = await getSession();
-    const user = userDetailsFromGetSession(session)
+    const user = userDetailsFromGetSession(session, "user")
 
 
 
@@ -51,7 +51,7 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
 
 async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fundRaiseID) {
     const session = await getSession();
-    const user = userDetailsFromGetSession(session)
+    const user = userDetailsFromGetSession(session, "user")
     const storeData = store.getState().fund_raiser as FundRaiserFormInitialValues;
 
 

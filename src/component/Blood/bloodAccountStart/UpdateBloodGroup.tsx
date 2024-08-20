@@ -12,7 +12,7 @@ function UpdateBloodGroup({ onComplete }: { onComplete: Function }): React.React
 
 
     const session = useSession();
-    const user = userDetailsFromUseSession(session)
+    const user = userDetailsFromUseSession(session, "user")
     console.log(user);
 
 

@@ -19,7 +19,7 @@ export async function onEditProfile(values, successCB, errorCB) {
         const { first_name, last_name } = values;
 
         const session = await getSession();
-        const user = userDetailsFromGetSession(session)
+        const user = userDetailsFromGetSession(session, "user")
         const token = user.token;
         console.log(token);
 

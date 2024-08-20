@@ -12,7 +12,7 @@ function UserPrivateRouter({ children }) {
 
     useEffect(() => {
         session.then((data) => {
-            let userLogged = userDetailsFromGetSession(data)
+            let userLogged = userDetailsFromGetSession(data, "user")
             if (userLogged) {
                 setAuth(true)
             } else {

@@ -21,14 +21,13 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
 
     // const { update } = useSession()
     const session = useSession()
-    console.log(userDetailsFromUseSession(session));
 
     const { donor_id, setDonor } = useContext(BloodDonorFormContext)
     const [isBloodDonorFormLoading, setBloodDonorFormLoading] = useState(true)
 
 
     // alert(donor_id)
-    const profile = userDetailsFromUseSession(session);
+    const profile = userDetailsFromUseSession(session, "user");
     const [bloodDonorDetails, setBloodDonor] = useState(null)
 
     async function findDonorDetails() {
@@ -86,7 +85,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
 
 
     async function successCB(donor_id: string) {
-        const user = userDetailsFromUseSession(session)
+        const user = userDetailsFromUseSession(session, "user")
         const updateProfile = await API_axiosInstance.patch("/profile/update_profile", { user_profile: { blood_donor_id: donor_id } }, { headers: { authorization: `Bearer ${user.token}` } })
         console.log(updateProfile);
         setDonor(donor_id)
@@ -97,7 +96,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
 
     useEffect(() => {
         console.log("Session updated:", session);
-        console.log("User details from session:", userDetailsFromUseSession(session));
+        console.log("User details from session:", userDetailsFromUseSession(session, "user"));
     }, [session]);
 
     function errorCB(err) {

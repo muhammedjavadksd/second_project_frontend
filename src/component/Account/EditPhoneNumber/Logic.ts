@@ -10,7 +10,7 @@ export async function onPhoneNumberUpdate(values: { phone_number: number }, succ
     try {
 
         const session = await getSession();
-        const user = userDetailsFromGetSession(session)
+        const user = userDetailsFromGetSession(session, "user")
 
         const { phone_number } = values;
         const token = user.token
@@ -39,7 +39,7 @@ export async function onOTPValidate(otp: number, successCB: Function, errorCB: F
     try {
 
         const session = await getSession();
-        const user = userDetailsFromGetSession(session)
+        const user = userDetailsFromGetSession(session, "user")
         const token = user.token
 
         const otpValidate = await API_axiosInstance.patch("/profile/profile_update_otp_submission", {
