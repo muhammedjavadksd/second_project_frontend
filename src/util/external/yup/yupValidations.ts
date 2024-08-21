@@ -51,6 +51,42 @@ const newTicketRaiseValidation = yup.object().shape({
     attachment: yup.string().typeError("Please select valid file").nullable(),
 })
 
+const validationSchema = yup.object().shape({
+    donatedLast90Days: yup.string()
+        .required('Please select whether you have donated blood in the last 90 days'),
+    weight: yup.number()
+        .required('Please enter your weight')
+        .min(1, 'Weight must be a positive number')
+        .test(
+            'is-valid-weight',
+            'Weight must be above 50kg',
+            value => value > 49
+        ),
+    seriousConditions: yup.array()
+        .required('Please select if you have any serious conditions'),
+    majorSurgeryOrIllness: yup.string()
+        .required('Please select if you have had any major surgery or illness'),
+    surgeryOrIllnessDetails: yup.string()
+        .test('surgeryOrIllnessDetails', 'Please provide details of the surgery or illness', function (value) {
+            const { majorSurgeryOrIllness } = this.parent;
+            if (majorSurgeryOrIllness === 'Yes' && !value) {
+                return false; // Validation fails
+            }
+            return true; // Validation passes
+        }),
+    chronicIllnesses: yup.string()
+        .required('Please select if you have any chronic illnesses'),
+    tattooPiercingAcupuncture: yup.string()
+        .required('Please select if you had any tattoo, piercing, or acupuncture'),
+    alcoholConsumption: yup.string()
+        .required('Please select if you have consumed alcohol in the past 48 hours'),
+    tobaccoUse: yup.string()
+        .required('Please select if you use tobacco products'),
+    pregnancyStatus: yup.string()
+        .required('Please select your pregnancy status'),
+    date: yup.string().typeError("Please select a date for donation").required("Meetup time is required")
+});
+
 
 // blood_group
 // unit
@@ -58,4 +94,4 @@ const newTicketRaiseValidation = yup.object().shape({
 // hospital_name
 // hospital_id
 
-export { newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }
+export { validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }

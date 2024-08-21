@@ -20,7 +20,7 @@ function BloodAccountTab(): React.ReactElement {
                         <Link href="my-requirements" className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Blood Requests</Link>
                     </li>
                     <li className="me-2">
-                        <a href="#" className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Donation History</a>
+                        <Link href="blood-account/donation-history" className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Donation History</Link>
                     </li>
                     <li className="me-2">
                         <Link href="blood-account/expressed-intrest" className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Expressed Interest</Link>

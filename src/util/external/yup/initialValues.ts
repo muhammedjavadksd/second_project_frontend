@@ -53,4 +53,18 @@ const newTicketRaiseInitialValues = {
     attachment: "",
 }
 
-export { newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }
+const bloodDonationFormInitialValues = {
+    donatedLast90Days: '',
+    weight: '',
+    seriousConditions: [],
+    majorSurgeryOrIllness: '',
+    surgeryOrIllnessDetails: '', // Field for conditional rendering
+    chronicIllnesses: '',
+    tattooPiercingAcupuncture: '',
+    alcoholConsumption: '',
+    tobaccoUse: '',
+    pregnancyStatus: '',
+    date: new Date()
+}
+
+export { bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }

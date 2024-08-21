@@ -16,6 +16,23 @@
   color: red;
 }
 
+.rmdp-input {
+  border: none !important;
+  background-color: transparent !important;
+  outline: none !important;
+}
+
+.rmdp-container {
+  padding: 7px;
+}
+
+.css-19bb58m>input {
+  box-shadow: none !important;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
 
 
 *,
