@@ -14,17 +14,17 @@ import React, { useState } from 'react'
 
 function SupportTicket(): React.ReactElement {
 
-    let [isNewTicketOpen, setTicketOpen] = useState<boolean>(true)
+    let [isNewTicketOpen, setTicketOpen] = useState<boolean>(false)
 
 
 
     return (
         <UserPrivateRouter>
             <Header />
-            <ModelItem ZIndex={10} closeOnOutSideClock={true} isOpen={isNewTicketOpen} onClose={() => setTicketOpen(false)} >
+            <ModelItem ZIndex={10} closeOnOutSideClock={isNewTicketOpen} isOpen={isNewTicketOpen} onClose={() => setTicketOpen(false)} >
                 <ModelHeader title={"New Ticket"}></ModelHeader>
                 <div className="bg-white min-w-96 min-h-96 p-5">
-                    <NewTicketForm />
+                    <NewTicketForm state={setTicketOpen} />
                 </div>
             </ModelItem>
             <div className="container mx-auto mt-5 mb-5">
@@ -41,7 +41,7 @@ function SupportTicket(): React.ReactElement {
                                 <h4 className="font-medium text-3xl mb-2">Hi, Muhammed Javad</h4>
                                 <p>Here is your daily activities, and history</p>
                             </div>
-                            <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            <button onClick={() => setTicketOpen(true)} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                 <i className="fa-solid fa-plus mr-3"></i>
                                 New Ticket
                             </button>
