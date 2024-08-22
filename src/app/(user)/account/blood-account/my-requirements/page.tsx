@@ -7,6 +7,7 @@ import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter"
 import BreadCrumb from "@/component/Util/BreadCrumb"
 import Footer from "@/component/Util/Footer"
 import { userDetailsFromUseSession } from "@/util/data/helper/authHelper"
+import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper"
 import API_axiosInstance from "@/util/external/axios/api_axios_instance"
 import IBloodReq from "@/util/types/API Response/Blood"
 import { BloodGroup } from "@/util/types/Enums/BasicEnums"
@@ -47,17 +48,15 @@ function MyRequirements() {
                 </div>
                 <BloodAccountTab />
                 <div className="mt-5">
-                    <div className="grid grid-cols-3">
+                    <div className="grid gap-5 grid-cols-3">
                         {
                             allReq.map((item: IBloodReq) => {
                                 return (
-                                    <OutGoingBloodCard onClose={() => { }} deadLine={item.neededAt} group={item.blood_group} location={item.locatedAt.hospital_name} unit={"1"} />
+                                    <OutGoingBloodCard intrest_submission={item.intrest_submission} onClose={() => { }} deadLine={formatDateToMonthNameAndDate(item.neededAt)} group={item.blood_group} location={item.locatedAt.hospital_name} unit={item.unit} />
                                 )
                             })
                         }
-                        {/* Length {allReq.length} */}
-                        {/* <OutGoingBloodCard deadLine={"12/02/0222"} group={BloodGroup.AB_NEGATIVE} location={"Kasaragod"} onDonateBlood={() => { }} unit={"1"} username={"Muhammed Javad"} />
-                        <OutGoingBloodCard deadLine={"12/02/0222"} group={BloodGroup.AB_NEGATIVE} location={"Kasaragod"} onDonateBlood={() => { }} unit={"1"} username={"Muhammed Javad"} /> */}
+
                     </div>
 
                 </div>

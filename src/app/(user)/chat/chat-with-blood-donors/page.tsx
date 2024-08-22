@@ -9,26 +9,18 @@ function ChatWithBloodDonors(): React.ReactElement {
 
     return (
         <>
-            <UserPrivateRouter>
-                <Header />
-                <div className="container mx-auto mt-5 mb-5">
-                    <div className="mb-5">
-                        <BreadCrumb path={['Profile', 'View Profile']} />
-                    </div>
-                    <div className="flex gap-5">
-                        <ChatScreen></ChatScreen>
-                    </div>
-                </div>
-            </UserPrivateRouter>
+            <div className="flex gap-5">
+                <ChatScreen></ChatScreen>
+            </div>
         </>
     )
 }
 
 const ChatScreen = () => {
     return (
-        <div className="flex min-h-screen w-full">
+        <div style={{ height: "500px" }} className="flex  bg-gray-100 w-full">
             {/* Left Panel: Users List */}
-            <div className="w-1/4 bg-white bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700 p-4">
+            <div className="w-1/4  bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700 p-4">
                 <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Chats</h2>
                 <ul className="space-y-2">
                     {[1, 2, 3].map((user, index) => (
@@ -44,7 +36,7 @@ const ChatScreen = () => {
             </div>
 
             {/* Middle Panel: Chat Window */}
-            <div className="w-1/2 bg-slate-200  border-r border-gray-300 dark:border-gray-700 flex flex-col">
+            <div className="w-1/2 bg-gray-100  border-r border-gray-300 dark:border-gray-700 flex flex-col">
                 <div className="flex items-center p-4 border-b border-gray-300 dark:border-gray-700">
                     <img className="w-12 h-12 rounded-full object-cover" src="https://via.placeholder.com/50?text=User" alt="Current User" />
                     <div className="ml-3">
@@ -78,7 +70,7 @@ const ChatScreen = () => {
             </div>
 
             {/* Right Panel: Current User Profile */}
-            <div className="w-1/4  bg-white dark:bg-gray-800 p-4">
+            <div className="w-1/4  bg-gray-100 dark:bg-gray-800 p-4">
                 <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Profile</h2>
                 <div className="flex items-center">
                     <img className="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-gray-900" src="https://via.placeholder.com/100?text=User" alt="Profile" />

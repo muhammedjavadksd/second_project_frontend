@@ -1,9 +1,9 @@
 import Link from "next/link"
 
 
-function OutGoingBloodCard({ group, unit, deadLine, onClose, location }) {
+function OutGoingBloodCard({ group, unit, deadLine, onClose, location, intrest_submission }) {
     return (
-        <div className="p-6 bg-gray-50 shadow-lg rounded-lg">
+        <div className="p-6 mb-5 bg-gray-50 shadow-lg rounded-lg">
 
             <div className="bg-white p-5 rounded-lg shadow-md mb-6">
                 <div className="flex items-center space-x-6">
@@ -30,36 +30,15 @@ function OutGoingBloodCard({ group, unit, deadLine, onClose, location }) {
 
 
             <Link href={"/"} className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-4 max-w-md mx-auto flex items-center space-x-4">
-                {/* Left Side: User Profile Pictures */}
-                <div className="flex-shrink-0 flex space-x-[-10px]">
-                    <div className="relative w-10 h-10">
-                        <img
-                            className="w-full h-full rounded-full border-2 border-white dark:border-gray-800 object-cover"
-                            src="https://via.placeholder.com/50"
-                            alt="User 1"
-                        />
-                    </div>
-                    <div className="relative w-10 h-10">
-                        <img
-                            className="w-full h-full rounded-full border-2 border-white dark:border-gray-800 object-cover"
-                            src="https://via.placeholder.com/50"
-                            alt="User 2"
-                        />
-                    </div>
-                    <div className="relative w-10 h-10">
-                        <img
-                            className="w-full h-full rounded-full border-2 border-white dark:border-gray-800 object-cover"
-                            src="https://via.placeholder.com/50"
-                            alt="User 3"
-                        />
-                    </div>
-                    {/* Add more profile pictures if needed */}
-                </div>
 
                 {/* Right Side: Text Description */}
                 <div className="flex-1">
                     <p className="text-gray-900 dark:text-gray-100 text-base font-semibold">
-                        <span className="font-bold">John Doe</span> and 3 others have shown interest
+                        {
+                            intrest_submission?.length ? (
+                                <p>{intrest_submission.length}  others have shown interest</p>
+                            ) : <p>We are finding for the donor's</p>
+                        }
                     </p>
                 </div>
             </Link>

@@ -88,10 +88,8 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
                 toast.error(response.msg)
             }
         } catch (e) {
-            console.log(e);
 
             const msg = e?.response?.data?.msg ?? "Something went wrong";
-            alert(msg)
             if (e?.response?.status == StatusCode.BAD_REQUEST) {
                 toast.error(msg)
             } else {

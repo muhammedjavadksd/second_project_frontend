@@ -20,7 +20,8 @@ interface IBloodReq {
     },
     address: string,
     phoneNumber: number
-    is_closed: boolean
+    is_closed: boolean,
+    intrest_submission?: []
 }
 
 export default IBloodReq
