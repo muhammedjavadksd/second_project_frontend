@@ -1,6 +1,7 @@
+import Link from "next/link"
 
 
-function ExpressIntrestItem({ blood_group, unit, deadLine, location, full_name }) {
+function ExpressIntrestItem({ blood_group, unit, deadLine, location, full_name, chat_count }) {
 
     return (
         <>
@@ -33,19 +34,20 @@ function ExpressIntrestItem({ blood_group, unit, deadLine, location, full_name }
                 {/* Footer */}
                 <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                        <svg
-                            className="w-6 h-6 text-gray-600"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
+
+                        <button
+                            type="button"
+                            className=" bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-600"
                         >
-                            <path
-                                fillRule="evenodd"
-                                d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                        <span className="ml-2 text-sm font-medium text-gray-800">{full_name}</span>
+                            <Link href={"chat-with-donors"} className="w-full flex items-center gap-3">
+                                Open chat
+                                <span className="bg-white text-black text-sm font-medium me-2 px-2.5 py-0.5 rounded ">
+                                    {chat_count}
+                                </span>
+                            </Link>
+                        </button>
+                        {/* <span className="ml-2 text-sm font-medium text-gray-800">You have {chat_count} messages</span> */}
+
                     </div>
                     <button
                         type="button"

@@ -63,7 +63,7 @@ async function showIntrestForDonateBlood(req_id: string, successCB: Function, er
     const user = userDetailsFromGetSession(session, "user");
     const { blood_token } = user
 
-    API_axiosInstance.post(`/blood/intrest/${req_id}`, {}, { headers: { authorization: `Bearer ${blood_token}` } }).then((response) => {
+    API_axiosInstance.post(`/blood/intrest/${req_id}`, {}, { headers: { bloodAuthorization: `Bearer ${blood_token}` } }).then((response) => {
         const { data } = response;
         if (data.status) {
             successCB()

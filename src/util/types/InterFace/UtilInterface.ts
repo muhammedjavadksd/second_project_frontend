@@ -1,5 +1,6 @@
 import { Reducer, Slice } from "@reduxjs/toolkit";
 import { FundRaiserFormInitialValues } from "./FormInitialValues";
+import IBloodReq from "../API Response/Blood";
 
 
 
@@ -89,6 +90,25 @@ interface MapApiResponse {
 }
 
 
+interface IIntrestConcerns {
+    seriousConditions: string[]
+    majorSurgeryOrIllness: string,
+    chronicIllnesses: boolean,
+    tobaco_use: boolean,
+}
+
+interface IShowedIntrest {
+    _id: string
+    donor_id: string,
+    donation_id: string,
+    date: Date,
+    meet_expect: Date,
+    status: string,
+    concerns: IIntrestConcerns,
+    requirement: IBloodReq,
+    message_count: number
+}
+
 // interface ITokenInterface {
 //     token: {
 //         user: {
@@ -103,4 +123,4 @@ interface MapApiResponse {
 // }
 
 
-export type { IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }
+export type { IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }

@@ -56,7 +56,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
 
 
 
-                const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile`, { headers: { authorization: `Bearer ${token}` } });
+                const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile`, { headers: { bloodAuthorization: `Bearer ${token}` } });
                 const response = findBloodDonor.data;
                 if (response.status) {
                     const profile = response.profile;
@@ -122,7 +122,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
             {bloodDonorDetails ? <ViewDonorProfile profile={bloodDonorDetails} /> :
                 <div className='bg-white  rounded-t  rounded-b min-h-10 min-w-96 '>
                     <>
-                        <ModelHeader />
+                        <ModelHeader title={"Start Blood Account"} />
                         <div className='p-5'>
                             <Formik initialValues={bloodDonatationFormValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => { onBloodDonationSubmit(val, successCB, errorCB) }}>
                                 <Form>

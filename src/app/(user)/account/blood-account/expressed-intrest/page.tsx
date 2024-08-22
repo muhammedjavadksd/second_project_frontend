@@ -12,6 +12,7 @@ import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper"
 import API_axiosInstance from "@/util/external/axios/api_axios_instance"
 import IBloodReq from "@/util/types/API Response/Blood"
 import { BloodGroup } from "@/util/types/Enums/BasicEnums"
+import { IShowedIntrest } from "@/util/types/InterFace/UtilInterface"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 
@@ -28,7 +29,9 @@ function ExpressedIntrest() {
         const user = userDetailsFromUseSession(session, "user")
         const bloodToken = user.blood_token;
         if (bloodToken) {
-            API_axiosInstance.get("blood/interested_blood_requirements", { headers: { authorization: `Bearer ${bloodToken}` } }).then((data) => {
+            API_axiosInstance.get("blood/interested_blood_requirements", { headers: { bloodAuthorization: `Bearer ${bloodToken}` } }).then((data) => {
+                console.log(data);
+
                 let response = data.data;
                 console.log(response);
 
@@ -55,17 +58,21 @@ function ExpressedIntrest() {
                 </div>
                 <BloodAccountTab />
                 <div className="mt-5">
+                    <div className="grid grid-cols-3 gap-10">
+                        {
+                            showenIntrest.map((intrest: IShowedIntrest) => {
+                                return (
+                                    <ExpressIntrestItem blood_group={intrest?.requirement?.blood_group} deadLine={formatDateToMonthNameAndDate(intrest?.requirement?.neededAt)} full_name={intrest?.requirement?.patientName} location={intrest?.requirement?.locatedAt?.hospital_name} unit={intrest?.requirement?.unit} chat_count={intrest?.message_count}>
+
+                                    </ExpressIntrestItem>
+                                )
+                            })
+                        }
+                    </div>
                     {/* <PaginationSection total_pages={100} total_records={100} onPaginated={getExpressedIntrest}>
-                        <div className="grid grid-cols-3 gap-10">
-                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
-                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
-                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
-                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
-                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
-                            <ExpressIntrestItem blood_group={BloodGroup.AB_NEGATIVE} deadLine={formatDateToMonthNameAndDate("12/02/2024")} full_name={"Javad"} location={"Amrutha"} unit={2} ></ExpressIntrestItem>
-                        </div>
+                            
                     </PaginationSection> */}
-                    <EmptyScreen />
+                    {/* <EmptyScreen /> */}
 
 
                 </div>

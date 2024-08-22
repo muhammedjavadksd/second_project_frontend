@@ -125,7 +125,7 @@ let authOptions = {
                             // const profile = response.profile;
                             const { profile } = response.data;
                             console.log(profile);
-                            let bloodAuth = await API_axiosInstance.get(`/blood/get_profile/`, { headers: { authorization: `Bearer ${profile.blood_token}` } })
+                            let bloodAuth = await API_axiosInstance.get(`/blood/get_profile/`, { headers: { bloodAuthorization: `Bearer ${profile.blood_token}` } })
                             let { profile: blood_profile } = bloodAuth.data
                             console.log(bloodAuth);
 

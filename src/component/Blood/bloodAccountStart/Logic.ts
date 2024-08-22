@@ -26,7 +26,7 @@ async function OnDonorPersonDataEditSubmit(val, successCB, errorCB) {
             phoneNumber: phone_number
         }, {
             headers: {
-                authorization: `Bearer ${blood_token}`
+                bloodAuthorization: `Bearer ${blood_token}`
             }
         })
         const response = editDonor.data;
@@ -145,7 +145,7 @@ async function OnBloodGroupUpdate(val, successCB, errorCB) {
                     presigned_url: presignedUrl
                 }, {
                     headers: {
-                        authorization: `Bearer ${user.blood_token}`
+                        bloodAuthorization: `Bearer ${user.blood_token}`
                     }
                 })
                 const data = updateBloodGroup.data;

@@ -41,7 +41,8 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
 
     async function onDonation(val, onClose) {
         const userDetails = userDetailsFromUseSession(session, "user");
-        const token = userDetails.blood_token;
+        const blood_token = userDetails.blood_token;
+        const token = userDetails.token;
 
         try {
 
@@ -75,7 +76,8 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
                 },
                 {
                     headers: {
-                        authorization: `Bearer ${token}`
+                        authorization: `Bearer ${token}`,
+                        bloodAuthorization: `Bearer ${blood_token}`
                     }
                 });
 
