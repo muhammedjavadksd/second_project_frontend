@@ -100,6 +100,12 @@ enum TicketPriority {
     Low = 'Low'
 }
 
+
+enum ChatFrom {
+    Donor = "Donor",
+    Patient = "Patient"
+}
+
 enum TicketCategory {
     BloodAccount = "Blood Account",
     FundRaiserAccount = "Fund Raiser Account",
@@ -108,4 +114,4 @@ enum TicketCategory {
     Other = "Other"
 }
 
-export { TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }
+export { ChatFrom, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

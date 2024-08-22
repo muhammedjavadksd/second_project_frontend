@@ -1,6 +1,7 @@
 import { Reducer, Slice } from "@reduxjs/toolkit";
 import { FundRaiserFormInitialValues } from "./FormInitialValues";
-import IBloodReq from "../API Response/Blood";
+import IBloodReq, { ILocatedAt } from "../API Response/Blood";
+import { BloodGroup, BloodStatus, ChatFrom, Relationship } from "../Enums/BasicEnums";
 
 
 
@@ -109,18 +110,81 @@ interface IShowedIntrest {
     message_count: number
 }
 
-// interface ITokenInterface {
-//     token: {
-//         user: {
-//             role: string,
-//         }
-//     }
-// }
-
-// interface ISession {
-//     data?: ITokenInterface
-//     token?: ITokenInterface
-// }
+interface IMessageTemplate {
+    from: ChatFrom
+    timeline: string
+    msg: string
+    seen: boolean
+}
 
 
-export type { IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }
+
+interface IBloodDonorTemplate {
+    donor_id: string
+    full_name: string
+    blood_group: BloodGroup,
+    locatedAt: string,
+    phoneNumber: number,
+    email_address: string,
+    status: BloodDonationStatus,
+    blocked_date?: Date
+}
+
+interface IBloodRequirementTemplate {
+    blood_id: string
+    patientName: string
+    unit: number,
+    neededAt: Date,
+    status: BloodStatus,
+    user_id: string,
+    profile_id: string,
+    blood_group: BloodGroup,
+    relationship: Relationship,
+    locatedAt: ILocatedAt,
+    address: String,
+    phoneNumber: number
+    is_closed: boolean
+}
+
+
+enum BloodDonationStatus {
+    Approved = "Approved",
+    Rejected = "Rejected",
+    Pending = "Pending"
+}
+
+interface BloodDonationConcerns {
+    seriousConditions: string[]
+    majorSurgeryOrIllness: string | null,
+    chronicIllnesses: boolean
+    tobaco_use: boolean
+}
+
+interface IBloodDonateTemplate {
+    donor_id: string,
+    donation_id: string
+    date: Date,
+    status: BloodDonationStatus,
+    meet_expect: Date,
+    concerns: BloodDonationConcerns
+}
+
+interface ChatApiResponse {
+    donor_id: string;
+    requirement_id: string;
+    intrest_id: string;
+    from_profile_id: string;
+    to_profile_id: string;
+    chat_started: Date;
+    chats: IMessageTemplate[]; // Replace with a specific type if known
+    donor: IBloodDonorTemplate;
+    blood_requirements: IBloodRequirementTemplate;
+    blood_intrest: IBloodDonateTemplate;
+}
+
+interface ICurrentUser {
+    name: string,
+    chat_from: ChatFrom
+}
+
+export type { ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }

@@ -4,6 +4,11 @@ interface Sample {
     name: string
 }
 
+interface ILocatedAt {
+    hospital_name: string,
+    hospital_id: string
+}
+
 interface IBloodReq {
     blood_id: string
     patientName: string
@@ -14,10 +19,7 @@ interface IBloodReq {
     profile_id: string,
     blood_group: BloodGroup,
     relationship: Relationship,
-    locatedAt: {
-        hospital_name: string,
-        hospital_id: string
-    },
+    locatedAt: ILocatedAt
     address: string,
     phoneNumber: number
     is_closed: boolean,
@@ -25,4 +27,4 @@ interface IBloodReq {
 }
 
 export default IBloodReq
-export type { Sample }
+export type { Sample, ILocatedAt }
