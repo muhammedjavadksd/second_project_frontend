@@ -169,6 +169,21 @@ interface IBloodDonateTemplate {
     concerns: BloodDonationConcerns
 }
 
+interface IChatPerson {
+    first_name: string,
+    last_name: string,
+    profile_id: string,
+    blood_donor_id: string,
+}
+
+interface IChatRoomResponse {
+    chat_id: string,
+    chat_started: string,
+    blocked: { status: boolean },
+    chat_profile_id: string,
+    chat_person: IChatPerson
+}
+
 interface ChatApiResponse {
     donor_id: string;
     requirement_id: string;
@@ -187,4 +202,4 @@ interface ICurrentUser {
     chat_from: ChatFrom
 }
 
-export type { ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }
+export type { IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }

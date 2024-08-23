@@ -31,35 +31,25 @@ function ChatWithBloodDonors(): React.ReactElement {
 const ChatScreen = () => {
 
     const session = useSession();
-    const [chats, setChats] = useState<ChatApiResponse[]>([]);
-    const [isDonor, setDonor] = useState<null | boolean>(false);
-    const userDetails = userDetailsFromUseSession(session, "user");
-    const [currentMsg, setCurrentMsg] = useState<ChatApiResponse>()
+    const [chatProfile, setChatProfile] = useState([]);
 
     async function refereshChats() {
-        console.log(session);
         const userDetails = userDetailsFromUseSession(session, "user");
 
         const token = userDetails.token;
-        const bloodToken = userDetails.blood_token;
-
-
-        if (token && bloodToken) {
+        if (token) {
 
             try {
-                const getMyChats = await API_axiosInstance.get("blood/get_chats", {
+                const getMyChats = await API_axiosInstance.get("profile/get_chat_rooms", {
                     headers: {
                         authorization: `Bearer ${token}`,
-                        bloodauthorization: `Bearer ${bloodToken}`
                     }
                 })
                 const response = getMyChats.data;
-                console.log(response);
 
                 if (response.status) {
                     const chats: ChatApiResponse[] = response?.data?.chats
-                    setCurrentMsg(chats[0])
-                    setChats(chats ?? [])
+                    setChatProfile(chats)
                 }
             } catch (e) {
                 console.log(e);
@@ -72,9 +62,7 @@ const ChatScreen = () => {
     }, [session])
 
 
-    if (isDonor == null) {
-        return <SpalshScreen></SpalshScreen>
-    }
+
 
     return (
 
@@ -83,10 +71,7 @@ const ChatScreen = () => {
             <div className="w-1/4  bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700 p-4">
                 <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Chats</h2>
                 <ul className="space-y-2">
-                    {chats.map((user: ChatApiResponse, index) => {
-                        console.log(user.chats[user.chats.length - 1].msg.trim());
-
-                        let name = user.from_profile_id == userDetails.profile_id ? user.blood_requirements.patientName : user.donor.full_name;
+                    {/* {chatProfile.map((user: ChatApiResponse, index) => {
 
                         return <li key={index} className={`flex items-center p-2 rounded-lg cursor-pointer transition-all ${index % 2 === 0 ? 'hover:bg-gray-200 dark:hover:bg-gray-700' : 'bg-gray-200 dark:bg-gray-700'}`}>
                             <img className="w-10 h-10 rounded-full object-cover" src={`https://via.placeholder.com/50?text=U${user}`} alt={`User ${user}`} />
@@ -100,13 +85,13 @@ const ChatScreen = () => {
                             </div>
                         </li>
 
-                    })}
+                    })} */}
                 </ul>
             </div>
 
 
 
-            <SingleChatScreen
+            {/* <SingleChatScreen
                 current_user={
                     currentMsg?.from_profile_id == userDetails.profile_id ? {
                         name: currentMsg?.blood_requirements?.patientName,
@@ -118,7 +103,7 @@ const ChatScreen = () => {
                     }
                 }
                 msg={currentMsg?.chats}
-            />
+            /> */}
 
             <div className="w-1/4  bg-gray-100 dark:bg-gray-800 p-4">
                 <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Profile</h2>

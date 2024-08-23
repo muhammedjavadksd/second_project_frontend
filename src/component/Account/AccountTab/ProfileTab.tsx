@@ -37,20 +37,6 @@ function Profil(): React.ReactElement {
                         </Link>
                     </li>
 
-                    {/* <li>
-                        <a href="#" onClick={() => setBloodAccountStart(true)} className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
-                            <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
-                            Open Blood Account
-                        </a>
-                    </li>
-
-
-                    // <li>
-                    //     <Link href="/account/blood/request/outgoing" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
-                    //         <i className="fa-solid fa-droplet mr-3 text-blue-600"></i>
-                    //         My Blood Request
-                    //     </Link>
-                    // </li> */}
 
                     <li>
                         <a href="#" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
@@ -75,6 +61,13 @@ function Profil(): React.ReactElement {
                         <Link href="/account/support" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
                             <i className="fa-solid fa-headset mr-3"></i>
                             Support  & Ticket
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link href="/account/chat" className="flex items-center px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-200 text-gray-800 transition-colors duration-300">
+                            <i className="fa-regular fa-comment mr-3"> </i>
+                            Messages
                         </Link>
                     </li>
 

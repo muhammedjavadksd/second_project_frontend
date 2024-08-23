@@ -30,12 +30,7 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
     const [donateBloodForm, setDonateBloodForm] = useState<boolean>(true)
     const formik = useRef(null);
 
-    function updateDate(date) {
-        alert(date)
-        formik.current.setValues({
-            date
-        })
-    }
+
 
 
 
@@ -83,9 +78,9 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
 
             const response = sendDonationIntrest.data;
             if (response.status) {
-                onClose()
+                // onClose()
                 toast.success("You have showed intrest")
-                router.push("/account/blood-account/expressed-intrest")
+                // router.push("/account/blood-account/expressed-intrest")
             } else {
                 toast.error(response.msg)
             }
