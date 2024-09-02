@@ -23,7 +23,7 @@ interface PaginationProps {
 
 
 
-function PaginationSection({ itemsRender, api, paginationProps }: { itemsRender: Function, api: PaginatedApi, paginationProps: PaginationProps }) {
+function PaginationSection({ itemsRender, api, paginationProps, refresh }: { itemsRender: Function, api: PaginatedApi, paginationProps: PaginationProps, refresh: boolean }) {
 
     const [page, setPage] = useState<number>(paginationProps.current_page)
     const [limit, setLimit] = useState<number>(paginationProps.currentLimit)
@@ -40,7 +40,7 @@ function PaginationSection({ itemsRender, api, paginationProps }: { itemsRender:
 
     useEffect(() => {
         fetchData()
-    }, [page, limit])
+    }, [page, limit, refresh])
 
     return (
         <>

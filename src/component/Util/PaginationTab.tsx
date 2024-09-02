@@ -32,24 +32,34 @@ function PaginationTab({ onClick, item_per_page, total_records }: IPaginationBut
 
     let toButton = (from + MAX_TAB_ITEM) - 1;
 
-    if (currentPage < totalPages) {
+
+
+    if (currentPage <= totalPages || totalPages == 1) {
       toButton++;
       from++;
     }
 
+    if (totalPages < toButton) {
+      toButton = totalPages;
+    }
+
+
+
     const buttons = [];
 
-    for (let index = from; index <= toButton; index++) {
-      buttons.push(
-        <li key={index} onClick={() => {
-          onClick(index)
-          setCurrentPage(index)
-        }}>
-          <button className={`${currentPage == index ? "bg-blue-500 text-white" : "bg-white "} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500  border border-gray-300   hover:bg-blue-500 hover:text-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
-            {index}
-          </button>
-        </li>
-      )
+    if (totalPages != 0) {
+      for (let index = from; index <= toButton; index++) {
+        buttons.push(
+          <li key={index} onClick={() => {
+            onClick(index)
+            setCurrentPage(index)
+          }}>
+            <button className={`${currentPage == index ? "bg-blue-500 text-white" : "bg-white "} flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500  border border-gray-300   hover:bg-blue-500 hover:text-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
+              {index}
+            </button>
+          </li>
+        )
+      }
     }
 
 
@@ -58,6 +68,9 @@ function PaginationTab({ onClick, item_per_page, total_records }: IPaginationBut
 
 
 
+  if (totalPages == 0) {
+    return <span>No records found</span>
+  }
 
 
 
@@ -71,7 +84,7 @@ function PaginationTab({ onClick, item_per_page, total_records }: IPaginationBut
         <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
           <button onClick={() => {
             currentPage > 1 && setCurrentPage(1)
-          }} className={`${currentPage == 0 && "cursor-not-allowed"} bg-white flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500  border border-gray-300  rounded-s-lg  hover:bg-blue-500 hover:text-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
+          }} className={`${currentPage == 1 && "cursor-not-allowed"} bg-white flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500  border border-gray-300  rounded-s-lg  hover:bg-blue-500 hover:text-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>
             First
           </button>
 
