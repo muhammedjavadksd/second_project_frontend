@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PaginationTab from './PaginationTab';
 import { AxiosHeaders, AxiosInstance } from 'axios';
+import { PaginatedApi } from '@/util/types/InterFace/UtilInterface';
+import { Type } from 'typescript';
 
 interface PaginatedSectionProps {
     children?: React.ReactNode,
@@ -14,43 +16,26 @@ interface PaginationProps {
     currentLimit: number
 }
 
-interface ApiInstance {
-    axiosInstance: AxiosInstance,
-    apiUrl: string,
-    axiosHeader: AxiosHeaders,
-    limitLabel: string,
-    pageLabel: string
-    dataLabel: string //property where axios return data
-}
 
 
-function PaginationSection({ itemsRender, api, paginationProps }: { itemsRender: Function, api: ApiInstance, paginationProps: PaginationProps }) {
+
+
+
+
+
+function PaginationSection({ itemsRender, api, paginationProps }: { itemsRender: Function, api: PaginatedApi, paginationProps: PaginationProps }) {
 
     const [page, setPage] = useState<number>(paginationProps.current_page)
     const [limit, setLimit] = useState<number>(paginationProps.currentLimit)
     const [response, setResponse] = useState([])
+    const [totalRecords, setTotalRecords] = useState<number>()
     const [currenUrl, setCurrentUrl] = useState("");
 
     async function fetchData() {
         console.log(api);
-
-        const url = await api.apiUrl.replace(api.pageLabel, page.toString()).replace(api.limitLabel, limit.toString())
-        setCurrentUrl(url);
-        try {
-            const dataApi = await api.axiosInstance.get(url, { headers: api.axiosHeader });
-            const data = dataApi.data;
-            console.log(data);
-            console.log(api.dataLabel);
-            console.log(data[api.dataLabel]);
-
-
-            const response = data[api.dataLabel];
-
-            setResponse(response)
-
-        } catch (e) {
-            console.log(e)
-        }
+        const { paginated, total_records } = await api.renderType(page, limit);
+        setResponse(paginated);
+        setTotalRecords(total_records);
     }
 
     useEffect(() => {
@@ -59,9 +44,9 @@ function PaginationSection({ itemsRender, api, paginationProps }: { itemsRender:
 
     return (
         <>
-            {currenUrl}
+
             {itemsRender(response)}
-            <PaginationTab from={1} onClick={(newPage) => { setPage(newPage) }} to={5} total_pages={10} total_records={100} />
+            <PaginationTab onClick={(newPage) => { setPage(newPage) }} item_per_page={paginationProps.currentLimit} total_records={totalRecords} />
         </>
     )
 }

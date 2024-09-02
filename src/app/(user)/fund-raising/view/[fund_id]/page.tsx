@@ -1,5 +1,6 @@
 "use client"
 import BiddingItemCard from '@/component/Bidding/BiddingItemCard'
+import CommentItemRender from '@/component/FundRaiser/CommenItemRender'
 import FundRaiserComment from '@/component/FundRaiser/FundRaiserComment'
 import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
 import SuccessBanner from '@/component/FundRaiser/SuccessBanner'
@@ -7,6 +8,7 @@ import Header from '@/component/Header/Header'
 import FundRaiserSlider from '@/component/section/Home/FundRaiserSlider'
 import AvatarIcon from '@/component/Util/avatarIcon'
 import Footer from '@/component/Util/Footer'
+import PaginationSection from '@/component/Util/PaginationSection'
 import SectionTitle from '@/component/Util/SectionTitle'
 import SliderComponent from '@/component/Util/SliderComponent'
 import TabItem from '@/component/Util/TabItem'
@@ -17,6 +19,7 @@ import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
 import { onCommentPost } from '@/util/external/yup/formSubmission'
 import { ICommentsResponse, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
 import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
+import { PaginatedApi } from '@/util/types/InterFace/UtilInterface'
 import { Field, Form, Formik } from 'formik'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -26,7 +29,7 @@ import React, { useEffect, useState } from 'react'
 
 function ViewFundRaising(): React.ReactElement {
 
-  let [tabListing, setTabListing] = useState<FundRaiserTabItems>(FundRaiserTabItems.ABOUT)
+  let [tabListing, setTabListing] = useState<FundRaiserTabItems>(FundRaiserTabItems.COMMENT)
   const session = useSession();
   const userDetails = userDetailsFromUseSession(session, "user");
   const params = useSearchParams()
@@ -38,11 +41,11 @@ function ViewFundRaising(): React.ReactElement {
 
   async function findComments() {
     if (fund_id && typeof fund_id == "string") {
-      const response: ICommentsResponse = await getPaginatedComments(fund_id, 10, 1)
-      if (response.total_records > 0) {
-        setRecordList(response.total_records)
-        setCommentsList(response.paginated)
-      }
+      // const response: ICommentsResponse = await getPaginatedComments(fund_id.toString(), 10, 1)
+      // if (response.total_records > 0) {
+      //   setRecordList(response.total_records)
+      //   setCommentsList(response.paginated)
+      // }
     }
   }
 
@@ -55,6 +58,13 @@ function ViewFundRaising(): React.ReactElement {
   useEffect(() => {
     findComments()
   }, [])
+
+
+
+
+
+
+
 
 
   return (
@@ -162,11 +172,30 @@ function ViewFundRaising(): React.ReactElement {
                           </Form>
                         </Formik>
                       </div>
-                      {
+
+                      <PaginationSection
+                        api={{
+                          renderType: (page, limit) => {
+                            console.log(page, limit);
+                            return getPaginatedComments(limit, page, fund_id.toString())
+                          }
+                        }}
+                        paginationProps={{
+                          current_page: 1,
+                          currentLimit: 2
+                        }}
+                        itemsRender={(commends: ISingleCommentsResponse[]) => {
+                          return commends.map((cmd) => {
+                            return <CommentItemRender cmd={cmd} />
+                          })
+                        }}>
+                      </PaginationSection>
+
+                      {/* {
                         commentsList.map((cmd: ISingleCommentsResponse) => {
-                          return <FundRaiserComment comment={cmd.comment} date={formatDateToMonthNameAndDate(cmd.date)} user_id={cmd.user_id} user_name={cmd.user_name} isNested={true} />
+                          return
                         })
-                      }
+                      } */}
                     </>
                   </TabItem>
                 </div>

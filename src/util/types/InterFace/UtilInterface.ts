@@ -2,6 +2,7 @@ import { Reducer, Slice } from "@reduxjs/toolkit";
 import { FundRaiserFormInitialValues } from "./FormInitialValues";
 import IBloodReq, { ILocatedAt } from "../API Response/Blood";
 import { BloodGroup, BloodStatus, Relationship } from "../Enums/BasicEnums";
+import { ICommentsResponse } from "../API Response/FundRaiser";
 
 
 
@@ -210,4 +211,8 @@ interface ICurrentUser {
     name: string
 }
 
-export type { IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }
+interface PaginatedApi {
+    renderType(page: number, limit: number, ...args: any[]);
+}
+
+export type { PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }

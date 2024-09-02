@@ -8,14 +8,16 @@ import { userDetailsFromGetSession } from "./authHelper";
 import { ICommentsResponse } from "@/util/types/API Response/FundRaiser";
 
 
-async function getPaginatedComments(fund_id: string, limit: number, page: number): Promise<ICommentsResponse> {
+async function getPaginatedComments(limit: number, page: number, fund_id: string,): Promise<ICommentsResponse> {
+    console.log("Hello");
     try {
 
         const find: AxiosResponse = await API_axiosInstance.get(`/fund_raise/comment/${fund_id}/${limit}/${page}`)
         const response = find.data;
-        console.log(response);
         if (response.status) {
             const data = response.data;
+            console.log(data);
+
             return {
                 paginated: data.paginated,
                 total_records: data.total_records
@@ -27,6 +29,8 @@ async function getPaginatedComments(fund_id: string, limit: number, page: number
             }
         }
     } catch (e) {
+        console.log(e);
+
         return {
             paginated: [],
             total_records: 0

@@ -54,10 +54,8 @@ interface ISectionTitle {
 }
 
 interface IPaginationButton {
-    from: number,
-    to: number,
     onClick: Function,
-    total_pages: number,
+    item_per_page: number,
     total_records: number
 }
 
