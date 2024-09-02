@@ -44,10 +44,13 @@ function OutGoingBloodCard({ group, unit, deadLine, onClose, location, intrest_s
             </Link>
 
 
-            <div className="flex justify-end">
-                <button onClick={onClose} type="button" className="mt-5 text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+            <div className="flex gap-5 justify-end">
+                <button onClick={onClose} type="button" className="mt-5 text-white bg-red-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
                     Close Request
                 </button>
+                <Link href={"/account/blood-account/verify-request"} onClick={onClose} type="button" className="mt-5 text-white bg-green-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+                    View Intrest
+                </Link>
 
             </div>
         </div>

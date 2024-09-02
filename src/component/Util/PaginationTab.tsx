@@ -9,24 +9,16 @@ function PaginationTab({ from, onClick, to, total_pages, total_records }: IPagin
   let [currentPage, setCurrentPage] = useState<number>(1);
 
   function onPrev() {
-    if (from > 1) {
-      setFromPage((prev) => prev - 1)
-    }
+    setCurrentPage((prev) => prev--)
   }
 
   function onNext() {
-    if (from > (toPage - fromPage)) {
-      setFromPage((prev) => prev - 1)
-    }
+    setCurrentPage((prev) => prev++)
   }
 
-  // function onPageSelect(page: number) {
-  //   setFromPage(page)
-  // }
 
-  useEffect(() => {
-    setToPage(fromPage + 5)
-  }, [fromPage])
+
+
 
   return (
     <div className='flex flex-col justify-end mt-5'>
@@ -40,8 +32,8 @@ function PaginationTab({ from, onClick, to, total_pages, total_records }: IPagin
           </li>
 
           {
-            Array.from({ length: paginationButtonLength }).map((_, page: number) => {
-              let currentButton = (currentPage * page) + 1;
+            Array.from({ length: (total_pages - currentPage) > 5 ? 5 : (total_pages - currentPage) }).map((_, page: number) => {
+              let currentButton = currentPage + page;
               return (
                 <li key={page} onClick={() => { onClick(currentButton) }}>
                   <button className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">

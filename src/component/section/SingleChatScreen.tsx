@@ -1,4 +1,3 @@
-import { ChatFrom } from "@/util/types/Enums/BasicEnums"
 import { ICurrentUser, IMessageTemplate } from "@/util/types/InterFace/UtilInterface"
 
 
@@ -6,8 +5,7 @@ import { ICurrentUser, IMessageTemplate } from "@/util/types/InterFace/UtilInter
 
 function SingleChatScreen({ msg, current_user }: { msg: IMessageTemplate[], current_user: ICurrentUser }) {
 
-    console.log(msg)
-    return (<div className="w-1/2 bg-gray-100  border-r border-gray-300 dark:border-gray-700 flex flex-col">
+    return (<div style={{ height: "600px" }} className="w-full bg-gray-100  border-r border-gray-300 dark:border-gray-700 flex flex-col">
         <div className="flex items-center p-4 border-b border-gray-300 dark:border-gray-700">
             <img className="w-12 h-12 rounded-full object-cover" src="https://via.placeholder.com/50?text=User" alt="Current User" />
             <div className="ml-3">
@@ -21,13 +19,42 @@ function SingleChatScreen({ msg, current_user }: { msg: IMessageTemplate[], curr
                     msg?.map((message) => {
                         return (
                             <li className="flex justify-start">
-                                <div className="bg-gray-200 w-3/5 dark:bg-gray-700 p-3 rounded-lg shadow-md">
+                                <div className="bg-white w-3/5 dark:bg-gray-700 p-3 rounded-3xl shadow-md">
                                     <p>{message.msg}</p>
                                 </div>
                             </li>
+
                         )
                     })
                 }
+
+                <div className="flex flex-col gap-1">
+                    <li className="flex justify-end">
+                        <div className="bg-blue-500 w-3/5 text-white dark:bg-gray-700 p-3 rounded-tl-xl rounded-tr-xl shadow-md">
+                            <p>Good mornign</p>
+                        </div>
+                    </li>
+                    <li className="flex justify-end">
+                        <div className="bg-blue-500 w-3/5 text-white dark:bg-gray-700 p-3  shadow-md">
+                            <p>How is your thing are going?</p>
+                        </div>
+                    </li>
+                    <li className="flex justify-end">
+                        <div className="bg-blue-500 w-3/5 text-white dark:bg-gray-700 p-3 rounded-bl-xl rounded-br-xl  shadow-md">
+                            <p>How are you</p>
+                        </div>
+                    </li>
+                </div>
+                <li className="flex justify-start">
+                    <div className="bg-white w-3/5 dark:bg-gray-700 p-3 rounded-3xl shadow-md">
+                        <p>Can you donate your blood?</p>
+                    </div>
+                </li>
+                <li className="flex justify-end">
+                    <div className="bg-blue-500 w-3/5 text-white dark:bg-gray-700 p-3 rounded-xl  shadow-md">
+                        <p>How are you</p>
+                    </div>
+                </li>
             </ul>
         </div>
         <div className="flex items-center p-3 border-t border-gray-300 dark:border-gray-700">

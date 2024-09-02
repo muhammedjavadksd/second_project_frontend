@@ -14,10 +14,20 @@ import HomeHero from "@/component/Hero/HomeHero";
 import Header from "@/component/Header/Header";
 import BloodAvailabilitySection from "@/component/section/Home/BloodAvailabilityView";
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import SectionTitle from "@/component/Util/SectionTitle";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 // import 'react-confirm-alert/src/'
 
 
 const Home: React.FC<{ name: string }> = ({ name }) => {
+
+
+    const router = useRouter()
+    useEffect(() => {
+
+
+    }, [])
 
 
 
@@ -30,7 +40,10 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
 
                     <Header />
                     <HomeHero />
-                    <FundRaiserSlider />
+                    <div>
+                        <SectionTitle title={"People who "} focus_text={"Suffer"} sub_title={"Donate For Poor People. Causes of Gives"}></SectionTitle>
+                        <FundRaiserSlider />
+                    </div>
                     <section className="mt-10">
                         <div className='container mx-auto'>
                             <CouldHelp />

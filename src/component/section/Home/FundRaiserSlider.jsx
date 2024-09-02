@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import SliderComponent from '@/component/Util/SliderComponent';
 import SectionTitle from '@/component/Util/SectionTitle';
 import { getLimitedFundRaiserPost } from '@/util/data/helper/APIHelper';
+import const_data from '@/util/data/const';
 
 
 function FundRaiserSlider() {
@@ -27,14 +28,23 @@ function FundRaiserSlider() {
         <section className='mt-5'>
             <div className=''>
 
-                <SectionTitle title={"People who "} focus_text={"Suffer"} sub_title={"Donate For Poor People. Causes of Gives"}></SectionTitle>
 
                 <SliderComponent slidesToScroll={1} slidesToShow={4} dots={true}>
                     {
-                        fundRaiserList.map((each) => {
-                            return <FundRaiserSingleItem fund_id={each.fund_id}></FundRaiserSingleItem>
-                        })
+                        const_data.DEMY_DATA ?
+                            [
+                                <FundRaiserSingleItem fund_id={1}></FundRaiserSingleItem>,
+                                <FundRaiserSingleItem fund_id={1}></FundRaiserSingleItem>,
+                                <FundRaiserSingleItem fund_id={1}></FundRaiserSingleItem>,
+                                <FundRaiserSingleItem fund_id={1}></FundRaiserSingleItem>,
+                                <FundRaiserSingleItem fund_id={1}></FundRaiserSingleItem>,
+                            ] : fundRaiserList.map((each) => {
+                                return <FundRaiserSingleItem fund_id={each.fund_id}></FundRaiserSingleItem>
+                            })
                     }
+
+
+
                 </SliderComponent>
             </div>
 

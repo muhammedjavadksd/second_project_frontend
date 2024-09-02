@@ -278,7 +278,7 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
 
     return (
         <>
-            <div className="mb-5 max-w-sm bg-white border border-gray-200  shadow dark:bg-gray-800 dark:border-gray-700">
+            <div className="mb-5 w-full bg-white border border-gray-200  shadow dark:bg-gray-800 dark:border-gray-700">
 
                 <a href="#">
                     <img className="w-100" src="images/blood/APositive.png" alt="" />

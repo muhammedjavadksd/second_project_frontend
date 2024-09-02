@@ -31,8 +31,12 @@ function UpdateBloodGroup({ onComplete }: { onComplete: Function }): React.React
 
 
     return (
-        <div className='bg-white  rounded-t p-5 rounded-b min-h-10 min-w-96 '>
+        <div className=' bg-white rounded-t p-5 rounded-b min-h-10 min-w-96 '>
 
+            <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <span className="font-medium">Info! </span>
+                Update blood will take 2 working days for admin verification
+            </div>
             <Formik initialValues={updateBloodGroupInitialValues} validationSchema={updateBloodGroupValidation} onSubmit={(val) => { OnBloodGroupUpdate(val, successCB, errorCb) }}>
                 {({ setFieldValue }) => {
                     return (

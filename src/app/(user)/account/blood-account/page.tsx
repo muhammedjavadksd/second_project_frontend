@@ -12,11 +12,26 @@ import React from 'react'
 import BloodDonationHistory from '../blood_donation_history/page';
 import BloodDonationHistoryCard from '@/component/Blood/BloodDonationHistoryCard';
 import BloodDonationHistoryProfile from '@/component/BloodAccount/BloodDonationHistory';
+import PaginationSection from '@/component/Util/PaginationSection';
+import axios from 'axios';
 
 function BloodAccount(): React.ReactElement {
 
 
 
+    function itemsRender(item = []) {
+        return (
+            <>
+                {item.map((each) => {
+                    return (
+                        <div className='bg-red'>
+                            {each.id}
+                        </div>
+                    )
+                })}
+            </>
+        )
+    }
     return (
         <UserPrivateRouter>
             <Header />
@@ -26,10 +41,26 @@ function BloodAccount(): React.ReactElement {
                 </div>
                 <BloodAccountTab />
                 <div>
-                    {!<BloodProfile />}
+                    {/* {!<BloodProfile />}
                     {!<IncomingRequestView />}
-                    {/* <OutGoingRequestView /> */}
-                    <BloodDonationHistoryProfile />
+                    {/* <OutGoingRequestView /> *
+                    <BloodDonationHistoryProfile /> */}
+
+                    <PaginationSection
+                        paginationProps={{
+                            current_page: 1,
+                            currentLimit: 10
+                        }}
+                        api={{
+                            apiUrl: "https://dummyjson.com/products?limit=:limit&skip=:skip",
+                            axiosHeader: null,
+                            axiosInstance: axios.create({ baseURL: null }),
+                            dataLabel: "products",
+                            limitLabel: ":limit",
+                            pageLabel: ":skip"
+                        }}
+                        itemsRender={itemsRender}
+                    />
                 </div>
 
                 {/* <div className="flex gap-5">
@@ -47,7 +78,7 @@ function BloodAccount(): React.ReactElement {
                 </div> */}
             </div>
             <Footer />
-        </UserPrivateRouter>
+        </UserPrivateRouter >
     )
 }
 

@@ -111,7 +111,7 @@ interface IShowedIntrest {
 }
 
 interface IMessageTemplate {
-    from: ChatFrom
+    from: string
     timeline: string
     msg: string
     seen: boolean
@@ -176,12 +176,20 @@ interface IChatPerson {
     blood_donor_id: string,
 }
 
+
+interface IChatMessageDetails {
+    last_message: string,
+    last_message_from: string
+    unseen_message_count: number
+}
+
 interface IChatRoomResponse {
     chat_id: string,
     chat_started: string,
     blocked: { status: boolean },
     chat_profile_id: string,
-    chat_person: IChatPerson
+    chat_person: IChatPerson,
+    messages: IChatMessageDetails
 }
 
 interface ChatApiResponse {
@@ -198,8 +206,7 @@ interface ChatApiResponse {
 }
 
 interface ICurrentUser {
-    name: string,
-    chat_from: ChatFrom
+    name: string
 }
 
 export type { IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }

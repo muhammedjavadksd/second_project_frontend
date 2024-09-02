@@ -5,7 +5,7 @@ import EmptyScreen from '../Util/EmptyScreen'
 
 function BloodDonationHistoryProfile() {
 
-    let length = 0
+    let length = 2
     return (
         <Fragment>
             <div className='mt-5'>

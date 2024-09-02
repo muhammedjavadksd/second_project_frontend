@@ -120,7 +120,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
         <LoadingComponent closeOnClick={false} isLoading={isBloodDonorFormLoading} paddingNeed={false}>
 
             {bloodDonorDetails ? <ViewDonorProfile profile={bloodDonorDetails} /> :
-                <div className='bg-white  rounded-t  rounded-b min-h-10 min-w-96 '>
+                <div className='bg-gray-100  rounded-t  rounded-b min-h-10 min-w-96 '>
                     <>
                         <ModelHeader title={"Start Blood Account"} />
                         <div className='p-5'>

@@ -1,9 +1,16 @@
 "use client"
+import BiddingItemCard from '@/component/Bidding/BiddingItemCard'
+import FundRaiserComment from '@/component/FundRaiser/FundRaiserComment'
+import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
 import Header from '@/component/Header/Header'
+import FundRaiserSlider from '@/component/section/Home/FundRaiserSlider'
 import Footer from '@/component/Util/Footer'
+import SectionTitle from '@/component/Util/SectionTitle'
+import SliderComponent from '@/component/Util/SliderComponent'
 import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
 import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
+import Link from 'next/link'
 // import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
 import React, { useState } from 'react'
 
@@ -38,9 +45,7 @@ function ViewFundRaising(): React.ReactElement {
                   <li className="me-2">
                     <button onClick={() => setTabListing(FundRaiserTabItems.DOCUMENT)} className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Document</button>
                   </li>
-                  <li className="me-2">
-                    <button onClick={() => setTabListing(FundRaiserTabItems.UPDATE)} className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Update's</button>
-                  </li>
+
                   <li className="me-2">
                     <button onClick={() => setTabListing(FundRaiserTabItems.COMMENT)} className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Comment's</button>
                   </li>
@@ -48,7 +53,7 @@ function ViewFundRaising(): React.ReactElement {
 
                 <div className='tabWrapperGroup'>
                   <TabItem keyid={1} isShow={tabListing == FundRaiserTabItems.ABOUT}>
-                    <>
+                    <div style={{ height: "600px" }} className='overflow-auto'>
                       <h4 className='text-center text-2xl font-medium mb-3'>About the Fundraiser</h4>
 
                       <div className='mb-5'>
@@ -66,16 +71,19 @@ function ViewFundRaising(): React.ReactElement {
                           The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
                         <img className='w-full rounded-lg mt-5' src='https://kettocdn.gumlet.io/media/campaign/625000/625122/image/62ed2409dadcf.jpg?w=700&dpr=2.0'></img>
                       </div>
-                    </>
+                    </div>
                   </TabItem>
                   <TabItem keyid={2} isShow={tabListing == FundRaiserTabItems.DOCUMENT}>
                     <h4>Document's</h4>
                   </TabItem>
-                  <TabItem keyid={3} isShow={tabListing == FundRaiserTabItems.UPDATE}>
-                    <h4>Updates</h4>
-                  </TabItem>
+
                   <TabItem keyid={4} isShow={tabListing == FundRaiserTabItems.COMMENT}>
-                    <h4>Comment's</h4>
+                    <>
+                      <FundRaiserComment />
+                      <FundRaiserComment />
+                      <FundRaiserComment />
+                      <FundRaiserComment />
+                    </>
                   </TabItem>
                 </div>
 
@@ -96,6 +104,8 @@ function ViewFundRaising(): React.ReactElement {
                 <div style={{ width: "80%" }} className='rounded-lg bg-green-500 h-full'></div>
               </div>
 
+
+
               <div className='mt-5 flex justify-between w-full'>
                 <span className="raised supporters ng-star-inserted  text-gray-500">
                   <span className='text-2xl font-bold text-black'>705</span> supporters
@@ -105,6 +115,22 @@ function ViewFundRaising(): React.ReactElement {
                 </span>
 
               </div>
+
+              <div className="flex justify-center items-center mt-5  bg-gray-100">
+                <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 max-w-sm text-center">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                    Don’t have enough money to donate?
+                  </h2>
+                  <p className="text-gray-700 mb-6">
+                    Auction your items and donate the profits to this fundraiser!
+                  </p>
+                  <Link href={"/bidding/create"} className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition duration-300">
+                    Get Started
+                  </Link>
+                </div>
+              </div>
+
+
               <div className="flex flex-col mt-5 items-center p-4 bg-white shadow-lg rounded-lg">
 
                 <div className="flex flex-col items-center mb-4">
@@ -194,6 +220,27 @@ function ViewFundRaising(): React.ReactElement {
 
           </div>
         </div>
+      </div>
+
+      <div>
+        <SectionTitle title='Bid for this case' focus_text='Help' sub_title='Join with below bid and help this raiser'></SectionTitle>
+        <SliderComponent arrow={true} dots={true} isGap={true} slidesToScroll={1} slidesToShow={4} >
+          <BiddingItemCard></BiddingItemCard>
+          <BiddingItemCard></BiddingItemCard>
+          <BiddingItemCard></BiddingItemCard>
+          <BiddingItemCard></BiddingItemCard>
+        </SliderComponent>
+      </div>
+
+      <div>
+        <SectionTitle title='Similer Cases' focus_text='Help' sub_title='There are many people who suffer'></SectionTitle>
+        {/* <div className="grid gap-5 grid-cols-4">
+            <FundRaiserSingleItem fund_id={123} />
+            <FundRaiserSingleItem fund_id={123} />
+            <FundRaiserSingleItem fund_id={123} />
+            <FundRaiserSingleItem fund_id={123} />
+          </div> */}
+        <FundRaiserSlider />
       </div>
       <Footer />
     </div >

@@ -1,5 +1,5 @@
 "use client"
-import ChatWithBloodDonors from '@/app/(user)/chat/chat-with-blood-donors/page';
+import ChatWithBloodDonors from '@/component/chat/page';
 import BloodAccountTab from '@/component/Account/AccountTab/BloodAccountTab';
 import BloodDonationHistoryProfile from '@/component/BloodAccount/BloodDonationHistory';
 import Header from '@/component/Header/Header';

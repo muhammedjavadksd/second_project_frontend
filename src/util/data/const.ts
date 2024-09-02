@@ -23,7 +23,8 @@ interface Iconst_data {
         SIGN_UP_DATA: string,
         SIGN_IN_DATA: string
     },
-    AI_DESCRIPTION_GENERATION: boolean
+    AI_DESCRIPTION_GENERATION: boolean,
+    DEMY_DATA: boolean
 }
 
 const const_data: Iconst_data = {
@@ -368,7 +369,8 @@ const const_data: Iconst_data = {
     MONEY_ICON: '₹',
     OTP_LENGTH: 6,
     OTP_TIME_SECONDS: 3,
-    AI_DESCRIPTION_GENERATION: false
+    AI_DESCRIPTION_GENERATION: false,
+    DEMY_DATA: true
 }
 
 export default const_data

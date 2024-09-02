@@ -101,10 +101,38 @@ enum TicketPriority {
 }
 
 
-enum ChatFrom {
-    Donor = "Donor",
-    Patient = "Patient"
+enum BiddingProductUnit {
+    Piece = "pcs",
+    Kilogram = "kg",
+    Gram = "g",
+    Pound = "lb",
+    Liter = "L",
+    Milliliter = "mL",
+    Gallon = "gal",
+    Meter = "m",
+    Centimeter = "cm",
+    Inch = "in",
+    SquareMeter = "m²",
+    CubicMeter = "m³",
+    Dozen = "dozen",
+    Pack = "pk",
+    Box = "box",
+    Bottle = "bottle",
+    Can = "can",
+    Roll = "roll",
+    Pair = "pair",
+    Bundle = "bundle",
+    Set = "set",
+    Carton = "carton"
 }
+
+
+enum ProductTabItems {
+    ProductDetails,
+    WarrantyDetails,
+    OtherDetails
+}
+
 
 enum TicketCategory {
     BloodAccount = "Blood Account",
@@ -114,4 +142,4 @@ enum TicketCategory {
     Other = "Other"
 }
 
-export { ChatFrom, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }
+export { ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

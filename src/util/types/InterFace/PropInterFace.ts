@@ -34,7 +34,8 @@ interface ITableProps {
 interface IStaticCard {
     title: string
     statistic: string
-    icon: React.ReactElement
+    icon: React.ReactElement,
+    bgClass?: string
 }
 
 interface ISliderComponent {
