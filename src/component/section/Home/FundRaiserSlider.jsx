@@ -11,10 +11,9 @@ import const_data from '@/util/data/const';
 function FundRaiserSlider() {
 
     let [fundRaiserList, setFundRaiser] = useState([]);
-    const [limit, setLimit] = useState(10)
-    const [page, setPage] = useState(1)
+
     useEffect(() => {
-        getLimitedFundRaiserPost(limit, page, (response) => {
+        getLimitedFundRaiserPost(10, 1, (response) => {
             console.log(response);
             setFundRaiser(response)
         }, (err) => {

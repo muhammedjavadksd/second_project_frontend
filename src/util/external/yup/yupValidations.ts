@@ -88,10 +88,12 @@ const validationSchema = yup.object().shape({
 });
 
 
-// blood_group
-// unit
-// needed_date
-// hospital_name
-// hospital_id
+const fundRaiserBankAccoutValidation = yup.object().shape({
+    account_number: yup.number().typeError("Please enter valid account number").required("Account number is required"),
+    ifsc_code: yup.string().typeError("Please enter valid IFSC code").required("IFSC code is required"),
+    holder_name: yup.string().typeError("Please enter valid holder name").required("Bank holder name is required"),
+    account_type: yup.string().typeError("Please select valid account type").required("Account type is required"),
+})
 
-export { validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }
+
+export { fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }

@@ -1,7 +1,7 @@
 import { Reducer, Slice } from "@reduxjs/toolkit";
 import { FundRaiserFormInitialValues } from "./FormInitialValues";
 import IBloodReq, { ILocatedAt } from "../API Response/Blood";
-import { BloodGroup, BloodStatus, ChatFrom, Relationship } from "../Enums/BasicEnums";
+import { BloodGroup, BloodStatus, Relationship } from "../Enums/BasicEnums";
 
 
 

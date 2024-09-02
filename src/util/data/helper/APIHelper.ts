@@ -14,7 +14,6 @@ function getLimitedFundRaiserPost(limit, page, successCB, errorCB) {
         if (response.status) {
             const responseData = response.data;
             console.log(responseData);
-
             successCB(responseData)
         }
     }).catch((err) => {

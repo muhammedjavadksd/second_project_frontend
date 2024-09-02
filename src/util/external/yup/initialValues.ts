@@ -67,4 +67,12 @@ const bloodDonationFormInitialValues = {
     date: new Date()
 }
 
-export { bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }
+const fundRaiserBankAccoutInitialValues = {
+    account_number: '',
+    ifsc_code: '',
+    holder_name: "",
+    account_type: "",
+    currentApplication: null,
+}
+
+export { fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }

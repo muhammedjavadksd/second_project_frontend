@@ -370,7 +370,7 @@ const const_data: Iconst_data = {
     OTP_LENGTH: 6,
     OTP_TIME_SECONDS: 3,
     AI_DESCRIPTION_GENERATION: false,
-    DEMY_DATA: true
+    DEMY_DATA: false
 }
 
 export default const_data

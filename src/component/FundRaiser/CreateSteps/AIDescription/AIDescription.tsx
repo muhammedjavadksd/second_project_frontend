@@ -61,10 +61,9 @@ function AIDescription({ state }) {
         fetchAIData();
     }
 
-    function successCB() {
+    function successCB(fund_id) {
         dispatch(clearFundRaiserData())
-        router.replace("/fund-raising/success?fund-id=123")
-
+        router.replace(`/fund-raising/view/${fund_id}?success=true`)
     }
 
     function errorCB(err) {

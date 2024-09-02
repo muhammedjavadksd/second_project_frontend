@@ -2,6 +2,7 @@
 import BiddingItemCard from '@/component/Bidding/BiddingItemCard'
 import FundRaiserComment from '@/component/FundRaiser/FundRaiserComment'
 import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
+import SuccessBanner from '@/component/FundRaiser/SuccessBanner'
 import Header from '@/component/Header/Header'
 import FundRaiserSlider from '@/component/section/Home/FundRaiserSlider'
 import Footer from '@/component/Util/Footer'
@@ -11,16 +12,26 @@ import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
 import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
 import Link from 'next/link'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 // import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
 import React, { useState } from 'react'
 
 function ViewFundRaising(): React.ReactElement {
 
   let [tabListing, setTabListing] = useState<FundRaiserTabItems>(FundRaiserTabItems.ABOUT)
+  const params = useSearchParams()
+  const success = params.get("success")
+  const { fund_id } = useParams();
+
 
   return (
     <div>
       <Header />
+      {
+        success && (
+          <SuccessBanner title={"Congrats! Your fundraiser is now active and you can begin receiving donations."} shareURL={`${window.location.host}/fund-raising/view/${fund_id}`}></SuccessBanner>
+        )
+      }
       <div className='container mx-auto'>
         <div className='flex justify-center mt-5'>
           <div style={{ backgroundColor: "#fff2e5" }} className='flex gap-5 text-base rounded-lg p-2 pl-10 pe-10 text-center text-red-900'>

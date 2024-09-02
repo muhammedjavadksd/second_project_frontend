@@ -63,7 +63,7 @@ async function onDescriptionSubmit(val: IAIDescriptionInitialValues, successCB: 
             const response = requestAPI.data;
             console.log(response);
             if (response.status) {
-                successCB()
+                successCB(currentApplication)
             } else {
                 errorCB(response.msg)
             }
