@@ -37,7 +37,8 @@ interface IUserSessionData extends IUser {
     last_name?: string,
     phone: number,
     blood_donor_id?: string,
-    blood_token?: string
+    blood_token?: string,
+    profile_id: string,
 }
 
 interface IOnGoingBloodRequest {

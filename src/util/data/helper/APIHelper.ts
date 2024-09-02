@@ -1,10 +1,38 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq from "@/util/types/API Response/Blood";
 import { MapApiResponse } from "@/util/types/InterFace/UtilInterface";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
+import { ICommentsResponse } from "@/util/types/API Response/FundRaiser";
+
+
+async function getPaginatedComments(fund_id: string, limit: number, page: number): Promise<ICommentsResponse> {
+    try {
+
+        const find: AxiosResponse = await API_axiosInstance.get(`/fund_raise/comment/${fund_id}/${limit}/${page}`)
+        const response = find.data;
+        console.log(response);
+        if (response.status) {
+            const data = response.data;
+            return {
+                paginated: data.paginated,
+                total_records: data.total_records
+            }
+        } else {
+            return {
+                paginated: [],
+                total_records: 0
+            }
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
 
 
 function getLimitedFundRaiserPost(limit, page, successCB, errorCB) {
@@ -75,4 +103,4 @@ async function showIntrestForDonateBlood(req_id: string, successCB: Function, er
     })
 }
 
-export { getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }
+export { getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }

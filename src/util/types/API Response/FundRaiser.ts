@@ -1,6 +1,23 @@
 import { FundRaiserStatus } from "../Enums/BasicEnums"
 
 
+interface ISingleCommentsResponse {
+    comment: string,
+    comment_id: string,
+    date: Date,
+    is_edited: boolean,
+    user_name: string,
+    user_id: string,
+    mention: null | string,
+    fund_id: string,
+    replay_id: string,
+    replays: ISingleCommentsResponse[]
+}
+
+interface ICommentsResponse {
+    paginated: ISingleCommentsResponse[],
+    total_records: number
+}
 
 interface FundRaiserResponse {
     _id: string,
@@ -37,4 +54,4 @@ interface AxiosResponse {
     data?: any
 }
 
-export type { FundRaiserResponse, AxiosResponse }
+export type { ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse }

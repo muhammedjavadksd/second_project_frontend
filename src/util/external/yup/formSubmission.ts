@@ -6,6 +6,40 @@ import store from "../redux/store/store";
 import { updateFundRaiseData } from "../redux/slicer/fundRaiserForm";
 
 
+export async function onCommentPost(comment, fund_id, notLogged) {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user")
+        const token = user?.token;
+        if (token) {
+            const addComment = await API_axiosInstance.post(`fund_raise/add_comment/${fund_id}`, {
+                comment,
+                mention: null,
+                replay_id: null
+            }, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            const response = addComment.data;
+            if (response.status) {
+                const responseData = response.data
+                const { comment_id } = responseData;
+                return comment_id
+            }
+            return false;
+        } else {
+            notLogged()
+            return false
+        }
+    } catch (e) {
+        console.log(e);
+        // notLogged()
+        return false
+    }
+
+}
+
 export async function onBankAccountSubmit(values, successCB, errorCB) {
 
     try {

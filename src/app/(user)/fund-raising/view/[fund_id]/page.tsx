@@ -5,23 +5,56 @@ import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
 import SuccessBanner from '@/component/FundRaiser/SuccessBanner'
 import Header from '@/component/Header/Header'
 import FundRaiserSlider from '@/component/section/Home/FundRaiserSlider'
+import AvatarIcon from '@/component/Util/avatarIcon'
 import Footer from '@/component/Util/Footer'
 import SectionTitle from '@/component/Util/SectionTitle'
 import SliderComponent from '@/component/Util/SliderComponent'
 import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
+import { getPaginatedComments } from '@/util/data/helper/APIHelper'
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
+import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
+import { onCommentPost } from '@/util/external/yup/formSubmission'
+import { ICommentsResponse, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
 import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
+import { Field, Form, Formik } from 'formik'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 // import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function ViewFundRaising(): React.ReactElement {
 
   let [tabListing, setTabListing] = useState<FundRaiserTabItems>(FundRaiserTabItems.ABOUT)
+  const session = useSession();
+  const userDetails = userDetailsFromUseSession(session, "user");
   const params = useSearchParams()
+  const router = useRouter()
   const success = params.get("success")
   const { fund_id } = useParams();
+  const [commentsList, setCommentsList] = useState<ISingleCommentsResponse[]>([])
+  const [totalRecords, setRecordList] = useState<number>(0)
+
+  async function findComments() {
+    if (fund_id && typeof fund_id == "string") {
+      const response: ICommentsResponse = await getPaginatedComments(fund_id, 10, 1)
+      if (response.total_records > 0) {
+        setRecordList(response.total_records)
+        setCommentsList(response.paginated)
+      }
+    }
+  }
+
+  useEffect(() => {
+    console.log(userDetails);
+
+    console.log(commentsList);
+  }, [commentsList])
+
+  useEffect(() => {
+    findComments()
+  }, [])
 
 
   return (
@@ -32,6 +65,7 @@ function ViewFundRaising(): React.ReactElement {
           <SuccessBanner title={"Congrats! Your fundraiser is now active and you can begin receiving donations."} shareURL={`${window.location.host}/fund-raising/view/${fund_id}`}></SuccessBanner>
         )
       }
+
       <div className='container mx-auto'>
         <div className='flex justify-center mt-5'>
           <div style={{ backgroundColor: "#fff2e5" }} className='flex gap-5 text-base rounded-lg p-2 pl-10 pe-10 text-center text-red-900'>
@@ -90,10 +124,49 @@ function ViewFundRaising(): React.ReactElement {
 
                   <TabItem keyid={4} isShow={tabListing == FundRaiserTabItems.COMMENT}>
                     <>
-                      <FundRaiserComment />
-                      <FundRaiserComment />
-                      <FundRaiserComment />
-                      <FundRaiserComment />
+                      <div className='mb-3'>
+                        <Formik initialValues={{ comment: "" }} onSubmit={async (val, { resetForm }) => {
+                          const save = await onCommentPost(val.comment, fund_id, () => {
+                            router.replace("/auth/sign_in")
+                          })
+                          if (save) {
+                            setCommentsList(function (prev) {
+                              const newResponse: ISingleCommentsResponse = {
+                                comment: val.comment,
+                                comment_id: save,
+                                date: new Date(),
+                                fund_id: fund_id.toString(),
+                                is_edited: false,
+                                mention: null,
+                                replay_id: null,
+                                replays: [],
+                                user_id: userDetails.profile_id,
+                                user_name: userDetails.first_name + userDetails.last_name
+                              }
+                              return [newResponse, ...prev];
+                            })
+                          }
+
+                          resetForm()
+                        }}>
+                          <Form>
+                            <div className='w-full rounded-lg bg-gray-100 p-5'>
+                              <div className='flex items-center gap-x-5'>
+                                {/* <AvatarIcon name={"Muhammed Javad"} /> */}
+                                <div className='w-full flex gap-3 border-l-0 border-t-0 border-r-0  border-b '>
+                                  <Field name="comment" id="comment" placeHolder="Add a comment" className="w-full  bg-transparent outline-none" />
+                                  <button className=' px-2 text-sm py-1  text-black rounded-lg'>Post</button>
+                                </div>
+                              </div>
+                            </div>
+                          </Form>
+                        </Formik>
+                      </div>
+                      {
+                        commentsList.map((cmd: ISingleCommentsResponse) => {
+                          return <FundRaiserComment comment={cmd.comment} date={formatDateToMonthNameAndDate(cmd.date)} user_id={cmd.user_id} user_name={cmd.user_name} isNested={true} />
+                        })
+                      }
                     </>
                   </TabItem>
                 </div>

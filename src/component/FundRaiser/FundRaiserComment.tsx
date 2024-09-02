@@ -1,7 +1,10 @@
+import { Field, Form, Formik } from "formik";
 import { Fragment } from "react";
 
 
-function FundRaiserComment() {
+function FundRaiserComment({ isNested, date, user_id, user_name, comment }) {
+
+
 
     return (
         <Fragment>
@@ -15,20 +18,43 @@ function FundRaiserComment() {
                                 className="w-12 h-12 rounded-full mr-3"
                             />
                             <div>
-                                <span className="text-gray-800 font-semibold">Dayaben D.</span>
-                                <span className="text-gray-600 text-sm block">@divyadhakecha1</span>
+                                <span className="text-gray-800 font-semibold">{user_name}</span>
+                                <span className="text-gray-600 text-sm block">{user_id}</span>
                             </div>
                         </a>
                     </div>
-                    <span className="text-sm text-gray-500">2 days ago</span>
+                    <span className="text-sm text-gray-500">{date}</span>
                 </div>
 
                 {/* Bid Details */}
                 <div className="mb-2">
                     <p className="text-sm text-gray-600">
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type ...
-
+                        {comment}
                     </p>
+                </div>
+
+                <div className="nestedComments">
+                    {isNested &&
+                        (
+                            <>
+                                {/* <FundRaiserComment isNested={false} /> */}
+                                <Formik initialValues={{}} onSubmit={() => { }}>
+                                    <Form>
+                                        <div className='w-full rounded-lg bg-gray-100 p-5 pt-0'>
+                                            <div className='flex items-center gap-x-5'>
+                                                {/* <AvatarIcon name={"Muhammed Javad"} /> */}
+                                                <div className='w-full flex gap-3 border-l-0 border-t-0 border-r-0  border-b '>
+                                                    <Field name="comment" id="comment" placeHolder="Add a comment" className="w-full  bg-transparent outline-none" />
+                                                    <button className=' px-2 text-sm py-1  text-black rounded-lg'>Post</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Form>
+                                </Formik>
+                            </>
+                        )
+
+                    }
                 </div>
 
 

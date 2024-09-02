@@ -74,7 +74,11 @@ let authOptions = {
 
                             if (data.status) {
                                 const { profile } = data.data;
+                                console.log(profile);
+
                                 const user_data = response.data;
+                                console.log(user_data);
+
                                 let storingData: IUserSessionData = {
                                     id: user_data.user_id,
                                     token: user_data.jwt,
@@ -84,7 +88,8 @@ let authOptions = {
                                     email: user_data.email,
                                     role: "user",
                                     blood_donor_id: profile.blood_donor_id,
-                                    blood_token: user_data.blood_token
+                                    blood_token: user_data.blood_token,
+                                    profile_id: user_data.profile_id,
                                 }
                                 console.log("Storing data");
 
@@ -139,7 +144,8 @@ let authOptions = {
                                 email: profile.email,
                                 role: "user",
                                 blood_donor_id: blood_profile.donor_id,
-                                blood_token: profile.blood_token
+                                blood_token: profile.blood_token,
+                                profile_id: profile.profile_id
                             }
                             console.log("Login completed");
                             console.log(storingData);
