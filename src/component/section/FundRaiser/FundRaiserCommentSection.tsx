@@ -1,12 +1,16 @@
-import CommentItemRender from "@/component/FundRaiser/CommenItemRender"
+import FundRaiserComment from "@/component/FundRaiser/FundRaiserComment"
+import CustomeConfirmUI from "@/component/Util/ConfirmUI"
 import EmptyScreen from "@/component/Util/EmptyScreen"
 import PaginationSection from "@/component/Util/PaginationSection"
-import { getPaginatedComments } from "@/util/data/helper/APIHelper"
+import { deleteComment, getPaginatedComments } from "@/util/data/helper/APIHelper"
+import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper"
 import { onCommentPost } from "@/util/external/yup/formSubmission"
 import { ISingleCommentsResponse } from "@/util/types/API Response/FundRaiser"
 import { Field, Form, Formik } from "formik"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { confirmAlert } from "react-confirm-alert"
+import { toast } from "react-toastify"
 
 
 
@@ -14,6 +18,30 @@ function FundRaiserCommentSection({ fund_id }) {
 
     const router = useRouter()
     const [reCallComments, callComments] = useState(false);
+
+    async function deleteCommentHelper(comment_id) {
+        try {
+            await deleteComment(comment_id)
+            callComments(!reCallComments)
+        } catch (e) {
+            console.log("Something went wrong");
+            toast.error("Something went wrong")
+        }
+    }
+
+    function onCommentDelete(comment_id) {
+        confirmAlert({
+            title: "Are you sure want to delete this comment?",
+            message: "Delete this comment",
+            customUI: ({ onClose, title }) => {
+                return <CustomeConfirmUI onClose={onClose} onConfirm={() => {
+                    deleteCommentHelper(comment_id)
+                    onClose()
+                }} title={title}></CustomeConfirmUI>
+            }
+        })
+    }
+
 
     return (
         <>
@@ -61,7 +89,7 @@ function FundRaiserCommentSection({ fund_id }) {
                                     <>
                                         {
                                             commends.map((cmd) => {
-                                                return <CommentItemRender cmd={cmd}></CommentItemRender>
+                                                return <FundRaiserComment onDelete={onCommentDelete} comment_id={cmd.comment_id} comment={cmd.comment} date={formatDateToMonthNameAndDate(cmd.date)} user_id={cmd.user_id} user_name={cmd.user_name} isNested={true} />
                                             })
                                         }
                                     </>

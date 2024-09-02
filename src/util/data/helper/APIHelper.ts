@@ -8,6 +8,26 @@ import { userDetailsFromGetSession } from "./authHelper";
 import { ICommentsResponse } from "@/util/types/API Response/FundRaiser";
 
 
+async function deleteComment(comment_id: string): Promise<boolean> {
+
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user");
+        const { token } = user
+
+        if (token) {
+            const deleteComment: AxiosResponse = await API_axiosInstance.delete(`/fund_raise/delete_comment/${comment_id}`, { headers: { authorization: `Bearer ${token}` } })
+            const response = deleteComment.data;
+            if (response.status) {
+                return true
+            }
+        }
+        return false
+    } catch (e) {
+        return false
+    }
+}
+
 async function getPaginatedComments(limit: number, page: number, fund_id: string,): Promise<ICommentsResponse> {
     console.log("Hello");
     try {
@@ -107,4 +127,4 @@ async function showIntrestForDonateBlood(req_id: string, successCB: Function, er
     })
 }
 
-export { getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }
+export { deleteComment, getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }
