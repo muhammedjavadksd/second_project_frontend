@@ -8,6 +8,30 @@ import { userDetailsFromGetSession } from "./authHelper";
 import { ICommentsResponse } from "@/util/types/API Response/FundRaiser";
 
 
+async function editComment(newComment, edit_id): Promise<boolean> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user");
+        const { token } = user
+
+        if (token) {
+            const editComment = await API_axiosInstance.patch(`fund_raise/edit_comment/${edit_id}`, { new_comment: newComment }, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            const response = editComment.data;
+            if (response.status) {
+                return true
+            }
+            return false
+        }
+    } catch (e) {
+        return false
+    }
+
+}
+
 async function deleteComment(comment_id: string): Promise<boolean> {
 
     try {
@@ -127,4 +151,4 @@ async function showIntrestForDonateBlood(req_id: string, successCB: Function, er
     })
 }
 
-export { deleteComment, getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }
+export { editComment, deleteComment, getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }

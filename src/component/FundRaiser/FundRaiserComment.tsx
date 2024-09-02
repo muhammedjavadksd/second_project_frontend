@@ -1,10 +1,14 @@
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Fragment, useEffect, useRef, useState } from "react";
 import CustomeConfirmUI from "../Util/ConfirmUI";
 import { confirmAlert } from "react-confirm-alert";
-import { deleteComment } from "@/util/data/helper/APIHelper";
+import { deleteComment, editComment } from "@/util/data/helper/APIHelper";
 import { toast } from "react-toastify";
 import { boolean } from "yup";
+import EditInput from "../Util/EditInput";
+import { userDetailsFromUseSession } from "@/util/data/helper/authHelper";
+import { useSession } from "next-auth/react";
+import { commentPostValidation } from "@/util/external/yup/yupValidations";
 
 
 function FundRaiserComment({ isNested, date, user_id, user_name, comment, comment_id, onDelete }) {
@@ -12,7 +16,11 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
     const [isMenuOpen, openMenu] = useState<boolean>(false);
     const menuRef = useRef<HTMLUListElement | null>(null);
     const [isRemove, setRemove] = useState<boolean>(false);
-
+    const [isEdit, setEdit] = useState<boolean>(false)
+    const session = useSession();
+    const userDetails = userDetailsFromUseSession(session, "user")
+    const editRef = useRef();
+    const [uiComment, setUiComment] = useState<string>(comment);
 
 
 
@@ -33,6 +41,20 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
             document.removeEventListener("click", handleClickOutside, true);
         };
     }, [isMenuOpen]);
+
+
+    async function updateComment(newComment) {
+        try {
+            const updateComment = await editComment(newComment, comment_id);
+            if (updateComment) {
+                setUiComment(newComment)
+            }
+            setEdit(false)
+        } catch (e) {
+            console.log("Update failed");
+            setEdit(false)
+        }
+    }
 
 
 
@@ -59,20 +81,26 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
                                     <span className="text-sm text-gray-500">{date}</span>
                                 </div>
                             </div>
-                            <button onClick={() => openMenu(true)} className="relative">
-                                <i className="fa-solid fa-ellipsis-vertical"></i>
-                                <ul ref={menuRef} role="menu" data-popover="menu" data-popover-placement="bottom"
-                                    className={`${!isMenuOpen && "hidden"} right-0 absolute z-10 min-w-[180px] overflow-auto rounded-md border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none`}>
-                                    <li onClick={() => onDelete(comment_id)} role="menuitem"
-                                        className="block hover:bg-gray-200 w-full cursor-pointer select-none rounded-md px-3 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
-                                        Delete
-                                    </li>
-                                    <li role="menuitem"
-                                        className="block w-full hover:bg-gray-200 cursor-pointer select-none rounded-md px-3 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
-                                        Edit
-                                    </li>
-                                </ul>
-                            </button>
+                            {
+                                userDetails.profile_id == user_id && <button onClick={() => openMenu(true)} className="relative">
+                                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                                    <ul ref={menuRef} role="menu" data-popover="menu" data-popover-placement="bottom"
+                                        className={`${!isMenuOpen && "hidden"} right-0 absolute z-10 min-w-[180px] overflow-auto rounded-md border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none`}>
+                                        <li onClick={() => onDelete(comment_id)} role="menuitem"
+                                            className="block hover:bg-gray-200 w-full cursor-pointer select-none rounded-md px-3 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+                                            Delete
+                                        </li>
+                                        <li
+                                            onClick={() => {
+                                                setEdit(true)
+
+                                            }}
+                                            role="menuitem"
+                                            className={` block w-full hover:bg-gray-200 cursor-pointer select-none rounded-md px-3 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900`}>
+                                            Edit
+                                        </li>
+                                    </ul>
+                                </button>}
                         </div>
 
                     </div>
@@ -82,7 +110,14 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
                 {/* Bid Details */}
                 <div className="mb-2 mt-2">
                     <p className="text-sm text-gray-600">
-                        {comment}
+                        {isEdit ? <Formik validationSchema={commentPostValidation} initialValues={{ comment }} onSubmit={(val) => { updateComment(val.comment) }}>
+                            <Form>
+                                <div className='w-full flex gap-3 border-l-0 border-t-0 border-r-0  border-b '>
+                                    <Field innerRef={editRef} name="comment" id="comment" placeHolder="Add a comment" className={`${isEdit && "border border-b-blue-600"} w-full  bg-transparent outline-none`} />
+                                    <button type="submit" className=' px-2 text-sm py-1  text-black rounded-lg'>Post</button>
+                                </div>
+                            </Form>
+                        </Formik> : uiComment}
                     </p>
                     <div className="flex justify-between">
                         <ul className="flex gap-5 mt-2">

@@ -96,4 +96,8 @@ const fundRaiserBankAccoutValidation = yup.object().shape({
 })
 
 
-export { fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }
+const commentPostValidation = yup.object().shape({
+    comment: yup.string().required()
+})
+
+export { commentPostValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }
