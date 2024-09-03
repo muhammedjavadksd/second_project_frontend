@@ -34,7 +34,9 @@ function PaginationSection({ itemsRender, api, paginationProps, refresh }: { ite
     async function fetchData() {
         console.log(api);
         const { paginated, total_records } = await api.renderType(page, limit);
-        setResponse(paginated);
+        console.log(paginated);
+
+        setResponse(paginated ?? []);
         setTotalRecords(total_records);
     }
 

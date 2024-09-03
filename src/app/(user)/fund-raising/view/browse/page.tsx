@@ -3,13 +3,22 @@ import FundRaiserSingleItem from "@/component/FundRaiser/FundRaiserSingleItem"
 import Header from "@/component/Header/Header"
 import BreadCrumb from "@/component/Util/BreadCrumb"
 import DropDownItem from "@/component/Util/DropdownItem"
+import EmptyScreen from "@/component/Util/EmptyScreen"
 import Footer from "@/component/Util/Footer"
+import PaginationSection from "@/component/Util/PaginationSection"
+import { getLimitedFundRaiserPost, getSingleActiveFundRaiser } from "@/util/data/helper/APIHelper"
+import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser"
 import { Fragment, useState } from "react"
 
 function AdvanceFundRaiserView() {
 
     const [isCategoryOpen, setCategoryOpen] = useState(false)
     const [isSubCategoryOpen, setSubCategoryOpen] = useState(false)
+    const [profile, setProfile] = useState<FundRaiserResponse[]>([])
+    const [tempProfile, setTempProfile] = useState<FundRaiserResponse[]>([])
+
+
+
     return (
         <Fragment>
 
@@ -99,14 +108,39 @@ function AdvanceFundRaiserView() {
                             </div>
                         </div>
 
-                    </div>
-                    <div className="grid gap-5 grid-cols-4">
-                        <FundRaiserSingleItem fund_id={"123"} />
-                        <FundRaiserSingleItem fund_id={"123"} />
-                        <FundRaiserSingleItem fund_id={"123"} />
-                        <FundRaiserSingleItem fund_id={"123"} />
-                        <FundRaiserSingleItem fund_id={"123"} />
-                        <FundRaiserSingleItem fund_id={"123"} />
+                        <PaginationSection
+                            api={
+                                {
+                                    renderType: getLimitedFundRaiserPost
+                                }
+                            }
+                            paginationProps={{
+                                current_page: 1,
+                                currentLimit: 8
+                            }}
+                            refresh={null}
+                            itemsRender={(response: FundRaiserResponse[]) => {
+
+                                if (!response.length) {
+                                    return (
+                                        <div className="mt-3">
+                                            <EmptyScreen msg="No profile found" />
+                                        </div>
+                                    )
+                                }
+                                return (
+                                    <div className="grid grid-cols-3 mt-5">
+                                        {
+                                            response.map((profile) => {
+                                                return <FundRaiserSingleItem profile={profile} />
+                                            })
+                                        }
+                                    </div>
+                                )
+                            }}
+                        />
+
+
                     </div>
                 </div>
             </div>
@@ -114,5 +148,7 @@ function AdvanceFundRaiserView() {
         </Fragment >
     )
 }
+
+
 
 export default AdvanceFundRaiserView

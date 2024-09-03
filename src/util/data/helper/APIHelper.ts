@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
-import { ICommentsResponse } from "@/util/types/API Response/FundRaiser";
+import { FundRaiserResponse, ICommentsResponse } from "@/util/types/API Response/FundRaiser";
 
 
 
@@ -84,21 +84,21 @@ async function getPaginatedComments(limit: number, page: number, fund_id: string
     }
 }
 
+async function getLimitedFundRaiserPost(page, limit) {
 
-function getLimitedFundRaiserPost(limit, page, successCB, errorCB) {
+    try {
+        const profile = await API_axiosInstance.get(`/fund_raise/view/${limit}/${page}`)
+        const response = profile.data;
 
-    API_axiosInstance.get(`/fund_raise/view/${limit}/${page}`).then((data) => {
-        const response = data.data;
         if (response.status) {
             const responseData = response.data;
-            console.log(responseData);
-            successCB(responseData)
+            return responseData
         }
-    }).catch((err) => {
-        console.log(err);
-        // alert("Data fetched")
-        errorCB()
-    })
+        return false
+    } catch (e) {
+        console.log(e);
+        return false
+    }
 }
 
 
@@ -153,4 +153,23 @@ async function showIntrestForDonateBlood(req_id: string, successCB: Function, er
     })
 }
 
-export { editComment, deleteComment, getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }
+async function getSingleActiveFundRaiser(fund_id: string): Promise<FundRaiserResponse | false> {
+
+    try {
+
+        const profile = await API_axiosInstance.get(`fund_raise/view/${fund_id}`);
+        const response = profile.data;
+        console.log(response);
+
+        if (response.status) {
+            const profile = response.data
+            return profile
+        }
+        return false
+    } catch (e) {
+        console.log(e);
+        return false
+    }
+}
+
+export { getSingleActiveFundRaiser, editComment, deleteComment, getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }

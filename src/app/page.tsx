@@ -42,7 +42,7 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
                     <HomeHero />
                     <div>
                         <SectionTitle title={"People who "} focus_text={"Suffer"} sub_title={"Donate For Poor People. Causes of Gives"}></SectionTitle>
-                        <FundRaiserSlider />
+                        <FundRaiserSlider exclude="" profiles={[]} />
                     </div>
                     <section className="mt-10">
                         <div className='container mx-auto'>

@@ -14,11 +14,12 @@ import SectionTitle from '@/component/Util/SectionTitle'
 import SliderComponent from '@/component/Util/SliderComponent'
 import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
-import { getPaginatedComments } from '@/util/data/helper/APIHelper'
+import { getPaginatedComments, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
+import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import { onCommentPost } from '@/util/external/yup/formSubmission'
-import { ICommentsResponse, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
+import { FundRaiserResponse, ICommentsResponse, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
 import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
 import { PaginatedApi } from '@/util/types/InterFace/UtilInterface'
 import { Field, Form, Formik } from 'formik'
@@ -40,20 +41,43 @@ function ViewFundRaising(): React.ReactElement {
   const [commentsList, setCommentsList] = useState<ISingleCommentsResponse[]>([])
   const [totalRecords, setRecordList] = useState<number>(0)
 
-  async function findComments() {
-    if (fund_id && typeof fund_id == "string") {
-      // const response: ICommentsResponse = await getPaginatedComments(fund_id.toString(), 10, 1)
-      // if (response.total_records > 0) {
-      //   setRecordList(response.total_records)
-      //   setCommentsList(response.paginated)
-      // }
+  const [matchedProfile, setMatchedProfile] = useState<FundRaiserResponse[]>([])
+  const [fundRaiserProfile, setProfile] = useState<FundRaiserResponse>(null)
+
+
+
+
+  async function findMatchedProfile(category) {
+    try {
+      const otherProfile = await API_axiosInstance.get(`fund_raise/view/${category}/10/1`);
+      const response = otherProfile.data;
+      console.log(response);
+
+      if (response.status) {
+        const { profile } = response.data;
+        setMatchedProfile(profile)
+      }
+    } catch (e) {
+
+      console.log("error");
+      console.log("Error");
+    }
+  }
+
+  async function findFundRaiserProfile() {
+    const findProfile: FundRaiserResponse | boolean = await getSingleActiveFundRaiser(fund_id.toString());
+    if (findProfile) {
+      setProfile(findProfile);
+      findMatchedProfile(findProfile.category);
+    } else {
+      console.log("No profile");
     }
   }
 
 
 
   useEffect(() => {
-    findComments()
+    findFundRaiserProfile()
   }, [])
 
 
@@ -266,25 +290,25 @@ function ViewFundRaising(): React.ReactElement {
 
             </div>
           </div>
-          <div>
-            <SectionTitle title='Bid for this case' focus_text='Help' sub_title='Join with below bid and help this raiser'></SectionTitle>
-            <SliderComponent arrow={true} dots={true} isGap={true} slidesToScroll={1} slidesToShow={4}>
-              <BiddingItemCard></BiddingItemCard>
-              <BiddingItemCard></BiddingItemCard>
-              <BiddingItemCard></BiddingItemCard>
-              <BiddingItemCard></BiddingItemCard>
-            </SliderComponent>
-          </div><div>
-            <SectionTitle title='Similer Cases' focus_text='Help' sub_title='There are many people who suffer'></SectionTitle>
-            {/* <div className="grid gap-5 grid-cols-4">
-        <FundRaiserSingleItem fund_id={123} />
-        <FundRaiserSingleItem fund_id={123} />
-        <FundRaiserSingleItem fund_id={123} />
-        <FundRaiserSingleItem fund_id={123} />
-      </div> */}
-            <FundRaiserSlider />
-          </div><Footer />
         </div >
+        <div>
+          <SectionTitle title='Bid for this case' focus_text='Help' sub_title='Join with below bid and help this raiser'></SectionTitle>
+          <SliderComponent arrow={true} dots={true} isGap={true} slidesToScroll={1} slidesToShow={4}>
+            <BiddingItemCard></BiddingItemCard>
+            <BiddingItemCard></BiddingItemCard>
+            <BiddingItemCard></BiddingItemCard>
+            <BiddingItemCard></BiddingItemCard>
+          </SliderComponent>
+        </div><div>
+          {matchedProfile.length &&
+            <>
+              <SectionTitle title='Similer Cases' focus_text='Help' sub_title='There are many people who suffer'></SectionTitle>
+              <FundRaiserSlider exclude={fundRaiserProfile.fund_id} profiles={matchedProfile} />
+            </>
+          }
+        </div>
+
+        <Footer />
       </div>
     </>
   )
