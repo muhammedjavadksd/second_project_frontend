@@ -1,6 +1,5 @@
 "use client"
 import BiddingItemCard from '@/component/Bidding/BiddingItemCard'
-import CommentItemRender from '@/component/FundRaiser/CommenItemRender'
 import FundRaiserComment from '@/component/FundRaiser/FundRaiserComment'
 import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
 import SuccessBanner from '@/component/FundRaiser/SuccessBanner'

@@ -9,9 +9,13 @@ import EditInput from "../Util/EditInput";
 import { userDetailsFromUseSession } from "@/util/data/helper/authHelper";
 import { useSession } from "next-auth/react";
 import { commentPostValidation } from "@/util/external/yup/yupValidations";
+import { ISingleCommentsResponse } from "@/util/types/API Response/FundRaiser";
+import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper";
+import { addReplayComment } from "@/util/external/yup/formSubmission";
+import { useRouter } from "next/navigation";
 
 
-function FundRaiserComment({ isNested, date, user_id, user_name, comment, comment_id, onDelete }) {
+function FundRaiserComment({ nestedComments, date, user_id, user_name, comment, comment_id, onDelete, fund_id, isNested, mention }) {
 
     const [isMenuOpen, openMenu] = useState<boolean>(false);
     const menuRef = useRef<HTMLUListElement | null>(null);
@@ -20,8 +24,15 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
     const session = useSession();
     const userDetails = userDetailsFromUseSession(session, "user")
     const editRef = useRef();
-    const [uiComment, setUiComment] = useState<string>(comment);
+    const [uiComment, setUiComment] = useState<string>();
+    const [isCommentsOpen, openComments] = useState<boolean>(false);
+    const router = useRouter()
+    const [replayComments, setReplayComments] = useState<ISingleCommentsResponse[]>(nestedComments)
 
+
+    useEffect(() => {
+        setUiComment(comment)
+    }, [comment_id])
 
 
     useEffect(() => {
@@ -48,6 +59,7 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
             const updateComment = await editComment(newComment, comment_id);
             if (updateComment) {
                 setUiComment(newComment)
+
             }
             setEdit(false)
         } catch (e) {
@@ -56,15 +68,52 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
         }
     }
 
+    async function replayAdding(comment) {
+        try {
+            const addReplay = await addReplayComment(comment, fund_id, user_id, comment_id, () => {
+                router.replace("/auth/sign_in")
+            });
+            if (addReplay) {
+                setReplayComments((prev: ISingleCommentsResponse[]) => {
+
+
+
+                    const newComment: ISingleCommentsResponse = {
+                        comment,
+                        comment_id: addReplay,
+                        date: new Date(),
+                        fund_id,
+                        is_edited: false,
+                        mention: user_name,
+                        replay_id: comment_id,
+                        replay: [],
+                        user_id: userDetails.profile_id,
+                        user_name: userDetails.first_name + userDetails.last_name
+                    }
+                    return [newComment, ...prev];
+                }
+
+                )
+
+            } else {
+
+            }
+        } catch (e) {
+            return
+        }
+    }
+
+
 
 
     if (isRemove) {
         return false;
     }
 
+
     return (
         <Fragment>
-            <div className="flex flex-col p-4 bg-gray-100  rounded-md mb-4">
+            <div className={`flex flex-col p-4 bg-gray-100 ${isNested && ' pl-2 ps-2 '} rounded-md mb-2 pb-0`}>
                 <div className="flex items-center w-full">
                     <div className="w-full flex items-center">
 
@@ -110,18 +159,30 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
                 {/* Bid Details */}
                 <div className="mb-2 mt-2">
                     <p className="text-sm text-gray-600">
-                        {isEdit ? <Formik validationSchema={commentPostValidation} initialValues={{ comment }} onSubmit={(val) => { updateComment(val.comment) }}>
-                            <Form>
-                                <div className='w-full flex gap-3 border-l-0 border-t-0 border-r-0  border-b '>
-                                    <Field innerRef={editRef} name="comment" id="comment" placeHolder="Add a comment" className={`${isEdit && "border border-b-blue-600"} w-full  bg-transparent outline-none`} />
-                                    <button type="submit" className=' px-2 text-sm py-1  text-black rounded-lg'>Post</button>
-                                </div>
-                            </Form>
-                        </Formik> : uiComment}
+                        {
+                            isEdit ? (<Formik validationSchema={commentPostValidation} initialValues={{ comment }} onSubmit={(val, { resetForm }) => {
+                                updateComment(val.comment)
+                                resetForm()
+                            }}>
+                                <Form>
+                                    <div className='w-full flex gap-3 border-l-0 border-t-0 border-r-0  border-b '>
+                                        <Field innerRef={editRef} name="comment" id="comment" placeHolder="Add a comment" className={`${isEdit && "border border-b-blue-600"} w-full  bg-transparent outline-none`} />
+                                        <button type="submit" className=' px-2 text-sm py-1  text-black rounded-lg'>Post</button>
+                                    </div>
+                                </Form>
+                            </Formik>) :
+                                (
+                                    <>
+                                        <span className="text-blue-700 underline cursor-pointer">{mention && `@${mention}  `}</span>
+                                        {uiComment}
+
+                                    </>
+                                )
+                        }
                     </p>
                     <div className="flex justify-between">
                         <ul className="flex gap-5 mt-2">
-                            <li>
+                            {/* <li>
                                 <button>
                                     <i className="fa-solid fa-thumbs-up"></i> 3
                                 </button>
@@ -130,34 +191,52 @@ function FundRaiserComment({ isNested, date, user_id, user_name, comment, commen
                                 <button>
                                     <i className="fa-solid fa-thumbs-down"></i> 5
                                 </button>
-                            </li>
+                            </li> */}
                         </ul>
-                        <button className="text-blackt font-semibold text-sm">  <i className="fa-solid fa-arrow-down"></i> 5 Replay (8)</button>
+                        <button onClick={() => openComments(!isCommentsOpen)} className="flex items-center text-blackt font-semibold text-sm">
+                            <i className={`fa-solid ${isCommentsOpen ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                            <span className="w-2"></span>
+
+                            Replay ({replayComments && replayComments?.length})
+                        </button>
                     </div>
                 </div>
-            </div>
-
-            {/* <div className="nestedComments">
-                    {isNested &&
+                <div className={`nestedComments mt-2`}>
+                    {isCommentsOpen &&
                         (
                             <>
-                                 <Formik initialValues={{}} onSubmit={() => { }}>
+                                <Formik validationSchema={commentPostValidation} initialValues={{ comment: "" }} onSubmit={(val, { resetForm }) => {
+                                    const { comment } = val;
+                                    replayAdding(comment);
+                                    resetForm()
+                                }}>
                                     <Form>
-                                        <div className='w-full rounded-lg bg-gray-100 p-5 pt-0'>
+                                        <div className='w-full rounded-lg bg-gray-100  p-5 pl-0  pb-2  pt-0 ps-0'>
                                             <div className='flex items-center gap-x-5'>
-                 <div className='w-full flex gap-3 border-l-0 border-t-0 border-r-0  border-b '>
-                    <Field name="comment" id="comment" placeHolder="Add a comment" className="w-full  bg-transparent outline-none" />
-                    <button className=' px-2 text-sm py-1  text-black rounded-lg'>Post</button>
-                </div>
-            </div>
-        </div>
+                                                <div className='w-full flex gap-3 border-l-0 border-t-0 border-r-0  border-b '>
+                                                    <Field name="comment" id="comment" placeHolder="Add a comment" className="w-full  bg-transparent outline-none" />
+                                                    <button className=' px-2 text-sm py-1  text-black rounded-lg'>Post</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </Form >
                                 </Formik >
+                                {
+                                    (replayComments && replayComments.length) && replayComments.map((each: ISingleCommentsResponse) => {
+                                        return (
+                                            <>
+                                                <FundRaiserComment mention={each.mention} isNested={true} fund_id={each.fund_id} onDelete={() => onDelete(each.comment_id)} user_id={each.user_id} user_name={each.user_name} date={formatDateToMonthNameAndDate(each.date)} nestedComments={each.replay || []} comment={each.comment} comment_id={each.comment_id} />
+                                            </>
+                                        )
+                                    })
+                                }
                             </>
                         )
 
-}
-                </div > */}
+                    }
+                </div >
+            </div>
+
 
 
 

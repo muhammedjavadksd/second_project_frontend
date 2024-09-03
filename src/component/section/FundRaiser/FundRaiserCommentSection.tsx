@@ -89,7 +89,9 @@ function FundRaiserCommentSection({ fund_id }) {
                                     <>
                                         {
                                             commends.map((cmd) => {
-                                                return <FundRaiserComment onDelete={onCommentDelete} comment_id={cmd.comment_id} comment={cmd.comment} date={formatDateToMonthNameAndDate(cmd.date)} user_id={cmd.user_id} user_name={cmd.user_name} isNested={true} />
+                                                console.log(cmd);
+
+                                                return <FundRaiserComment mention={null} isNested={false} fund_id={cmd.fund_id} nestedComments={cmd.replay} onDelete={onCommentDelete} comment_id={cmd.comment_id} comment={cmd.comment} date={formatDateToMonthNameAndDate(cmd.date)} user_id={cmd.user_id} user_name={cmd.user_name} />
                                             })
                                         }
                                     </>

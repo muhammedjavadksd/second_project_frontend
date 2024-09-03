@@ -11,7 +11,7 @@ interface ISingleCommentsResponse {
     mention: null | string,
     fund_id: string,
     replay_id: string,
-    replays: ISingleCommentsResponse[]
+    replay: ISingleCommentsResponse[]
 }
 
 interface ICommentsResponse {
