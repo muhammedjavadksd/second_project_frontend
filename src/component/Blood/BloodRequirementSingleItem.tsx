@@ -78,9 +78,9 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
 
             const response = sendDonationIntrest.data;
             if (response.status) {
-                // onClose()
                 toast.success("You have showed intrest")
-                // router.push("/account/blood-account/expressed-intrest")
+                onClose()
+                router.push("/account/blood-account/expressed-intrest")
             } else {
                 toast.error(response.msg)
             }
