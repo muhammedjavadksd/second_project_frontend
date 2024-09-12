@@ -23,6 +23,8 @@ async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
         console.log(token);
 
         console.log("User found");
+        console.log(val);
+
 
         try {
 
@@ -31,12 +33,12 @@ async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
             }, {
                 headers: {
                     "authorization": `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 },
             })
 
             let response = requestAPI.data;
-            console.log(response);
+            console.log(requestAPI);
             if (response.status) {
                 store.dispatch(updateFundRaiseData({
                     data: {

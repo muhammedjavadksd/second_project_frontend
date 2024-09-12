@@ -75,4 +75,12 @@ const fundRaiserBankAccoutInitialValues = {
     currentApplication: null,
 }
 
-export { fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }
+
+const fundRaisePaymentInitialValues = {
+    full_name: "",
+    phone_number: "",
+    email_id: "",
+    hide_profile: false
+}
+
+export { fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }

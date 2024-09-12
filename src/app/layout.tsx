@@ -50,6 +50,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
       <Script async src="https://kit.fontawesome.com/046dc73391.js" crossOrigin="anonymous"></Script>
       <Script async src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></Script>
+      <Script src="https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js"></Script>
 
     </html>
   );

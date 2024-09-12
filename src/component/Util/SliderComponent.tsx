@@ -9,14 +9,15 @@ function SliderComponent({ children, slidesToShow, slidesToScroll, dots = true, 
 
     let sliderRef = useRef(null);
 
-    let a;
-
     let settings = {
         dots: dots,
         speed: 500,
         slidesToShow,
         slidesToScroll,
-        adaptiveHeight: true,
+        centerMode: true,
+        initialSlide: -2,
+        infinite: true,
+        adaptiveHeight: false,
     };
 
 

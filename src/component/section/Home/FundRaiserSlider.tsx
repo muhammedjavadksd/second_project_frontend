@@ -28,7 +28,7 @@ function FundRaiserSlider({ profiles, exclude }: { profiles: FundRaiserResponse[
         <section className='mt-5'>
             <div className=''>
 
-                <SliderComponent arrow={false} isGap={true} slidesToScroll={1} slidesToShow={4} dots={true}>
+                <SliderComponent arrow={true} isGap={true} slidesToScroll={1} slidesToShow={4} dots={false}>
                     {
                         profiles.map((each) => {
                             if (each.fund_id != exclude) {

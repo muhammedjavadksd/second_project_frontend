@@ -7,6 +7,14 @@
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
 */
 
+.css-19bb58m>input {
+  box-shadow: unset !important;
+}
+
+.css-19bb58m>input {
+  box-shadow: unset !important;
+}
+
 
 /* body{
   background-color: #f1f3f6;
@@ -339,6 +347,7 @@ Remove the inner padding in Chrome and Safari on macOS.
   font: inherit;
   /* 2 */
 }
+
 
 /*
 Add the correct display in Chrome and Safari.

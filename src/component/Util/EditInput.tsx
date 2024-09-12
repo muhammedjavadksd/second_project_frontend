@@ -6,10 +6,10 @@ interface IEditInputInstance {
     value: string
 }
 
-function EditInput({ text, data, isEditAllowed }: { text: string, data: IEditInputInstance, isEditAllowed: Function }) {
+function EditInput({ children, data, isEditAllowed }: { children: React.ReactNode, data: IEditInputInstance, isEditAllowed: Function }) {
 
     const [isEdit, setEdit] = useState<boolean>(false)
-    const [uiText, setUiText] = useState<string>(text)
+    const [uiText, setUiText] = useState<React.ReactNode>(children)
     const form = useRef(null)
 
     React.useEffect(() => {

@@ -9,34 +9,21 @@ function BloodAvailabilitySection() {
 
     let [bloodStatics, setBloodStatics] = useState({});
     useEffect(() => {
-        if (const_data.DEMY_DATA) {
-            const data: Record<BloodGroup, number> = {
-                "A+": 1,
-                "A-": 4,
-                "AB+": 3,
-                "AB-": 8,
-                "B+": 2,
-                "B-": 6,
-                "O+": 2,
-                "O-": 1
+
+        API_axiosInstance.get("blood/blood_availability", {}).then((data) => {
+            let response = data.data;
+            if (response.status) {
+                let profile = response.data
+                // {A+: 0, A-: 0, B+: 0, B-: 0, AB+: 0, …}
+                console.log(profile);
+
+                setBloodStatics(profile)
             }
-            console.log(data);
-            setBloodStatics(data)
-        } else {
-            API_axiosInstance.get("blood/blood_availability", {}).then((data) => {
-                let response = data.data;
-                if (response.status) {
-                    let profile = response.data
-                    // {A+: 0, A-: 0, B+: 0, B-: 0, AB+: 0, …}
-                    console.log(profile);
 
-                    setBloodStatics(profile)
-                }
+        }).catch((err) => {
+            console.log(err);
+        })
 
-            }).catch((err) => {
-                console.log(err);
-            })
-        }
     }, [])
 
 

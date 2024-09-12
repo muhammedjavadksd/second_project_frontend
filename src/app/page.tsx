@@ -15,8 +15,10 @@ import Header from "@/component/Header/Header";
 import BloodAvailabilitySection from "@/component/section/Home/BloodAvailabilityView";
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import SectionTitle from "@/component/Util/SectionTitle";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser";
+import { getLimitedFundRaiserPost } from "@/util/data/helper/APIHelper";
 // import 'react-confirm-alert/src/'
 
 
@@ -24,9 +26,14 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
 
 
     const router = useRouter()
+    const [allfundRaiser, setFundRaiser] = useState<FundRaiserResponse[]>([])
     useEffect(() => {
-
-
+        getLimitedFundRaiserPost(1, 20, "all", "").then((response) => {
+            console.log(response);
+            if (response && response.paginated) {
+                setFundRaiser(response.paginated);
+            }
+        }).catch((err) => { })
     }, [])
 
 
@@ -42,7 +49,7 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
                     <HomeHero />
                     <div>
                         <SectionTitle title={"People who "} focus_text={"Suffer"} sub_title={"Donate For Poor People. Causes of Gives"}></SectionTitle>
-                        <FundRaiserSlider exclude="" profiles={[]} />
+                        <FundRaiserSlider exclude="" profiles={allfundRaiser} />
                     </div>
                     <section className="mt-10">
                         <div className='container mx-auto'>

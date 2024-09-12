@@ -30,6 +30,7 @@ const bloodRequestPersonalDetailsValidation = yup.object().shape({
     relation: yup.string().typeError("Please select valid relation").required("Relation with patient is required"),
     address: yup.string().typeError("Please enter valid address").required("Please enter valid address"),
     phone_number: yup.number().typeError("Please enter valid phone number").required("Phone number is required"),
+    email_address: yup.string().email().typeError("Please enter valid email address").required("email address is required"),
 })
 
 
@@ -39,7 +40,7 @@ const bloodRequestDetailsValidation = yup.object().shape({
     needed_date: yup.date()
         .typeError("Please select a valid date")
         .min(new Date(), "Please select a date in the future"),
-    hospital_name: yup.string().typeError("Please select valid hospital name").required("Please select valid hospital name"),
+    // hospital_name: yup.string().typeError("Please select valid hospital name").required("Please select valid hospital name"),
     enquired_with_others: yup.string().typeError("Please select enquired details").required("Please select enquired details")
 })
 
@@ -100,4 +101,12 @@ const commentPostValidation = yup.object().shape({
     comment: yup.string().required()
 })
 
-export { commentPostValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }
+const fundRaisePaymentValidation = yup.object().shape({
+    full_name: yup.string().typeError("Please enter valid name").required("Full name is required"),
+    phone_number: yup.number().typeError("Please enter valid phone number").required("Phone number is required"),
+    email_id: yup.string().email().typeError("Please enter valid email id").required("email id is required"),
+    hide_profile: yup.bool().typeError("Please enter valid profile status").required("Do you want to hide your profile?")
+})
+
+
+export { commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }

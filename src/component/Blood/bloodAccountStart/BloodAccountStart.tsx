@@ -24,6 +24,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
 
     const { donor_id, setDonor } = useContext(BloodDonorFormContext)
     const [isBloodDonorFormLoading, setBloodDonorFormLoading] = useState(true)
+    const [currentLocation, setCurrentLocation] = useState(null);
 
 
     // alert(donor_id)
@@ -104,15 +105,16 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
         onComplete()
     }
 
+
+    useEffect(() => {
+        onLocationSelect()
+    }, [])
+
     function onLocationSelect() {
         navigator.geolocation.getCurrentPosition(async ({ coords }) => {
             const { latitude, longitude } = coords
             console.log(coords);
-
-            const res = await fetch(`https://openmensa.org/api/v2/canteens?near[lat]=${latitude}&near[lng]=${longitude}&near[dist]=10000`);
-            const data = await res.json();
-            console.log(data);
-
+            setCurrentLocation(coords)
         })
     }
 
@@ -124,7 +126,15 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
                     <>
                         <ModelHeader title={"Start Blood Account"} />
                         <div className='p-5'>
-                            <Formik initialValues={bloodDonatationFormValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => { onBloodDonationSubmit(val, successCB, errorCB) }}>
+                            <Formik initialValues={bloodDonatationFormValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => {
+                                console.log(currentLocation);
+
+                                if (!currentLocation) {
+                                    toast.error("Please allow the location")
+                                    return;
+                                }
+                                onBloodDonationSubmit(val, currentLocation, successCB, errorCB)
+                            }}>
                                 <Form>
                                     <div className='mb-5'>
                                         <label htmlFor="" className='text-sm'>Enter full name</label>
@@ -141,12 +151,7 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
                                         <Field placeholder="Enter email address" name="email_address" id="email_address" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
                                         <ErrorMessage name='email_address' component={"div"} className='errorMessage'></ErrorMessage>
                                     </div>
-                                    <div className='mb-5'>
-                                        <label htmlFor="" className='text-sm'>Select location</label>
-                                        <div onClick={onLocationSelect} className='min-h-10 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light'><span>Select the location</span></div>
-                                        {/* <Field placeholder="Select the location" name="location" id="location" className="" />
-                            <ErrorMessage name='location' component={"div"} className='errorMessage'></ErrorMessage> */}
-                                    </div>
+
                                     <div>
                                         <label htmlFor="" className='text-sm'>Select your blood group</label>
                                         <Field as="select" name="blood_group" id="blood_group" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">

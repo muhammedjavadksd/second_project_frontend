@@ -1,5 +1,5 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
-import IBloodReq from "@/util/types/API Response/Blood";
+import IBloodReq, { BloodProfile } from "@/util/types/API Response/Blood";
 import { MapApiResponse } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
@@ -8,7 +8,93 @@ import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, ICommentsResponse } from "@/util/types/API Response/FundRaiser";
 
 
+export async function findMyBloodProfile(): Promise<null | BloodProfile> {
 
+    const session = await getSession();
+    const data = userDetailsFromGetSession(session, "user");
+    const bloodToken = data.blood_token;
+    const token = data.token;
+
+    try {
+        const profile = await API_axiosInstance.get("/blood/get_profile", {
+            headers: {
+                authorization: `Bearer ${token}`,
+                bloodAuthorization: `Bearer ${bloodToken}`
+            }
+        })
+        const response: BloodProfile = profile.data.data.profile as BloodProfile;
+        return response
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
+
+export async function openBloodAccountStatus(status: boolean) {
+    const session = await getSession();
+    const data = userDetailsFromGetSession(session, "user");
+    const bloodToken = data.blood_token;
+    const token = data.token;
+
+    try {
+        const profile = await API_axiosInstance.patch("/blood/account_status", { status }, {
+            headers: {
+                authorization: `Bearer ${token}`,
+                bloodAuthorization: `Bearer ${bloodToken}`
+            }
+        })
+        const response = profile.data
+        if (response.status) {
+            return true
+        } else {
+            return false
+        }
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export async function fundRaiserPaymentHistory() {
+
+}
+
+export async function findPlaces(query: string) {
+    const url = `https://nominatim.openstreetmap.org/search?addressdetails=1&q=${query}&format=jsonv2&limit=10`;
+    try {
+        const find = await axios.get(url);
+        const data = find.data;
+        return data;
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
+
+
+export async function findMyProfile(limit, page) {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user");
+        const { token } = user
+        const myProfile = await API_axiosInstance.get(`fund_raise/view/self/${limit}/${page}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        const response = myProfile.data;
+        console.log(response);
+
+        if (response.status) {
+            const profile = response.data;
+            return profile
+        }
+        return false
+    } catch (e) {
+        console.log(e);
+        return false
+    }
+}
 
 async function editComment(newComment, edit_id): Promise<boolean> {
     try {
@@ -84,15 +170,16 @@ async function getPaginatedComments(limit: number, page: number, fund_id: string
     }
 }
 
-async function getLimitedFundRaiserPost(page, limit) {
+async function getLimitedFundRaiserPost(page, limit, category, query) {
 
     try {
-        const profile = await API_axiosInstance.get(`/fund_raise/view/${limit}/${page}`)
+        const profile = await API_axiosInstance.get(`/fund_raise/view/${category}/${limit}/${page}?${query}`)
         const response = profile.data;
+        console.log(profile);
 
         if (response.status) {
             const responseData = response.data;
-            return responseData
+            return responseData.profile
         }
         return false
     } catch (e) {

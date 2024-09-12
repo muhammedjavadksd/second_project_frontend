@@ -6,9 +6,10 @@ import DropDownItem from "@/component/Util/DropdownItem"
 import EmptyScreen from "@/component/Util/EmptyScreen"
 import Footer from "@/component/Util/Footer"
 import PaginationSection from "@/component/Util/PaginationSection"
+import const_data from "@/util/data/const"
 import { getLimitedFundRaiserPost, getSingleActiveFundRaiser } from "@/util/data/helper/APIHelper"
 import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser"
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 
 function AdvanceFundRaiserView() {
 
@@ -16,12 +17,38 @@ function AdvanceFundRaiserView() {
     const [isSubCategoryOpen, setSubCategoryOpen] = useState(false)
     const [profile, setProfile] = useState<FundRaiserResponse[]>([])
     const [tempProfile, setTempProfile] = useState<FundRaiserResponse[]>([])
+    const [queryFilter, setQueryFilter] = useState<string>()
+    const [refresh, setRefresh] = useState<boolean>(false)
+
+    const [categorySelect, setSelectedCategory] = useState(null)
+    const [subCategorySelect, setSelectedSubCategory] = useState(null)
+    const [stateSelect, setSelectedState] = useState(null)
+    const [urgentSelected, setUrgentSelected] = useState(null)
+
+    useEffect(() => {
+        const objectFind: Record<string, any> = {};
+
+        if (subCategorySelect) {
+            objectFind.sub_category = subCategorySelect;
+        }
+
+        if (stateSelect) {
+            objectFind.state = stateSelect;
+        }
+
+        if (urgentSelected) {
+            objectFind.urgency = urgentSelected;
+        }
+        const queryString = new URLSearchParams(objectFind).toString();
+        setQueryFilter(queryString)
+        setRefresh(!refresh)
+    }, [categorySelect, subCategorySelect, stateSelect, urgentSelected])
 
 
 
     return (
         <Fragment>
-
+            {queryFilter}
             <Header />
             <div className='container mx-auto mt-5 mb-5 '>
                 <BreadCrumb path={['Home', 'Fund Raiser', 'Browse']} />
@@ -29,7 +56,7 @@ function AdvanceFundRaiserView() {
 
                 <div className="w-full  mt-5 gap-5">
                     <div className="mb-5">
-                        <form noValidate className="flex items-center space-x-2">
+                        {/* <form noValidate className="flex items-center space-x-2">
                             <input
                                 autoCapitalize="off"
                                 autoCorrect="off"
@@ -77,12 +104,12 @@ function AdvanceFundRaiserView() {
                                     </g>
                                 </svg>
                             </span>
-                        </form>
+                        </form> */}
                         <div className="flex mt-3 gap-5 items-center">
-                            <DropDownItem isOpen={isCategoryOpen} options={['Education', 'Health']} title="Select category" callBack={(val) => alert(val)}></DropDownItem>
-                            <DropDownItem isOpen={isSubCategoryOpen} options={['Education', 'Health']} title="Select sub category" callBack={(val) => alert(val)}></DropDownItem>
-                            <DropDownItem isOpen={isSubCategoryOpen} options={['Education', 'Health']} title="Select Urgency" callBack={(val) => alert(val)}></DropDownItem>
-                            <DropDownItem isOpen={isSubCategoryOpen} options={['Education', 'Health']} title="Select State" callBack={(val) => alert(val)}></DropDownItem>
+                            <DropDownItem isOpen={isCategoryOpen} options={Object.keys(const_data.FUNDRAISER_CATEGORY)} title="Select category" callBack={(val) => setSelectedCategory(val)}></DropDownItem>
+                            <DropDownItem isOpen={isSubCategoryOpen} options={categorySelect ? const_data.FUNDRAISER_CATEGORY[categorySelect] : []} title="Select sub category" callBack={(val) => setSelectedSubCategory(val)}></DropDownItem>
+                            <DropDownItem isOpen={isSubCategoryOpen} options={['Urgent', 'Not urgent']} title="Select Urgency" callBack={(val) => setUrgentSelected(val)}></DropDownItem>
+                            <DropDownItem isOpen={isSubCategoryOpen} options={Object.keys(const_data.STATE_WITH_DISTRICT)} title="Select State" callBack={(val) => setSelectedState(val)}></DropDownItem>
                         </div>
                         <div className="flex mt-3 items-center space-x-4">
                             {/* Min Value Input */}
@@ -111,14 +138,16 @@ function AdvanceFundRaiserView() {
                         <PaginationSection
                             api={
                                 {
-                                    renderType: getLimitedFundRaiserPost
+                                    renderType: async (page, limit) => {
+                                        return await getLimitedFundRaiserPost(page, limit, categorySelect || "all", queryFilter)
+                                    }
                                 }
                             }
                             paginationProps={{
                                 current_page: 1,
                                 currentLimit: 8
                             }}
-                            refresh={null}
+                            refresh={refresh}
                             itemsRender={(response: FundRaiserResponse[]) => {
 
                                 if (!response.length) {

@@ -6,6 +6,39 @@ import store from "../redux/store/store";
 import { updateFundRaiseData } from "../redux/slicer/fundRaiserForm";
 
 
+export async function initialFundPayment(full_name: string, phone_number: number, email_id: string, hide_profile: boolean, amount: number, successCB: Function, errorCB: Function, fund_id: string) {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user")
+        const token = user?.token;
+
+        const { data } = await API_axiosInstance.post(`fund_raise/pay/${fund_id}`, {
+            full_name,
+            phone_number,
+            email_id,
+            amount,
+            hide_profile
+        }, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+
+        if (data.status) {
+            const order = data.data.order;
+            const session_id = order.payment_session_id;
+            successCB(session_id)
+        }
+        console.log(data);
+
+    } catch (e) {
+        console.log(e);
+
+    }
+
+}
+
+
 export async function onCommentPost(comment, fund_id, notLogged) {
     try {
         const session = await getSession();
@@ -72,6 +105,7 @@ export async function addReplayComment(comment, fund_id, mention, replay_id, not
         return false
     }
 }
+
 
 export async function onBankAccountSubmit(values, successCB, errorCB) {
 

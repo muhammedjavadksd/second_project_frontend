@@ -6,11 +6,18 @@ import MyFundRaisingItem from '@/component/FundRaiser/MyFundRaisingItem'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import Footer from '@/component/Util/Footer'
+import PaginationSection from '@/component/Util/PaginationSection'
+import { findMyProfile } from '@/util/data/helper/APIHelper'
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
+import API_axiosInstance from '@/util/external/axios/api_axios_instance'
+import { FundRaiserResponse } from '@/util/types/API Response/FundRaiser'
+import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 
 function MyFundRaising(): React.ReactElement {
 
     let [showBlockModal, setShowBlockModal] = useState<boolean>(true);
+    // const [allMyProfile, setAllMyProfile] = useState(null);
 
     return (
         <>
@@ -32,7 +39,23 @@ function MyFundRaising(): React.ReactElement {
                         </div>
                     </div>
                     <div className="w-full">
-                        <MyFundRaisingItem isApproved={false} key={1} />
+                        <PaginationSection
+                            api={{
+                                renderType: (page, limit, args) => {
+                                    return findMyProfile(limit, page)
+                                }
+                            }}
+                            itemsRender={(profile: FundRaiserResponse[]) => {
+                                return profile.map((prfl) => {
+                                    return <MyFundRaisingItem isApproved={false} key={1} />
+                                })
+                            }}
+                            paginationProps={{
+                                current_page: 1,
+                                currentLimit: 10
+                            }}
+                            refresh={null}
+                        />
                     </div>
                 </div>
             </div >

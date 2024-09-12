@@ -124,7 +124,6 @@ const signUpValidator = yup.object().shape({
     first_name: yup.string().typeError("Please enter valid first name").required("First name is required"),
     last_name: yup.string().typeError("Please enter valid last name").required("Last name is required"),
     email_address: yup.string().typeError("Please enter valid email address").email("Please enter valid email address").required("Email address is required"),
-    bloodGroup: yup.string().typeError("Please select valid blood group").oneOf(const_data.BLOOD_GROUPS, "Please select valid blood groups").required("Blood group is required"),
 })
 
 
@@ -133,7 +132,6 @@ const signUpInitialValues = {
     last_name: null,
     email_address: null,
     phone_number: null,
-    bloodGroup: null,
 }
 
 const signUpOtpInitialValues = {

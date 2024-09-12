@@ -25,6 +25,7 @@ function BloodPersonalDetails({ state }): React.ReactElement {
         age: '',
         gender: "",
         address: "",
+        email_address: "",
         phone_number: ""
     })
     const router = useRouter()
@@ -39,7 +40,8 @@ function BloodPersonalDetails({ state }): React.ReactElement {
                 age: bloodRequestFirstPhase.age,
                 gender: bloodRequestFirstPhase.gender,
                 address: bloodRequestFirstPhase.address,
-                phone_number: bloodRequestFirstPhase.phone_number
+                phone_number: bloodRequestFirstPhase.phone_number,
+                email_address: bloodRequestFirstPhase.email_address,
             })
         }
     }, [])
@@ -55,6 +57,7 @@ function BloodPersonalDetails({ state }): React.ReactElement {
 
             sessionStorage.setItem(SessionStorageKeys.BloodRequestFormPhase, JSON.stringify({
                 address: val.address,
+                email_address: val.email_address,
                 age: val.age,
                 gender: val.gender,
                 patient_name: val.patient_name,
@@ -123,6 +126,11 @@ function BloodPersonalDetails({ state }): React.ReactElement {
                                 <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
                                 <Field type="text" id="phone_number" name="phone_number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter phone number" />
                                 <ErrorMessage name="phone_number" component="div" className="errorMessage" />
+                            </div>
+                            <div className="mb-5">
+                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
+                                <Field type="text" id="email_address" name="email_address" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter email address" />
+                                <ErrorMessage name="email_address" component="div" className="errorMessage" />
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>

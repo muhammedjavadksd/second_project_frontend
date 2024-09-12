@@ -76,20 +76,7 @@ function SignUpStart({ state }) {
                                     <ErrorMessage className="text-red-700" component="div" id='phone_number' name='phone_number'></ErrorMessage>
                                 </div>
                             </div>
-                            <div className="mb-5">
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter blood group</label>
-                                <Field as="select" name="bloodGroup" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" >
-                                    <option value="" label="Select blood group" />
-                                    {
-                                        const_data.BLOOD_GROUPS.map((bg) => {
-                                            return (
-                                                <option value={bg} label={bg} />
-                                            )
-                                        })
-                                    }
-                                </Field>
-                                <ErrorMessage className="text-red-700" component="div" name="bloodGroup" />
-                            </div>
+
 
 
                             <div className='flex gap-3'>

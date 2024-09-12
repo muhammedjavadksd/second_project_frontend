@@ -9,7 +9,7 @@ function ModelItem({ children, isOpen, onClose, ZIndex, closeOnOutSideClock }) {
     }, [isOpen])
 
     function closeThisModel(): void {
-        setModelOpen(false)
+        // setModelOpen(false)
         onClose()
     }
 

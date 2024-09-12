@@ -44,7 +44,8 @@ interface FundRaiserResponse {
     district: string,
     full_address: string,
     pincode: number,
-    state: string
+    state: string,
+    deadline: Date
 }
 
 

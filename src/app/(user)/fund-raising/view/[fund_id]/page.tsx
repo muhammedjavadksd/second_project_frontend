@@ -4,14 +4,20 @@ import FundRaiserComment from '@/component/FundRaiser/FundRaiserComment'
 import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
 import SuccessBanner from '@/component/FundRaiser/SuccessBanner'
 import Header from '@/component/Header/Header'
+import FundPaymentModel from '@/component/Payment/FundRaiserPaymentModel'
 import FundRaiserCommentSection from '@/component/section/FundRaiser/FundRaiserCommentSection'
 import FundRaiserSlider from '@/component/section/Home/FundRaiserSlider'
 import AvatarIcon from '@/component/Util/avatarIcon'
+import CustomeConfirmUI from '@/component/Util/ConfirmUI'
+import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
 import EmptyScreen from '@/component/Util/EmptyScreen'
 import Footer from '@/component/Util/Footer'
+import LoadImage from '@/component/Util/ImageLoading'
+import ModelItem from '@/component/Util/ModelItem'
 import PaginationSection from '@/component/Util/PaginationSection'
 import SectionTitle from '@/component/Util/SectionTitle'
 import SliderComponent from '@/component/Util/SliderComponent'
+import SpalshScreen from '@/component/Util/SplashScreen'
 import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
 import { getPaginatedComments, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
@@ -28,6 +34,7 @@ import Link from 'next/link'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 // import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
 import React, { useEffect, useState } from 'react'
+import { confirmAlert } from 'react-confirm-alert'
 
 function ViewFundRaising(): React.ReactElement {
 
@@ -43,6 +50,8 @@ function ViewFundRaising(): React.ReactElement {
 
   const [matchedProfile, setMatchedProfile] = useState<FundRaiserResponse[]>([])
   const [fundRaiserProfile, setProfile] = useState<FundRaiserResponse>(null)
+
+  const [isDonationOpen, openDonationForm] = useState<boolean>(false)
 
 
 
@@ -83,15 +92,34 @@ function ViewFundRaising(): React.ReactElement {
 
 
 
+  if (!fundRaiserProfile) {
+    return <SpalshScreen />
+  }
 
-
+  const collectedPercentage = (+fundRaiserProfile.collected) / (fundRaiserProfile.amount) * 100
+  const dateLeft = new Date(fundRaiserProfile.deadline).getDate() - new Date().getDate()
 
 
 
   return (
     <>
       <div>
+
         <Header />
+        <ModelItem ZIndex={10} closeOnOutSideClock={true} isOpen={isDonationOpen} onClose={() => {
+          confirmAlert({
+            title: "Are you sure want to cancel donation?",
+            message: "cancel donation?",
+            customUI: ({ onClose, title }) => {
+              return <DangerUIConfirm onClose={onClose} onConfirm={() => {
+                openDonationForm(false)
+                onClose()
+              }} title={title}></DangerUIConfirm>
+            }
+          })
+        }} >
+          <FundPaymentModel fund_id={fundRaiserProfile.fund_id} />
+        </ModelItem>
         {success && (
           <SuccessBanner title={"Congrats! Your fundraiser is now active and you can begin receiving donations."} shareURL={`${window.location.host}/fund-raising/view/${fund_id}`}></SuccessBanner>
         )}
@@ -103,14 +131,24 @@ function ViewFundRaising(): React.ReactElement {
               This fundraiser is in an urgent need of funds
             </div>
           </div>
+          {/* {
+            fundRaiserProfile.collected <= 0 && (
+              <div className='flex justify-center mt-5'>
+                <div className="alert bg-orange-300 rounded-md text-black p-3 text-center mb-5">
+                  Be the first person to donate {fundRaiserProfile.full_name} and be the example for others
+                </div>
+              </div>
+            )
+          } */}
+
           <div className='mb-8 block'>
-            <h2 className='text-center  mt-5 text-4xl font-bold text-gray-700'>Help Save Little Rudra's Life From Leukaemia!</h2>
+            <h2 className='text-center  mt-5 text-4xl font-bold text-gray-700'>Help {fundRaiserProfile.full_name} for their {fundRaiserProfile.category}</h2>
           </div>
           <div className='mt-5'>
             <div className='flex gap-10 mt-5'>
               <div className='w-3/4 mb-5'>
                 <div className='bg-white shadow rounded-sm'>
-                  <img className='w-full' src='https://kettocdn.gumlet.io/media/campaign/918000/918777/image/66a305756fc51.jpg?w=768&dpr=2.0'></img>
+                  <LoadImage className='w-full' imageurl={`${fundRaiserProfile.picture[0]}`} />
 
 
                   <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
@@ -161,17 +199,27 @@ function ViewFundRaising(): React.ReactElement {
               </div>
               <div className='w-1/4'>
                 <div className='flex flex-col'>
-                  <button className='w-full font-medium text-white p-3 text-lg bg-green-400 rounded-lg'>Donate Now</button>
-                  <button className='w-full font-medium text-white p-3 text-lg bg-blue-600 mt-3 rounded-lg'><i className="fa-brands fa-square-facebook"></i> Spred  via Facebook</button>
+
+                  <button onClick={() => openDonationForm(true)} className='w-full font-medium text-white p-3 text-lg bg-green-400 rounded-lg'>Donate Now</button>
+
+                  <div className="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="" data-size="">
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" className="flex gap-5  items-center justify-center w-full font-medium text-white p-3 text-lg bg-blue-600 mt-3 rounded-lg">
+                      <i className="fa-brands fa-square-facebook"></i>
+                      Spred  via Facebook
+                    </a>
+                  </div>
+                  <div id="fb-root"></div>
+
+                  {/* <button className='w-full font-medium text-white p-3 text-lg bg-blue-600 mt-3 rounded-lg'><i className="fa-brands fa-square-facebook"></i> Spred  via Facebook</button> */}
                   <button className='w-full font-medium text-white p-3 text-lg bg-green-900 mt-3 rounded-lg'><i className="fa-brands fa-square-whatsapp"></i> Spred  via Whatsapp</button>
                   <p className='mt-2'>Every Social media share can bring ₹5000</p>
                 </div>
                 <div className='mt-3'>
-                  <h4 className='text-3xl font-medium'>{const_data.MONEY_ICON}34,000 </h4>
-                  <p>Raised of {const_data.MONEY_ICON}20,000,0000</p>
+                  <h4 className='text-3xl font-medium'>{const_data.MONEY_ICON}{fundRaiserProfile.amount} </h4>
+                  <p>We have collected {const_data.MONEY_ICON}{fundRaiserProfile.collected}</p>
                 </div>
                 <div className='raisingRange shadow h-3 mt-3 rounded-lg w-full bg-green-300'>
-                  <div style={{ width: "80%" }} className='rounded-lg bg-green-500 h-full'></div>
+                  <div style={{ width: `${collectedPercentage}%`, minWidth: "10px" }} className='rounded-lg bg-green-500 h-full'></div>
                 </div>
 
 
@@ -180,8 +228,9 @@ function ViewFundRaising(): React.ReactElement {
                   <span className="raised supporters ng-star-inserted  text-gray-500">
                     <span className='text-2xl font-bold text-black'>705</span> supporters
                   </span>
+
                   <span className="raised supporters ng-star-inserted text-gray-500">
-                    <span className='text-2xl font-bold text-black'>18 </span>  Days Left
+                    <span className='text-2xl font-bold text-black'>{dateLeft} </span>  Days Left
                   </span>
 
                 </div>
@@ -310,6 +359,8 @@ function ViewFundRaising(): React.ReactElement {
 
         <Footer />
       </div>
+      <div className="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="" data-size=""><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" className="fb-xfbml-parse-ignore">Share</a></div>
+
     </>
   )
 }
