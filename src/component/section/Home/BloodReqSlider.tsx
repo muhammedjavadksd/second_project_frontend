@@ -33,7 +33,7 @@ function BloodReqSlider() {
 
             <SectionTitle title={"Donate your"} focus_text={"blood"} sub_title={"Be the reason for someone's life"}></SectionTitle>
 
-            <SliderComponent arrow={true} isGap={true} slidesToScroll={1} slidesToShow={4} dots={true} >
+            <SliderComponent arrow={true} isGap={true} slidesToScroll={1} slidesToShow={4} dots={false} >
                 {
                     reqList.map((each) => {
                         return (

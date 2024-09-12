@@ -13,6 +13,7 @@ import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
 import EmptyScreen from '@/component/Util/EmptyScreen'
 import Footer from '@/component/Util/Footer'
 import LoadImage from '@/component/Util/ImageLoading'
+import ImageModel from '@/component/Util/ImageModel'
 import ModelItem from '@/component/Util/ModelItem'
 import PaginationSection from '@/component/Util/PaginationSection'
 import SectionTitle from '@/component/Util/SectionTitle'
@@ -22,7 +23,7 @@ import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
 import { getPaginatedComments, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
-import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
+import { formatDateToMonthNameAndDate, isUrgentFundRaiser } from '@/util/data/helper/utilHelper'
 import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import { onCommentPost } from '@/util/external/yup/formSubmission'
 import { FundRaiserResponse, ICommentsResponse, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
@@ -47,6 +48,21 @@ function ViewFundRaising(): React.ReactElement {
   const { fund_id } = useParams();
   const [commentsList, setCommentsList] = useState<ISingleCommentsResponse[]>([])
   const [totalRecords, setRecordList] = useState<number>(0)
+
+  const [focusModelImage, setFocusImage] = useState(null);
+
+  const [fundRaiserPictures, setPictures] = useState<string[]>([
+    'https://kettocdn.gumlet.io/media/campaign/916000/916659/image/665332ae198ea.jpg?w=768&dpr=2.0',
+    'https://kettocdn.gumlet.io/media/campaign/916000/916659/image/66533291141c6.jpg?w=768&dpr=2.0',
+    'https://kettocdn.gumlet.io/media/campaigns/916000/916659/image/U2AaNvabyw1vsfUsucs39AVTxAvQ8Q6zz0h9kji3.jpg?w=768&dpr=2.0'
+  ])
+
+  const [fundRaiserDocuments, setDocuments] = useState<string[]>([
+    'https://kettocdn.gumlet.io/media/campaign/916000/916659/image/665332ae198ea.jpg?w=768&dpr=2.0',
+    'https://kettocdn.gumlet.io/media/campaign/916000/916659/image/66533291141c6.jpg?w=768&dpr=2.0',
+    'https://kettocdn.gumlet.io/media/campaigns/916000/916659/image/U2AaNvabyw1vsfUsucs39AVTxAvQ8Q6zz0h9kji3.jpg?w=768&dpr=2.0'
+  ])
+  const [focusPicture, setFocusPictures] = useState<string>(fundRaiserPictures[0])
 
   const [matchedProfile, setMatchedProfile] = useState<FundRaiserResponse[]>([])
   const [fundRaiserProfile, setProfile] = useState<FundRaiserResponse>(null)
@@ -78,6 +94,7 @@ function ViewFundRaising(): React.ReactElement {
     if (findProfile) {
       setProfile(findProfile);
       findMatchedProfile(findProfile.category);
+      // setPictures(findProfile.picture)
     } else {
       console.log("No profile");
     }
@@ -104,6 +121,8 @@ function ViewFundRaising(): React.ReactElement {
   return (
     <>
       <div>
+        <ImageModel ZIndex='99' imageURL={focusModelImage} isOpen={!!focusModelImage} onImageClose={() => setFocusImage(null)}></ImageModel>
+
 
         <Header />
         <ModelItem ZIndex={10} closeOnOutSideClock={true} isOpen={isDonationOpen} onClose={() => {
@@ -125,12 +144,14 @@ function ViewFundRaising(): React.ReactElement {
         )}
 
         <div className='container mx-auto'>
-          <div className='flex justify-center mt-5'>
-            <div style={{ backgroundColor: "#fff2e5" }} className='flex gap-5 text-base rounded-lg p-2 pl-10 pe-10 text-center text-red-900'>
-              <svg _ngcontent-my-app-c207="" xmlns="http://www.w3.org/2000/svg" width="20" height="20" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 297 297" className="ng-tns-c207-0"><g _ngcontent-my-app-c207="" className="ng-tns-c207-0"><path _ngcontent-my-app-c207="" d="M259.352,219.903H37.647c-5.485,0-9.933,4.447-9.933,9.933v41.586c0,5.486,4.447,9.934,9.933,9.934h221.705 c5.485,0,9.933-4.447,9.933-9.934v-41.586C269.285,224.351,264.838,219.903,259.352,219.903z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M47.58,164.191c0-5.485-4.447-9.934-9.934-9.934H9.934c-5.486,0-9.934,4.448-9.934,9.934c0,5.485,4.447,9.933,9.934,9.933 h27.713C43.133,174.124,47.58,169.677,47.58,164.191z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M58.335,88.046c1.938,1.94,4.481,2.91,7.023,2.91s5.084-0.97,7.023-2.909c3.88-3.878,3.88-10.168,0.001-14.047 L58.525,60.141c-3.876-3.879-10.166-3.879-14.047-0.001c-3.88,3.879-3.88,10.168-0.001,14.047L58.335,88.046z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M231.641,90.956c2.542,0,5.085-0.97,7.023-2.91l13.857-13.859c3.879-3.879,3.879-10.168-0.001-14.047 c-3.879-3.88-10.169-3.879-14.047,0.001L224.616,74c-3.879,3.879-3.879,10.169,0.001,14.047 C226.557,89.986,229.098,90.956,231.641,90.956z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M287.066,154.258h-27.714c-5.486,0-9.934,4.448-9.934,9.934c0,5.485,4.447,9.933,9.934,9.933h27.714 c5.486,0,9.934-4.447,9.934-9.933C297,158.706,292.553,154.258,287.066,154.258z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M148.499,63.234c5.485,0,9.934-4.447,9.934-9.934V25.578c0-5.486-4.448-9.934-9.934-9.934 c-5.485,0-9.933,4.447-9.933,9.934v27.723C138.566,58.787,143.014,63.234,148.499,63.234z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M241.573,164.191c0-51.336-41.753-93.102-93.073-93.102s-93.073,41.766-93.073,93.102v33.169c0,4.95,4.05,9,9,9h168.146 c4.95,0,9-4.05,9-9V164.191z" fill="#c1272d" className="ng-tns-c207-0"></path></g></svg>
-              This fundraiser is in an urgent need of funds
+          {
+            isUrgentFundRaiser(fundRaiserProfile?.deadline) && <div className='flex justify-center mt-5'>
+              <div style={{ backgroundColor: "#fff2e5" }} className='flex gap-5 text-base rounded-lg p-2 pl-10 pe-10 text-center text-red-900'>
+                <svg _ngcontent-my-app-c207="" xmlns="http://www.w3.org/2000/svg" width="20" height="20" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 297 297" className="ng-tns-c207-0"><g _ngcontent-my-app-c207="" className="ng-tns-c207-0"><path _ngcontent-my-app-c207="" d="M259.352,219.903H37.647c-5.485,0-9.933,4.447-9.933,9.933v41.586c0,5.486,4.447,9.934,9.933,9.934h221.705 c5.485,0,9.933-4.447,9.933-9.934v-41.586C269.285,224.351,264.838,219.903,259.352,219.903z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M47.58,164.191c0-5.485-4.447-9.934-9.934-9.934H9.934c-5.486,0-9.934,4.448-9.934,9.934c0,5.485,4.447,9.933,9.934,9.933 h27.713C43.133,174.124,47.58,169.677,47.58,164.191z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M58.335,88.046c1.938,1.94,4.481,2.91,7.023,2.91s5.084-0.97,7.023-2.909c3.88-3.878,3.88-10.168,0.001-14.047 L58.525,60.141c-3.876-3.879-10.166-3.879-14.047-0.001c-3.88,3.879-3.88,10.168-0.001,14.047L58.335,88.046z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M231.641,90.956c2.542,0,5.085-0.97,7.023-2.91l13.857-13.859c3.879-3.879,3.879-10.168-0.001-14.047 c-3.879-3.88-10.169-3.879-14.047,0.001L224.616,74c-3.879,3.879-3.879,10.169,0.001,14.047 C226.557,89.986,229.098,90.956,231.641,90.956z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M287.066,154.258h-27.714c-5.486,0-9.934,4.448-9.934,9.934c0,5.485,4.447,9.933,9.934,9.933h27.714 c5.486,0,9.934-4.447,9.934-9.933C297,158.706,292.553,154.258,287.066,154.258z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M148.499,63.234c5.485,0,9.934-4.447,9.934-9.934V25.578c0-5.486-4.448-9.934-9.934-9.934 c-5.485,0-9.933,4.447-9.933,9.934v27.723C138.566,58.787,143.014,63.234,148.499,63.234z" fill="#c1272d" className="ng-tns-c207-0"></path><path _ngcontent-my-app-c207="" d="M241.573,164.191c0-51.336-41.753-93.102-93.073-93.102s-93.073,41.766-93.073,93.102v33.169c0,4.95,4.05,9,9,9h168.146 c4.95,0,9-4.05,9-9V164.191z" fill="#c1272d" className="ng-tns-c207-0"></path></g></svg>
+                This fundraiser is in an urgent need of funds
+              </div>
             </div>
-          </div>
+          }
           {/* {
             fundRaiserProfile.collected <= 0 && (
               <div className='flex justify-center mt-5'>
@@ -148,7 +169,21 @@ function ViewFundRaising(): React.ReactElement {
             <div className='flex gap-10 mt-5'>
               <div className='w-3/4 mb-5'>
                 <div className='bg-white shadow rounded-sm'>
-                  <LoadImage className='w-full' imageurl={`${fundRaiserProfile.picture[0]}`} />
+                  <div>
+                    <LoadImage className='w-full' imageurl={focusPicture} />
+                    <ul className='flex gap-5 bg-white shadow-lg py-5 ml-5'>
+                      {
+                        fundRaiserPictures.map((pic) => {
+                          return (
+                            <li onClick={() => setFocusPictures(pic)} className={pic == focusPicture && 'border-b-4 border-s-4 border-t-4 border-e-4 border-blue-600'}>
+                              <LoadImage className="w-20" imageurl={pic}></LoadImage>
+                            </li>
+                          )
+                        })
+                      }
+                    </ul>
+
+                  </div>
 
 
                   <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
@@ -187,7 +222,20 @@ function ViewFundRaising(): React.ReactElement {
                       </div>
                     </TabItem>
                     <TabItem keyid={2} isShow={tabListing == FundRaiserTabItems.DOCUMENT}>
-                      <h4>Document's</h4>
+                      <div>
+                        <h4 className='text-center text-2xl font-bold mb-3'>Document's</h4>
+                        <ul>
+                          {
+                            fundRaiserDocuments.map((each) => {
+                              return (
+                                <li className='cursor-pointer mb-5' onClick={() => setFocusImage(each)}>
+                                  <LoadImage imageurl={each} className="w-full" />
+                                </li>
+                              )
+                            })
+                          }
+                        </ul>
+                      </div>
                     </TabItem>
 
                     <TabItem keyid={4} isShow={tabListing == FundRaiserTabItems.COMMENT}>

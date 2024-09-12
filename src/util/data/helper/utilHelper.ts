@@ -32,3 +32,13 @@ export function getMainCategory(): string[] {
 export function getSubCategory(parentCategory): string[] {
     return const_data.FUNDRAISER_CATEGORY[parentCategory] ?? []
 }
+
+export function isUrgentFundRaiser(deadLine: Date) {
+    const todayDate = new Date();
+    todayDate.setDate(todayDate.getDate() + 10);
+    if (deadLine < todayDate) {
+        return true
+    } else {
+        return false
+    }
+}
