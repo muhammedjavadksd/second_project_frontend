@@ -1,4 +1,5 @@
 import const_data from "../const"
+import LoadImage from '@/component/Util/ImageLoading'
 
 export function objectToUrlQuery(object) {
     let query = new URLSearchParams(object)
@@ -41,4 +42,16 @@ export function isUrgentFundRaiser(deadLine: Date) {
     } else {
         return false
     }
+}
+
+export function findNameAvatar(name: string) {
+
+    let avatar = "";
+    const split = name.split(" ");
+    avatar = split[0].charAt(0)
+    const charTwo = split[1] ? split[1].charAt(0) : ""
+    if (charTwo) {
+        avatar = avatar.concat(charTwo)
+    }
+    return avatar
 }

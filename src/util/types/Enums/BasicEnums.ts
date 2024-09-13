@@ -62,11 +62,19 @@ enum BloodGroup {
     O_NEGATIVE = "O-"
 }
 
+enum BloodCloseCategory {
+    FULFILLED = "Fulfilled the request",
+    MEDICAL_CONDITION_CHANGE = "Medical Condition Change",
+    ERROR_IN_REQUEST = "Error in Request",
+    POSTPONED = "Postponed",
+    UNABLE_TO_ARRANGE_DONORS = "Unable to Arrange Donors",
+    CHANGE_IN_TREATMENT_PLAN = "Change in Treatment Plan"
+}
 
 enum BloodStatus {
     Pending = 'pending',
-    Cancelled = "cancelled",
-    Completed = "completed"
+    Closed = "closed",
+    Approved = "approved",
 }
 
 enum StatusCode {
@@ -142,4 +150,9 @@ enum TicketCategory {
     Other = "Other"
 }
 
-export { ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }
+enum TicketChatFrom {
+    Admin = "Admin",
+    User = "User"
+}
+
+export { BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

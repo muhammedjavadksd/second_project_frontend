@@ -51,7 +51,6 @@ function ChatUsersList() {
                             <p className="text-gray-800 dark:text-gray-100 font-semibold">{user.chat_person.first_name.concat(" ", user.chat_person.last_name)}</p>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 {user?.messages?.last_message?.slice(0, 25)}
-
                             </p>
                         </div>
                         <span>

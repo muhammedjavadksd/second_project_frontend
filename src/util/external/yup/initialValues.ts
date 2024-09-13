@@ -69,6 +69,7 @@ const bloodDonationFormInitialValues = {
 
 const fundRaiserBankAccoutInitialValues = {
     account_number: '',
+    re_account_number: "",
     ifsc_code: '',
     holder_name: "",
     account_type: "",
@@ -83,4 +84,9 @@ const fundRaisePaymentInitialValues = {
     hide_profile: false
 }
 
-export { fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }
+const closeBloodRequirementInitialValues = {
+    category: "",
+    explanation: ""
+}
+
+export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue }

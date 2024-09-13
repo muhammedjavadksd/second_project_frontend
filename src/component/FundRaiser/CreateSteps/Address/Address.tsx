@@ -35,6 +35,7 @@ function Address({ state }) {
         district: selectData.district,
         fullAddress: selectData.fullAddress,
       })
+      setDistrict(const_data.STATE_WITH_DISTRICT[selectData.state])
     }
   }, [])
 

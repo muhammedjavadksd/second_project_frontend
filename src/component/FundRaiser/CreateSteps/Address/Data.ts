@@ -4,7 +4,7 @@ import * as yup from 'yup'
 
 const addressInitialValues: IAddressFormInitialValues = {
     city: '',
-    pinCode: 0,
+    pinCode: null,
     state: '',
     district: '',
     fullAddress: '',

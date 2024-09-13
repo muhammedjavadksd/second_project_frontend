@@ -1,4 +1,4 @@
-import { BloodGroup, BloodStatus, Relationship } from "../Enums/BasicEnums"
+import { BloodCloseCategory, BloodGroup, BloodStatus, Relationship } from "../Enums/BasicEnums"
 
 interface Sample {
     name: string
@@ -24,6 +24,10 @@ interface IBloodReq {
     phoneNumber: number
     is_closed: boolean,
     intrest_submission?: []
+    close_details?: {
+        category: BloodCloseCategory,
+        explanation: string
+    }
 }
 
 interface LocatedAt {

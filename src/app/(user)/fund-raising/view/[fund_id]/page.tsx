@@ -21,12 +21,12 @@ import SliderComponent from '@/component/Util/SliderComponent'
 import SpalshScreen from '@/component/Util/SplashScreen'
 import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
-import { getPaginatedComments, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
+import { findDonationHistroyApi, getPaginatedComments, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
-import { formatDateToMonthNameAndDate, isUrgentFundRaiser } from '@/util/data/helper/utilHelper'
+import { findNameAvatar, formatDateToMonthNameAndDate, isUrgentFundRaiser } from '@/util/data/helper/utilHelper'
 import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import { onCommentPost } from '@/util/external/yup/formSubmission'
-import { FundRaiserResponse, ICommentsResponse, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
+import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
 import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
 import { PaginatedApi } from '@/util/types/InterFace/UtilInterface'
 import { Field, Form, Formik } from 'formik'
@@ -68,9 +68,41 @@ function ViewFundRaising(): React.ReactElement {
   const [fundRaiserProfile, setProfile] = useState<FundRaiserResponse>(null)
 
   const [isDonationOpen, openDonationForm] = useState<boolean>(false)
+  const [aboutContent, setAboutContent] = useState(null)
+  const [donationHistory, setDonationHistroy] = useState<IDonateHistoryTemplate[]>([])
+  const [totalDonated, setDonatedCount] = useState<number>(0)
+
+  async function findDonationHistory() {
+    const history = await findDonationHistroyApi(2, 1, fund_id.toString());
+    setDonationHistroy(history.paginated)
+    setDonatedCount(history.total_records)
+  }
 
 
 
+  function aboutDescription(description: string) {
+
+    console.log("this man");
+
+    const words = description.split(' ');
+    alert("hhhh")
+
+
+    // Create an array to hold the text and images
+    const contentArray = words.map(word => ({ type: 'text', content: word }));
+
+    // Insert images at random positions
+    fundRaiserPictures.map(imageUrl => {
+      const position = Math.floor(Math.random() * contentArray.length);
+      contentArray.splice(position, 0, { type: 'image', content: imageUrl });
+    });
+
+    setAboutContent(contentArray);
+    console.log("Content array");
+
+    console.log(contentArray);
+
+  }
 
   async function findMatchedProfile(category) {
     try {
@@ -81,6 +113,7 @@ function ViewFundRaising(): React.ReactElement {
       if (response.status) {
         const { profile } = response.data;
         setMatchedProfile(profile)
+
       }
     } catch (e) {
 
@@ -93,6 +126,8 @@ function ViewFundRaising(): React.ReactElement {
     const findProfile: FundRaiserResponse | boolean = await getSingleActiveFundRaiser(fund_id.toString());
     if (findProfile) {
       setProfile(findProfile);
+      findDonationHistory()
+      // aboutDescription(findProfile.description)
       findMatchedProfile(findProfile.category);
       // setPictures(findProfile.picture)
     } else {
@@ -104,6 +139,7 @@ function ViewFundRaising(): React.ReactElement {
 
   useEffect(() => {
     findFundRaiserProfile()
+
   }, [])
 
 
@@ -203,22 +239,7 @@ function ViewFundRaising(): React.ReactElement {
                     <TabItem keyid={1} isShow={tabListing == FundRaiserTabItems.ABOUT}>
                       <div style={{ height: "600px" }} className='overflow-auto'>
                         <h4 className='text-center text-2xl font-medium mb-3'>About the Fundraiser</h4>
-
-                        <div className='mb-5'>
-                          <p>Six years ago, when Rudra was born, the celebrations were unending. Everybody showered their blessings on him.
-                            Yet today, my little nephew is courageously fighting a terrifying battle for a six-year-old boy.</p>
-                          <img className='w-full rounded-lg mt-5' src='https://kettocdn.gumlet.io/media/campaign/625000/625122/image/62ed23fbb170e.jpg?w=700&dpr=2.0'></img>
-                        </div>
-                        <div className='mb-5'>
-                          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                          </p>
-                          <img className='w-full rounded-lg mt-5' src='https://kettocdn.gumlet.io/media/campaign/625000/625122/image/62ed240eb9e70.jpg?w=700&dpr=2.0'></img>
-                        </div>
-                        <div className='mb-5'>
-                          <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-                            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
-                          <img className='w-full rounded-lg mt-5' src='https://kettocdn.gumlet.io/media/campaign/625000/625122/image/62ed2409dadcf.jpg?w=700&dpr=2.0'></img>
-                        </div>
+                        {/* {aboutDescriptipn("Could you please consider making a donation to support my Myself? Your contribution would greatly assist in the area of Education. Thank you for your generosity.Could you please consider making a donation to support my Myself? Your contribution would greatly assist in the area of Education. Thank you for your generosity.Could you please consider making a donation to support my Myself? Your contribution would greatly assist in the area of Education. Thank you for your generosity.", fundRaiserPictures)} */}
                       </div>
                     </TabItem>
                     <TabItem keyid={2} isShow={tabListing == FundRaiserTabItems.DOCUMENT}>
@@ -341,45 +362,34 @@ function ViewFundRaising(): React.ReactElement {
                 <div className="flex flex-col mt-5  bg-white shadow-lg rounded-lg">
                   <div className="px-5 py-5">
                     <div className="text-1xl font-bold text-left">
-                      705 Supporters
+                      {totalDonated} Supporters
                     </div>
                   </div>
                   <div className="w-full h-px bg-gray-300 "></div>
-                  <div className="flex flex-col items-center">
-                    <div className="flex p-3 items-center w-full justify-start mb-2">
-                      <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">
-                        <strong>MR</strong>
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-lg font-semibold text-gray-800 capitalize">
-                          Mahendar Reddy
+                  {
+                    donationHistory.map((histroy) => {
+                      return (
+                        <div className="flex flex-col items-center">
+                          <div className="flex p-3 items-center w-full justify-start mb-2">
+                            <div className="w-16 h-12 flex items-center justify-center bg-gray-200 rounded-full">
+                              <strong>{findNameAvatar(histroy.name)}</strong>
+                            </div>
+                            <div className="ml-4 w-full">
+                              <div className="text-lg font-semibold text-gray-800 capitalize">
+                                {histroy.name}
+                              </div>
+                              <div className="gap-1 flex items-center w-full mt-1 text-gray-600">
+                                <span className="material-icons text-base">{const_data.MONEY_ICON}{histroy.amount}</span>
+                                on
+                                <span className="ml-1 font-bold">{formatDateToMonthNameAndDate(histroy.date)}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="w-full h-px bg-gray-300 "></div>
                         </div>
-                        <div className="flex items-center mt-1 text-gray-600">
-                          <span className="material-icons text-base">{const_data.MONEY_ICON}10,000</span>
-                          <span className="ml-1">Hyderabad</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-full h-px bg-gray-300 "></div>
-
-
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <div className="flex p-3 items-center w-full justify-start mb-2">
-                      <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">
-                        <strong>MR</strong>
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-lg font-semibold text-gray-800 capitalize">
-                          Mahendar Reddy
-                        </div>
-                        <div className="flex items-center mt-1 text-gray-600">
-                          <span className="material-icons text-base">{const_data.MONEY_ICON}10,000</span>
-                          <span className="ml-1">Hyderabad</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                      )
+                    })
+                  }
                 </div>
 
 

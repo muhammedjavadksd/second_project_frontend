@@ -21,6 +21,7 @@ function FundRaiserBankAccount({ state }) {
         if (selectData.account_number) {
             setInitialValues({
                 account_number: selectData.account_number,
+                re_account_number: selectData.re_account_number,
                 ifsc_code: selectData.ifsc_code,
                 holder_name: selectData.holder_name,
                 account_type: selectData.account_type,
@@ -51,9 +52,16 @@ function FundRaiserBankAccount({ state }) {
 
                         <div className="mb-5">
                             <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Account number</label>
-                            <Field type="text" id="account_number" name="account_number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter account number" />
+                            <Field type="password" id="account_number" name="account_number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter account number" />
                             <ErrorMessage name="account_number" component="div" className="errorMessage" />
                         </div>
+
+                        <div className="mb-5">
+                            <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Re Enter Account number</label>
+                            <Field type="text" id="re_account_number" name="re_account_number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Re enter account number" />
+                            <ErrorMessage name="re_account_number" component="div" className="errorMessage" />
+                        </div>
+
                         <div className="mb-5">
                             <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IFSC Code</label>
                             <Field type="text" id="ifsc_code" name="ifsc_code" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Enter IFSC code" />

@@ -3,7 +3,7 @@ import ChatUserProfile from "./ChatUserProfile";
 import SingleChat from "./SingleChat";
 
 
-function ChatComposition() {
+function ChatComposition({ chat_id }) {
     return (
         <>
             <div className="w-full flex">
@@ -11,7 +11,7 @@ function ChatComposition() {
                     <ChatUsersList></ChatUsersList>
                 </div>
                 <div className="w-2/4">
-                    <SingleChat />
+                    <SingleChat chat_id={chat_id} />
                 </div>
                 <div className="w-1/4">
                     <ChatUserProfile />

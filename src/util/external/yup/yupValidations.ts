@@ -1,6 +1,6 @@
 
 import const_data from '@/util/data/const'
-import { BloodGroup } from '@/util/types/Enums/BasicEnums'
+import { BloodCloseCategory, BloodGroup } from '@/util/types/Enums/BasicEnums'
 import * as yup from 'yup'
 
 const bloodDonatationFormValidation = yup.object().shape({
@@ -90,8 +90,9 @@ const validationSchema = yup.object().shape({
 
 
 const fundRaiserBankAccoutValidation = yup.object().shape({
-    account_number: yup.number().typeError("Please enter valid account number").required("Account number is required"),
-    ifsc_code: yup.string().typeError("Please enter valid IFSC code").required("IFSC code is required"),
+    account_number: yup.string().matches(/^\d{10,20}$/, "Bank account number must be between 10 and 20 digits").required("Bank account number is required"),
+    re_account_number: yup.string().oneOf([yup.ref('account_number')], "Account Numbers must match"),
+    ifsc_code: yup.string().matches(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Enter valid IFSC code").typeError("Please enter valid IFSC code").required("IFSC code is required"),
     holder_name: yup.string().typeError("Please enter valid holder name").required("Bank holder name is required"),
     account_type: yup.string().typeError("Please select valid account type").required("Account type is required"),
 })
@@ -108,5 +109,9 @@ const fundRaisePaymentValidation = yup.object().shape({
     hide_profile: yup.bool().typeError("Please enter valid profile status").required("Do you want to hide your profile?")
 })
 
+const closeBloodRequirementValidation = yup.object().shape({
+    category: yup.string().typeError("Please select valid category").oneOf(Object.values(BloodCloseCategory), "Please select valid category").required("Please select valid category"),
+    explanation: yup.string().typeError("Please enter valid explanation").required("Please enter valid explanation")
+})
 
-export { commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }
+export { closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }

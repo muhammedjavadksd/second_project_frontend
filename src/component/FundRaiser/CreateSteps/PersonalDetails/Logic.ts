@@ -46,6 +46,7 @@ async function onPersonalDetailsSubmit(val, successCB, errorCB, onNotLogged) {
                         description,
                         raiser_age,
                         raiser_name,
+                        deadline: deadline
                     }
                 }))
                 successCB()

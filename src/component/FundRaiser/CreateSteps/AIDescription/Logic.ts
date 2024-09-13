@@ -42,6 +42,9 @@ async function onDescriptionSubmit(val: IAIDescriptionInitialValues, successCB: 
 
     const { ai_description, currentApplication } = val
 
+
+
+
     if (user) {
         const token = user.token
 
@@ -49,14 +52,19 @@ async function onDescriptionSubmit(val: IAIDescriptionInitialValues, successCB: 
 
         try {
 
-            const requestAPI: AxiosResponse = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
+            const body = {
                 description: ai_description
-            }, {
+            }
+
+            const requestAPI: AxiosResponse = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, body, {
                 headers: {
                     "authorization": `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 },
             })
+
+
+
 
             console.log(currentApplication);
 

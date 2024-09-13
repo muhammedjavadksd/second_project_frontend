@@ -110,7 +110,7 @@ export async function addReplayComment(comment, fund_id, mention, replay_id, not
 export async function onBankAccountSubmit(values, successCB, errorCB) {
 
     try {
-        const { account_number, ifsc_code, holder_name, account_type, currentApplication } = values;
+        const { account_number, ifsc_code, holder_name, account_type, currentApplication, re_account_number } = values;
         const session = await getSession();
         const user = userDetailsFromGetSession(session, "user")
 
@@ -137,9 +137,10 @@ export async function onBankAccountSubmit(values, successCB, errorCB) {
                     store.dispatch(updateFundRaiseData({
                         data: {
                             account_number,
+                            re_account_number,
                             ifsc_code,
                             holder_name,
-                            account_type
+                            account_type,
                         }
                     }))
                 } else {

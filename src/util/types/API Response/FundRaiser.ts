@@ -46,8 +46,18 @@ interface FundRaiserResponse {
     pincode: number,
     state: string,
     deadline: Date
+    description: string
 }
 
+
+interface IDonateHistoryTemplate {
+    fund_id: String,
+    profile_id: String,
+    amount: number,
+    date: Date
+    donation_id: string,
+    name: string,
+}
 
 interface AxiosResponse {
     status: boolean,
@@ -55,4 +65,4 @@ interface AxiosResponse {
     data?: any
 }
 
-export type { ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse }
+export type { IDonateHistoryTemplate, ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse }

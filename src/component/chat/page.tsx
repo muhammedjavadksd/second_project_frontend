@@ -24,7 +24,7 @@ function ChatWithBloodDonors(): React.ReactElement {
         <>
             <div className="flex gap-5">
                 {/* <ChatScreen></ChatScreen> */}
-                <ChatComposition />
+                {/* <ChatComposition /> */}
             </div>
         </>
     )

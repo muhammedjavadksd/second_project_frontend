@@ -23,12 +23,16 @@ interface FundRaiseCreationBanner {
     subTitle: string
 }
 
+interface ITableKeyIndex {
+    as: Function,
+    key: string | string[]
+}
+
 interface ITableProps {
     headers: string[]
+    searchKeys: string[]
     data: object[],
-    onItemChecked: Function
-    onAllItemCheck: Function,
-    selectedItem: string[]
+    keyIndex: ITableKeyIndex[],
 }
 
 interface IStaticCard {

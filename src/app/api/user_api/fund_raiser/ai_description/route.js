@@ -70,11 +70,6 @@ export async function GET(request) {
         let description = fullResponse.substring(jsonStartIndex, jsonEndIndex);
 
 
-        // let description = Object.values(jsonData)[0]
-
-        // console.log("Reached here");
-
-
         console.log('Full Response:', description);
 
         return new Response(JSON.stringify({ status: true, data: description }), { status: 200 })
