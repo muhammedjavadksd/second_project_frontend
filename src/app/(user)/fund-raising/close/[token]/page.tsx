@@ -1,4 +1,6 @@
 "use client"
+import Header from "@/component/Header/Header";
+import Footer from "@/component/Util/Footer";
 import SpalshScreen from "@/component/Util/SplashScreen";
 import VerifyTokenError from "@/component/Util/VerifyTokenError";
 import VerifyTokenSuccess from "@/component/Util/VerifyTokenSuccess";
@@ -36,11 +38,13 @@ function CloseFundRaiser() {
 
     return (
         <Fragment>
+            <Header />
             {
                 verifyStatus == VerificationStatus.Waiting ? (
                     <SpalshScreen />
                 ) : (verifyStatus == VerificationStatus.Error ? <VerifyTokenError /> : <VerifyTokenSuccess />)
             }
+            <Footer />
         </Fragment>
     )
 }

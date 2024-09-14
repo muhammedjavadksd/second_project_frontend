@@ -10,6 +10,30 @@ import { IChatTemplate, ChatProfile, ProfileTicket } from "@/util/types/API Resp
 import { BloodCloseCategory, BloodDonationStatus, BloodStatus } from "@/util/types/Enums/BasicEnums";
 
 
+
+export async function closeFundRaise(fund_id: string): Promise<boolean> {
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "user");
+        const token = data.token;
+
+        const closeRequest = await API_axiosInstance.patch(`fund_raise/close/${fund_id}`, {}, {
+            headers: {
+                authorization: `Bearer ${token}`,
+            }
+        })
+        const response = closeRequest.data;
+        if (response.status) {
+            return true
+        } else {
+            return false
+        }
+    } catch (e) {
+        return false
+    }
+}
+
+
 export async function findMyBloodIntrest(page: number, limit: number, status: BloodDonationStatus): Promise<IPaginatedResponse<IBloodDonorForm[]>> {
 
     try {
@@ -378,12 +402,13 @@ export async function findPlaces(query: string) {
 }
 
 
-export async function findMyProfile(limit, page) {
+export async function findMyProfile(limit, page, status) {
     try {
         const session = await getSession();
         const user = userDetailsFromGetSession(session, "user");
         const { token } = user
-        const myProfile = await API_axiosInstance.get(`fund_raise/view/self/${limit}/${page}`, {
+        const query = status ? `${limit}/${page}/${status}` : `${limit}/${page}`
+        const myProfile = await API_axiosInstance.get(`fund_raise/view/self/${query}`, {
             headers: {
                 authorization: `Bearer ${token}`
             }
