@@ -10,14 +10,23 @@ function SliderComponent({ children, slidesToShow, slidesToScroll, dots = true, 
     let sliderRef = useRef(null);
 
     let settings = {
-        dots: dots,
+        // dots: dots,
+        // speed: 1000,
+        // slidesToShow,
+        // slidesToScroll,
+        // centerMode: true,
+        // initialSlide: -2,
+        // infinite: true,
+        dots: true,
+        infinite: false,
         speed: 500,
         slidesToShow,
         slidesToScroll,
-        centerMode: true,
-        initialSlide: -2,
-        infinite: true,
-        adaptiveHeight: false,
+        autoplay: true,
+        vertical: false,
+        verticalSwiping: false,
+        adaptiveHeight: true,
+        variableHeight: false
     };
 
 

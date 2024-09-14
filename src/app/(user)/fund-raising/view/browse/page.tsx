@@ -48,7 +48,7 @@ function AdvanceFundRaiserView() {
             objectFind.max = maxPrice;
         }
         const queryString = new URLSearchParams(objectFind).toString();
-        setQueryFilter(queryString)
+        setQueryFilter(queryString || "")
         setRefresh(!refresh)
     }, [categorySelect, subCategorySelect, stateSelect, urgentSelected, maxPrice, minPrice])
 

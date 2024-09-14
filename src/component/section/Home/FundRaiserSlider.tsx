@@ -30,10 +30,12 @@ function FundRaiserSlider({ profiles, exclude }: { profiles: FundRaiserResponse[
 
                 <SliderComponent arrow={true} isGap={true} slidesToScroll={1} slidesToShow={4} dots={false}>
                     {
-                        profiles.map((each) => {
+                        profiles.map((each, index) => {
                             if (each.fund_id != exclude) {
                                 return (
-                                    <FundRaiserSingleItem profile={each}></FundRaiserSingleItem>
+                                    <>
+                                        <FundRaiserSingleItem key={index} profile={each}></FundRaiserSingleItem>
+                                    </>
                                 )
                             }
                         })

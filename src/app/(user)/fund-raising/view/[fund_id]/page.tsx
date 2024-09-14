@@ -111,9 +111,11 @@ function ViewFundRaising(): React.ReactElement {
       const response = otherProfile.data;
       console.log(response);
 
+
+
       if (response.status) {
         const { profile } = response.data;
-        setMatchedProfile(profile)
+        setMatchedProfile(profile.paginated)
       } else {
 
       }
