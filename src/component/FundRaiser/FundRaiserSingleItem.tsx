@@ -3,6 +3,7 @@ import { FundRaiserResponse } from '@/util/types/API Response/FundRaiser';
 import Link from 'next/link';
 import React from 'react';
 import PublicImage from '../Util/PublicImage';
+import { generateFundRaiserTitle } from '@/util/data/helper/utilHelper';
 
 function FundRaiserSingleItem({ profile }: { profile: FundRaiserResponse }) {
 
@@ -38,7 +39,8 @@ function FundRaiserSingleItem({ profile }: { profile: FundRaiserResponse }) {
                 </div>
                 <Link href={`/fund-raising/view/${profile.fund_id}`}>
                     <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white hover:underline">
-                        {profile.full_name}'s Fund Raiser for {profile.category} in {profile.district}
+                        {/* {profile.full_name}'s Fund Raiser for {profile.category} in {profile.district} */}
+                        {generateFundRaiserTitle(profile)}
                     </h5>
                 </Link>
                 <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">

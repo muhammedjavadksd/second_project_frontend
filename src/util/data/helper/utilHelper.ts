@@ -1,3 +1,4 @@
+import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser"
 import const_data from "../const"
 import LoadImage from '@/component/Util/ImageLoading'
 
@@ -56,3 +57,7 @@ export function findNameAvatar(name: string) {
     return avatar
 }
 
+
+export function generateFundRaiserTitle(profile: FundRaiserResponse): string {
+    return `${profile.full_name}'s Fund Raiser for ${profile.category} in ${profile.district}`
+}
