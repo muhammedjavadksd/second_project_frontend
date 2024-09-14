@@ -1,14 +1,48 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq, { BloodProfile } from "@/util/types/API Response/Blood";
-import { IPaginatedResponse, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
+import { IBloodDonorForm, IPaginatedResponse, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodStatus } from "@/util/types/Enums/BasicEnums";
+import { BloodCloseCategory, BloodDonationStatus, BloodStatus } from "@/util/types/Enums/BasicEnums";
 
+
+export async function findMyBloodIntrest(page: number, limit: number, status: BloodDonationStatus): Promise<IPaginatedResponse<IBloodDonorForm[]>> {
+
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "user");
+        const token = data.token;
+        const bloodToken = data.blood_token;
+
+        const queryParam = status ? `${page}/${limit}/${status}` : `${page}/${limit}`
+
+        const bloodIntrest = await API_axiosInstance.get(`blood/interested_blood_requirements/${queryParam}`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+                bloodAuthorization: `Bearer ${bloodToken}`
+            }
+        })
+        const response = bloodIntrest.data;
+        if (response.status && response.data) {
+            return response.data
+        } else {
+            return {
+                paginated: [],
+                total_records: 0
+            }
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+
+}
 
 export async function closeBloodRequest(blood_id: string, category: BloodCloseCategory, explanation: string): Promise<boolean> {
 

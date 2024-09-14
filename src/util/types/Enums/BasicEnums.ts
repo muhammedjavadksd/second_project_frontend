@@ -70,6 +70,11 @@ enum BloodCloseCategory {
     UNABLE_TO_ARRANGE_DONORS = "Unable to Arrange Donors",
     CHANGE_IN_TREATMENT_PLAN = "Change in Treatment Plan"
 }
+enum BloodDonationStatus {
+    Approved = "Approved",
+    Rejected = "Rejected",
+    Pending = "Pending"
+}
 
 enum BloodStatus {
     Pending = 'pending',
@@ -155,4 +160,4 @@ enum TicketChatFrom {
     User = "User"
 }
 
-export { BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }
+export { BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode }

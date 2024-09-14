@@ -51,6 +51,15 @@ interface IOnGoingBloodRequest {
     phone_number: "",
 }
 
+interface IBloodDonate {
+    donor_id: string,
+    donation_id: string
+    date: Date,
+    status: BloodDonationStatus,
+    meet_expect: Date,
+    concerns: BloodDonationConcerns
+}
+
 interface IBloodDonorForm {
     donor_id: string
     setDonor: Function
@@ -220,4 +229,4 @@ interface IPaginatedResponse<T> {
     total_records: number
 }
 
-export type { IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }
+export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }

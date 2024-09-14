@@ -5,6 +5,7 @@ interface Sample {
 }
 
 interface ILocatedAt {
+    coordinates: [string, string]
     hospital_name: string,
     hospital_id: string
 }
