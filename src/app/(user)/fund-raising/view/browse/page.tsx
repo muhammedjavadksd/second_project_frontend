@@ -24,6 +24,8 @@ function AdvanceFundRaiserView() {
     const [subCategorySelect, setSelectedSubCategory] = useState(null)
     const [stateSelect, setSelectedState] = useState(null)
     const [urgentSelected, setUrgentSelected] = useState(null)
+    const [minPrice, setMin] = useState<number>(0)
+    const [maxPrice, setMax] = useState<number>(0)
 
     useEffect(() => {
         const objectFind: Record<string, any> = {};
@@ -39,10 +41,16 @@ function AdvanceFundRaiserView() {
         if (urgentSelected) {
             objectFind.urgency = urgentSelected;
         }
+        if (minPrice) {
+            objectFind.min = minPrice;
+        }
+        if (maxPrice) {
+            objectFind.max = maxPrice;
+        }
         const queryString = new URLSearchParams(objectFind).toString();
         setQueryFilter(queryString)
         setRefresh(!refresh)
-    }, [categorySelect, subCategorySelect, stateSelect, urgentSelected])
+    }, [categorySelect, subCategorySelect, stateSelect, urgentSelected, maxPrice, minPrice])
 
 
 
@@ -114,8 +122,8 @@ function AdvanceFundRaiserView() {
                         <div className="flex mt-3 items-center space-x-4">
                             {/* Min Value Input */}
                             <div className="flex flex-col">
-
                                 <input
+                                    onChange={(e) => setMin(e.target.valueAsNumber)}
                                     type="number"
                                     id="min-value"
                                     placeholder="Min"
@@ -127,6 +135,7 @@ function AdvanceFundRaiserView() {
                             <div className="flex flex-col">
 
                                 <input
+                                    onChange={(e) => setMax(e.target.valueAsNumber)}
                                     type="number"
                                     id="max-value"
                                     placeholder="Max"

@@ -63,7 +63,7 @@ function AIDescription({ state }) {
 
     function successCB(fund_id) {
         dispatch(clearFundRaiserData())
-        router.replace(`/fund-raising/view/${fund_id}?success=true`)
+        router.replace(`/fund-raising/view/${fund_id}?success=true&isForce=true`)
     }
 
     function errorCB(err) {

@@ -43,8 +43,10 @@ function ViewFundRaising(): React.ReactElement {
   const session = useSession();
   const userDetails = userDetailsFromUseSession(session, "user");
   const params = useSearchParams()
+  const router = useRouter()
 
   const success = params.get("success")
+  const isForce = params.get("isForce")
   const { fund_id } = useParams();
   const [commentsList, setCommentsList] = useState<ISingleCommentsResponse[]>([])
   const [totalRecords, setRecordList] = useState<number>(0)
@@ -85,7 +87,6 @@ function ViewFundRaising(): React.ReactElement {
     console.log("this man");
 
     const words = description.split(' ');
-    alert("hhhh")
 
 
     // Create an array to hold the text and images
@@ -113,17 +114,17 @@ function ViewFundRaising(): React.ReactElement {
       if (response.status) {
         const { profile } = response.data;
         setMatchedProfile(profile)
+      } else {
 
       }
     } catch (e) {
-
       console.log("error");
       console.log("Error");
     }
   }
 
   async function findFundRaiserProfile() {
-    const findProfile: FundRaiserResponse | boolean = await getSingleActiveFundRaiser(fund_id.toString());
+    const findProfile: FundRaiserResponse | boolean = await getSingleActiveFundRaiser(fund_id.toString(), isForce == "true");
     if (findProfile) {
       setProfile(findProfile);
       findDonationHistory()
@@ -132,6 +133,7 @@ function ViewFundRaising(): React.ReactElement {
       // setPictures(findProfile.picture)
     } else {
       console.log("No profile");
+      router.replace("/not-found")
     }
   }
 

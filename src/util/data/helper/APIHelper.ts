@@ -571,11 +571,12 @@ async function showIntrestForDonateBlood(req_id: string, successCB: Function, er
     })
 }
 
-async function getSingleActiveFundRaiser(fund_id: string): Promise<FundRaiserResponse | false> {
+async function getSingleActiveFundRaiser(fund_id: string, isForce: boolean): Promise<FundRaiserResponse | false> {
 
     try {
 
-        const profile = await API_axiosInstance.get(`fund_raise/view/${fund_id}`);
+        const query = isForce ? `${fund_id}?isForce=true` : fund_id
+        const profile = await API_axiosInstance.get(`fund_raise/view/${query}`);
         const response = profile.data;
         console.log(response);
 
