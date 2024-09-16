@@ -114,4 +114,8 @@ const closeBloodRequirementValidation = yup.object().shape({
     explanation: yup.string().typeError("Please enter valid explanation").required("Please enter valid explanation")
 })
 
-export { closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation }
+const bloodApproveValidation = yup.object().shape({
+    unit: yup.number().typeError("Please provide valid unit in count").required("Please enter valid unit"),
+})
+
+export { closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation }

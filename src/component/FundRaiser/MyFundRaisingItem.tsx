@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { confirmAlert } from 'react-confirm-alert'
 import DangerUIConfirm from '../Util/DangerUIConfirm'
 import { FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
+import Link from 'next/link'
 
 function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
 
@@ -65,7 +66,7 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
                                         <i className="fa-solid fa-lock mr-2"></i> Close Post
                                     </button> : <img src='/images/icons/closed.png' className='w-12' />
                                 }
-                                <button type="button" className="text-sm font-medium text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600">Edit Post</button>
+                                <Link href={'/'} type="button" className="text-sm font-medium text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600">Edit Post</Link>
                             </div>
                         </div>
 

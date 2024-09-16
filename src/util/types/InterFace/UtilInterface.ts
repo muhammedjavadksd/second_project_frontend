@@ -52,12 +52,17 @@ interface IOnGoingBloodRequest {
 }
 
 interface IBloodDonate {
+    _id: string,
     donor_id: string,
     donation_id: string
     date: Date,
     status: BloodDonationStatus,
     meet_expect: Date,
     concerns: BloodDonationConcerns
+    donor_profile: IBloodDonorTemplate
+    requirement: IBloodReq
+    unit: number
+    certificate: string
 }
 
 interface IBloodDonorForm {

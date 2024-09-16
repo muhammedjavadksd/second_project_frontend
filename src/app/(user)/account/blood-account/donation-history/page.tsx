@@ -18,6 +18,13 @@ function MyBloodDonationHistory() {
                 </div>
                 <BloodAccountTab />
                 <div className="mt-5">
+                    <div className="mb-4 mt-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
+                        <div>
+                            <h4 className="text-2xl font-bold">All your blood donation hitsory</h4>
+                            <p>Listing all your blood donation history</p>
+                        </div>
+
+                    </div >
                     <BloodDonationHistoryProfile />
                 </div>
             </div>

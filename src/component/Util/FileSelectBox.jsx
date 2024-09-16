@@ -1,6 +1,6 @@
 import React from 'react'
 
-function FileSelectBox({ children, onFileSelect, id }) {
+function FileSelectBox({ onFileSelect, id }) {
     return (
         <div>
             <div class="flex items-center justify-center w-full">
@@ -13,9 +13,6 @@ function FileSelectBox({ children, onFileSelect, id }) {
                         <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                     </div>
                     <input id={`dropzone-file-${id}`} multiple onChange={onFileSelect} type="file" class="hidden" />
-                    {
-                        children
-                    }
                 </label>
             </div>
 
@@ -23,4 +20,4 @@ function FileSelectBox({ children, onFileSelect, id }) {
     )
 }
 
-export default FileSelectBox
+export default React.memo(FileSelectBox)

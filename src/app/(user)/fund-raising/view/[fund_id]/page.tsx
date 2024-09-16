@@ -16,6 +16,7 @@ import LoadImage from '@/component/Util/ImageLoading'
 import ImageModel from '@/component/Util/ImageModel'
 import ModelItem from '@/component/Util/ModelItem'
 import PaginationSection from '@/component/Util/PaginationSection'
+import PublicImage from '@/component/Util/PublicImage'
 import SectionTitle from '@/component/Util/SectionTitle'
 import SliderComponent from '@/component/Util/SliderComponent'
 import SpalshScreen from '@/component/Util/SplashScreen'
@@ -36,6 +37,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation'
 // import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
 import React, { useEffect, useState } from 'react'
 import { confirmAlert } from 'react-confirm-alert'
+import Countdown from 'react-countdown'
 
 function ViewFundRaising(): React.ReactElement {
 
@@ -82,27 +84,27 @@ function ViewFundRaising(): React.ReactElement {
 
 
 
-  function aboutDescription(description: string) {
+  function aboutDescription(description: string, fundRaiserPictures: string[]) {
 
     console.log("this man");
+    const words = description.split('.');
+    console.log(words);
 
-    const words = description.split(' ');
+    let imageIndex = 0
+    const content = words.map((each) => {
+      return (
+        <div>
+          <p>{each}</p>
+          {
+            imageIndex < fundRaiserPictures.length && <div className='mt-3 mb-3'>
+              <PublicImage className='w-full' imageurl={fundRaiserPictures[imageIndex++]} />
+            </div>
+          }
+        </div>
+      )
+    })
 
-
-    // Create an array to hold the text and images
-    const contentArray = words.map(word => ({ type: 'text', content: word }));
-
-    // Insert images at random positions
-    fundRaiserPictures.map(imageUrl => {
-      const position = Math.floor(Math.random() * contentArray.length);
-      contentArray.splice(position, 0, { type: 'image', content: imageUrl });
-    });
-
-    setAboutContent(contentArray);
-    console.log("Content array");
-
-    console.log(contentArray);
-
+    return content
   }
 
   async function findMatchedProfile(category) {
@@ -130,7 +132,7 @@ function ViewFundRaising(): React.ReactElement {
     if (findProfile) {
       setProfile(findProfile);
       findDonationHistory()
-      // aboutDescription(findProfile.description)
+      aboutDescription(findProfile.description, findProfile.picture)
       findMatchedProfile(findProfile.category);
       // setPictures(findProfile.picture)
     } else {
@@ -242,8 +244,24 @@ function ViewFundRaising(): React.ReactElement {
                   <div className='tabWrapperGroup'>
                     <TabItem keyid={1} isShow={tabListing == FundRaiserTabItems.ABOUT}>
                       <div style={{ height: "600px" }} className='overflow-auto'>
-                        <h4 className='text-center text-2xl font-medium mb-3'>About the Fundraiser</h4>
-                        {/* {aboutDescriptipn("Could you please consider making a donation to support my Myself? Your contribution would greatly assist in the area of Education. Thank you for your generosity.Could you please consider making a donation to support my Myself? Your contribution would greatly assist in the area of Education. Thank you for your generosity.Could you please consider making a donation to support my Myself? Your contribution would greatly assist in the area of Education. Thank you for your generosity.", fundRaiserPictures)} */}
+                        <h4 className='text-center font-bold text-3xl mb-3'>About the Fundraiser</h4>
+
+                        {/* <div className='mb-5'>
+                          <h2 className='font-medium text-xl mb-2'>Personal details</h2>
+                          <ul>
+                            <li>Full name: <span className='font-medium'>Muhammed Javad</span></li>
+                            <li>Category: <span className='font-medium'>Education</span></li>
+                            <li>Sub Category: <span className='font-medium'>Tuition</span></li>
+                            <li>Deadline: <span className='font-medium'>May 20 2024</span></li>
+                            <li>State: <span className='font-medium'>Kerala</span></li>
+                            <li>District: <span className='font-medium'>Kasaragod</span></li>
+                            <li>City: <span className='font-medium'>Uduma</span></li>
+                          </ul>
+                        </div> */}
+                        <div className='mb-3'>
+                          {fundRaiserProfile.about}
+                        </div>
+                        {aboutDescription(fundRaiserProfile.description, fundRaiserPictures)}
                       </div>
                     </TabItem>
                     <TabItem keyid={2} isShow={tabListing == FundRaiserTabItems.DOCUMENT}>
@@ -305,8 +323,8 @@ function ViewFundRaising(): React.ReactElement {
                   <span className="raised supporters ng-star-inserted text-gray-500">
                     <span className='text-2xl font-bold text-black'>{dateLeft} </span>  Days Left
                   </span>
-
                 </div>
+
 
                 <div className="flex justify-center items-center mt-5  bg-gray-100">
                   <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 max-w-sm text-center">
@@ -319,6 +337,74 @@ function ViewFundRaising(): React.ReactElement {
                     <Link href={"/bidding/create"} className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition duration-300">
                       Get Started
                     </Link>
+                  </div>
+                </div>
+
+
+
+                <div className="flex flex-col mt-5 items-start p-4 bg-white shadow-lg rounded-lg">
+                  <div className="flex flex-col items-start">
+                    <div className="flex items-start justify-start ">
+                      <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">
+                        <strong>
+                          <i className="fa-solid fa-list"></i>
+                        </strong>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm text-gray-500">Category</div>
+                        <div className="text-lg font-semibold text-gray-800 capitalize">
+                          Education (<span className='font-mono text-sm'>Tutition</span>)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col mt-5 items-start  bg-white shadow-lg rounded-lg">
+                  <div className="flex w-full flex-col items-start">
+                    <div className="flex pb-2 pt-2  p-3 items-start justify-start ">
+                      <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">
+                        <strong>
+                          <i className="fa-solid fa-map-pin"></i>
+                        </strong>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm text-gray-500">State</div>
+                        <div className="text-lg font-semibold text-gray-800 capitalize">
+                          Kerala
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full h-px bg-gray-300 mt-2"></div>
+
+                    <div className="flex  pb-2 pt-2  p-3 items-start justify-start mt-2.5">
+                      <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">
+                        <strong>
+                          <i className="fa-solid fa-map"></i>
+                        </strong>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm text-gray-500">Distrcit</div>
+                        <div className="text-lg font-semibold text-gray-800 capitalize">
+                          Kasaragod
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full h-px bg-gray-300 mt-2"></div>
+
+                    <div className="flex  pb-5  pt-2 p-3 items-start justify-start mt-2.5">
+                      <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">
+                        <strong>
+                          <i className="fa-solid fa-location-pin"></i>
+                        </strong>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm text-gray-500">City</div>
+                        <div className="text-lg font-semibold text-gray-800 capitalize">
+                          Uduma / 671319
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -343,6 +429,7 @@ function ViewFundRaising(): React.ReactElement {
                     </div>
 
                     <div className="w-full h-px bg-gray-300 my-4"></div>
+
 
                     <div className="flex items-center justify-start mb-2">
                       <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">

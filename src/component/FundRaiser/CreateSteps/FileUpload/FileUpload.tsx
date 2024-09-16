@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateFundRaiseData } from '@/util/external/redux/slicer/fundRaiserForm';
 import { IReduxStore } from '@/util/types/InterFace/UtilInterface';
 import { FundRaiserFileType } from '@/util/types/Enums/BasicEnums';
+import LoadingComponent from '@/component/Util/LoadingComponent';
 
 function FileUpload({ state }) {
 
@@ -19,6 +20,7 @@ function FileUpload({ state }) {
 
   const [pictures, setPictures] = useState([]);
   const [Documents, setDocuments] = useState([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [checkValidation, setCheckValidation] = useState(false)
   const selectData = useSelector((store: IReduxStore) => store.fund_raiser);
   const dispatch = useDispatch()
@@ -46,10 +48,13 @@ function FileUpload({ state }) {
     console.log(selectData.documents);
     setPictures(data.pictures);
     setDocuments(data.documents)
+    setLoading(false)
+
   }
 
   function onError(err) {
     toast.error(err)
+    setLoading(false)
   }
 
   function ifNotLogged() {
@@ -73,68 +78,74 @@ function FileUpload({ state }) {
     }
   }
 
+
+  const handleFileSelect = (event, type) => {
+    event.stopPropagation()
+    const files = event.target.files;
+    if (files.length) {
+      setLoading(true)
+      onFileUpload([...files], onSuccess, onError, ifNotLogged, type, currentApplication);
+      switch (type) {
+        case FundRaiserFileType.Pictures:
+          imageRef.current.value = null
+          break
+        case FundRaiserFileType.Document:
+          documentRef.current.value = null
+          break
+        default:
+          break;
+      }
+    }
+  };
+
   return (
     <div className='mb-5'>
-      <CreateFormBackground>
+      <LoadingComponent closeOnClick={false} paddingNeed={false} isLoading={isLoading}>
+        <CreateFormBackground>
 
 
-        <div>
-          <label htmlFor="">Select Picture's</label>
-          <div className="flex mt-3">
-
-            <div className='w-2/4'>
-              <div
-                onClick={() => imageRef.current.click()}>
-                <FileSelectBox id={FundRaiserFileType.Pictures} onFileSelect={() => { }}>
-                  <input multiple ref={imageRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
-                    // console.log(e.target.files);
-                    onFileUpload([...e.target.files], onSuccess, onError, ifNotLogged, "Pictures", currentApplication)
-                    imageRef.current.value = null
-                  }} className='hidden' />
-                </FileSelectBox>
+          <div>
+            <label htmlFor="">Select Picture's</label>
+            <div className="flex mt-3">
+              <div className='w-2/4'>
+                <div onClick={() => imageRef.current.click()}>
+                  <FileSelectBox id={FundRaiserFileType.Pictures} onFileSelect={(e) => handleFileSelect(e, FundRaiserFileType.Pictures)} />
+                </div>
+              </div>
+              <div className="w-2/4">
+                <div className='overflow-auto'>
+                  <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Pictures", currentApplication)} data={pictures} BASE_PATH={null} />
+                </div>
               </div>
             </div>
-            <div className="w-2/4">
-              <div className='overflow-auto'>
-                <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Pictures", currentApplication)} data={pictures} BASE_PATH={const_data.S3_IMAGE_PATH} />
+            {checkValidation && (pictures.length < 3 && <span className='errorMessage'>Please select minimum 3 picture's</span>)}
+          </div>
+
+          <div className='mt-3'>
+            <label htmlFor="">Select Document's</label>
+            <div className="flex mt-3">
+              <div className='w-2/4'>
+                <div onClick={() => imageRef.current.click()}>
+                  <FileSelectBox id={FundRaiserFileType.Document} onFileSelect={(event) => handleFileSelect(event, FundRaiserFileType.Document)} />
+                </div>
+              </div>
+              <div className='w-2/4'>
+                <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Document", currentApplication)} data={Documents} BASE_PATH={null} />
               </div>
             </div>
+            {checkValidation && (Documents.length < 3 && <span className='errorMessage'>Please select minimum 3 document's</span>)}
 
           </div>
-          {checkValidation && (pictures.length < 3 && <span className='errorMessage'>Please select minimum 3 picture's</span>)}
-        </div>
 
-        <div className='mt-3'>
-          <label htmlFor="">Select Document's</label>
-          <div className="flex mt-3">
-            <div className='w-2/4'>
-              <div
-                onClick={() => documentRef.current.click()}>
-                <FileSelectBox id={FundRaiserFileType.Document} onFileSelect={() => { }}>
-                  <input multiple ref={documentRef} accept='image/png, image/jpeg, image/jpg' type="file" onChange={(e) => {
-                    onFileUpload([...e.target.files], onSuccess, onError, ifNotLogged, "Document", currentApplication)
-                    documentRef.current.value = null
-                  }} className='hidden' />
-                </FileSelectBox>
-              </div>
-            </div>
-            <div className='w-2/4'>
-              <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Document", currentApplication)} data={Documents} BASE_PATH={const_data.S3_IMAGE_PATH} />
-              {/* <UploadFilePlusButton /> */}
-            </div>
+
+          <div className='ml-auto mt-5 w-full overflow-hidden gap-3 flex justify-end'>
+            <button type="button" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)} ><i className="fa-solid fa-chevron-left"></i> Prev </button>
+            <button type="button" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={onNext}>Next <i className="fa-solid fa-chevron-right"></i></button>
           </div>
-          {checkValidation && (Documents.length < 3 && <span className='errorMessage'>Please select minimum 3 document's</span>)}
-
-        </div>
 
 
-        <div className='ml-auto mt-5 w-full overflow-hidden gap-3 flex justify-end'>
-          <button type="button" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => state((prev) => prev - 1)} ><i className="fa-solid fa-chevron-left"></i> Prev </button>
-          <button type="button" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={onNext}>Next <i className="fa-solid fa-chevron-right"></i></button>
-        </div>
-
-
-      </CreateFormBackground >
+        </CreateFormBackground >
+      </LoadingComponent>
     </div >
   )
 }

@@ -75,7 +75,7 @@ function OutGoingBloodCard({ blood_id, group, unit, deadLine, closed, closed_rea
                         Close Request
                     </button>
                 }
-                <Link href={"/account/blood-account/verify-request"} onClick={onClose} type="button" className="mt-5 text-white bg-green-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+                <Link href={`/account/blood-account/verify-request/${blood_id}`} type="button" className="mt-5 text-white bg-green-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
                     View Intrest
                 </Link>
 

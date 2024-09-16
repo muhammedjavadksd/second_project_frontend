@@ -4,7 +4,7 @@ const nextConfig = {
         PUBLIC_IMAGE_URL: "/images"
     },
     images: {
-        domains: ['localhost'],
+        domains: ['localhost', 'fund-raiser.s3.amazonaws.com', 'kettocdn.gumlet.io'],
     },
 };
 

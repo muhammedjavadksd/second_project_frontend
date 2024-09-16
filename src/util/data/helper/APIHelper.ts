@@ -1,6 +1,6 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq, { BloodProfile } from "@/util/types/API Response/Blood";
-import { IBloodDonorForm, IPaginatedResponse, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
+import { FormActionResponse, IBloodDonate, IBloodDonorForm, IPaginatedResponse, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
@@ -9,6 +9,74 @@ import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate } from "@
 import { IChatTemplate, ChatProfile, ProfileTicket } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodStatus } from "@/util/types/Enums/BasicEnums";
 
+
+export async function findMyBloodDonationHistory(page: number, limit: number): Promise<IPaginatedResponse<IBloodDonate>> {
+    try {
+
+        const session = await getSession();
+        const userData = userDetailsFromGetSession(session, "user");
+        const token = userData.token;
+        const bloodToken = userData.blood_token;
+        const { data } = await API_axiosInstance.get(`blood/donation-history/${page}/${limit}`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+                bloodAuthorization: `Bearer ${bloodToken}`,
+            }
+        })
+        if (data.status) {
+            return data.data
+        }
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
+
+export async function updateBloodRequest(status: BloodDonationStatus, donation_id: string, unit?: number): Promise<FormActionResponse> {
+
+    try {
+        // 
+        const session = await getSession();
+        const userData = userDetailsFromGetSession(session, "user");
+        const token = userData.token;
+        const bloodToken = userData.blood_token;
+
+        const { data } = await API_axiosInstance.patch(`blood/request_update/${donation_id}`, {
+            status,
+            unit
+        }, {
+            headers: {
+                authorization: `Bearer ${token}`,
+                bloodAuthorization: `Bearer ${bloodToken}`,
+            }
+        })
+        if (data.status) {
+            return {
+                msg: "Request update success",
+                status: true
+            }
+        }
+        return {
+            msg: data.msg || "Somethign went wrong",
+            status: false
+        }
+    } catch (e) {
+        console.log(e);
+
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        console.log(errorMsg);
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
 
 
 export async function closeFundRaise(fund_id: string): Promise<boolean> {
@@ -553,22 +621,41 @@ async function getPaginatedBloodReq(limit: number, page: number): Promise<IBlood
 }
 
 
-async function showIntrestForDonateBlood(req_id: string, successCB: Function, errorCB: Function) {
+async function getBloodIntrest(req_id: string, page: number, limit: number, status?: BloodDonationStatus): Promise<IPaginatedResponse<IBloodDonate>> {
     const session = await getSession();
     const user = userDetailsFromGetSession(session, "user");
-    const { blood_token } = user
 
-    API_axiosInstance.post(`/blood/intrest/${req_id}`, {}, { headers: { bloodAuthorization: `Bearer ${blood_token}` } }).then((response) => {
-        const { data } = response;
+    try {
+        const { blood_token } = user
+        const { token } = user
+
+        const params = status ? `${req_id}/${page}/${limit}/${status}` : `${req_id}/${page}/${limit}`
+        const { data } = await API_axiosInstance.get(`/blood/intrest/${params}`,
+            {
+                headers: {
+                    bloodAuthorization: `Bearer ${blood_token}`,
+                    authorization: `Bearer ${token}`
+                }
+            })
+        console.log(data);
+
+
         if (data.status) {
-            successCB()
+            const bloodData: IPaginatedResponse<IBloodDonate> = data.data
+            return bloodData
         } else {
-            errorCB(data.msg, response.status)
+            return {
+                paginated: [],
+                total_records: 0
+            }
         }
-    }).catch((err) => {
-        const msg = err?.response?.data?.msg ?? "Something went wrong";
-        errorCB(msg, err.response.status)
-    })
+    } catch (e) {
+        console.log(e);
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
 }
 
 async function getSingleActiveFundRaiser(fund_id: string, isForce: boolean): Promise<FundRaiserResponse | false> {
@@ -591,4 +678,4 @@ async function getSingleActiveFundRaiser(fund_id: string, isForce: boolean): Pro
     }
 }
 
-export { getSingleActiveFundRaiser, editComment, deleteComment, getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, showIntrestForDonateBlood }
+export { getSingleActiveFundRaiser, editComment, deleteComment, getPaginatedComments, getLimitedFundRaiserPost, searchHealthCenters, getPaginatedBloodReq, getBloodIntrest }

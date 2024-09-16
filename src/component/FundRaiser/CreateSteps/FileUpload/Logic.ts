@@ -19,12 +19,9 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
     if (user) {
         const token = user.token;
 
-
-
-        // type, edit_id, image_id
         try {
 
-            const API_request = await API_axiosInstance.delete(`/fund_raise/delete_image/${type}/${edit_id}/${image_id}`, {
+            const API_request = await API_axiosInstance.delete(`/fund_raise/delete_image/${type}/${edit_id}?image_id=${image_id}`, {
                 headers: {
                     "authorization": `Bearer ${token}`,
                 }

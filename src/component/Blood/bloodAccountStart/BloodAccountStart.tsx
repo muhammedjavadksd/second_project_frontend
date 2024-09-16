@@ -17,53 +17,60 @@ import ViewDonorProfile from './ViewDonorProfile'
 
 
 
-function BloodAccountStart({ onComplete }): React.ReactElement {
+function BloodAccountStart({ onComplete, profile }): React.ReactElement {
 
     // const { update } = useSession()
     const session = useSession()
 
     const { donor_id, setDonor } = useContext(BloodDonorFormContext)
-    const [isBloodDonorFormLoading, setBloodDonorFormLoading] = useState(true)
+    const [isBloodDonorFormLoading, setBloodDonorFormLoading] = useState(false)
     const [currentLocation, setCurrentLocation] = useState(null);
 
 
     // alert(donor_id)
-    const profile = userDetailsFromUseSession(session, "user");
-    const [bloodDonorDetails, setBloodDonor] = useState(null)
+    const [bloodDonorDetails, setBloodDonor] = useState(profile)
 
     async function findDonorDetails() {
         try {
-            let bloodId = profile.blood_donor_id;
-            const token = profile.blood_token;
-            if (token) {
+            const profile = userDetailsFromUseSession(session, "user");
+            // let bloodId = profile.blood_donor_id;
+            const bloodToken = profile.blood_token;
+            const token = profile.token;
+            // alert(bloodToken)
+            if (bloodToken && token) {
                 // alert("The token" + token)
-                if (!bloodId) {
+                // if (!bloodId) {
 
 
-                    const findProfile = await API_axiosInstance.get(`/profile/get_profile`, { headers: { authorization: `Bearer ${token}` } });
-                    const response = findProfile.data;
+                //     const findProfile = await API_axiosInstance.get(`/profile/get_profile`, { headers: { authorization: `Bearer ${token}` } });
+                //     const response = findProfile.data;
 
-                    if (response.status) {
-                        const { profile } = response.data;
-                        if (profile) {
-                            bloodId = profile.blood_donor_id
-                        } else {
-                            return false
-                        }
-                    } else {
-                        return false
+                //     if (response.status) {
+                //         const { profile } = response.data;
+                //         if (profile) {
+                //             bloodId = profile.blood_donor_id
+                //         } else {
+                //             return false
+                //         }
+                //     } else {
+                //         return false
+                //     }
+                // }
+
+
+
+                const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile`, {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        bloodAuthorization: `Bearer ${bloodToken}`
                     }
-                }
-
-
-
-                const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile`, { headers: { bloodAuthorization: `Bearer ${token}` } });
+                });
                 const response = findBloodDonor.data;
                 if (response.status) {
                     const profile = response.profile;
                     setBloodDonor(profile)
                 }
-                console.log(profile);
+                console.log(findBloodDonor);
 
                 setBloodDonorFormLoading(false)
             } else {
@@ -76,12 +83,12 @@ function BloodAccountStart({ onComplete }): React.ReactElement {
     }
 
     useEffect(() => {
-        console.log(bloodDonorDetails);
-    }, [bloodDonorDetails])
-
-    useEffect(() => {
-        findDonorDetails()
+        setBloodDonor(profile)
     }, [profile])
+
+    // useEffect(() => {
+    //     findDonorDetails()
+    // }, [session])
 
 
 

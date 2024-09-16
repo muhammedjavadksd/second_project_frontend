@@ -2,14 +2,17 @@ import UpdateBloodGroup from '@/component/Blood/bloodAccountStart/UpdateBloodGro
 import UpdatePersonalDetails from '@/component/Blood/bloodAccountStart/UpdatePersonalDetails'
 import ModelHeader from '@/component/Util/Model/ModelHeader'
 import ModelItem from '@/component/Util/ModelItem'
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
 function BloodAccountTab(): React.ReactElement {
 
-
     const [isUpdateBloodGroupOpen, openBloodGroupUpdate] = useState<boolean>(false)
     const [isPersonalDetailsOpen, openPersonDetails] = useState<boolean>(false)
+    const session = useSession();
+    const userDetails = userDetailsFromUseSession(session, "user");
 
     return (
         <div>
@@ -20,9 +23,8 @@ function BloodAccountTab(): React.ReactElement {
             </ModelItem>
 
             <ModelItem closeOnOutSideClock={true} ZIndex={999} isOpen={isPersonalDetailsOpen} onClose={() => openPersonDetails(false)}>
-                <ModelHeader title={"Update Personal Details"} />
-                <UpdatePersonalDetails onComplete={() => openPersonDetails(false)} profile={{}} />
-                {/* <UpdateBloodGroup onComplete={() => openPersonDetails(false)}></UpdateBloodGroup> */}
+                <ModelHeader title={"Update Blood Profile"} />
+                <UpdatePersonalDetails onComplete={() => openPersonDetails(false)} loadData={isPersonalDetailsOpen} />
             </ModelItem>
 
 
@@ -31,12 +33,16 @@ function BloodAccountTab(): React.ReactElement {
                     <li className="me-2">
                         <Link href="/account/blood-account/blood-profile-overview" className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Profile Overview</Link>
                     </li>
-                    <li className="me-2">
-                        <a href="#" onClick={() => openBloodGroupUpdate(true)} className="inline-block p-4  border-b-2 rounded-t-lg active " >Update Blood Group</a>
-                    </li>
-                    <li className="me-2">
-                        <a href="#" onClick={() => openPersonDetails(true)} className="inline-block p-4  border-b-2  rounded-t-lg active ">Update Profile Details</a>
-                    </li>
+                    {
+                        userDetails.blood_token && <li className="me-2">
+                            <a href="#" onClick={() => openBloodGroupUpdate(true)} className="inline-block p-4  border-b-2 rounded-t-lg active " >Update Blood Group</a>
+                        </li>
+                    }
+                    {
+                        userDetails.blood_token && <li className="me-2">
+                            <a href="#" onClick={() => openPersonDetails(true)} className="inline-block p-4  border-b-2  rounded-t-lg active ">Update Blood Profile</a>
+                        </li>
+                    }
                     <li className="me-2">
                         <Link href="/account/blood-account/my-requirements" className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Blood Requests</Link>
                     </li>

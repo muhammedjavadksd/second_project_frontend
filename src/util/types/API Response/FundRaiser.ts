@@ -57,6 +57,8 @@ interface IDonateHistoryTemplate {
     date: Date
     donation_id: string,
     name: string,
+    receipt: string,
+    fund_profile: FundRaiserResponse
 }
 
 interface AxiosResponse {

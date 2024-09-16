@@ -118,7 +118,7 @@ function BloodProfileOverView() {
                             </div>
                         </div>
                         <div className="w-2/6">
-                            <BloodAccountStart onComplete={() => { }} />
+                            <BloodAccountStart profile={bloodProfile?.profile} onComplete={() => { }} />
 
                             {/* <UpdatePersonalDetails onComplete={() => { }} profile={{}} /> */}
                             {/* <div className="bg-gray-100">

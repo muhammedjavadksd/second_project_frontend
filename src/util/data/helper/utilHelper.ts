@@ -1,6 +1,7 @@
 import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser"
 import const_data from "../const"
 import LoadImage from '@/component/Util/ImageLoading'
+import axios from "axios"
 
 export function objectToUrlQuery(object) {
     let query = new URLSearchParams(object)
@@ -60,4 +61,48 @@ export function findNameAvatar(name: string) {
 
 export function generateFundRaiserTitle(profile: FundRaiserResponse): string {
     return `${profile.full_name}'s Fund Raiser for ${profile.category} in ${profile.district}`
+}
+
+
+export function downloadCertificate(url: string, title: string) {
+    axios({ url: url, method: "GET", responseType: "blob" }).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", title);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+    });
+}
+
+export function messageFromBloodConcernce(name: string, concerns, meet_date: string, hospital_name: string) {
+    try {
+        let concernsMessage: string[] = [];
+
+        if (concerns.seriousConditions.length) {
+            concernsMessage.push(`I have serious conditions such as ${concerns.seriousConditions.join(", ")}`);
+        }
+
+        if (concerns.majorSurgeryOrIllness) {
+            concernsMessage.push(`I had major surgery on ${concerns.majorSurgeryOrIllness}`);
+        }
+
+        if (concerns.tobaco_use) {
+            concernsMessage.push(`I use tobacco`);
+        }
+
+        if (concerns.chronicIllnesses) {
+            concernsMessage.push(`I have chronic illnesses like diabetes or hypertension`);
+        }
+
+        const concernsChat = concernsMessage.length
+            ? `Please consider that I have the following concerns: ${concernsMessage.join(", ")}.`
+            : '';
+
+        const msg = `Hi ${name}, ${concernsChat} I would like to donate my blood to you. I'll come to ${hospital_name} by ${meet_date}.Please let me know if there’s anything else I should be aware of.`;
+        return msg
+    } catch (e) {
+        return "Hai, I am ready to donate blood for you"
+    }
 }
