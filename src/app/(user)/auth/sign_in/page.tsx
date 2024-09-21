@@ -6,7 +6,7 @@ import AuthSideCanvas from '@/component/Auth/Common/AuthSideCanvas'
 import GoogleProviderButton from '@/component/Auth/Common/ProvideLoginButton/GoogleProviderButton'
 import FacebookProviderButton from '@/component/Auth/Common/ProvideLoginButton/FacebookProviderButton'
 import UserBlackedRouter from '@/component/LoginComponent/UserBlackedRouter'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { Session } from 'next-auth'
 import { UserAuthStepInterFace } from '@/util/types/InterFace/PropInterFace'
 // import { OnGoingBloodRequestContext } from '@/util/context/Context'
@@ -15,12 +15,17 @@ import { SessionStorageKeys } from '@/util/types/Enums/BasicEnums'
 function SignIn(): React.ReactElement {
 
   let [loginStepIndex, setLoginStepIndex] = useState<number>(0)
-  const data = sessionStorage.getItem(SessionStorageKeys.BloodRequestFormPhase)//  useContext(OnGoingBloodRequestContext);
 
 
   const LoginStepComponent: FunctionComponent<UserAuthStepInterFace> = loginSteps[loginStepIndex];
 
+  function onGoogleAuth() {
 
+  }
+
+  function onFacebookAuth() {
+
+  }
 
   return (
     <UserBlackedRouter>
@@ -32,11 +37,14 @@ function SignIn(): React.ReactElement {
             <div className='flex  flex-col justify-center'>
               <div className="container">
                 <LoginStepComponent state={setLoginStepIndex}></LoginStepComponent>
-                <div className="mt-5 max-w-sm ">
-                  <div className="mb-2">
-                    <GoogleProviderButton></GoogleProviderButton>
+                <div className="mt-5 ">
+                  <div className="grid grid-cols-2">
+                    <div className="mb-2 flex  flex-col justify-start  gap-3">
+                      <GoogleProviderButton onSign={() => signIn("google")}></GoogleProviderButton>
+                      <FacebookProviderButton onSign={() => signIn("facebook")}></FacebookProviderButton>
+                    </div>
                   </div>
-                  <FacebookProviderButton></FacebookProviderButton>
+
                 </div>
               </div>
             </div>

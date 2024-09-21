@@ -10,8 +10,6 @@ export async function POST(request) {
 
 
         let body = await request.json();
-        console.log("The body");
-        console.log(body);
 
         let otpNumber = body.otp_number;
 
@@ -24,8 +22,6 @@ export async function POST(request) {
         let getCookies = cookies();
         let cookieToken = getCookies.get(COOKIE_DATA_KEY.SIGN_IN_DATA);
         let auth_token = cookieToken ?? token;
-        console.log(cookieToken + " " + token);
-        console.log("Auth token is : " + auth_token);
         if (auth_token) {
 
             let apiCall = API_axiosInstance.post("/auth/auth_otp_submission", {
@@ -70,7 +66,6 @@ export async function POST(request) {
         }
 
     } catch (e) {
-        console.log(e);
         let errorMessage = e?.response?.data?.msg ?? "Something went wrong";
         console.log(errorMessage);
         return new Response(JSON.stringify({

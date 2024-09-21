@@ -9,16 +9,23 @@ import { userDetailsFromGetSession } from "@/util/data/helper/authHelper"
 import { getSession } from "next-auth/react"
 import { headers } from "next/headers"
 import { log, profile } from "console"
+import Cookies from "universal-cookie"
+import { serialize } from "cookie"
+import { setCookie } from "nookies"
+import { signInWithGoogle } from "@/util/data/helper/APIHelper"
+import { toast } from "react-toastify"
 
 
 
 let authOptions = {
 
     providers: [
-        GoogleProvider({
-            clientId: process.env.NEXT_PUBLIC_GOOGLE_CLINET_ID,
-            clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
-        }),
+        GoogleProvider(
+            {
+                clientId: process.env.NEXT_PUBLIC_GOOGLE_CLINET_ID,
+                clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
+            },
+        ),
         FacebookProvider({
             clientId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
             clientSecret: process.env.NEXT_PUBLIC_FACEBOOK_SECRET_ID
@@ -32,6 +39,11 @@ let authOptions = {
                 password: {}
             },
             authorize: async (credentials, req) => {
+
+                console.log("Cred and req");
+
+                console.log(credentials, req);
+
                 try {
 
 
@@ -230,16 +242,41 @@ let authOptions = {
             }
         })
     ],
+    pages: {
+        signIn: '/auth/sign_up',
+    },
     callbacks: {
+        // async signIn({ user, account, profile }) {
+        //     console.log(user, account, profile);
+        //     try {
+        //         if (account.provider == "google") {
+        //             console.log("Sign in with google");
+        //             const signIn = await signInWithGoogle(account.id_token, account.providerAccountId);
+        //             if (signIn) {
+        //                 return '/auth/verification'
+        //             } else {
+        //                 return false
+        //             }
+        //         }
+        //     } catch (e) {
+        //         return false
+        //     }
+        //     return user;
+        // },
         async jwt({ token, user, account }) {
-            console.log("Worked");
+            // console.log("Worked");
 
-            console.log(token, user, account);
+            // console.log(token, user, account);
+            // if (account && account.provider) {
+            //     console.log("Provider");
+            //     console.log(account.provider);
 
+            //     return token;
+            // }
             if (user) {
                 token.user = user
             }
-            return token;
+            return token
         },
         async session(session) {
             console.log("thus");
@@ -247,6 +284,9 @@ let authOptions = {
             console.log(session);
 
             return session
+        },
+        async redirect({ url, baseUrl }) {
+            return url.startsWith(baseUrl) ? url : baseUrl;
         },
     },
     jwt: {

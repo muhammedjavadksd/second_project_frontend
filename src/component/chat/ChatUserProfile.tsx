@@ -1,4 +1,43 @@
-const ChatUserProfile = () => {
+import { confirmAlert } from "react-confirm-alert";
+import DangerUIConfirm from "../Util/DangerUIConfirm";
+import { useEffect, useState } from "react";
+import { blockProfile } from "@/util/data/helper/APIHelper";
+import { toast } from "react-toastify";
+
+const ChatUserProfile = ({ isBlock, room_id }: { isBlock: boolean, room_id: string }) => {
+
+
+    const [block, setBlock] = useState<boolean>(isBlock);
+
+    useEffect(() => {
+        setBlock(isBlock);
+    }, [])
+
+
+    function blockConfirm() {
+        const status = block ? "unblock" : "block"
+        blockProfile(status, room_id).then((data) => {
+            if (data.status) {
+                toast.success("Profile blocked")
+            } else {
+                toast.error(data.msg)
+            }
+        }).catch((err) => {
+            console.log("Something went wrong");
+        })
+    }
+
+    function blockProfileEvent() {
+        confirmAlert({
+            title: "Are you want to block this profile?",
+            message: "Block this profile?",
+            customUI: ({ onClose, title }) => {
+                return (
+                    <DangerUIConfirm onClose={onClose} onConfirm={blockConfirm} title={title} />
+                )
+            }
+        })
+    }
 
     return (
 
@@ -14,7 +53,7 @@ const ChatUserProfile = () => {
                     </div>
                 </div>
                 <div className="mt-4">
-                    <button className="w-full py-2 bg-red-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-200">Block user</button>
+                    <button onClick={blockProfile} className="w-full py-2 bg-red-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-200">Block user</button>
                 </div>
             </div>
             {/* <SingleChat /> */}

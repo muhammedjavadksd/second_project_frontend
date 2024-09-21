@@ -81,7 +81,7 @@ export interface BlockedStatus {
 }
 
 export interface ChatHistory {
-    _id: string;
+    _id?: string;
     room_id: string;
     timeline: Date;
     msg: string;

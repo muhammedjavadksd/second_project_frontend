@@ -29,7 +29,6 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
     const [allfundRaiser, setFundRaiser] = useState<FundRaiserResponse[]>([])
     useEffect(() => {
         getLimitedFundRaiserPost(1, 20, "all", "").then((response) => {
-            console.log(response);
             if (response && response.paginated) {
                 setFundRaiser(response.paginated);
             }
@@ -42,6 +41,7 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
 
 
         <SessionProvider>
+            {/* <title>Hellwo </title> */}
             <main className="flex min-h-screen flex-col bg-white">
                 <div>
 

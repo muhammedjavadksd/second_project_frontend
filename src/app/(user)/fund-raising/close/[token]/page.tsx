@@ -27,7 +27,6 @@ function CloseFundRaiser() {
             setVerifyStatus(VerificationStatus.Completed)
         }
         ).catch((err) => {
-            console.log(err);
             setVerifyStatus(VerificationStatus.Error)
         })
     }

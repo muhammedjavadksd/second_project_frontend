@@ -250,7 +250,17 @@ async function resendOtpHandler(successCB, errorCB) {
 
 }
 
+const addPhoneNumberInitialValues = {
+    phone_number: ""
+}
+
+const addPhoneNumberValidation = yup.object().shape({
+    phone_number: yup.string().typeError("Please enter valid phone number").matches(/^\d{10}$/, 'Phone number must be exactly 10 digits.').required("Phone number is required")
+})
+
 export {
+    addPhoneNumberInitialValues,
+    addPhoneNumberValidation,
     signUpIndexUp,
     signUpIndexDown,
     onSignUpHandler,

@@ -41,14 +41,8 @@ function OtherAmount({ onAmountSelect, initialValue }) {
 function FundPaymentModel({ fund_id }) {
 
     function orderCreated(session_id) {
-
-
-        console.log(session_id);
-        console.log(window);
-
         if (window && window.Cashfree) {
             new window.Cashfree(session_id).redirect();
-
         } else {
             console.error("Cashfree SDK is not loaded");
             console.log("Redirect");

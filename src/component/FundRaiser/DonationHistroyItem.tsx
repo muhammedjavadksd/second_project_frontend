@@ -33,7 +33,7 @@ function DonationHistroyItem({ fundId, fundImage, amount, date, title, certifica
                 </Link>
                 <div className="flex items-center justify-between">
                     <button
-                        onClick={() => downloadCertificate(certificateUrl)}
+                        onClick={() => downloadCertificate(certificateUrl, "fund_donation.pdf")}
                         type="button"
                         className="text-blue-600 bg-white border border-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5">
                         Download certificate

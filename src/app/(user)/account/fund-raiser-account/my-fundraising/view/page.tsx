@@ -3,8 +3,12 @@ import AccountTab from '@/component/Account/AccountTab/ProfileTab'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import Footer from '@/component/Util/Footer'
+import ImageItem from '@/component/Util/ImageItem'
+import ListImageFile from '@/component/Util/ListImageFile'
+import ModelHeader from '@/component/Util/Model/ModelHeader'
 import SliderComponent from '@/component/Util/SliderComponent'
 import StatisticCard from '@/component/Util/StatisticCard'
+import const_data from '@/util/data/const'
 import { CChart } from '@coreui/react-chartjs'
 import React from 'react'
 
@@ -13,161 +17,135 @@ function FundRaiserView(): React.ReactElement {
 
 
     return (
-        <>
+        <div className='bg-gray-100'>
             <Header />
             <div className="container mx-auto mt-5 mb-5">
                 <div className="mb-5">
                     <BreadCrumb path={['Home', 'Profile', 'My Fund Raising', 'Raising Name-ID']} />
                 </div>
                 <div className="flex gap-5">
-                    <div className='w-1/4'>
-                        <AccountTab />
-
-                        <a href="#" className="mt-5 block max-w-sm  bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                            <div id="default-carousel" className="relative w-full" data-carousel="slide">
-                                <SliderComponent isGap={true} slidesToScroll={1} slidesToShow={1} dots={true} arrow={true} >
-                                    <img src="https://flowbite.com/docs/images/blog/image-1.jpg" className="  block w-full  " alt="..." />
-                                    <img src="https://flowbite.com/docs/images/blog/image-1.jpg" className="  block w-full  " alt="..." />
-                                    <img src="https://flowbite.com/docs/images/blog/image-1.jpg" className="  block w-full  " alt="..." />
-                                </SliderComponent>
+                    <div className='w-full'>
+                        <div className="mb-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
+                            <div>
+                                <h4 className="text-2xl font-bold">Muhammed Javad Education Support Post</h4>
+                                <p>Here is complete report for Muhammed Javad</p>
                             </div>
-                        </a>
-
-                        <a href="#" className="mt-5 block max-w-sm  bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                            <div id="default-carousel" className="relative w-full" data-carousel="slide">
-                                <SliderComponent isGap={true} slidesToScroll={1} slidesToShow={1} dots={true} arrow={true} >
-                                    <img src="https://flowbite.com/docs/images/blog/image-1.jpg" className="  block w-full  " alt="..." />
-                                    <img src="https://flowbite.com/docs/images/blog/image-1.jpg" className="  block w-full  " alt="..." />
-                                    <img src="https://flowbite.com/docs/images/blog/image-1.jpg" className="  block w-full  " alt="..." />
-                                </SliderComponent>
+                            <div className="gap-5 flex">
+                                <button onClick={() => { }} className="bg-green-800 px-5 py-2 text-white rounded-md">Download report</button>
+                                <button onClick={() => { }} className="bg-red-800 px-5 py-2 text-white rounded-md">Close post</button>
                             </div>
-                        </a>
-
+                        </div>
+                        <div className="grid gap-5 grid-cols-4">
+                            <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+                                <div>
+                                    <div> Amount collected </div>
+                                    <span className='font-bold text-2xl'>{const_data.MONEY_ICON}2500</span>
+                                    <div className='flex mt-3 gap-2'>
+                                        <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
+                                        <span>June 31 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+                                <div>
+                                    <div> Total Amount  </div>
+                                    <span className='font-bold text-2xl'>{const_data.MONEY_ICON}2500</span>
+                                    <div className='flex mt-3 gap-2'>
+                                        <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
+                                        <span>June 31 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+                                <div>
+                                    <div> Amount collected </div>
+                                    <span className='font-bold text-2xl'>{const_data.MONEY_ICON}2500</span>
+                                    <div className='flex mt-3 gap-2'>
+                                        <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
+                                        <span>June 31 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+                                <div>
+                                    <div> Amount collected </div>
+                                    <span className='font-bold text-2xl'>{const_data.MONEY_ICON}2500</span>
+                                    <div className='flex mt-3 gap-2'>
+                                        <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
+                                        <span>June 31 2023</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className='w-4/5'>
-                        <div className="grid gap-5 grid-cols-3">
-                            <StatisticCard title={"Target"} statistic={"723₹"} icon={<i className="fa-solid fa-money-bill"></i>}></StatisticCard>
-                            <StatisticCard title={"Collected"} statistic={"510₹"} icon={<i className="fa-solid fa-money-bill"></i>}></StatisticCard>
-                            <StatisticCard title={"Dead Line"} statistic={"12-05-2022"} icon={<i className="fa-solid fa-calendar"></i>}></StatisticCard>
-                        </div>
+                </div>
+                <div className='mt-5 flex gap-5'>
+                    <div className="w-3/4">
+                        <div className='bg-white p-3 rounded-md'>
+                            <CChart
+                                type="line"
+                                data={{
+                                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                                    datasets: [
+                                        {
+                                            label: "My First dataset",
+                                            backgroundColor: "rgba(220, 220, 220, 0.2)",
+                                            borderColor: "rgba(220, 220, 220, 1)",
+                                            pointBackgroundColor: "rgba(220, 220, 220, 1)",
+                                            pointBorderColor: "#fff",
+                                            data: [40, 20, 12, 39, 10, 40, 39, 80, 40]
+                                        },
+                                        {
+                                            label: "My Second dataset",
+                                            backgroundColor: "rgba(151, 187, 205, 0.2)",
+                                            borderColor: "rgba(151, 187, 205, 1)",
+                                            pointBackgroundColor: "rgba(151, 187, 205, 1)",
+                                            pointBorderColor: "#fff",
+                                            data: [50, 12, 28, 29, 7, 25, 12, 70, 60]
+                                        },
+                                    ],
+                                }}
+                                options={{
+                                    plugins: {
+                                        legend: {
+                                            labels: {
 
+                                            }
+                                        }
+                                    },
+                                    scales: {
+                                        x: {
+                                            grid: {
 
-                        <div className="flex gap-5">
-                            <div className="w-2/4">
-                                <div className=" w-full mt-3 bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                                    <h2 className='font-medium text-2xl mb-3'>Target statistic's</h2>
-                                    <div className="mt-0">
-                                        <CChart
-                                            type="doughnut"
-                                            data={{
-                                                labels: ['Target', 'Goal'],
-                                                datasets: [
-                                                    {
-                                                        backgroundColor: ['#41B883', '#E46651'],
-                                                        data: [40, 20],
-                                                    },
-                                                ],
-                                            }}
-                                            options={{
-                                                plugins: {
-                                                    legend: {
-                                                        labels: {
-                                                            // color: getStyle('--cui-body-color'),
-                                                        }
-                                                    }
-                                                },
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className="w-3/4">
-                                <div className=" w-full mt-3 bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                                    <h2 className='font-medium text-2xl mb-3'>Fund statistic's</h2>
-
-                                    <CChart
-                                        type="line"
-                                        data={{
-                                            labels: ["January", "February", "March", "April", "May", "June", "July"],
-                                            datasets: [
-                                                {
-                                                    label: "Fund Donated",
-                                                    backgroundColor: "rgba(220, 220, 220, 0.2)",
-                                                    borderColor: "rgba(220, 220, 220, 1)",
-                                                    pointBackgroundColor: "rgba(220, 220, 220, 1)",
-                                                    pointBorderColor: "#fff",
-                                                    data: [40, 20, 12, 39, 10, 40, 39, 80, 40]
-                                                },
-                                                {
-                                                    label: "Post viewed",
-                                                    backgroundColor: "rgba(151, 187, 205, 0.2)",
-                                                    borderColor: "rgba(151, 187, 205, 1)",
-                                                    pointBackgroundColor: "rgba(151, 187, 205, 1)",
-                                                    pointBorderColor: "#fff",
-                                                    data: [50, 12, 28, 29, 7, 25, 12, 70, 60]
-                                                },
-                                            ],
-                                        }}
-                                        options={{
-                                            plugins: {
-                                                legend: {
-                                                    labels: {
-                                                        //   color: getStyle('--cui-body-color'),
-                                                    }
-                                                }
                                             },
-                                            scales: {
-                                                x: {
-                                                    grid: {
-                                                        //   color: getStyle('--cui-border-color-translucent'),
-                                                    },
-                                                    ticks: {
-                                                        //   color: getStyle('--cui-body-color'),
-                                                    },
-                                                },
-                                                y: {
-                                                    grid: {
-                                                        //   color: getStyle('--cui-border-color-translucent'),
-                                                    },
-                                                    ticks: {
-                                                        //   color: getStyle('--cui-body-color'),
-                                                    },
-                                                },
+                                            ticks: {
+
                                             },
-                                        }}
-                                    />
-                                </div>
-                            </div>
+                                        },
+                                        y: {
+                                            grid: {
+
+                                            },
+                                            ticks: {
+
+                                            },
+                                        },
+                                    },
+                                }}
+                            />
                         </div>
 
 
 
-                        <div className="relative mt-5 overflow-x-auto shadow-md sm:rounded-lg">
-                            <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
-
-                                <label htmlFor="table-search" className="sr-only">Search</label>
-                                <div className="relative p-10 pt-0 pb-0">
-                                    <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                        </svg>
-                                    </div>
-                                    <input type="text" id="table-search-users" className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users" />
-                                </div>
-                            </div>
+                        <div className="relative overflow-x-auto mt-10">
                             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" className="p-4">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label htmlFor="checkbox-all-search" className="sr-only">checkbox</label>
-                                            </div>
+                                        <th scope="col" className="px-6 py-3">
+                                            Fund ID
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            Name
+                                            Donor name
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Amount
@@ -175,151 +153,48 @@ function FundRaiserView(): React.ReactElement {
                                         <th scope="col" className="px-6 py-3">
                                             Date
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Action
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td className="w-4 p-4">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>
-                                            </div>
-                                        </td>
-                                        <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-1.jpg" alt="Jese image" />
-                                            <div className="ps-3">
-                                                <div className="text-base font-semibold">Neil Sims</div>
-                                                <div className="font-normal text-gray-500">neil.sims@flowbite.com</div>
-                                            </div>
+                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            123
                                         </th>
                                         <td className="px-6 py-4">
-                                            React Developer
+                                            Muhammed Javad
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                                            </div>
+                                            500-/
                                         </td>
                                         <td className="px-6 py-4">
-                                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                                            12-08-2023
                                         </td>
                                     </tr>
-                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td className="w-4 p-4">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label htmlFor="checkbox-table-search-2" className="sr-only">checkbox</label>
-                                            </div>
-                                        </td>
-                                        <th scope="row" className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image" />
-                                            <div className="ps-3">
-                                                <div className="text-base font-semibold">Bonnie Green</div>
-                                                <div className="font-normal text-gray-500">bonnie@flowbite.com</div>
-                                            </div>
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            Designer
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                                        </td>
-                                    </tr>
-                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td className="w-4 p-4">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label htmlFor="checkbox-table-search-2" className="sr-only">checkbox</label>
-                                            </div>
-                                        </td>
-                                        <th scope="row" className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-2.jpg" alt="Jese image" />
-                                            <div className="ps-3">
-                                                <div className="text-base font-semibold">Jese Leos</div>
-                                                <div className="font-normal text-gray-500">jese@flowbite.com</div>
-                                            </div>
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            Vue JS Developer
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                                        </td>
-                                    </tr>
-                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td className="w-4 p-4">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label htmlFor="checkbox-table-search-2" className="sr-only">checkbox</label>
-                                            </div>
-                                        </td>
-                                        <th scope="row" className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Jese image" />
-                                            <div className="ps-3">
-                                                <div className="text-base font-semibold">Thomas Lean</div>
-                                                <div className="font-normal text-gray-500">thomes@flowbite.com</div>
-                                            </div>
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            UI/UX Engineer
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                                        </td>
-                                    </tr>
-                                    <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td className="w-4 p-4">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-table-search-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label htmlFor="checkbox-table-search-3" className="sr-only">checkbox</label>
-                                            </div>
-                                        </td>
-                                        <th scope="row" className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-4.jpg" alt="Jese image" />
-                                            <div className="ps-3">
-                                                <div className="text-base font-semibold">Leslie Livingston</div>
-                                                <div className="font-normal text-gray-500">leslie@flowbite.com</div>
-                                            </div>
-                                        </th>
-                                        <td className="px-6 py-4">
-                                            SEO Specialist
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div className="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Offline
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                                        </td>
-                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
 
                     </div>
+                    <div className="w-1/4">
+                        <div className="mb-5 picturesList shadow-inner border  overflow-auto">
+                            <ModelHeader title={"Pictures"} />
+                            <ImageItem onClose={(e) => { }} imageName={"Image one.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
+                            <ImageItem onClose={(e) => { }} imageName={"Image two.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
+                            <ImageItem onClose={(e) => { }} imageName={"Image three.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
+                        </div>
+                        <div className="mb-5 picturesList shadow-inner border  overflow-auto">
+                            <ModelHeader title={"Documents"} />
+                            <ImageItem onClose={(e) => { }} imageName={"Image one.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
+                            <ImageItem onClose={(e) => { }} imageName={"Image two.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
+                            <ImageItem onClose={(e) => { }} imageName={"Image three.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
-            <Footer />
-        </>
+        </div>
     )
 }
 

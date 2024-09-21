@@ -15,8 +15,6 @@ export async function POST(request) {
     })
     let response = loginRequest.data;
 
-    console.log("The response is:");
-    console.log(response);
 
     if (response && response?.status) {
 
@@ -32,9 +30,7 @@ export async function POST(request) {
       return new Response(JSON.stringify({ status: false, msg: response?.msg }))
     }
   } catch (e) {
-    console.log(e);
     let errorMessage = e?.response?.data?.msg ?? "Something went wrong"
-    console.log(errorMessage);
     return new Response(JSON.stringify({ status: false, msg: errorMessage }))
   }
 }

@@ -151,7 +151,9 @@ export async function onBankAccountSubmit(values, successCB, errorCB) {
         }
         errorCB("Unauthraized access")
     } catch (e) {
-        const errorMessage = e?.response?.body?.msg ?? "Something went wrong";
+        console.log(e);
+
+        const errorMessage = e?.response?.data?.msg ?? "Something went wrong";
         errorCB(errorMessage)
     }
 }

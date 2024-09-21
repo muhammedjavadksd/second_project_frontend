@@ -26,7 +26,6 @@ function MyRequirements() {
     async function findRequirement(page: number, limit: number): Promise<IPaginatedResponse<IBloodReq>> {
         try {
             const find = await findMyBloodrequirement(page, limit, bloodStatus);
-            console.log(find);
             return find
         } catch (e) {
             return {

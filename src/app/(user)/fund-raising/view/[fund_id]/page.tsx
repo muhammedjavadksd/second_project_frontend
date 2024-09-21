@@ -29,7 +29,7 @@ import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import { onCommentPost } from '@/util/external/yup/formSubmission'
 import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
 import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
-import { PaginatedApi } from '@/util/types/InterFace/UtilInterface'
+import { FormActionResponse, PaginatedApi } from '@/util/types/InterFace/UtilInterface'
 import { Field, Form, Formik } from 'formik'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -86,9 +86,7 @@ function ViewFundRaising(): React.ReactElement {
 
   function aboutDescription(description: string, fundRaiserPictures: string[]) {
 
-    console.log("this man");
     const words = description.split('.');
-    console.log(words);
 
     let imageIndex = 0
     const content = words.map((each) => {
@@ -128,16 +126,19 @@ function ViewFundRaising(): React.ReactElement {
   }
 
   async function findFundRaiserProfile() {
-    const findProfile: FundRaiserResponse | boolean = await getSingleActiveFundRaiser(fund_id.toString(), isForce == "true");
-    if (findProfile) {
-      setProfile(findProfile);
+    const findProfile: FormActionResponse = await getSingleActiveFundRaiser(fund_id.toString(), isForce == "true");
+    if (findProfile.status) {
+      const response: FundRaiserResponse = findProfile.data
+      setProfile(findProfile.data);
       findDonationHistory()
-      aboutDescription(findProfile.description, findProfile.picture)
-      findMatchedProfile(findProfile.category);
-      // setPictures(findProfile.picture)
+      aboutDescription(response.description, response.picture)
+      findMatchedProfile(response.category);
     } else {
-      console.log("No profile");
-      router.replace("/not-found")
+      if (findProfile.msg == "CLOSED") {
+        router.replace("/fund-raising/closed")
+      } else {
+        router.replace("/not-found")
+      }
     }
   }
 

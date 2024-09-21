@@ -8,6 +8,8 @@ import LoadingComponent from '@/component/Util/LoadingComponent'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import GoogleProviderButton from '../../Common/ProvideLoginButton/GoogleProviderButton'
+import FacebookProviderButton from '../../Common/ProvideLoginButton/FacebookProviderButton'
 
 function SignUpStart({ state }) {
 
@@ -87,6 +89,7 @@ function SignUpStart({ state }) {
                     }}
                 </Formik>
             </LoadingComponent>
+
         </div >
     )
 }

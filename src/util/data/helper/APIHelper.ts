@@ -1,5 +1,5 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
-import IBloodReq, { BloodProfile } from "@/util/types/API Response/Blood";
+import IBloodReq, { BloodProfile, IBloodDonor, ILocatedAt } from "@/util/types/API Response/Blood";
 import { FormActionResponse, IBloodDonate, IBloodDonorForm, IPaginatedResponse, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
@@ -7,8 +7,133 @@ import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodDonationStatus, BloodStatus } from "@/util/types/Enums/BasicEnums";
+import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums";
 
+
+export async function findNearest(bloodGroup: BloodGroup, location: [number, number], page: number, limit: number): Promise<IPaginatedResponse<IBloodDonor[]>> {
+
+    try {
+
+        const cord = `long=${location[0]}&lati=${location[1]}`
+        const findNearest = await API_axiosInstance.get(`/blood/nearest-donors/${limit}/${page}/${bloodGroup}?${cord}`)
+        const response = findNearest.data;
+        if (response.status) {
+            return response.data
+        } else {
+            return {
+                paginated: [],
+                total_records: 0
+            }
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
+
+export async function findOrder(order_id: string) {
+
+    try {
+
+        const session = await getSession();
+
+
+        const userProfile = userDetailsFromGetSession(session, "user")
+        const token = userProfile.token;
+        if (token) {
+            const findProfile = await API_axiosInstance.get(`fund_raise/find-payment-order/${order_id}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            });
+            console.log(findProfile);
+
+            const response = findProfile.data;
+            console.log(response);
+            if (response.status) {
+                return response.data
+            } else {
+                return null
+            }
+        } else {
+            return null
+        }
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
+
+export async function blockProfile(status: string, room_id: string): Promise<FormActionResponse> {
+
+    try {
+
+        const session = getSession();
+        const userProfile = userDetailsFromGetSession(session, "user")
+        const token = userProfile.token;
+        const blockProfile = await API_axiosInstance.patch(`/profile/block-status/${status}/${room_id}`, {}, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+        const responseData = blockProfile.data;
+        return {
+            msg: "Profile updated",
+            status: true,
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false,
+        }
+    }
+}
+
+export async function accountComplete(token: string, phone_number: string) {
+
+    try {
+        const complete = await API_axiosInstance.patch("/auth/complete_account", {
+            phone_number
+        }, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        const response = complete.data;
+        if (response.status) {
+            return true
+        }
+        return false
+    } catch (e) {
+        console.log(e);
+        return false
+    }
+}
+
+export async function signInWithGoogle(id_token: string, auth_id: string) {
+
+    try {
+        const signUp = await API_axiosInstance.post("/auth/sign_up_provider", {
+            auth_id
+        }, {
+            headers: {
+                authorization: `Bearer ${id_token}`
+            }
+        });
+        const response = signUp.data;
+
+        if (response.status) {
+            return response.data || true
+        }
+        return false
+    } catch (e) {
+        console.log(e);
+        return false
+    }
+}
 
 export async function findMyBloodDonationHistory(page: number, limit: number): Promise<IPaginatedResponse<IBloodDonate>> {
     try {
@@ -280,22 +405,51 @@ export async function getSingleChat(chat_id: string): Promise<ChatProfile | fals
     }
 }
 
-export async function addChatToTicket(message: string, ticket_id: string): Promise<boolean> {
+export async function addChatToTicket(message: string, attachment: File, ticket_id: string): Promise<false | string> {
     try {
 
         const session = await getSession();
-        const data = userDetailsFromGetSession(session, "user");
-        const token = data.token;
+        const user = userDetailsFromGetSession(session, "user");
+        const token = user.token;
+        let presignedUrl = null
+
+        if (attachment && attachment?.name) {
+            const imageName = attachment.name
+            const generatePresignedUrl = await API_axiosInstance.get(`/profile/presigned_url?file=${imageName}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            });
+            const response = generatePresignedUrl.data;
+            if (response.status) {
+                const { url } = response.data
+                console.log("Presigned url got it");
+
+                const saveFile = await axios.put(url, attachment, {
+                    headers: {
+                        "Content-Type": attachment.type
+                    }
+                })
+                presignedUrl = url;
+            }
+        }
+
+
         const findTicket = await API_axiosInstance.patch(`/profile/ticket_replay/${ticket_id}`, {
-            text: message
+            text: message,
+            attachment: presignedUrl
         }, {
             headers: {
                 authorization: `Bearer ${token}`
             }
         });
         const response = findTicket.data;
+        console.log("response");
+
+        console.log(response);
+
         if (response.status) {
-            return true
+            return response?.data?.attachment || ""
         }
         return false
     } catch (e) {
@@ -306,6 +460,8 @@ export async function addChatToTicket(message: string, ticket_id: string): Promi
 export async function findAllMyTicket(page: number, limit: number): Promise<IPaginatedResponse<ProfileTicket[]>> {
     try {
 
+        console.log("Start fetching tickets");
+
         const session = await getSession();
         const data = userDetailsFromGetSession(session, "user");
         const token = data.token;
@@ -315,6 +471,8 @@ export async function findAllMyTicket(page: number, limit: number): Promise<IPag
             }
         });
         const response = findTicket.data;
+        console.log(response);
+
         if (response.status && response.data) {
             return response.data
         }
@@ -658,7 +816,7 @@ async function getBloodIntrest(req_id: string, page: number, limit: number, stat
     }
 }
 
-async function getSingleActiveFundRaiser(fund_id: string, isForce: boolean): Promise<FundRaiserResponse | false> {
+async function getSingleActiveFundRaiser(fund_id: string, isForce: boolean): Promise<FormActionResponse> {
 
     try {
 
@@ -669,12 +827,32 @@ async function getSingleActiveFundRaiser(fund_id: string, isForce: boolean): Pro
 
         if (response.status) {
             const profile = response.data
-            return profile
+            return {
+                status: true,
+                data: profile,
+                msg: "Profile found"
+            }
+        } else {
+            return {
+                status: false,
+                msg: "Profile not found"
+            }
         }
-        return false
     } catch (e) {
         console.log(e);
-        return false
+        const statusCode = e.response.status;
+        if (statusCode == 403) {
+            return {
+                msg: "CLOSED",
+                status: false,
+            }
+        } else {
+            return {
+                msg: "Not found",
+                status: false,
+            }
+        }
+
     }
 }
 

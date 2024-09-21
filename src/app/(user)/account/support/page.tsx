@@ -7,6 +7,9 @@ import BreadCrumb from '@/component/Util/BreadCrumb'
 import Footer from '@/component/Util/Footer'
 import ModelHeader from '@/component/Util/Model/ModelHeader';
 import ModelItem from '@/component/Util/ModelItem';
+import TableBody from '@/component/Util/Table/TableBody';
+import TableHead from '@/component/Util/Table/TableHead';
+import TablePagination from '@/component/Util/Table/TablePagination';
 import TableSimple from '@/component/Util/TableSimple';
 import { findAllMyTicket } from '@/util/data/helper/APIHelper';
 import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper';
@@ -21,11 +24,18 @@ function SupportTicket(): React.ReactElement {
 
     let [isNewTicketOpen, setTicketOpen] = useState<boolean>(false)
     const [listTicket, setTicket] = useState<ProfileTicket[]>([]);
+
     const [ticketCount, setCount] = useState<number>(0);
+    const [limit, setLimit] = useState(10)
+    const [page, setPage] = useState(1)
+
+
 
     async function findTicket(page: number, limit: number) {
         try {
             const tickets: IPaginatedResponse<ProfileTicket> = await findAllMyTicket(page, limit)
+            console.log("Tickets");
+            console.log(tickets);
             setTicket(tickets.paginated)
             setCount(tickets.total_records)
         } catch (e) {
@@ -34,8 +44,8 @@ function SupportTicket(): React.ReactElement {
     }
 
     useEffect(() => {
-        findTicket(1, 10)
-    }, [])
+        findTicket(page, limit)
+    }, [limit, page])
 
 
 
@@ -44,9 +54,7 @@ function SupportTicket(): React.ReactElement {
             <Header />
             <ModelItem ZIndex={10} closeOnOutSideClock={isNewTicketOpen} isOpen={isNewTicketOpen} onClose={() => setTicketOpen(false)} >
                 <ModelHeader title={"New Ticket"}></ModelHeader>
-                <div className="bg-white min-w-96 min-h-96 p-5">
-                    <NewTicketForm state={setTicketOpen} />
-                </div>
+                <NewTicketForm onComplete={() => findTicket(page, limit)} state={setTicketOpen} />
             </ModelItem>
             <div className="container mx-auto mt-5 mb-5">
                 <div className="mb-5">
@@ -67,108 +75,81 @@ function SupportTicket(): React.ReactElement {
                                 New Ticket
                             </button>
                         </div>
-                        <div className="mt-5">
+                        <div className="mt-0">
 
-                            <div className="relative p-5 overflow-x-auto shadow-md sm:rounded-lg">
+                            <div className="relative p-0 overflow-x-auto sm:rounded-lg">
 
                                 {/* {listTicket[0].updated_at} */}
 
-                                <TableSimple
-                                    headers={['ID', 'Title', 'Priority', 'Category', 'Status', 'Updated Date']}
-                                    searchKeys={['title']}
-                                    data={listTicket}
-                                    keyIndex={
-                                        [
-                                            {
-                                                as: (children) => children,
-                                                key: "ticket_id"
-                                            },
-                                            {
-                                                as: (title, ticket_id) => <Link href={`support/${ticket_id}`}>{title}</Link>,
-                                                key: ["title", "ticket_id"]
-                                            },
-                                            {
-                                                as: (children) => children,
-                                                key: "priority"
-                                            },
-                                            {
-                                                as: (children) => children,
-                                                key: "category"
-                                            },
-                                            {
-                                                as: (children) => (
-                                                    <span className='bg-green-400 text-white rounded-lg px-3 py-2'>
-                                                        {children}
-                                                    </span>
-                                                ),
-                                                key: "status"
-                                            },
-                                            {
-                                                as: (children) => formatDateToMonthNameAndDate(children),
-                                                key: "updated_at"
-                                            },
-                                        ]
-                                    }
-                                />
+                                <section className="container px-0 mx-auto">
+
+                                    <div className="flex flex-col mt-6">
+                                        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+
+                                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+
+                                                        <TableHead head={['ID', 'Title', 'Category', 'Status', 'Updated Date', 'Action']} />
+                                                        {
+                                                            listTicket.map((item) => {
+                                                                return (
+                                                                    <TableBody data={[item.ticket_id, item.title, item.category, item.status, formatDateToMonthNameAndDate(item.updated_at),
+                                                                    <Link className='underline text-blue-600' href={`support/${item.ticket_id}`}>View</Link>
+                                                                    ]} />
+                                                                )
+                                                            })
+                                                        }
+                                                    </table>
+
+                                                </div>
+                                                <TablePagination item_per_page={limit} onClick={(val) => { setPage(val) }} total_records={ticketCount} />
+                                            </div>
+                                        </div>
+                                    </div>
 
 
-                                {/* <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <tr>
-                                            <th scope="col" className="px-6 py-3">
-                                                ID
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Title
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Priority
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Category
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Status
-                                            </th>
-                                            <th scope="col" className="px-6 py-3">
-                                                Updated Date
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            listTicket.map((item: ProfileTicket) => {
-                                                return (
-                                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                        <td>
-                                                            #{item.ticket_id}
-                                                        </td>
-                                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                            <Link className='underline text-blue-500' href={`support/${item.ticket_id}`}>
-                                                                {item.title}
-                                                            </Link>
-                                                        </th>
-                                                        <td className="px-6 py-4">
-                                                            {item.priority}
-                                                        </td>
-                                                        <td className="px-6 py-4">
-                                                            {item.category}
-                                                        </td>
-                                                        <td className="px-6 py-4">
-                                                            <span className='bg-green-400 text-white rounded-lg px-3 py-2'>
-                                                                {item.status}
-                                                            </span>
-                                                        </td>
-                                                        <td className="px-6 py-4">
-                                                            {formatDateToMonthNameAndDate(item.updated_at)}
-                                                        </td>
+                                </section>
+                                {/* <TableSimple
+                                // headers={['ID', 'Title', 'Priority', 'Category', 'Status', 'Updated Date']}
+                                // searchKeys={['title']}
+                                // data={listTicket}
+                                // keyIndex={
+                                //     [
+                                //         {
+                                //             as: (children) => children,
+                                //             key: "ticket_id"
+                                //         },
+                                //         {
+                                //             as: (title, ticket_id) => <Link href={`support/${ticket_id}`}>{title}</Link>,
+                                //             key: ["title", "ticket_id"]
+                                //         },
+                                //         {
+                                //             as: (children) => children,
+                                //             key: "priority"
+                                //         },
+                                //         {
+                                //             as: (children) => children,
+                                //             key: "category"
+                                //         },
+                                //         {
+                                //             as: (children) => (
+                                //                 <span className='bg-green-400 text-white rounded-lg px-3 py-2'>
+                                //                     {children}
+                                //                 </span>
+                                //             ),
+                                //             key: "status"
+                                //         },
+                                //         {
+                                //             as: (children) => formatDateToMonthNameAndDate(children),
+                                //             key: "updated_at"
+                                //         },
+                                //     ]
+                                // }
+                                /> */}
 
-                                                    </tr>
-                                                )
-                                            })
-                                        }
-                                    </tbody>
-                                </table> */}
+
+
                             </div>
 
 

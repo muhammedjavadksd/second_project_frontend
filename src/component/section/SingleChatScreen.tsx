@@ -6,6 +6,7 @@ import { ICurrentUser, IMessageTemplate } from "@/util/types/InterFace/UtilInter
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react"
 import ChatMessageList from "../chat/ChatMessageList";
+import { io } from "socket.io-client";
 
 
 
@@ -13,32 +14,87 @@ import ChatMessageList from "../chat/ChatMessageList";
 function SingleChatScreen({ msg, current_user, room_id }: { msg: ChatHistory[], current_user: ICurrentUser, room_id: string }) {
 
     const [chatHistory, setHistory] = useState<ChatHistory[]>(msg);
+    const [profileId, setProfile] = useState<string>(null);
     const msgRef = useRef(null);
     const session = useSession();
-    const userDetails = userDetailsFromUseSession(session, "user");
-    const profile_id = userDetails?.profile_id;
+    let [socket, setSocket] = useState(null);
+
+    // function onMessage() {
+    //     if (profile_id) {
+    //         addMessageToChat(msgRef.current.value, room_id).then((data) => {
+    //             if (data) {
+    //                 const newMsg: ChatHistory = {
+    //                     _id: null,
+    //                     is_block: false,
+    //                     msg: msgRef.current.value,
+    //                     profile_id,
+    //                     room_id,
+    //                     seen: false,
+    //                     timeline: new Date()
+    //                 }
+    //                 setHistory((prev) => [...prev, newMsg])
+    //                 msgRef.current.value = null
+    //             }
+    //         })
+    //     } else {
+    //         alert("no profile")
+    //     }
+    // }
 
     function onMessage() {
-        if (profile_id) {
-            addMessageToChat(msgRef.current.value, room_id).then((data) => {
-                if (data) {
-                    const newMsg: ChatHistory = {
-                        _id: null,
-                        is_block: false,
-                        msg: msgRef.current.value,
-                        profile_id,
-                        room_id,
-                        seen: false,
-                        timeline: new Date()
-                    }
-                    setHistory((prev) => [...prev, newMsg])
-                    msgRef.current.value = null
-                }
-            })
+        const message = msgRef.current.value;
+        const userDetails = userDetailsFromUseSession(session, "role");
+        const newMsg: ChatHistory = {
+            _id: null,
+            is_block: false,
+            msg: msgRef.current.value,
+            profile_id: userDetails.profile_id,
+            room_id,
+            seen: false,
+            timeline: new Date()
+        }
+        msgRef.current.value = null
+
+        const chat: ChatHistory = {
+            is_block: false,
+            msg: message,
+            profile_id: userDetails?.profile_id,
+            room_id: room_id,
+            seen: false,
+            timeline: new Date(),
+        }
+        if (socket) {
+            alert("Message send")
+            socket.emit("message", chat)
+            setHistory((prev) => [...prev, newMsg])
         } else {
-            alert("no profile")
+            alert("No scoket")
         }
     }
+
+    useEffect(() => {
+        const userDetails = userDetailsFromUseSession(session, "user");
+        const token = userDetails.token;
+        if (token) {
+            const socketIo = io('http://localhost:7001/api/profile', {
+                path: '/api/profile',
+                transports: ['websocket', 'polling'],
+                query: {
+                    token: 'YOUR_AUTH_TOKEN' // If needed
+                }
+            });
+
+
+            socketIo.emit("join", userDetails.profile_id)
+            setSocket(socketIo)
+            setProfile(userDetails.profile_id)
+
+
+            socketIo.on("message", (chat: ChatHistory) => {
+                setHistory((prev) => [...prev, chat])
+            })
+        }
+    }, [session])
 
     return (
         <div style={{ height: "600px" }} className="w-full bg-gray-100  border-r border-gray-300 dark:border-gray-700 flex flex-col">
@@ -53,7 +109,7 @@ function SingleChatScreen({ msg, current_user, room_id }: { msg: ChatHistory[], 
             </div>
             <div className="flex-1 p-4 overflow-y-auto">
                 <ul className="space-y-4 w-full overflow-hidden">
-                    <ChatMessageList chatHistory={chatHistory} profile_id={profile_id} />
+                    <ChatMessageList chatHistory={chatHistory} profile_id={profileId} />
                 </ul>
             </div>
             <div className="flex items-center p-3 border-t border-gray-300 dark:border-gray-700">

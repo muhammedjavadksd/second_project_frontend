@@ -32,13 +32,11 @@ interface IBloodReq {
 }
 
 interface LocatedAt {
-    accuracy: number
-    longitude: number
-    latitude: number
-    _id: string
+    type: "Point",
+    coordinates: [number, number]
 }
 
-interface Profile2 {
+interface IBloodDonor {
     _id: string
     donor_id: string
     full_name: string
@@ -51,7 +49,7 @@ interface Profile2 {
 }
 
 interface BloodProfile {
-    profile: Profile2
+    profile: IBloodDonor
     blood_group: string
     donated_blood: number
     blood_requirements: number
@@ -61,4 +59,4 @@ interface BloodProfile {
 }
 
 export default IBloodReq
-export type { Sample, ILocatedAt, BloodProfile }
+export type { IBloodDonor, Sample, ILocatedAt, BloodProfile }

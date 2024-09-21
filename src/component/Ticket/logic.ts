@@ -16,8 +16,11 @@ export async function onTicketSubmit(val, successCb, errorCb) {
 
         const attachment = val.attachment;
         let presignedUrl = ""
+        console.log(attachment);
+
         if (attachment) {
-            const generatePresignedUrl = await API_axiosInstance.get("/profile/ticket-attachment-url", {
+            const imageName = attachment?.name
+            const generatePresignedUrl = await API_axiosInstance.get(`/profile/presigned_url?file=${imageName}`, {
                 headers: {
                     authorization: `Bearer ${token}`
                 }
@@ -26,10 +29,14 @@ export async function onTicketSubmit(val, successCb, errorCb) {
             if (response.status) {
                 const { url } = response.data
                 console.log("Presigned url got it");
-                const saveFile = await axios.put(url, attachment, { headers: { "Content-Type": attachment.type } })
+
+                const saveFile = await axios.put(url, attachment, {
+                    headers: {
+                        "Content-Type": attachment.type
+                    }
+                })
                 presignedUrl = url;
             }
-
         }
 
         const raiseTicket = await API_axiosInstance.post("/profile/raise_ticket", {

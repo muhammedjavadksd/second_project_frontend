@@ -67,4 +67,63 @@ interface AxiosResponse {
     data?: any
 }
 
+
+
+
+export interface PaymentOrderResponse {
+    _id: string
+    is_settled: boolean
+    donation_id: string
+    order_id: string
+    amount: number
+    date: string
+    profile_id: string
+    receipt: string
+    fund_id: string
+    hide_profile: boolean
+    name: string
+    __v: number
+    profile: Profile
+}
+
+export interface Profile {
+    _id: string
+    fund_id: string
+    amount: number
+    collected: number
+    category: string
+    sub_category: string
+    phone_number: number
+    email_id: string
+    created_date: string
+    created_by: string
+    user_id: string
+    picture: string[]
+    documents: string[]
+    closed: boolean
+    status: string
+    __v: number
+    about: string
+    age: number
+    benificiary_relation: string
+    deadline: string
+    full_name: string
+    city: string
+    district: string
+    full_address: string
+    pincode: number
+    state: string
+    benf_id: string
+    withdraw_docs: WithdrawDocs
+    description: string
+}
+
+export interface WithdrawDocs {
+    account_number: string
+    ifsc_code: string
+    holder_name: string
+    account_type: string
+}
+
+
 export type { IDonateHistoryTemplate, ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse }

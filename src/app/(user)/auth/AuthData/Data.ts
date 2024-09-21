@@ -1,5 +1,6 @@
 import SignInOTP from "@/component/Auth/Steps/SignIn/SignInOTP";
 import SignInPhoneNumber from "@/component/Auth/Steps/SignIn/SignInPhoneNumber";
+import AddPhoneNumber from "@/component/Auth/Steps/SignUp/AddPhoneNumber";
 import EditPhoneNumber from "@/component/Auth/Steps/SignUp/EditPhoneNumber";
 import SignUpOTP from "@/component/Auth/Steps/SignUp/SignUpOTP";
 import SignUpStart from "@/component/Auth/Steps/SignUp/SignUpStart";
@@ -34,7 +35,7 @@ let loginSteps: FunctionComponent<UserAuthStepInterFace>[] = [
 let signUpSteps: FunctionComponent<UserAuthStepInterFace>[] = [
     SignUpStart,
     SignUpOTP,
-    EditPhoneNumber
+    EditPhoneNumber,
 ]
 
 export { loginSteps, bannerSlider, signUpSteps }

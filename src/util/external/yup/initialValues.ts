@@ -50,7 +50,7 @@ const newTicketRaiseInitialValues = {
     description: "",
     priority: "",
     category: "",
-    attachment: "",
+    attachment: undefined,
 }
 
 const bloodDonationFormInitialValues = {

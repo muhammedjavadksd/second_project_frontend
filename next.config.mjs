@@ -6,6 +6,7 @@ const nextConfig = {
     images: {
         domains: ['localhost', 'fund-raiser.s3.amazonaws.com', 'kettocdn.gumlet.io'],
     },
+
 };
 
 export default nextConfig;
