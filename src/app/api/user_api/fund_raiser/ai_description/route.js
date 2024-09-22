@@ -75,7 +75,7 @@ export async function GET(request) {
         return new Response(JSON.stringify({ status: true, data: description }), { status: 200 })
     } catch (e) {
         console.log(e);
-        return new Response(JSON.stringify({ status: false, data: description }), { status: 500 })
+        return new Response(JSON.stringify({ status: false, data: "Something went wrong" }), { status: 500 })
     }
 
 

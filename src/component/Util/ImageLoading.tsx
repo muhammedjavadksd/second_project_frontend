@@ -13,7 +13,9 @@ function LoadImage({ imageurl, ...props }) {
     }, [imageurl, props])
 
     return (
-        <img src={src} {...props} />
+        <div>
+            <img src={src} {...props} />
+        </div>
     )
 }
 

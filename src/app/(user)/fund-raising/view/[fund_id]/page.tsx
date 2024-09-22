@@ -55,17 +55,9 @@ function ViewFundRaising(): React.ReactElement {
 
   const [focusModelImage, setFocusImage] = useState(null);
 
-  const [fundRaiserPictures, setPictures] = useState<string[]>([
-    'https://kettocdn.gumlet.io/media/campaign/916000/916659/image/665332ae198ea.jpg?w=768&dpr=2.0',
-    'https://kettocdn.gumlet.io/media/campaign/916000/916659/image/66533291141c6.jpg?w=768&dpr=2.0',
-    'https://kettocdn.gumlet.io/media/campaigns/916000/916659/image/U2AaNvabyw1vsfUsucs39AVTxAvQ8Q6zz0h9kji3.jpg?w=768&dpr=2.0'
-  ])
+  const [fundRaiserPictures, setPictures] = useState<string[]>([])
+  const [fundRaiserDocuments, setDocuments] = useState<string[]>([])
 
-  const [fundRaiserDocuments, setDocuments] = useState<string[]>([
-    'https://kettocdn.gumlet.io/media/campaign/916000/916659/image/665332ae198ea.jpg?w=768&dpr=2.0',
-    'https://kettocdn.gumlet.io/media/campaign/916000/916659/image/66533291141c6.jpg?w=768&dpr=2.0',
-    'https://kettocdn.gumlet.io/media/campaigns/916000/916659/image/U2AaNvabyw1vsfUsucs39AVTxAvQ8Q6zz0h9kji3.jpg?w=768&dpr=2.0'
-  ])
   const [focusPicture, setFocusPictures] = useState<string>(fundRaiserPictures[0])
 
   const [matchedProfile, setMatchedProfile] = useState<FundRaiserResponse[]>([])
@@ -133,6 +125,11 @@ function ViewFundRaising(): React.ReactElement {
       findDonationHistory()
       aboutDescription(response.description, response.picture)
       findMatchedProfile(response.category);
+      setPictures(response.picture)
+      setDocuments(response.documents)
+      setFocusPictures(response.picture[0])
+      console.log(response.picture);
+
     } else {
       if (findProfile.msg == "CLOSED") {
         router.replace("/fund-raising/closed")

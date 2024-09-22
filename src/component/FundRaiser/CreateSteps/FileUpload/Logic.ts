@@ -56,23 +56,26 @@ async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fun
 
         const token = user.token;
         let uploadImagePromises: Promise<any>[] = []
-        const presignedUrl = type == "Pictures" ? storeData.pictures_presigned_url : storeData.documents_presigned_url
+        const presignedUrl = []
         console.log(presignedUrl);
 
 
         for (let fileIndex = 0; fileIndex < my_files.length; fileIndex++) {
             console.log('Uploading file:', my_files[fileIndex]);
-            console.log('Using presigned URL:', presignedUrl[fileIndex]);
+            // console.log('Using presigned URL:', presignedUrl[fileIndex]);
 
-            uploadImagePromises.push(
-                axios.put(presignedUrl[fileIndex], my_files[fileIndex], {
-                    headers: {
-                        "Content-Type": my_files[fileIndex].type || "application/octet-stream"
-                    }
-                }).catch(error => {
-                    console.error(`Error uploading file ${fileIndex}:`, error.response ? error.response.data : error.message);
-                })
-            );
+            const url = await API_axiosInstance.get(`/fund_raise/presigned-url?type=${type}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            const response = url.data;
+            if (response && response.status) {
+                const url = response.data?.url;
+                presignedUrl.push(url)
+                const request = axios.put(url, my_files[fileIndex], { headers: { "Content-Type": my_files[fileIndex].type || "application/octet-stream" } })
+                uploadImagePromises.push(request)
+            }
         }
 
 
@@ -81,12 +84,9 @@ async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fun
 
         Promise.all(uploadImagePromises).then(async () => {
             try {
-
-
-
                 const API_request = await API_axiosInstance.patch(`/fund_raise/upload_images/${fundRaiseID}`, {
                     image_type: type,
-                    presigned_url: presignedUrl.slice(0, my_files.length)
+                    presigned_url: presignedUrl
                 }, {
                     headers: {
                         "authorization": `Bearer ${token}`,

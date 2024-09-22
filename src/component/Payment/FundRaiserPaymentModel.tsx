@@ -71,9 +71,9 @@ function FundPaymentModel({ fund_id }) {
                 }}>
                     <Form>
                         <div className="mt-5 mb-5 flex flex-wrap w-[350px] justify-center gap-4">
-                            <button type="button" onClick={() => setAmount(500)} className="bg-white  rounded-3xl shadow-inner border px-7 py-3">{const_data.MONEY_ICON}500</button>
-                            <button type="button" onClick={() => setAmount(1000)} className="bg-white rounded-3xl shadow-inner border px-7 py-3">{const_data.MONEY_ICON}1000</button>
-                            <button type="button" onClick={() => setAmount(2000)} className="bg-white rounded-3xl shadow-inner border px-7 py-3">{const_data.MONEY_ICON}2000</button>
+                            <button type="button" onClick={() => setAmount(500)} className={`${amount == 500 ? "bg-gray-200" : "bg-white"}  rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}500</button>
+                            <button type="button" onClick={() => setAmount(1000)} className={`${amount == 1000 ? "bg-gray-200" : "bg-white"} rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}1000</button>
+                            <button type="button" onClick={() => setAmount(2000)} className={`${amount == 2000 ? "bg-gray-200" : "bg-white"} rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}2000</button>
                             <OtherAmount initialValue={amount} onAmountSelect={(amount) => {
                                 setAmount(amount)
                             }} />
@@ -122,7 +122,7 @@ function FundPaymentModel({ fund_id }) {
                                 className=""
                             />
                             <ErrorMessage className='errorMessage' component="div" name='hide_profile' />
-                            <label className="text-sm mb-2 block" htmlFor="">Want to hide your name from public</label>
+                            <label typeof="button" className="text-sm mb-2 block" htmlFor="hide_profile">Want to hide your name from public</label>
                         </div>
                         <button type="submit" className="w-full font-medium text-white p-3 text-lg bg-green-400 rounded-lg">Pay now</button>
 

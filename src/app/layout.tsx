@@ -24,7 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
 
   // axios_instance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
-  API_axiosInstance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
+  // API_axiosInstance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
 
   return (
     <html lang="en">

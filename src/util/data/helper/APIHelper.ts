@@ -10,10 +10,13 @@ import { IChatTemplate, ChatProfile, ProfileTicket } from "@/util/types/API Resp
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums";
 
 
+
+
+
+
 export async function getBloodStataitic(): Promise<IBloodStatitics | null> {
 
     try {
-
         const fundRaise = await API_axiosInstance.get("/blood/admin/statitics");
         const response = fundRaise.data
         console.log(response);
@@ -53,6 +56,7 @@ export async function findNearest(bloodGroup: BloodGroup, location: [number, num
         const cord = `long=${location[0]}&lati=${location[1]}`
         const findNearest = await API_axiosInstance.get(`/blood/nearest-donors/${limit}/${page}/${bloodGroup}?${cord}`)
         const response = findNearest.data;
+
         if (response.status) {
             return response.data
         } else {
@@ -501,11 +505,14 @@ export async function findAllMyTicket(page: number, limit: number): Promise<IPag
         const session = await getSession();
         const data = userDetailsFromGetSession(session, "user");
         const token = data.token;
+
         const findTicket = await API_axiosInstance.get(`/profile/get-tickets/${page}/${limit}`, {
             headers: {
                 authorization: `Bearer ${token}`
             }
         });
+
+
         const response = findTicket.data;
         console.log(response);
 
@@ -856,8 +863,15 @@ async function getSingleActiveFundRaiser(fund_id: string, isForce: boolean): Pro
 
     try {
 
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user");
+        const token = user.token;
         const query = isForce ? `${fund_id}?isForce=true` : fund_id
-        const profile = await API_axiosInstance.get(`fund_raise/view/${query}`);
+        const profile = await API_axiosInstance.get(`fund_raise/view/${query}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
         const response = profile.data;
         console.log(response);
 

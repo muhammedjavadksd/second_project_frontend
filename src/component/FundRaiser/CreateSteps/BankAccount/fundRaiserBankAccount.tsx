@@ -1,6 +1,6 @@
 import LoadingComponent from "@/component/Util/LoadingComponent"
 import { ErrorMessage, Field, Form, Formik } from "formik"
-import { Fragment, useContext, useEffect, useState } from "react"
+import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import CreateFormBackground from "../../CreateFormBackground"
 import { fundRaiserBankAccoutInitialValues } from "@/util/external/yup/initialValues"
 import { fundRaiserBankAccoutValidation } from "@/util/external/yup/yupValidations"
@@ -16,8 +16,11 @@ function FundRaiserBankAccount({ state }) {
     const { currentApplication, setApplication } = useContext(OnGoingApplicationContext)
     const [initialValues, setInitialValues] = useState<Record<string, any>>(fundRaiserBankAccoutInitialValues);
     const selectData = useSelector((store: IReduxStore) => store.fund_raiser);
+    const formRef = useRef(null)
 
     useEffect(() => {
+        console.log(selectData);
+
         if (selectData.account_number) {
             setInitialValues({
                 account_number: selectData.account_number,
@@ -28,7 +31,7 @@ function FundRaiserBankAccount({ state }) {
                 currentApplication: null
             })
         }
-    }, [])
+    }, [selectData])
 
 
     function successCB() {
@@ -42,13 +45,26 @@ function FundRaiserBankAccount({ state }) {
     return (
         <Fragment>
             <CreateFormBackground>
-                <Formik enableReinitialize initialValues={initialValues} validationSchema={fundRaiserBankAccoutValidation} onSubmit={(val) => {
-                    val.currentApplication = currentApplication;
-                    console.log(val)
+                <Formik
+                    key={JSON.stringify(initialValues)}
+                    innerRef={formRef}
+                    enableReinitialize={true}
+                    initialValues={initialValues}
+                    validationSchema={fundRaiserBankAccoutValidation}
+                    onSubmit={(val) => {
+                        const isDirty = JSON.stringify(initialValues) === JSON.stringify(val);
+                        val.currentApplication = currentApplication;
 
-                    onBankAccountSubmit(val, successCB, errorCb);
-                }}>
+                        if (isDirty) {
+                            state((prev) => prev + 1)
+                        } else {
+                            onBankAccountSubmit(val, successCB, errorCb);
+                        }
+
+                    }}>
+
                     <Form>
+
 
                         <div className="mb-5">
                             <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Account number</label>
@@ -86,6 +102,7 @@ function FundRaiserBankAccount({ state }) {
                             <button type="submit" className="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next <i className="fa-solid fa-chevron-right"></i></button>
                         </div>
                     </Form>
+
                 </Formik>
             </CreateFormBackground >
         </Fragment >

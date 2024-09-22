@@ -84,6 +84,7 @@ export interface PaymentOrderResponse {
     name: string
     __v: number
     profile: Profile
+    status: boolean
 }
 
 export interface Profile {

@@ -41,13 +41,12 @@ async function onInitialCreate(val, successCB, errorCB) {
 
                 console.log(response);
                 const fund_id = response.data?.fund_id;
-                let imagesUpload = response?.data?.upload_images
                 if (fund_id) {
 
-                    console.log(imagesUpload);
 
 
-                    let { documents, pictures } = imagesUpload
+
+
 
 
                     store.dispatch(updateFundRaiseData({
@@ -57,8 +56,6 @@ async function onInitialCreate(val, successCB, errorCB) {
                             sub_category,
                             phone_number,
                             email_id,
-                            pictures_presigned_url: pictures,
-                            documents_presigned_url: documents
                         }
                     }))
                     console.log(fund_id);

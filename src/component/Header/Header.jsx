@@ -27,6 +27,8 @@ function Header() {
 
   let [showToggle, setShowToggle] = useState(false);
 
+
+
   return (
     <nav className="bg-white pt-3 pb-3 shadow-md">
       <div className="container mx-auto">
@@ -165,8 +167,9 @@ function Header() {
                 <a
                   href="#"
                   onClick={() => {
+
                     signOut({ redirect: false }).then((data) => {
-                      router.replace("auth/sign_in")
+                      router.replace("/auth/sign_in")
                     }).catch((Err) => { })
                   }}
                   className="block px-4 py-2 text-sm text-gray-700"

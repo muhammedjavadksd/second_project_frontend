@@ -10,7 +10,7 @@ import const_data from '@/util/data/const';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFundRaiseData } from '@/util/external/redux/slicer/fundRaiserForm';
 import { IReduxStore } from '@/util/types/InterFace/UtilInterface';
-import { FundRaiserFileType } from '@/util/types/Enums/BasicEnums';
+import { FileAcceptType, FundRaiserFileType } from '@/util/types/Enums/BasicEnums';
 import LoadingComponent from '@/component/Util/LoadingComponent';
 
 function FileUpload({ state }) {
@@ -87,10 +87,10 @@ function FileUpload({ state }) {
       onFileUpload([...files], onSuccess, onError, ifNotLogged, type, currentApplication);
       switch (type) {
         case FundRaiserFileType.Pictures:
-          imageRef.current.value = null
+          // imageRef.current.value = null
           break
         case FundRaiserFileType.Document:
-          documentRef.current.value = null
+          // documentRef.current.value = null
           break
         default:
           break;
@@ -108,8 +108,8 @@ function FileUpload({ state }) {
             <label htmlFor="">Select Picture's</label>
             <div className="flex mt-3">
               <div className='w-2/4'>
-                <div onClick={() => imageRef.current.click()}>
-                  <FileSelectBox id={FundRaiserFileType.Pictures} onFileSelect={(e) => handleFileSelect(e, FundRaiserFileType.Pictures)} />
+                <div>
+                  <FileSelectBox accept={FileAcceptType.BasicImage} id={FundRaiserFileType.Pictures} onFileSelect={(e) => handleFileSelect(e, FundRaiserFileType.Pictures)} />
                 </div>
               </div>
               <div className="w-2/4">
@@ -125,8 +125,8 @@ function FileUpload({ state }) {
             <label htmlFor="">Select Document's</label>
             <div className="flex mt-3">
               <div className='w-2/4'>
-                <div onClick={() => imageRef.current.click()}>
-                  <FileSelectBox id={FundRaiserFileType.Document} onFileSelect={(event) => handleFileSelect(event, FundRaiserFileType.Document)} />
+                <div>
+                  <FileSelectBox accept={FileAcceptType.BasicImage} id={FundRaiserFileType.Document} onFileSelect={(event) => handleFileSelect(event, FundRaiserFileType.Document)} />
                 </div>
               </div>
               <div className='w-2/4'>
