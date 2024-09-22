@@ -126,4 +126,43 @@ export interface WithdrawDocs {
 }
 
 
+export interface IFundRaiseStatitics {
+    fund_raiser: {
+        total_fund_raiser: number,
+        activeFundRaise: 0,
+        closedFundRaise: 0,
+        pendingFundRaiser: 0
+    },
+    donation: {
+        total_donation: 6000
+    }
+}
+
+export interface IBloodStatitics {
+    blood_requirement: {
+        totalRequests: number,
+        openRequests: number,
+        closedRequests: number,
+        totalUnitsNeeded: number,
+        requestsByBloodGroup: {
+            "_id": string,
+            "count": number
+        }[],
+        requestsByStatus: {
+            _id: string,
+            count: number
+        }[],
+    },
+    blood_donor: {
+        totalDonors: number,
+        openDonors: number,
+        closedDonors: number,
+        donorsByBloodGroup: {
+            "_id": string,
+            "count": number
+        }[]
+    }
+}
+
+
 export type { IDonateHistoryTemplate, ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse }

@@ -13,6 +13,7 @@ import axios_instance from "@/util/external/axios/axios-instance";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import BloodDonorForm from "@/util/context/BloodDonorForm";
 import Head from "next/head";
+import { addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError } from "@/util/data/helper/authHelper";
 // import { Head } from "next/document";
 
 interface RootLayoutProps {
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
 
   // axios_instance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
-  // API_axiosInstance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
+  API_axiosInstance.interceptors.request.use(addTokenIntoAxiosInterceptor, addTokenIntoAxiosInterceptorError);
 
   return (
     <html lang="en">

@@ -3,7 +3,7 @@
 function TableHead({ head }: { head: string[] }) {
 
     return (
-        <thead className="bg-gray-50 dark:bg-gray-800">
+        <thead className="bg-gray-50 w-full dark:bg-gray-800">
             <tr>
                 {
                     head.map((item) => {

@@ -26,8 +26,10 @@ function AdminSideBar({ isShow }) {
     const addBloodDonorSvgIcon = <i class="fa-solid fa-droplet"></i>
     const addBloodPatientSvgIcon = <i class="fa-solid fa-bed"></i>
     const urgentBloodRequirementSvgIcon = <i class="fa-solid fa-truck-medical"></i>
+    const bloodBankIcon = <i class="fa-solid fa-vault"></i>
+    const nearest = <i class="fa-solid fa-map"></i>
 
-    const addOrganizationSvgIcon = <i class="fa-regular fa-building"></i>
+    const manageTicket = <i class="fa-solid fa-ticket"></i>
     const manageOrganizationSvgIcon = <i class="fa-solid fa-building-shield"></i>
     const viewCalenderSvgIcon = <i class="fa-solid fa-calendar-days"></i>
 
@@ -51,7 +53,7 @@ function AdminSideBar({ isShow }) {
                             <div class="space-y-3 ">
                                 <label class="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Basic</label>
                                 <LinkNav href={"/admin"} icon={homeSvgIcon} isActive={true} isSub={false} title={"Dashboard"} />
-                                <LinkNav href={"/site_settings"} icon={settingIcon} isActive={false} isSub={false} title={"Site settings"}></LinkNav>
+                                <LinkNav href={"/admin/site_settings"} icon={settingIcon} isActive={false} isSub={false} title={"Site settings"}></LinkNav>
                             </div>
 
                             <div class="space-y-3 ">
@@ -64,29 +66,19 @@ function AdminSideBar({ isShow }) {
                             <div class="space-y-3 ">
                                 <label class="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Blood Bank</label>
                                 <LinkNav href={"/admin/blood/add-donor"} icon={addBloodDonorSvgIcon} isActive={true} isSub={false} title={"Add donor"} />
-                                <LinkNav href={"/admin/blood/add-patient"} icon={addBloodPatientSvgIcon} isActive={false} isSub={false} title={"Add patient"}></LinkNav>
+                                <LinkNav href={"/admin/blood/add-requirement"} icon={addBloodPatientSvgIcon} isActive={false} isSub={false} title={"Add requirement"}></LinkNav>
                                 <LinkNav href={"/admin/blood/blood-requirement"} icon={urgentBloodRequirementSvgIcon} isActive={false} isSub={false} title={"Blood requirements"}></LinkNav>
-
+                                <LinkNav href={"/admin/blood/change-blood-group"} icon={addBloodDonorSvgIcon} isActive={false} isSub={false} title={"Change blood group"}></LinkNav>
+                                <LinkNav href={"/admin/blood/blood-bank"} icon={bloodBankIcon} isActive={false} isSub={false} title={"Blood Bank"}></LinkNav>
+                                <LinkNav href={"/admin/blood/nearest"} icon={nearest} isActive={false} isSub={false} title={"Nearest donors"}></LinkNav>
                             </div>
 
                             <div class="space-y-3 ">
-                                <label class="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Organization</label>
-                                <LinkNav href={"/admin/organization/add"} icon={addOrganizationSvgIcon} isActive={true} isSub={false} title={"Add organization"} />
-                                <LinkNav href={"/admin/organization/manage"} icon={manageOrganizationSvgIcon} isActive={false} isSub={false} title={"Manage organization"}></LinkNav>
-                                <LinkNav href={"/admin/organization/events"} icon={viewCalenderSvgIcon} isActive={false} isSub={false} title={"Upcoming Events"}></LinkNav>
+                                <label class="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Ticket</label>
+                                <LinkNav href={"/admin/tickets/manage"} icon={manageTicket} isActive={true} isSub={false} title={"Manage Tickets"} />
+
                             </div>
 
-                            {/* <div class="space-y-3 ">
-                                <label class="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Communication</label>
-                                <LinkNav href={"/admin"} icon={homeSvgIcon} isActive={true} isSub={false} title={"Dashboard"} />
-                                <LinkNav href={"/site_settings"} icon={settingIcon} isActive={false} isSub={false} title={"Site settings"}></LinkNav>
-                            </div>
-
-                            <div class="space-y-3 ">
-                                <label class="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Content Management</label>
-                                <LinkNav href={"/admin"} icon={homeSvgIcon} isActive={true} isSub={false} title={"Dashboard"} />
-                                <LinkNav href={"/site_settings"} icon={settingIcon} isActive={false} isSub={false} title={"Site settings"}></LinkNav>
-                            </div> */}
                         </nav>
                     </div>
                 </aside>

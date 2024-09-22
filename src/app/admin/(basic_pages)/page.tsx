@@ -1,7 +1,7 @@
 "use client"
 import AdminLayout from '@/component/Admin/AdminLayout'
 import DashboardCard from '@/component/Util/DashboardCard'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CanvasJSReact from '@canvasjs/react-charts'
 import const_data from '@/util/data/const'
 import { userGrowthGraph, userTypeOptions } from './data'
@@ -10,30 +10,101 @@ import PaginationTab from '@/component/Util/PaginationTab'
 import AdminDateFilter from '@/component/Util/AdminDateFilter'
 import { useSession } from 'next-auth/react'
 import AdminPrivateRouter from '@/component/LoginComponent/AdminPrivateRouter'
+import { getFundRaiserStatitics, getBloodStataitic } from '@/util/data/helper/APIHelper'
+import { IBloodStatitics, IFundRaiseStatitics } from '@/util/types/API Response/FundRaiser'
 
 function DashboardPage(): React.ReactElement {
 
   var CanvasJSChart: CanvasJSReact = CanvasJSReact.CanvasJSChart;
+  const [fundRaiseStatistics, setFundRaiserStatitics] = useState<IFundRaiseStatitics | null>(null)
+  const [bloodStatitics, setBloodStatitics] = useState<IBloodStatitics | null>(null)
+
+  async function statitics() {
+    const fundRaiser = await getFundRaiserStatitics();
+    const bloodStatitics = await getBloodStataitic();
+    if (fundRaiser) {
+      setFundRaiserStatitics(fundRaiser)
+    }
+    if (bloodStatitics) {
+      setBloodStatitics(bloodStatitics)
+    }
+  }
+
+  useEffect(() => {
+    statitics()
+  }, [])
 
   return (
     <AdminPrivateRouter>
       <AdminLayout>
 
 
-        <AdminDateFilter></AdminDateFilter>
+        {/* <AdminDateFilter onDateSelect={() => { }}></AdminDateFilter> */}
 
+
+        <div className='mt-0'>
+          <h4 className='font-medium text-2xl'>Blood static's</h4>
+          <div className='grid grid-cols-4 mt-2 gap-5 flex'>
+            <DashboardCard icon={null} classNames={'bg-white'} title={"Total donor's"} data={bloodStatitics?.blood_donor?.totalDonors || 0} />
+            <DashboardCard icon={null} classNames={'bg-white'} title={"Active donors"} data={bloodStatitics?.blood_donor?.openDonors || 0} />
+            <DashboardCard icon={null} classNames={'bg-white'} title={"In active donors"} data={bloodStatitics?.blood_donor?.closedDonors || 0} />
+
+            {
+              bloodStatitics?.blood_donor?.donorsByBloodGroup.map((item) => {
+                return <DashboardCard icon={null} classNames={'bg-white'} title={`${item._id} Donors`} data={item.count} />
+              })
+            }
+
+            <DashboardCard icon={null} classNames={'bg-white'} title={"Active blood need"} data={bloodStatitics?.blood_requirement?.openRequests || 0} />
+            <DashboardCard icon={null} classNames={'bg-white'} title={"Closed blood need"} data={bloodStatitics?.blood_requirement?.closedRequests || 0} />
+            <DashboardCard icon={null} classNames={'bg-white'} title={"Total blood need"} data={bloodStatitics?.blood_requirement?.totalRequests || 0} />
+            <DashboardCard icon={null} classNames={'bg-white'} title={"Total unit need"} data={bloodStatitics?.blood_requirement?.totalUnitsNeeded || 0} />
+            {
+              bloodStatitics?.blood_requirement?.requestsByBloodGroup?.map((item) => {
+                return <DashboardCard icon={null} classNames={'bg-white'} title={`${item._id}  need`} data={item?.count || 0} />
+              })
+            }
+            {
+              bloodStatitics?.blood_requirement?.requestsByStatus?.map((item) => {
+                return <DashboardCard icon={null} classNames={'bg-white'} title={`Blood req ${item._id}`} data={item?.count || 0} />
+              })
+            }
+          </div>
+        </div>
 
         <div className='mt-5'>
-          <h4 className='font-medium text-2xl'>Site static's</h4>
+          <h4 className='font-medium text-2xl'>Fund raiser static's</h4>
           <div className='grid grid-cols-4 mt-2 gap-5 flex'>
-            <DashboardCard icon={null} classNames={'bg-white'} title={"Total donor's"} data={100} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"Urgent Blood Need"} data={24} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"Dead line crossed"} data={"25"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"Total patient's"} data={200} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"Total organization"} data={10} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"Blood shortage"} data={"A+"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"Total Fund raiser's"} data={200} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"Total Fund Raised"} data={"25,000"} />
+            <DashboardCard
+              icon={null}
+              classNames={'bg-white'}
+              title={"Total Fund Raisers"}
+              data={fundRaiseStatistics?.fund_raiser?.total_fund_raiser || 0}
+            />
+            <DashboardCard
+              icon={null}
+              classNames={'bg-white'}
+              title={"Active Fund Raisers"}
+              data={fundRaiseStatistics?.fund_raiser?.activeFundRaise || 0}
+            />
+            <DashboardCard
+              icon={null}
+              classNames={'bg-white'}
+              title={"Closed Fund Raisers"}
+              data={fundRaiseStatistics?.fund_raiser?.closedFundRaise || 0}
+            />
+            <DashboardCard
+              icon={null}
+              classNames={'bg-white'}
+              title={"Pending  Raisers"}
+              data={fundRaiseStatistics?.fund_raiser?.pendingFundRaiser || 0}
+            />
+            <DashboardCard
+              icon={null}
+              classNames={'bg-white'}
+              title={"Total Donations"}
+              data={`${fundRaiseStatistics?.donation?.total_donation || 0}${const_data.MONEY_ICON}`}
+            />
           </div>
         </div>
 
@@ -51,92 +122,6 @@ function DashboardPage(): React.ReactElement {
 
           </div>
         </div>
-
-
-        <div className='mt-5'>
-          <h4 className='font-medium text-2xl mb-2'>Progress Data</h4>
-          <div className='flex gap-5'>
-
-            <div className='w-2/6'>
-
-
-
-              <div className="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                <div className="flex justify-between">
-                  <div>
-                    <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32,000{const_data.MONEY_ICON}</h5>
-                    <p className="text-base font-normal text-gray-500 dark:text-gray-400">Total Fund Raised</p>
-                  </div>
-                  <div
-                    className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                    12%
-                    <svg className="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <CanvasJSChart options={userTypeOptions}
-                  />
-                </div>
-
-              </div>
-            </div>
-            <div className='w-4/6'>
-
-
-
-              <div className=" w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                <div className="flex justify-between">
-                  <div>
-                    <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">500</h5>
-                    <p className="text-base font-normal text-gray-500 dark:text-gray-400">New User's</p>
-                  </div>
-                  <div
-                    className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                    12%
-                    <svg className="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                    </svg>
-                  </div>
-                </div>
-                <div>
-                  <CanvasJSChart options={userGrowthGraph}
-                  />
-                </div>
-
-              </div>
-
-
-
-
-            </div>
-
-          </div>
-        </div>
-
-
-        <div className="mt-5">
-
-
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <TableSimple onAllItemCheck={() => { }} onItemChecked={() => { }} selectedItem={[]} headers={['Product Name', 'Color', 'Category', 'Price', 'Action']} data={[{
-              name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action: <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
-            }, {
-              name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action: <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
-            }, {
-              name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action: <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
-            }, {
-              name: "Sample One", color: 'Red', category: 'Shoes', price: '12,00', action: <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> View</button>
-            }]} />
-            <PaginationTab total_pages={10} total_records={10} from={1} to={5} onClick={() => { }} />
-          </div>
-
-        </div>
-
-
-
-
 
       </AdminLayout>
     </AdminPrivateRouter>

@@ -5,10 +5,46 @@ import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
-import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate } from "@/util/types/API Response/FundRaiser";
+import { FundRaiserResponse, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums";
 
+
+export async function getBloodStataitic(): Promise<IBloodStatitics | null> {
+
+    try {
+
+        const fundRaise = await API_axiosInstance.get("/blood/admin/statitics");
+        const response = fundRaise.data
+        console.log(response);
+
+        if (response.status) {
+            const statitics = response.data;
+            return statitics
+        }
+        return null
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
+
+export async function getFundRaiserStatitics(): Promise<IFundRaiseStatitics | null> {
+
+    try {
+
+        const fundRaise = await API_axiosInstance.get("/fund_raise/admin/statitics");
+        const response = fundRaise.data
+        if (response.status) {
+            const statitics = response.data;
+            return statitics
+        }
+        return null
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
 
 export async function findNearest(bloodGroup: BloodGroup, location: [number, number], page: number, limit: number): Promise<IPaginatedResponse<IBloodDonor[]>> {
 
