@@ -31,6 +31,7 @@ function PaginationSection({ itemsRender, api, paginationProps, refresh }: { ite
     const [totalRecords, setTotalRecords] = useState<number>()
     const [currenUrl, setCurrentUrl] = useState("");
 
+
     async function fetchData() {
         console.log(api);
         const { paginated, total_records } = await api.renderType(page, limit);

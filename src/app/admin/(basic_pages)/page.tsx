@@ -4,20 +4,18 @@ import DashboardCard from '@/component/Util/DashboardCard'
 import React, { useEffect, useState } from 'react'
 import CanvasJSReact from '@canvasjs/react-charts'
 import const_data from '@/util/data/const'
-import { userGrowthGraph, userTypeOptions } from './data'
-import TableSimple from '@/component/Util/TableSimple'
-import PaginationTab from '@/component/Util/PaginationTab'
-import AdminDateFilter from '@/component/Util/AdminDateFilter'
-import { useSession } from 'next-auth/react'
 import AdminPrivateRouter from '@/component/LoginComponent/AdminPrivateRouter'
-import { getFundRaiserStatitics, getBloodStataitic } from '@/util/data/helper/APIHelper'
+import { getFundRaiserStatitics, getBloodStataitic, getBloodByStatics } from '@/util/data/helper/APIHelper'
 import { IBloodStatitics, IFundRaiseStatitics } from '@/util/types/API Response/FundRaiser'
+import { BloodGroup } from '@/util/types/Enums/BasicEnums'
 
 function DashboardPage(): React.ReactElement {
 
-  var CanvasJSChart: CanvasJSReact = CanvasJSReact.CanvasJSChart;
   const [fundRaiseStatistics, setFundRaiserStatitics] = useState<IFundRaiseStatitics | null>(null)
   const [bloodStatitics, setBloodStatitics] = useState<IBloodStatitics | null>(null)
+  const [bloodGroupStatitics, setBloodGroupStatitics] = useState<null | Record<BloodGroup, number>>(null)
+
+
 
   async function statitics() {
     const fundRaiser = await getFundRaiserStatitics();
@@ -25,13 +23,24 @@ function DashboardPage(): React.ReactElement {
     if (fundRaiser) {
       setFundRaiserStatitics(fundRaiser)
     }
+
     if (bloodStatitics) {
+      console.log(bloodStatitics);
+
       setBloodStatitics(bloodStatitics)
     }
   }
 
   useEffect(() => {
     statitics()
+    getBloodByStatics().then((data) => {
+      setBloodGroupStatitics(data)
+      console.log(data);
+
+    }).catch((err) => {
+      console.log(err);
+
+    })
   }, [])
 
   return (
@@ -111,14 +120,13 @@ function DashboardPage(): React.ReactElement {
         <div className='mt-5'>
           <h4 className='font-medium text-2xl'>Blood availability</h4>
           <div className='grid grid-cols-4 mt-2 gap-5 flex'>
-            <DashboardCard icon={null} classNames={'bg-white'} title={"A+"} data={"Unit"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"A-"} data={"Unit"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"B+"} data={"Unit"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"B-"} data={"Unit"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"O+"} data={"Unit"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"O-"} data={"Unit"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"AB+"} data={"Unit"} />
-            <DashboardCard icon={null} classNames={'bg-white'} title={"AB-"} data={"Unit"} />
+            {
+              bloodGroupStatitics && (
+                Object.keys(bloodGroupStatitics).map((item) => {
+                  return <DashboardCard icon={null} classNames={'bg-white'} title={`${item} Group`} data={bloodGroupStatitics[item]} />
+                })
+              )
+            }
 
           </div>
         </div>

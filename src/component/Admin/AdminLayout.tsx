@@ -5,7 +5,7 @@ import AdminNavbar from './Partials/Navbar'
 import { SessionProvider, getSession, useSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth'
 
-function AdminLayout({ children }) {
+function AdminLayout({ children, onSearch }) {
 
 
 
@@ -18,7 +18,7 @@ function AdminLayout({ children }) {
                     <AdminSideBar isShow={navbarToggler} />
                 </div>
                 <div className={`${navbarToggler ? 'w-4/5 ml-auto' : 'w-full'}`}>
-                    <AdminNavbar onMenuClick={setNavbarToggler} />
+                    <AdminNavbar onSearch={onSearch} onMenuClick={setNavbarToggler} />
 
                     <div className='p-5'>
                         {

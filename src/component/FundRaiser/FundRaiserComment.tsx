@@ -13,6 +13,7 @@ import { ISingleCommentsResponse } from "@/util/types/API Response/FundRaiser";
 import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper";
 import { addReplayComment } from "@/util/external/yup/formSubmission";
 import { useRouter } from "next/navigation";
+import AvatarIcon from "../Util/avatarIcon";
 
 
 function FundRaiserComment({ nestedComments, date, user_id, user_name, comment, comment_id, onDelete, fund_id, isNested, mention }) {
@@ -118,12 +119,8 @@ function FundRaiserComment({ nestedComments, date, user_id, user_name, comment, 
                     <div className="w-full flex items-center">
 
                         <div className="w-full flex justify-between">
-                            <div className="flex items-center">
-                                <img
-                                    src="https://cdn2.f-cdn.com/ppic/224842181/logo/14133910/profile_logo_14133910.jpg?image-optimizer=force&format=webply&width=120"
-                                    alt="User Avatar"
-                                    className="w-12 h-12 rounded-full mr-3"
-                                />
+                            <div className="flex items-center gap-3">
+                                <AvatarIcon name={user_name} />
                                 <div >
                                     <span className="text-gray-800 font-semibold">{user_name}</span>
                                     <span className="text-gray-600 text-sm block">{user_id}</span>
@@ -181,23 +178,12 @@ function FundRaiserComment({ nestedComments, date, user_id, user_name, comment, 
                         }
                     </p>
                     <div className="flex justify-between">
-                        <ul className="flex gap-5 mt-2">
-                            {/* <li>
-                                <button>
-                                    <i className="fa-solid fa-thumbs-up"></i> 3
-                                </button>
-                            </li>
-                            <li>
-                                <button>
-                                    <i className="fa-solid fa-thumbs-down"></i> 5
-                                </button>
-                            </li> */}
-                        </ul>
+                        <div></div>
                         <button onClick={() => openComments(!isCommentsOpen)} className="flex items-center text-blackt font-semibold text-sm">
                             <i className={`fa-solid ${isCommentsOpen ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                             <span className="w-2"></span>
 
-                            Replay ({replayComments && replayComments?.length})
+                            Replay {replayComments?.length ? `(${replayComments?.length})` : null}
                         </button>
                     </div>
                 </div>
@@ -222,13 +208,14 @@ function FundRaiserComment({ nestedComments, date, user_id, user_name, comment, 
                                     </Form >
                                 </Formik >
                                 {
-                                    (replayComments && replayComments.length) && replayComments.map((each: ISingleCommentsResponse) => {
+                                    (replayComments && replayComments.length) ? replayComments.map((each: ISingleCommentsResponse) => {
                                         return (
                                             <>
                                                 <FundRaiserComment mention={each.mention} isNested={true} fund_id={each.fund_id} onDelete={() => onDelete(each.comment_id)} user_id={each.user_id} user_name={each.user_name} date={formatDateToMonthNameAndDate(each.date)} nestedComments={each.replay || []} comment={each.comment} comment_id={each.comment_id} />
                                             </>
                                         )
                                     })
+                                        : <></>
                                 }
                             </>
                         )

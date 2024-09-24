@@ -39,7 +39,7 @@ function BloodAccount(): React.ReactElement {
                     {/* <OutGoingRequestView /> *
                     <BloodDonationHistoryProfile /> */}
 
-                    <PaginationSection
+                    {/* <PaginationSection
                         paginationProps={{
                             current_page: 1,
                             currentLimit: 10
@@ -53,7 +53,7 @@ function BloodAccount(): React.ReactElement {
                             pageLabel: ":skip"
                         }}
                         itemsRender={itemsRender}
-                    />
+                    /> */}
                 </div>
 
 

@@ -7,10 +7,71 @@ import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums";
+import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, TicketCategory, TicketStatus } from "@/util/types/Enums/BasicEnums";
 
 
+export async function getAdminTicket(page: number, limit: number, status?: TicketStatus, category?: TicketCategory, search?: string): Promise<IPaginatedResponse<ProfileTicket>> {
+    try {
+        const session = await getSession();
 
+
+        const userProfile = userDetailsFromGetSession(session, "admin")
+        const token = userProfile.token;
+
+        const params = status ? `/${limit}/${page}/${status}` : `/${limit}/${page}`
+        const query = new URLSearchParams()
+        if (category !== null) {
+            query.append('category', category);
+        }
+        if (search !== null) {
+            query.append('query', search);
+        }
+
+
+        const find = await API_axiosInstance.get(`profile/admin/get_tickets${params}?${query}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        console.log(find);
+
+        const response = find.data;
+        console.log(response);
+
+        if (response.status) {
+            return response.data
+        }
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
+
+
+export async function getBloodByStatics(): Promise<null | Record<BloodGroup, number>> {
+
+    try {
+        const find = await API_axiosInstance.get("blood/blood_availability");
+        const response = find.data;
+        console.log(response);
+
+        if (response.status) {
+            return response.data
+        }
+        return null
+    } catch (e) {
+        console.log(e);
+
+        return null
+    }
+}
 
 
 

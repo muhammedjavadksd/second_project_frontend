@@ -2,6 +2,9 @@ import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser"
 import const_data from "../const"
 import LoadImage from '@/component/Util/ImageLoading'
 import axios from "axios"
+import { confirmAlert } from "react-confirm-alert"
+
+
 
 export function objectToUrlQuery(object) {
     let query = new URLSearchParams(object)

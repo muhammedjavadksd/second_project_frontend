@@ -24,7 +24,7 @@ function BloodAccountStart({ onComplete, profile }): React.ReactElement {
 
     const { donor_id, setDonor } = useContext(BloodDonorFormContext)
     const [isBloodDonorFormLoading, setBloodDonorFormLoading] = useState(false)
-    const [currentLocation, setCurrentLocation] = useState(null);
+    const [currentLocation, setCurrentLocation] = useState([123, 123]);
 
 
     // alert(donor_id)
@@ -113,17 +113,7 @@ function BloodAccountStart({ onComplete, profile }): React.ReactElement {
     }
 
 
-    useEffect(() => {
-        onLocationSelect()
-    }, [])
 
-    function onLocationSelect() {
-        navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-            const { latitude, longitude } = coords
-            console.log(coords);
-            setCurrentLocation(coords)
-        })
-    }
 
     return (
         <LoadingComponent closeOnClick={false} isLoading={isBloodDonorFormLoading} paddingNeed={false}>

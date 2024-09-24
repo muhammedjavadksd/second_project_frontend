@@ -41,7 +41,7 @@ import Countdown from 'react-countdown'
 
 function ViewFundRaising(): React.ReactElement {
 
-  let [tabListing, setTabListing] = useState<FundRaiserTabItems>(FundRaiserTabItems.COMMENT)
+  let [tabListing, setTabListing] = useState<FundRaiserTabItems>(FundRaiserTabItems.ABOUT)
   const session = useSession();
   const userDetails = userDetailsFromUseSession(session, "user");
   const params = useSearchParams()
@@ -227,15 +227,15 @@ function ViewFundRaising(): React.ReactElement {
 
 
                   <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
-                    <li className="me-2">
-                      <button onClick={() => setTabListing(FundRaiserTabItems.ABOUT)} aria-current="page" className="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500">About</button>
+                    <li>
+                      <button onClick={() => setTabListing(FundRaiserTabItems.ABOUT)} aria-current="page" className={`inline-block   text-black ${tabListing == FundRaiserTabItems.ABOUT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>About</button>
                     </li>
-                    <li className="me-2">
-                      <button onClick={() => setTabListing(FundRaiserTabItems.DOCUMENT)} className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Document</button>
+                    <li>
+                      <button onClick={() => setTabListing(FundRaiserTabItems.DOCUMENT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.DOCUMENT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Document</button>
                     </li>
 
-                    <li className="me-2">
-                      <button onClick={() => setTabListing(FundRaiserTabItems.COMMENT)} className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Comment's</button>
+                    <li>
+                      <button onClick={() => setTabListing(FundRaiserTabItems.COMMENT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.COMMENT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Comment's</button>
                     </li>
                   </ul>
 
@@ -244,18 +244,8 @@ function ViewFundRaising(): React.ReactElement {
                       <div style={{ height: "600px" }} className='overflow-auto'>
                         <h4 className='text-center font-bold text-3xl mb-3'>About the Fundraiser</h4>
 
-                        {/* <div className='mb-5'>
-                          <h2 className='font-medium text-xl mb-2'>Personal details</h2>
-                          <ul>
-                            <li>Full name: <span className='font-medium'>Muhammed Javad</span></li>
-                            <li>Category: <span className='font-medium'>Education</span></li>
-                            <li>Sub Category: <span className='font-medium'>Tuition</span></li>
-                            <li>Deadline: <span className='font-medium'>May 20 2024</span></li>
-                            <li>State: <span className='font-medium'>Kerala</span></li>
-                            <li>District: <span className='font-medium'>Kasaragod</span></li>
-                            <li>City: <span className='font-medium'>Uduma</span></li>
-                          </ul>
-                        </div> */}
+
+
                         <div className='mb-3'>
                           {fundRaiserProfile.about}
                         </div>
@@ -315,7 +305,7 @@ function ViewFundRaising(): React.ReactElement {
 
                 <div className='mt-5 flex justify-between w-full'>
                   <span className="raised supporters ng-star-inserted  text-gray-500">
-                    <span className='text-2xl font-bold text-black'>705</span> supporters
+                    <span className='text-2xl font-bold text-black'>{totalDonated}</span> supporters
                   </span>
 
                   <span className="raised supporters ng-star-inserted text-gray-500">
@@ -351,7 +341,7 @@ function ViewFundRaising(): React.ReactElement {
                       <div className="ml-4">
                         <div className="text-sm text-gray-500">Category</div>
                         <div className="text-lg font-semibold text-gray-800 capitalize">
-                          Education (<span className='font-mono text-sm'>Tutition</span>)
+                          {fundRaiserProfile.category} (<span className='font-mono text-sm'>{fundRaiserProfile.sub_category}</span>)
                         </div>
                       </div>
                     </div>
@@ -369,7 +359,7 @@ function ViewFundRaising(): React.ReactElement {
                       <div className="ml-4">
                         <div className="text-sm text-gray-500">State</div>
                         <div className="text-lg font-semibold text-gray-800 capitalize">
-                          Kerala
+                          {fundRaiserProfile.state}
                         </div>
                       </div>
                     </div>
@@ -384,7 +374,7 @@ function ViewFundRaising(): React.ReactElement {
                       <div className="ml-4">
                         <div className="text-sm text-gray-500">Distrcit</div>
                         <div className="text-lg font-semibold text-gray-800 capitalize">
-                          Kasaragod
+                          {fundRaiserProfile.district}
                         </div>
                       </div>
                     </div>
@@ -399,7 +389,7 @@ function ViewFundRaising(): React.ReactElement {
                       <div className="ml-4">
                         <div className="text-sm text-gray-500">City</div>
                         <div className="text-lg font-semibold text-gray-800 capitalize">
-                          Uduma / 671319
+                          {fundRaiserProfile.city}
                         </div>
                       </div>
                     </div>
@@ -409,39 +399,16 @@ function ViewFundRaising(): React.ReactElement {
 
                 <div className="flex flex-col mt-5 items-center p-4 bg-white shadow-lg rounded-lg">
 
-                  <div className="flex flex-col items-center mb-4">
-                    <div className="flex items-center justify-start mb-2">
-                      <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">
-                        <strong>MR</strong>
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-center justify-start">
+                      <div className="w-16 h-12 flex items-center justify-center bg-gray-200 rounded-full">
+                        <strong>{findNameAvatar(fundRaiserProfile.full_name)}</strong>
                       </div>
-                      <div className="ml-4">
-                        <div className="text-sm text-gray-500">Campaigner</div>
+                      <div className="ml-4 w-full">
                         <div className="text-lg font-semibold text-gray-800 capitalize">
-                          Mahendar Reddy Bakangari
+                          {fundRaiserProfile.full_name}
                         </div>
-                        <div className="flex items-center mt-1 text-gray-600">
-                          <span className="material-icons text-base">location_on</span>
-                          <span className="ml-1">Hyderabad</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="w-full h-px bg-gray-300 my-4"></div>
-
-
-                    <div className="flex items-center justify-start mb-2">
-                      <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-full">
-                        <strong>RS</strong>
-                      </div>
-                      <div className="ml-4">
-                        <div className="text-sm text-gray-500">Campaigner</div>
-                        <div className="text-lg font-semibold text-gray-800 capitalize">
-                          Mahendar Reddy Bakangari
-                        </div>
-                        <div className="flex items-center mt-1 text-gray-600">
-                          <span className="material-icons text-base">location_on</span>
-                          <span className="ml-1">Hyderabad</span>
-                        </div>
+                        {fundRaiserProfile.full_address}
                       </div>
                     </div>
                   </div>
@@ -505,7 +472,7 @@ function ViewFundRaising(): React.ReactElement {
         </div>
 
         <Footer />
-      </div>
+      </div >
       <div className="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="" data-size=""><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" className="fb-xfbml-parse-ignore">Share</a></div>
 
     </>

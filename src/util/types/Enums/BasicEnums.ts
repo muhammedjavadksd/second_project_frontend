@@ -3,6 +3,13 @@ enum FileAcceptType {
     BasicImage = "image/jpeg, image/jpg, image/png"
 }
 
+enum TicketStatus {
+    Raised = "Raised",
+    Closed = "Closed",
+    ReOpened = "Reopen",
+    Answered = "Answered",
+}
+
 enum FundRaiserTabItems {
     ABOUT,
     DOCUMENT,
@@ -173,4 +180,4 @@ enum FundRaiserEdit {
     Description
 }
 
-export { FileAcceptType, BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode, FundRaiserEdit }
+export { TicketStatus, FileAcceptType, BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode, FundRaiserEdit }
