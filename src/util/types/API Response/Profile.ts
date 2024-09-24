@@ -24,12 +24,23 @@ enum TicketStatus {
     Answered = "Answered",
 }
 
-interface ITicketChat {
+export interface ITicketChat {
     chat_id: string,
     from: TicketChatFrom,
     text: string,
     created_at: Date,
     attachment: string,
+}
+
+interface Profile {
+    _id: string
+    user_id: string
+    email: string
+    first_name: string
+    last_name: string
+    phone_number: string
+    profile_id: string
+    __v: number
 }
 
 interface ProfileTicket {
@@ -42,6 +53,10 @@ interface ProfileTicket {
     created_at: Date,
     updated_at: Date,
     chats: ITicketChat[]
+}
+
+export interface ProfileTicketPopoulated extends ProfileTicket {
+    profile: Profile
 }
 
 interface IChatMessageDetails {

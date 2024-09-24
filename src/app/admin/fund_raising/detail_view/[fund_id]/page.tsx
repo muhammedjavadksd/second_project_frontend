@@ -11,30 +11,65 @@ import { getSingleFundRaisingProfile } from './logic'
 import { FundRaiserResponse, AxiosResponse } from '@/util/types/API Response/FundRaiser'
 import { useRouter } from 'next/navigation'
 import { getSingleUser } from '../../logic/fund-raiser-logic'
-// import { AxiosResponse } from 'axios'
-// import { profile } from 'console'
+import TableHead from '@/component/Util/Table/TableHead'
+import TableBody from '@/component/Util/Table/TableBody'
+import { FaCloudUploadAlt, FaTrash } from 'react-icons/fa'
+import { adminFundRaiserFileUpload } from '@/util/data/helper/APIHelper'
+import { SetPicturs } from '@/util/external/redux/slicer/fundRaiserForm'
+import { toast } from 'react-toastify'
+import { FundRaiserFileType } from '@/util/types/Enums/BasicEnums'
+import LoadingComponent from '@/component/Util/LoadingComponent'
+
 
 function FundRaiserDetailView(): React.ReactElement {
     var CanvasJSChart: CanvasJSReact = CanvasJSReact.CanvasJSChart;
-    let [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse | null>(null)
+    let [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse>({})
 
-    let params = useParams();
-    let router = useRouter()
-    const fund_id: string = Array.isArray(params.fund_id) ? params.fund_id[0] : params.fund_id
+    let { fund_id } = useParams();
+
+    const [images, setImages] = useState<string[]>([]);
+    const [documents, setDocuments] = useState<string[]>([]);
+    const [isDocsLoading, setDocLoad] = useState<boolean>(false);
+    const [isPicsLoading, setPicsLoad] = useState<boolean>(false);
+
+
+
+    const handleDelete = (id) => {
+        if (window.confirm("Are you sure you want to delete this image?")) {
+            setImages(images.filter((image) => image !== id));
+        }
+    };
+
+    function onFileUpload(files: FileList, type: FundRaiserFileType) {
+        if (type == FundRaiserFileType.Document) {
+            setDocLoad(true)
+        } else {
+            setPicsLoad(true)
+        }
+        adminFundRaiserFileUpload(files, ({ documents, pictures }) => {
+            setImages(pictures)
+            setDocuments(documents)
+            setDocLoad(false)
+            setPicsLoad(false)
+        }, (err) => {
+            toast.error(err), setDocLoad(false)
+            setPicsLoad(false)
+        }, () => { }, type, fund_id)
+    }
 
     async function fetchProfile(): Promise<void> {
         try {
-            const profile: AxiosResponse | null = await getSingleFundRaisingProfile(fund_id)
+            const profile: AxiosResponse | null = await getSingleFundRaisingProfile(fund_id.toString())
             console.log(profile);
 
             if (profile && profile.status) {
                 const fund_raiser_profile: FundRaiserResponse = profile.data
                 const findSingleProfile = await getSingleUser(fund_raiser_profile.created_by);
                 setFundRaiserProfile(fund_raiser_profile)
-                console.log(fund_raiser_profile);
+                setImages(fund_raiser_profile.picture)
+                setDocuments(fund_raiser_profile.picture)
             } else {
-                router.back()
-                // console.log(profile.data?.msg ?? "Something went wrong");
+                // router.back()
             }
         } catch (e) {
             console.log(e);
@@ -47,7 +82,7 @@ function FundRaiserDetailView(): React.ReactElement {
 
 
     return (
-        fundRaiserProfile ? < AdminLayout >
+        < AdminLayout onSearch={() => { }} >
             <div className='grid grid-cols-2'>
                 <div>
                     <AdminBreadCrumb root={{ title: "Dashboard", href: "/" }} title={`Detail view for ${fundRaiserProfile.full_name}`} paths={[{ title: "Manage Fund Raiser's", href: "/" }, { title: "View Fund Raiser", href: "/" }]} />
@@ -64,7 +99,7 @@ function FundRaiserDetailView(): React.ReactElement {
                 <div className='w-1/4'>
                     <div className="bg-white shadow-xl rounded-lg py-3">
                         <div className="photo-wrapper p-2">
-                            <img className="w-32 h-32 rounded-full mx-auto" src={`${process.env.NEXT_PUBLIC_FUNDRAISE_IMAGE}/${fundRaiserProfile.picture?.length && fundRaiserProfile.picture[0]}`} alt="John Doe" />
+                            <img className="w-32 h-32 rounded-full mx-auto" src={`${fundRaiserProfile.picture?.length && fundRaiserProfile.picture[0]}`} alt="John Doe" />
                         </div>
                         <div className="p-2">
                             <h3 className="text-center text-xl text-gray-900 font-medium leading-8">{fundRaiserProfile.full_name}</h3>
@@ -86,10 +121,6 @@ function FundRaiserDetailView(): React.ReactElement {
                                         <td className="px-2 py-2  break-all">{fundRaiserProfile.email_id}</td>
                                     </tr>
                                 </tbody></table>
-
-                            {/* <div className="text-center my-3">
-                                <a className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium" href="#">View Profile</a>
-                            </div> */}
 
                         </div>
                     </div>
@@ -120,20 +151,36 @@ function FundRaiserDetailView(): React.ReactElement {
                         </div>
                     </a>
 
+                    <a href="#" className="gap-5 flex mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+                        <div className='text-ellipsis'>
+                            <div className="text-left mt-2 rtl:text-right w-fit">
+                                <div className="mb-3 text-xs">About this fund raiser</div>
+                                <div className="-mt-1 font-sans text-sm font-semibold">{fundRaiserProfile.about ?? ""}</div>
+                            </div>
+                        </div>
+                    </a>
 
+                    <a href="#" className="gap-5 flex mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+                        <div className='text-ellipsis'>
+                            <div className="text-left mt-2 rtl:text-right w-fit">
+                                <div className="mb-3 text-xs">Description</div>
+                                <div className="-mt-1 font-sans text-sm font-semibold">{fundRaiserProfile.description ?? ""}</div>
+                            </div>
+                        </div>
+                    </a>
 
 
                 </div>
                 <div className='w-3/4'>
                     <div className='grid grid-cols-3 flex gap-5 '>
-                        <DashboardCard title={"Target"} data={`${fundRaiserProfile.amount}${const_data.MONEY_ICON}`} />
-                        <DashboardCard title={"Collected"} data={`${fundRaiserProfile.collected}${const_data.MONEY_ICON}`} />
-                        <DashboardCard title={"Deadline"} data={`12/02/2024`} />
+                        <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Target"} data={`${fundRaiserProfile.amount}${const_data.MONEY_ICON}`} />
+                        <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Collected"} data={`${fundRaiserProfile.collected}${const_data.MONEY_ICON}`} />
+                        <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Deadline"} data={new Date(fundRaiserProfile.deadline).toLocaleDateString()} />
                     </div>
                     <div className="mt-5 w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
                         <div className="flex justify-between">
                             <div>
-                                <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">23,533 {const_data.MONEY_ICON}</h5>
+                                <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">{fundRaiserProfile.collected} {const_data.MONEY_ICON}</h5>
                                 <p className="text-base font-normal text-gray-500 dark:text-gray-400">has been collected</p>
                             </div>
                             <div
@@ -150,36 +197,92 @@ function FundRaiserDetailView(): React.ReactElement {
                             />
                         </div>
                     </div>
-                    {/* <div className="mt-5 w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
 
-                        <div className="gap-5   mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
-                            <div>
-                                <SliderComponent arrow={false} isGap={false} slidesToScroll={1} slidesToShow={2} dots={false} >
+                    <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
+                            <TableHead head={['#', 'Amount', 'Date', 'Name', ' Donation ID']} />
+                            <TableBody data={['1', '100', '12th May', 'Muhammed Javad', '123456']} />
+                            <TableBody data={['1', '100', '12th May', 'Muhammed Javad', '123456']} />
+                            <TableBody data={['1', '100', '12th May', 'Muhammed Javad', '123456']} />
+                            <TableBody data={['1', '100', '12th May', 'Muhammed Javad', '123456']} />
+                        </table>
+                    </div>
 
-                                    <div className="photo-wrapper w-full">
-                                        <img className="w-full h-full " src="https://pbs.twimg.com/media/DrDt4s_UcAAYuDE.jpg" alt="John Doe" />
+                    <LoadingComponent closeOnClick={false} isLoading={isPicsLoading} paddingNeed={false}>
+                        <div className='bg-white shadow-inner border mt-5'>
+                            <div className="container mx-auto px-4 py-2">
+                                <h2 className="text-2xl font-bold mb-6 mt-3">Image Gallery</h2>
+                                <div className="flex overflow-x-auto space-x-4 pb-4">
+                                    <div className="flex-shrink-0 w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out">
+                                        <label htmlFor="upload-input-pics" className="cursor-pointer">
+                                            <FaCloudUploadAlt className="text-4xl text-gray-400" />
+                                            <input id="upload-input-pics" type="file" accept="image/*" className="hidden" onChange={(e) => onFileUpload(e.target.files, FundRaiserFileType.Pictures)} />
+                                        </label>
                                     </div>
-                                    <div className="photo-wrapper">
-                                        <img className="w-full h-full" src="https://pbs.twimg.com/media/DrDt4s_UcAAYuDE.jpg" alt="John Doe" />
-                                    </div>
-                                    <div className="photo-wrapper">
-                                        <img className="w-full h-full" src="https://pbs.twimg.com/media/DrDt4s_UcAAYuDE.jpg" alt="John Doe" />
-                                    </div>
-                                    <div className="photo-wrapper">
-                                        <img className="w-full h-full" src="https://pbs.twimg.com/media/DrDt4s_UcAAYuDE.jpg" alt="John Doe" />
-                                    </div>
-
-                                </SliderComponent>
+                                    {images.map((image) => (
+                                        <div
+                                            key={Math.random()}
+                                            className="flex-shrink-0 w-40 h-40 relative group"
+                                        >
+                                            <img
+                                                src={image}
+                                                className="w-full h-full object-cover rounded-lg"
+                                            />
+                                            {/* <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out rounded-lg flex items-center justify-center">
+                                                <button
+                                                    onClick={() => handleDelete(image)}
+                                                    className="text-white p-2 rounded-full bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                                                    aria-label="Delete image"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </div> */}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
+                    </LoadingComponent>
 
-                    </div> */}
-
-
+                    <LoadingComponent closeOnClick={false} isLoading={isDocsLoading} paddingNeed={false}>
+                        < div className='bg-white shadow-inner border mt-5'>
+                            <div className="container mx-auto px-4 py-2">
+                                <h2 className="text-2xl font-bold mb-6 mt-3">Document's</h2>
+                                <div className="flex overflow-x-auto space-x-4 pb-4">
+                                    <div className="flex-shrink-0 w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out">
+                                        <label htmlFor="upload-input-docs" className="cursor-pointer">
+                                            <FaCloudUploadAlt className="text-4xl text-gray-400" />
+                                            <input id={`upload-input-docs`} type="file" accept="image/*" className="hidden" onChange={(e) => onFileUpload(e.target.files, FundRaiserFileType.Document)} />
+                                        </label>
+                                    </div>
+                                    {documents.map((image) => (
+                                        <div
+                                            key={Math.random()}
+                                            className="flex-shrink-0 w-40 h-40 relative group"
+                                        >
+                                            <img
+                                                src={image}
+                                                className="w-full h-full object-cover rounded-lg"
+                                            />
+                                            <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out rounded-lg flex items-center justify-center">
+                                                <button
+                                                    onClick={() => handleDelete(image)}
+                                                    className="text-white p-2 rounded-full bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                                                    aria-label="Delete image"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </LoadingComponent>
 
                 </div>
             </div>
-        </AdminLayout > : <></>
+        </AdminLayout >
     )
 }
 

@@ -9,118 +9,106 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { getAllFundRaisers, getUserForFundRaise } from '../logic/fund-raiser-logic'
 import { FundRaiserResponse } from '@/util/types/API Response/FundRaiser'
-import { FormActionResponse } from '@/util/types/InterFace/UtilInterface'
+import { FormActionResponse, IPaginatedResponse } from '@/util/types/InterFace/UtilInterface'
 import UserResponse from '@/util/types/API Response/UserInterface'
 import TableRowCount from '@/component/Util/TableRowCount'
 import TableSearch from '@/component/Util/TableSearch'
 import { FundRaiserStatus, TableFilterByDate } from '@/util/types/Enums/BasicEnums'
+import TableHead from '@/component/Util/Table/TableHead'
+import TableBody from '@/component/Util/Table/TableBody'
+import LoadImage from '@/component/Util/ImageLoading'
+import EmptyScreen from '@/component/Util/EmptyScreen'
+import DropDownItem from '@/component/Util/DropdownItem'
 
 function ViewFundRaising(): React.ReactElement {
 
     const [fundRaiserData, setFundRaiserData] = useState<FundRaiserResponse[]>([]);
     const [tempFundRaiserData, setTempFundRaiserData] = useState<FundRaiserResponse[]>([]);
-    const [tableLimit, setTableLimit] = useState<number>(5)
+    const [tableLimit, setTableLimit] = useState<number>(10)
     const [tablePage, setTablePage] = useState<number>(1)
-    const [totalPages, setTotalPages] = useState<number>(10)
-    const [selectedItem, setSelectedItems] = useState<string[]>([])
+    const [totalRecords, setRecords] = useState<number>(0)
+    const [status, setStatus] = useState<FundRaiserStatus>(null)
+
+    const [isCategoryOpen, setCategoryOpen] = useState(false)
+    const [isSubCategoryOpen, setSubCategoryOpen] = useState(false)
+    const [isStatusOpen, setStatusOpen] = useState(false)
+
+    const [categorySelect, setSelectedCategory] = useState(null)
+    const [subCategorySelect, setSelectedSubCategory] = useState(null)
+    const [stateSelect, setSelectedState] = useState(null)
+    const [urgentSelected, setUrgentSelected] = useState(null)
+    const [minPrice, setMin] = useState<string>(null)
+    const [maxPrice, setMax] = useState<string>(null)
+    const [query, setQuery] = useState<string>(null)
+
 
 
     async function fetchAllData(limit: number, page: number): Promise<void> {
         try {
-
-
-            let allFundRaisers: FormActionResponse = await getAllFundRaisers(limit, page);;
-            console.log(allFundRaisers);
-
-            if (allFundRaisers.status) {
-                let response = allFundRaisers.data;
-                const pagination = response?.pagination;
-                const profile: FundRaiserResponse[] = response.profiles
-                let user_ids: string[] = profile?.map((each) => each.user_id);
-
-                let allUsers: FormActionResponse = await getUserForFundRaise(user_ids);;
-                console.log(allUsers);
-
-                if (allUsers.status) {
-                    const users: UserResponse[] = allUsers.data ?? [];
-
-                    let newMergedData: FundRaiserResponse[] = profile?.map((each) => {
-                        let indexOfProfile = users.find((profile) => each.user_id == profile.user_id);
-                        console.log(indexOfProfile);
-                        each.creater_profile = indexOfProfile
-                        return each
-                    })
-                    setFundRaiserData(newMergedData)
-                    setTempFundRaiserData(newMergedData)
-                }
-                // setTotalPages(pagination?.total_pages)
+            let allFundRaisers: IPaginatedResponse<FundRaiserResponse> = await getAllFundRaisers(limit, page, status, query);
+            console.log(allFundRaisers)
+            if (allFundRaisers.paginated.length) {
+                let response = allFundRaisers.paginated;
+                setFundRaiserData(response)
+                setRecords(allFundRaisers.total_records)
+            } else {
+                setFundRaiserData([])
+                setRecords(0)
             }
         } catch (e) {
-            console.log("Error occured");
             console.log(e);
+            return;
         }
-
     }
+
+    function resetFilter() {
+        setSelectedCategory(null)
+        setSelectedSubCategory(null)
+        setSelectedState(null)
+        setUrgentSelected(null)
+        setMin("")
+        setMax("")
+        setStatus(null)
+    }
+
     useEffect((): void => {
+        const objectFind: Record<string, any> = {};
+
+        if (subCategorySelect) {
+            objectFind.sub_category = subCategorySelect;
+        }
+
+        if (categorySelect) {
+            objectFind.category = categorySelect;
+        }
+
+        if (stateSelect) {
+            objectFind.state = stateSelect;
+        }
+
+        if (urgentSelected) {
+            objectFind.urgency = urgentSelected;
+        }
+        if (minPrice) {
+            objectFind.min = minPrice;
+        }
+        if (maxPrice) {
+            objectFind.max = maxPrice;
+        }
+        const queryString = new URLSearchParams(objectFind).toString();
+        setQuery(queryString || "")
+
+    }, [categorySelect, subCategorySelect, urgentSelected, stateSelect, minPrice, maxPrice])
+
+    useEffect(() => {
         fetchAllData(tableLimit, tablePage)
-    }, [])
+    }, [query, status])
 
-    function onSearch(val) {
-        if (val == "" || val == null) {
-            setFundRaiserData(tempFundRaiserData)
-        } else {
-            const regex = new RegExp(val, 'i');
-            let newData = tempFundRaiserData.filter(product => (regex.test(product.creater_profile?.first_name) || regex.test(product.fund_id)))
-            setFundRaiserData(newData)
-        }
-    }
-
-    function onRowChanges(count) {
-        if (count < tempFundRaiserData.length) {
-            setFundRaiserData(tempFundRaiserData.slice(0, count))
-        } else {
-            fetchAllData(count, tablePage);
-            setTableLimit(count)
-        }
-    }
-
-    function onPagination(number) {
-        setTablePage(number)
-        fetchAllData(tableLimit, number)
-    }
-
-    function filterFundRaise(status: FundRaiserStatus) {
-        if (status == null) {
-            const filterData = tempFundRaiserData.slice((tableLimit * (tablePage - 1)), tableLimit);
-            setFundRaiserData(filterData)
-        } else {
-            const filterData = tempFundRaiserData.filter((each) => each.status == status)
-            setFundRaiserData(filterData);
-        }
-    }
-
-    function onDateChange(date: TableFilterByDate) {
-        let dateData;
-        let todayDate = new Date()
-        if (date == TableFilterByDate.AllTime) {
-            dateData = tempFundRaiserData.slice((tableLimit * (tablePage - 1)), tableLimit)
-        } else {
-            if (date == TableFilterByDate.OneMonth) {
-                todayDate.setMonth(todayDate.getMonth() - 1)
-            } else if (date == TableFilterByDate.OneYear) {
-                todayDate.setFullYear(todayDate.getFullYear() - 1)
-            } else if (date == TableFilterByDate.SixMonth) {
-                todayDate.setMonth(todayDate.getMonth() - 6)
-            }
-            dateData = tempFundRaiserData.filter((each) => each.created_date < todayDate);
-        }
-        setFundRaiserData(dateData)
-    }
 
 
 
     return (
-        <AdminLayout>
+        <AdminLayout onSearch={(val: any) => { }}>
             <div className='grid grid-cols-2' >
                 <div>
                     <AdminBreadCrumb title={"Manage Fund Raiser's"} root={{ title: "Dashboard", href: "/" }
@@ -132,68 +120,80 @@ function ViewFundRaising(): React.ReactElement {
                 </div>
             </div>
 
-            {/* 
-            {
-                "Se" + selectedItem
-            } */}
-
             <div className='mt-5' >
-                <AdminDateFilter onDateSelect={onDateChange} />
-                <div className='buttonGroups flex items-center justify-start mt-3 gap-3' >
-                    <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(null)} > <i className="fa-solid fa-bars" > </i> All case's</button >
-                    <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.INITIATED)} > <i className="fa-solid fa-bars" > </i> Initiated Cases</button >
-                    <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.CLOSED)}> <i className="fa-solid fa-bars" > </i> Closed Cased </button >
-                    <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.REJECTED)} > <i className="fa-solid fa-bars" > </i> Rejected Case </button >
-                    <button className='bg-blue-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => filterFundRaise(FundRaiserStatus.APPROVED)} > <i className="fa-solid fa-bars" > </i> Approved Case </button >
+
+                <div className="flex mt-3 gap-5 items-center justify-between">
+                    <div className="flex gap-2">
+                        <DropDownItem isOpen={isStatusOpen} options={Object.values(FundRaiserStatus)} title="Select Status" callBack={(val) => setStatus(val)}></DropDownItem>
+                        <DropDownItem isOpen={isCategoryOpen} options={Object.keys(const_data.FUNDRAISER_CATEGORY)} title="Select category" callBack={(val) => setSelectedCategory(val)}></DropDownItem>
+                        <DropDownItem isOpen={isSubCategoryOpen} options={categorySelect ? const_data.FUNDRAISER_CATEGORY[categorySelect] : []} title="Select sub category" callBack={(val) => setSelectedSubCategory(val)}></DropDownItem>
+                        <DropDownItem isOpen={isSubCategoryOpen} options={['Urgent', 'Not urgent']} title="Select Urgency" callBack={(val) => setUrgentSelected(val)}></DropDownItem>
+                        <DropDownItem isOpen={isSubCategoryOpen} options={Object.keys(const_data.STATE_WITH_DISTRICT)} title="Select State" callBack={(val) => setSelectedState(val)}></DropDownItem>
+                    </div>
                 </div>
 
-                <div className='mt-5' >
-                    <div className='bg-white p-5'>
-
-                        <div className='flex justify-between'>
-                            <TableRowCount onRowChanges={onRowChanges} />
-                            <TableSearch onSearch={onSearch} />
+                <div className="flex justify-between mt-3 items-center space-x-4">
+                    {/* Min Value Input */}
+                    <div className='flex gap-5'>
+                        <div className="flex flex-col">
+                            <input
+                                onChange={(e) => setMin(e.target.value)}
+                                value={minPrice}
+                                type="text"
+                                id="min-value"
+                                placeholder="Min"
+                                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            />
                         </div>
-                        <TableSimple
-                            onItemChecked={(val) => {
-                                const indexOf = selectedItem.indexOf(val);
-                                if (indexOf === -1) {
-                                    setSelectedItems((prev) => [...prev, val])
-                                } else {
-                                    const newDocs = [...selectedItem];
-                                    newDocs.splice(indexOf, 1)
-                                    setSelectedItems(newDocs)
-                                }
-                            }}
-                            onAllItemCheck={(val) => {
-                                setSelectedItems(val)
-                            }}
-                            selectedItem={selectedItem}
-                            headers={['Raising ID', 'User', 'Target Amount', 'Dead Line', 'Status', 'Action']}
-                            data={
-                                fundRaiserData.map((each) => {
-                                    return ({
-                                        raisingID: each.fund_id,
-                                        User: (
-                                            each.created_by == "USER" ? <div className='flex justify-center gap-3' >
-                                                {/* <img src='https://avatars.githubusercontent.com/u/109150200?s=96&v=4' className='rounded-lg' width={48} /> */}
-                                                < div className='text-start ' >
-                                                    <h4>{each?.creater_profile?.first_name + each?.creater_profile?.last_name}</ h4 >
-                                                    <p>{each?.email_id}</p>
-                                                </div>
-                                            </div> : (each.created_by == "ADMIN" ? "Created By Admin" : "Created by organization")),
-                                        // raisingID: each.user_id,
-                                        TargetAmount: `${each.amount}${const_data.MONEY_ICON}`,
-                                        deadLine: "12/04/2023",
-                                        status: <span className='bg-green-400 p-3 text-sm text-white rounded-lg' > {each.status} </span>,
-                                        action: <div>
-                                            <Link href={`/admin/fund_raising/detail_view/${each.fund_id}`} className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2' > <i className="fa-solid fa-eye" > </i> View</Link >
-                                        </div>
-                                    })
-                                })}
-                        />
-                        <PaginationTab total_pages={10} total_records={10} from={1} to={totalPages} onClick={(number) => onPagination(number)} />
+
+                        {/* Max Value Input */}
+                        <div className="flex flex-col">
+
+                            <input
+                                value={maxPrice}
+                                onChange={(e) => setMax(e.target.value)}
+                                type="text"
+                                id="max-value"
+                                placeholder="Max"
+                                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            />
+                        </div>
                     </div>
+                    <button onClick={resetFilter} className="bg-red-500 p-2 py-2 px-4 rounded-lg text-white flex gap-2 items-center">
+                        <i className="fa-solid fa-rotate-right"></i>
+                        Reset filter
+                    </button>
+                </div>
+
+                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                    {
+                        fundRaiserData.length
+                            ? (
+                                <> <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
+                                    <TableHead head={['Raising ID', 'Collected amount', 'Target Amount', 'Dead Line', 'Status', 'Action']} />
+                                    {
+                                        fundRaiserData.map((item) => {
+                                            return <TableBody data={[
+                                                <span className='flex items-center gap-3'>
+                                                    <div>
+                                                        <LoadImage className="w-12 h-12 rounded-full" imageurl={item.picture[0]} />
+                                                    </div>
+                                                    {item.fund_id}
+                                                </span>,
+                                                `${item.collected}${const_data.MONEY_ICON}`,
+                                                `${item.amount}${const_data.MONEY_ICON}`,
+                                                item.deadline,
+                                                item.status,
+                                                <Link href={`/admin/fund_raising/detail_view/${item.fund_id}`} className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2' > <i className="fa-solid fa-eye" > </i> View</Link >]} />
+                                        })
+                                    }
+                                </table>
+                                    <PaginationTab item_per_page={tableLimit} onClick={(page: React.SetStateAction<number>) => setTablePage(page)} total_records={totalRecords} />
+                                </>) :
+                            <div className='mt-3'>
+                                <EmptyScreen msg='No data found' />
+                            </div>
+                    }
                 </div>
             </div>
         </AdminLayout >

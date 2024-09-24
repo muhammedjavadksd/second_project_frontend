@@ -6,9 +6,166 @@ import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
-import { IChatTemplate, ChatProfile, ProfileTicket } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, TicketCategory, TicketStatus } from "@/util/types/Enums/BasicEnums";
+import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
+import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 
+
+export async function adminFundRaiserFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fundRaiseID) {
+
+    const session = await getSession();
+    const user = userDetailsFromGetSession(session, "admin")
+    if (user) {
+
+        const token = user.token;
+        let uploadImagePromises: Promise<any>[] = []
+        const presignedUrl = []
+
+        for (let fileIndex = 0; fileIndex < my_files.length; fileIndex++) {
+
+            const url = await API_axiosInstance.get(`/fund_raise/admin/presigned-url?type=${type}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            const response = url.data;
+            if (response && response.status) {
+                const url = response.data?.url;
+                presignedUrl.push(url)
+                const request = axios.put(url, my_files[fileIndex], { headers: { "Content-Type": my_files[fileIndex].type || "application/octet-stream" } })
+                uploadImagePromises.push(request)
+            }
+        }
+
+        Promise.all(uploadImagePromises).then(async () => {
+            try {
+                const API_request = await API_axiosInstance.patch(`/fund_raise/admin/upload_images/${fundRaiseID}`, {
+                    type: type,
+                    image: presignedUrl
+                }, {
+                    headers: {
+                        "authorization": `Bearer ${token}`,
+                        "fund_id": fundRaiseID,
+                    }
+                })
+
+                console.log(API_request);
+
+
+                let response = API_request.data;
+                console.log(response);
+                if (response.status) {
+                    const newDocs = response.data;
+                    const documents = newDocs?.documents ?? [];
+                    const pictures = newDocs?.picture ?? [];
+
+                    console.log(newDocs);
+
+                    console.log(documents);
+                    console.log(pictures);
+                    onSuccess({
+                        documents: documents,
+                        pictures: pictures
+                    })
+                } else {
+                    onError(response.msg)
+                }
+
+            } catch (e) {
+                let errorMessage = e?.response?.body?.msg;
+                console.log(e);
+                console.log(errorMessage);
+                onError(errorMessage)
+            }
+        }).catch((e) => {
+            let errorMessage = e?.response?.body?.msg;
+            console.log(e);
+            console.log(errorMessage);
+            onError(errorMessage)
+        })
+    } else {
+        ifNotLogged()
+    }
+}
+
+
+export async function getSingleTicket(ticket_id: string): Promise<ProfileTicketPopoulated> {
+    try {
+        const session = await getSession();
+        const userProfile = userDetailsFromGetSession(session, "admin")
+        const token = userProfile.token;
+
+        const find = await API_axiosInstance.get(`/profile/admin/get_ticket/${ticket_id}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        console.log(find);
+
+        const response = find.data;
+        console.log(response);
+
+        if (response.status && response.data.ticket) {
+            return response.data.ticket
+        }
+        return null
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
+
+export async function addReplayToTicket(ticket_id: string, message: string, from: TicketChatFrom, attachment: File): Promise<string | boolean> {
+    try {
+        const session = await getSession();
+        const userProfile = userDetailsFromGetSession(session, "admin")
+        const token = userProfile.token;
+
+        let presignedUrl = null
+
+        if (attachment && attachment?.name) {
+            const imageName = attachment.name
+
+            const generatePresignedUrl = await API_axiosInstance.get(`/profile/admin/presigned_url?file=${imageName}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            });
+            const response = generatePresignedUrl.data;
+            if (response.status) {
+                const { url } = response.data
+                console.log("Presigned url got it");
+
+                await axios.put(url, attachment, {
+                    headers: {
+                        "Content-Type": attachment.type
+                    }
+                })
+                presignedUrl = url;
+            }
+        }
+
+        const find = await API_axiosInstance.put(`/profile/admin/replay_ticket/${ticket_id}`, {
+            msg: message,
+            attachment: presignedUrl
+        }, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        const response = find.data;
+        if (response.status) {
+            return response.data.attachment || true
+        } else {
+            return false
+        }
+    } catch (e) {
+        console.log(e);
+
+        return false
+    }
+}
 
 export async function getAdminTicket(page: number, limit: number, status?: TicketStatus, category?: TicketCategory, search?: string): Promise<IPaginatedResponse<ProfileTicket>> {
     try {

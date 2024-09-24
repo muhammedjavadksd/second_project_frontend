@@ -1,16 +1,17 @@
 import { userDetailsFromGetSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import axios_instance from "@/util/external/axios/axios-instance";
-import { AxiosResponse as CustomeAxiosResponse } from "@/util/types/API Response/FundRaiser";
+import { AxiosResponse as CustomeAxiosResponse, FundRaiserResponse } from "@/util/types/API Response/FundRaiser";
+import { FundRaiserStatus } from "@/util/types/Enums/BasicEnums";
 // import { AxiosResponse } from "axios/ty";
-import { FormActionResponse } from "@/util/types/InterFace/UtilInterface";
+import { FormActionResponse, IPaginatedResponse } from "@/util/types/InterFace/UtilInterface";
 import { AxiosError, AxiosResponse } from "axios";
 import { getSession } from "next-auth/react";
 
 
 
 
-export async function getAllFundRaisers(limit: number, page: number): Promise<FormActionResponse> {
+export async function getAllFundRaisers(limit: number, page: number, status?: FundRaiserStatus, query?: string): Promise<IPaginatedResponse<FundRaiserResponse>> {
 
 
     try {
@@ -21,7 +22,8 @@ export async function getAllFundRaisers(limit: number, page: number): Promise<Fo
 
         const token = user?.token
 
-        let getAllFundRaisers = await API_axiosInstance.get(`/fund_raise/admin/view/${limit}/${page}`, {
+        const params = status ? `${limit}/${page}/${status}` : `${limit}/${page}`
+        let getAllFundRaisers = await API_axiosInstance.get(`/fund_raise/admin/view/${params}${query ? `?${query}` : ''}`, {
             headers: {
                 "authorization": `Bearer ${token}`
             }
@@ -31,16 +33,18 @@ export async function getAllFundRaisers(limit: number, page: number): Promise<Fo
         console.log(response);
 
         if (response.status) {
-
-            return { data: response.data, msg: "Data fetch success", status: true };
+            return response.data
         } else {
-            return { status: false, msg: response.msg }
+            return {
+                paginated: [],
+                total_records: 0
+            }
         }
     } catch (e) {
-        console.log(e);
-        let errorMessage: string = e?.response?.data?.msg ?? "Something went wrong";
-        // return errorMessage;
-        return { msg: errorMessage, status: false }
+        return {
+            paginated: [],
+            total_records: 0
+        }
     }
 }
 

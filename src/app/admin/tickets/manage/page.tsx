@@ -86,7 +86,7 @@ function ManageTicket() {
                                                     <TableHead head={['ID', 'Title', 'Category', 'Status', 'Updated Date', 'Action']} />
                                                     {
                                                         item.map((ticket: ProfileTicket) => {
-                                                            return <TableBody data={[ticket.ticket_id, ticket.title, ticket.category, ticket.status, formatDateToMonthNameAndDate(ticket.updated_at), <Link className='p-3 px-5 rounded-md text-white bg-blue-600' href={`support/${ticket.ticket_id}`}>View</Link>]} />
+                                                            return <TableBody data={[ticket.ticket_id, ticket.title, ticket.category, ticket.status, formatDateToMonthNameAndDate(ticket.updated_at), <Link className='p-3 px-5 rounded-md text-white bg-blue-600' href={`${ticket.ticket_id}`}>View</Link>]} />
                                                         })
                                                     }
                                                 </table>

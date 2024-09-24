@@ -45,7 +45,7 @@ function DashboardPage(): React.ReactElement {
 
   return (
     <AdminPrivateRouter>
-      <AdminLayout>
+      <AdminLayout onSearch={() => { }}>
 
 
         {/* <AdminDateFilter onDateSelect={() => { }}></AdminDateFilter> */}
