@@ -1,6 +1,6 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq, { BloodProfile, IBloodDonor, ILocatedAt } from "@/util/types/API Response/Blood";
-import { FormActionResponse, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
+import { FormActionResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
@@ -9,6 +9,29 @@ import { FundRaiserResponse, IBloodStatitics, ICommentsResponse, IDonateHistoryT
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 
+
+export async function adminAddFundRaiser(body: IAdminAddFundRaiser): Promise<string | false> {
+
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "admin");
+        const token = data.token;
+        const addFundRaiser = await API_axiosInstance.post("/fund_raise/admin/create", { ...body }, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        const response = addFundRaiser.data;
+        if (response.status) {
+            return response.data.fund_id
+        }
+        return false
+    } catch (e) {
+        console.log(e);
+
+        return false
+    }
+}
 
 export async function closeBloodRequestFromAdmin(blood_id: string): Promise<boolean> {
 

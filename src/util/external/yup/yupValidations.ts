@@ -118,4 +118,23 @@ const bloodApproveValidation = yup.object().shape({
     unit: yup.number().typeError("Please provide valid unit in count").required("Please enter valid unit"),
 })
 
-export { closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation }
+const adminAddFundRaiseValidation = yup.object().shape({
+    raiser_name: yup.string().required('Please enter the raiser name.'),
+    raiser_age: yup.number().required('Please enter the raiser age.').positive('Age must be a positive number.').typeError('Raiser age must be a number.'),
+    deadline: yup.date().required('Please select a deadline.').typeError('Deadline must be a valid date.'),
+    benificiary_relation: yup.string().required('Please specify the beneficiary relation.'),
+    amount: yup.number().required('Please enter the amount.').positive('Amount must be a positive number.').min(2000, "Amount must be minimum 2000-/").typeError('Amount must be a number.'),
+    category: yup.string().required('Please select a category.'),
+    sub_category: yup.string().required('Please select a sub-category.'),
+    phone_number: yup.string().required('Please enter the phone number.').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits.'),
+    email_id: yup.string().email('Please enter a valid email address.').required('Please enter the email.'),
+    city: yup.string().required('Please enter the city.'),
+    pinCode: yup.string().required('Please enter the pincode.').matches(/^[0-9]{6}$/, 'Pincode must be exactly 6 digits.'),
+    state: yup.string().required('Please enter the state.'),
+    district: yup.string().required('Please enter the district.'),
+    fullAddress: yup.string().required('Please enter the full address.'),
+    about: yup.string().required('Please provide information about the fundraiser.'),
+    description: yup.string().required('Please enter a description for the fundraiser.'),
+})
+
+export { closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation }

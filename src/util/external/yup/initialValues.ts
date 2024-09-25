@@ -93,4 +93,23 @@ const bloodApproveUnitValues = {
     unit: null
 }
 
-export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues }
+
+const adminAddFundRaiserInitialValues = {
+    raiser_name: "",
+    raiser_age: null,
+    deadline: null,
+    benificiary_relation: "",
+    amount: null,
+    category: "",
+    sub_category: "",
+    phone_number: null,
+    email_id: "",
+    city: "",
+    pinCode: null,
+    state: "",
+    district: "",
+    fullAddress: "",
+    about: "",
+    description: "",
+}
+export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues }

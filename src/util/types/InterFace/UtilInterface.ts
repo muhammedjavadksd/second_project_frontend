@@ -236,4 +236,23 @@ interface IPaginatedResponse<T> {
     total_records: number
 }
 
-export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider }
+interface IAdminAddFundRaiser {
+    raiser_name: string;               // Name of the fundraiser
+    raiser_age: number | null;         // Age of the fundraiser (nullable)
+    deadline: Date | null;             // Deadline for the fundraiser (nullable)
+    benificiary_relation: string;      // Relation to the beneficiary
+    amount: number | null;             // Amount to be raised (nullable)
+    category: string;                  // Category of the fundraiser
+    sub_category: string;               // Sub-category of the fundraiser
+    phone_number: string | null;       // Phone number (nullable)
+    email_id: string;                  // Email address
+    city: string;                      // City of the fundraiser
+    pinCode: string | null;            // Pincode (nullable)
+    state: string;                     // State of the fundraiser
+    district: string;                  // District of the fundraiser
+    fullAddress: string;               // Full address of the fundraiser
+    about: string;                     // Information about the fundraiser
+    description: string;               // Detailed description of the fundraiser
+}
+
+export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider, IAdminAddFundRaiser }
