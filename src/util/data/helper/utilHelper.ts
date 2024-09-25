@@ -5,6 +5,64 @@ import axios from "axios"
 import { confirmAlert } from "react-confirm-alert"
 
 
+export function createFundRaiserWhatsappMessage(profile: FundRaiserResponse, shareLink: string) {
+
+    const {
+        full_name,
+        amount,
+        collected,
+        category,
+        deadline,
+        city,
+        district,
+        state,
+        about,
+        documents,
+        picture
+    } = profile;
+
+    const formattedDeadline = new Date(deadline).toLocaleDateString();
+
+    const message = `
+    ${profile.description}
+    
+    🌟 *Support Education: Fundraiser for School Supplies!* 📚
+    
+    Hi everyone! I'm reaching out to share an important cause that needs our support.
+    
+    *About the Fundraiser:*
+    - *Organizer:* ${full_name}
+    - *Category:* ${category}
+    - *Goal Amount:* ₹${amount}
+    - *Current Amount Collected:* ₹${collected}
+    - *Deadline:* ${formattedDeadline}
+    
+    *Location:*
+    - *City:* ${city}
+    - *District:* ${district}
+    - *State:* ${state}
+    
+    This initiative aims to provide essential school supplies to those in need. Every contribution, big or small, makes a difference!
+    
+    🔗 [Join the cause and donate now!](${shareLink})
+    
+    *Documents for Reference:*
+    ${documents.map(doc => `- [Document](${doc})`).join('\n')}
+    
+    *Pictures of the Initiative:*
+    ${picture.map(pic => `- ![Picture](${pic})`).join('\n')}
+    
+    For more details, feel free to contact me or reply to this message!
+    
+    Let's make a difference together! 🙌
+    `;
+
+
+
+    const whatsappMessage = encodeURIComponent(message);
+    return `https://wa.me/?text=${whatsappMessage}`;
+}
+
 
 export function objectToUrlQuery(object) {
     let query = new URLSearchParams(object)

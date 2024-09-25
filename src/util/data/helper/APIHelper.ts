@@ -10,6 +10,28 @@ import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } fr
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 
 
+export async function closeBloodRequestFromAdmin(blood_id: string): Promise<boolean> {
+
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "admin");
+        const token = data.token;
+
+        const close = await API_axiosInstance.patch(`/blood/admin/close_request/${blood_id}`, {}, {
+            headers: {
+                authorization: `Bearer ${token}`,
+            }
+        })
+        const response = close.data;
+        if (response.status) {
+            return true
+        }
+        return false
+    } catch (e) {
+        return false
+    }
+}
+
 export async function findMatchedBlood(bloodGroup: BloodGroup, limit: number, page: number): Promise<IPaginatedResponse<IBloodDonor>> {
 
     try {

@@ -9,13 +9,16 @@ import BloodIntrestCard from "@/component/Blood/AdminBloodIntrestCard"
 import MatchedDonors from "@/component/Blood/MatchedDonors"
 import LoadingDataNotFoundComponent from "@/component/Util/LoadingDataNotFound"
 import IBloodReq, { IBloodDonor } from "@/util/types/API Response/Blood"
-import { findBloodResponse, findMatchedBlood, findSingleBloodrequirement } from "@/util/data/helper/APIHelper"
+import { closeBloodRequestFromAdmin, findBloodResponse, findMatchedBlood, findSingleBloodrequirement } from "@/util/data/helper/APIHelper"
 import { useParams } from "next/navigation"
 import PaginationSection from "@/component/Util/PaginationSection"
 import { IBloodDonate, IShowedIntrest } from "@/util/types/InterFace/UtilInterface"
 import EmptyScreen from "@/component/Util/EmptyScreen"
 import { BloodDonationStatus, BloodGroup } from "@/util/types/Enums/BasicEnums"
 import { messageFromBloodConcernce } from "@/util/data/helper/utilHelper"
+import { confirmAlert } from "react-confirm-alert"
+import DangerUIConfirm from "@/component/Util/DangerUIConfirm"
+import { toast } from "react-toastify"
 
 
 
@@ -25,8 +28,29 @@ function Page() {
     const [isDeadlinenearst, setNearest] = useState<boolean>(false)
     const [isCrossed, setCrossed] = useState<boolean>(false)
     const [requirement, setRequirement] = useState<IBloodReq>(null)
+    const [isClosed, setClose] = useState<boolean>(false)
+    const [closedExaplnataion, setClosingExplanation] = useState<Record<string, any>>({ category: null, explanation: "" })
     const { blood_id } = useParams();
 
+
+    function onClose() {
+        confirmAlert({
+            title: "Are you sure want to close this requirement?",
+            message: "Close requirement",
+            customUI: ({ onClose, title }) => {
+                return <DangerUIConfirm onClose={onClose} onConfirm={() => {
+                    closeBloodRequestFromAdmin(blood_id.toString()).then((data) => {
+                        if (data) {
+                            setClose(true)
+                            toast.success("This blood requirement has been closed")
+                            setClosingExplanation({ category: "Admin close request", explanation: "" })
+                        }
+                    }).catch((err) => { })
+                    onClose()
+                }} title={title}></DangerUIConfirm>
+            }
+        })
+    }
 
     function findReq() {
         setLoading(true)
@@ -36,6 +60,9 @@ function Page() {
 
             setRequirement(profile)
             setLoading(false)
+            setClose(profile.is_closed || false)
+            setClosingExplanation({ category: profile.close_details?.category, explanation: profile.close_details?.explanation || "" })
+            setClose(profile.is_closed || false)
 
             const now = new Date();
             const tomorrow = new Date();
@@ -69,9 +96,16 @@ function Page() {
                         </div>
                         <div className='buttonGroups flex items-center justify-end gap-3'>
                             <button className='bg-green-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Verify Case </button>
-                            <button className='bg-red-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Close the case </button>
+                            {!isClosed && <button onClick={onClose} className='bg-red-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Close the case </button>}
                         </div>
                     </div>
+                    {
+                        (isClosed) && (
+                            <div className="bg-red-500 p-3 mt-3 text-white rounded-md">
+                                This blood requirement has been closed because of {closedExaplnataion?.category} - {closedExaplnataion?.explanation}
+                            </div>
+                        )
+                    }
                     {
                         (isCrossed && !requirement?.is_closed) && (
                             <div className="bg-red-500 p-3 mt-3 text-white rounded-md">

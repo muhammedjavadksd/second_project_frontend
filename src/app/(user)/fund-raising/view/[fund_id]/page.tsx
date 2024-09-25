@@ -24,7 +24,7 @@ import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
 import { findDonationHistroyApi, getPaginatedComments, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
-import { findNameAvatar, formatDateToMonthNameAndDate, isUrgentFundRaiser } from '@/util/data/helper/utilHelper'
+import { createFundRaiserWhatsappMessage, findNameAvatar, formatDateToMonthNameAndDate, isUrgentFundRaiser } from '@/util/data/helper/utilHelper'
 import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import { onCommentPost } from '@/util/external/yup/formSubmission'
 import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
@@ -146,6 +146,21 @@ function ViewFundRaising(): React.ReactElement {
 
   }, [])
 
+  useEffect(() => {
+    if (fundRaiserProfile) {
+      document.title = `Help ${fundRaiserProfile?.full_name || ""} for their ${fundRaiserProfile?.category || ""}`
+      const favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement;
+      if (favicon) {
+        favicon.href = fundRaiserProfile.picture[0]; // Specify the new favicon path here
+      } else {
+        const newFavicon = document.createElement('link');
+        newFavicon.rel = 'icon';
+        newFavicon.href = fundRaiserProfile.picture[0]; // Specify the new favicon path here
+        document.head.appendChild(newFavicon);
+      }
+    }
+  }, [fundRaiserProfile])
+
 
 
 
@@ -155,6 +170,7 @@ function ViewFundRaising(): React.ReactElement {
 
   const collectedPercentage = (+fundRaiserProfile.collected) / (fundRaiserProfile.amount) * 100
   const dateLeft = new Date(fundRaiserProfile.deadline).getDate() - new Date().getDate()
+
 
 
 
@@ -282,15 +298,14 @@ function ViewFundRaising(): React.ReactElement {
                   <button onClick={() => openDonationForm(true)} className='w-full font-medium text-white p-3 text-lg bg-green-400 rounded-lg'>Donate Now</button>
 
                   <div className="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="" data-size="">
-                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" className="flex gap-5  items-center justify-center w-full font-medium text-white p-3 text-lg bg-blue-600 mt-3 rounded-lg">
+                    <a target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(document.location.href)}`} className="flex gap-5  items-center justify-center w-full font-medium text-white p-3 text-lg bg-blue-600 mt-3 rounded-lg">
                       <i className="fa-brands fa-square-facebook"></i>
                       Spred  via Facebook
                     </a>
                   </div>
                   <div id="fb-root"></div>
 
-                  {/* <button className='w-full font-medium text-white p-3 text-lg bg-blue-600 mt-3 rounded-lg'><i className="fa-brands fa-square-facebook"></i> Spred  via Facebook</button> */}
-                  <button className='w-full font-medium text-white p-3 text-lg bg-green-900 mt-3 rounded-lg'><i className="fa-brands fa-square-whatsapp"></i> Spred  via Whatsapp</button>
+                  <button onClick={() => router.push(createFundRaiserWhatsappMessage(fundRaiserProfile, document.location.href))} className='w-full font-medium text-white p-3 text-lg bg-green-900 mt-3 rounded-lg'><i className="fa-brands bg-transparent fa-whatsapp"></i> Spred  via Whatsapp</button>
                   <p className='mt-2'>Every Social media share can bring ₹5000</p>
                 </div>
                 <div className='mt-3'>
