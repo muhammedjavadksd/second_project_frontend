@@ -116,6 +116,8 @@ interface IIntrestConcerns {
 
 interface IShowedIntrest {
     _id: string
+    full_name: string
+    phoneNumber: string
     donor_id: string,
     donation_id: string,
     date: Date,

@@ -11,6 +11,7 @@ interface ILocatedAt {
 }
 
 interface IBloodReq {
+    email: string
     blood_id: string
     patientName: string
     unit: number,

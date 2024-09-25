@@ -5,7 +5,7 @@ import AdminNavbar from './Partials/Navbar'
 import { SessionProvider, getSession, useSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth'
 
-function AdminLayout({ children, onSearch }) {
+function AdminLayout({ children, onSearch, isSearch, placeHolder }: { children: React.ReactNode, onSearch?: Function, isSearch?: boolean, placeHolder?: string }) {
 
 
 

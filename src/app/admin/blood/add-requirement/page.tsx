@@ -2,6 +2,7 @@
 import AdminLayout from "@/component/Admin/AdminLayout";
 import AdminPrivateRouter from "@/component/LoginComponent/AdminPrivateRouter";
 import AdminBreadCrumb from "@/component/Util/AdminBreadCrumb";
+import { BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Fragment } from "react";
 
@@ -11,7 +12,7 @@ function AddBloodRequirement() {
     return (
         <Fragment>
             <AdminPrivateRouter>
-                <AdminLayout>
+                <AdminLayout onSearch={() => { }}>
                     <AdminBreadCrumb title={"Add Blood requirement"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Add blood requirement", href: "/blood/blood-reuirement" }]} />
 
                     <Formik
@@ -74,12 +75,12 @@ function AddBloodRequirement() {
                                     {/* Status */}
                                     <div>
                                         <label htmlFor="status">Status</label>
-                                        <Field
-                                            type="text"
-                                            name="status"
-                                            placeholder="Enter Status"
-                                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                                        />
+                                        <Field as="select" type="text" name="status" placeholder="Enter Status" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+                                            <option>Select status</option>
+                                            <option className="capitalize" value={BloodStatus.Approved}>Approved</option>
+                                            <option className="capitalize" value={BloodStatus.Closed}>Closed</option>
+                                            <option className="capitalize" value={BloodStatus.Pending}>Pending</option>
+                                        </Field>
                                         <ErrorMessage name="status" component="div" />
                                     </div>
 
@@ -88,28 +89,22 @@ function AddBloodRequirement() {
                                     {/* Blood Group */}
                                     <div>
                                         <label htmlFor="blood_group">Blood Group</label>
-                                        <Field
-                                            type="text"
-                                            name="blood_group"
-                                            placeholder="Enter Blood Group"
-                                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                                        />
+                                        <Field as="select" type="text" name="blood_group" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+                                            <option>Select blood group</option>
+                                            {
+                                                Object.values(BloodGroup).map((bGroup) => {
+                                                    return (
+                                                        <option className="capitalize" value={bGroup}>{bGroup}</option>
+                                                    )
+                                                })
+                                            }
+                                        </Field>
                                         <ErrorMessage name="blood_group" component="div" />
                                     </div>
 
-                                    {/* Relationship */}
-                                    <div>
-                                        <label htmlFor="relationship">Relationship</label>
-                                        <Field
-                                            type="text"
-                                            name="relationship"
-                                            placeholder="Enter Relationship"
-                                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                                        />
-                                        <ErrorMessage name="relationship" component="div" />
-                                    </div>
 
-                                    {/* Hospital Name */}
+
+
                                     <div>
                                         <label htmlFor="hospital_name">Hospital Name</label>
                                         <Field

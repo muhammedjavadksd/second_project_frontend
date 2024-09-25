@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SingleIncomingBloodCard({ group, unit, deadLine, username, onDonateBlood, location }): React.ReactElement {
+function BloodRequirementItem({ group, unit, deadLine, username, onView, location }): React.ReactElement {
     return (
         <div className="p-6 bg-gray-50 shadow-lg rounded-lg">
 
@@ -38,8 +38,8 @@ function SingleIncomingBloodCard({ group, unit, deadLine, username, onDonateBloo
                     </svg>
                     <span className="text-sm font-medium text-gray-900">{username}</span>
                 </div>
-                <button onClick={onDonateBlood} type="button" className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
-                   View
+                <button onClick={onView} type="button" className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+                    View
                 </button>
             </div>
         </div>
@@ -47,4 +47,4 @@ function SingleIncomingBloodCard({ group, unit, deadLine, username, onDonateBloo
     )
 }
 
-export default SingleIncomingBloodCard
+export default BloodRequirementItem

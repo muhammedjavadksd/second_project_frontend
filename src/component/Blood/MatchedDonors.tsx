@@ -1,8 +1,9 @@
+import { BloodGroup } from "@/util/types/Enums/BasicEnums";
 import { Fragment } from "react";
 import { FaEnvelope } from "react-icons/fa";
 
 
-function MatchedDonors() {
+function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress }: { name: string, bloodGroup: BloodGroup, donorId: string, phoneNumber: number, emailAddress: string }) {
 
     return (
         <Fragment>
@@ -10,9 +11,9 @@ function MatchedDonors() {
                 <div className="p-4">
                     <div className="flex justify-between items-center mb-4">
                         <p className="text-gray-600">
-                            <span className="font-bold text-green-500">Muhammed Javad</span> A+
+                            <span className="font-bold text-green-500">{name}</span> {bloodGroup}
                         </p>
-                        <p className="text-sm text-gray-500">#BSSIIHW</p>
+                        <p className="text-sm text-gray-500">#{donorId}</p>
                     </div>
 
                     <div className="mt-4 space-y-4 animate-fade-in-down">
@@ -20,28 +21,26 @@ function MatchedDonors() {
                             <ul className="space-y-2">
                                 <li className="flex justify-between items-center">
                                     <span>Phone number</span>
-                                    <span className="text-sm text-gray-500">+91 9744727684</span>
+                                    <span className="text-sm text-gray-500">+91 {phoneNumber}</span>
                                 </li>
                                 <li className="flex justify-between items-center">
                                     <span>Email number</span>
-                                    <span className="text-sm text-gray-500">muhammed@gmail.com</span>
+                                    <span className="text-sm text-gray-500">{emailAddress}</span>
                                 </li>
-                                <li className="flex justify-between items-center">
-                                    <span>Location</span>
-                                    <span className="text-sm text-gray-500">Kochi, Kerala</span>
-                                </li>
+                                
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div className="bg-gray-100 p-4 flex justify-around">
-                    <button
+                    <a
+                        href={`tel:${phoneNumber}`}
                         className="flex items-center text-blue-500 hover:text-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                         aria-label="Contact donor"
                     >
                         <FaEnvelope className="mr-2" />
                         Call Javad
-                    </button>
+                    </a>
 
                 </div>
             </div>

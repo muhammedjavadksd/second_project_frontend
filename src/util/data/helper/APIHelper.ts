@@ -1,6 +1,6 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq, { BloodProfile, IBloodDonor, ILocatedAt } from "@/util/types/API Response/Blood";
-import { FormActionResponse, IBloodDonate, IBloodDonorForm, IPaginatedResponse, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
+import { FormActionResponse, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
@@ -9,6 +9,91 @@ import { FundRaiserResponse, IBloodStatitics, ICommentsResponse, IDonateHistoryT
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 
+
+export async function findMatchedBlood(bloodGroup: BloodGroup, limit: number, page: number): Promise<IPaginatedResponse<IBloodDonor>> {
+
+    try {
+
+        const session = await getSession();
+        const userProfile = userDetailsFromGetSession(session, "admin")
+        const token = userProfile.token;
+
+        const find = await API_axiosInstance.get(`blood/admin/find-donors/${limit}/${page}/${bloodGroup}`, { headers: { authorization: `Bearer ${token}` } })
+        const response = find.data;
+        if (response.status) {
+            return response.data
+        } else {
+            return {
+                paginated: [],
+                total_records: 0
+            }
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
+
+export async function findSingleBloodrequirement(bloodId: string) {
+    try {
+        const session = await getSession();
+        const userProfile = userDetailsFromGetSession(session, "admin")
+        const token = userProfile.token;
+
+        const find = await API_axiosInstance.get(`/blood/admin/blood-requirements/${bloodId}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        const response = find.data;
+        if (response.status && response.data.req) {
+            return response.data.req
+        }
+        return null
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
+
+export async function findBloodResponse(bloodId: string, page: number, limit: number): Promise<IPaginatedResponse<IShowedIntrest>> {
+
+    try {
+        const session = await getSession();
+        const userProfile = userDetailsFromGetSession(session, "admin")
+        const token = userProfile.token;
+
+        const find = await API_axiosInstance.get(`/blood/admin/find-intrest/${bloodId}/${limit}/${page}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        const response = find.data;
+
+        console.log(response);
+
+        if (response.status && response.data.intrest) {
+            return response.data.intrest
+        }
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
+
+export async function findBloodrequirement(status?: BloodStatus, bloodGroup?: BloodGroup, cors?: [string, string], closedOnly?: boolean) {
+
+}
 
 export async function adminFundRaiserFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fundRaiseID) {
 
