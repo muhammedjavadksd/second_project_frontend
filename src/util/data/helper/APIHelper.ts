@@ -7,8 +7,66 @@ import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
+import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, FundRaiserFileType, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 
+
+export async function addBankAccount(fund_id, { account_number, re_account_number, ifsc_code, holder_name, account_type }) {
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "user");
+        const token = data.token;
+        const addFundRaiser = await API_axiosInstance.post(`/fund_raise/add-bank-account/${fund_id}`, {
+            account_number,
+            ifsc_code,
+            holder_name,
+            account_type
+        }, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        const response = addFundRaiser.data;
+        return {
+            msg: response.msg,
+            status: response.status,
+            data: response.data.bank_id
+        }
+    } catch (e) {
+        console.log(e);
+
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
+
+export async function deleteFundRaiserImageAdmin(image: string, type: FundRaiserFileType, fundId: string): Promise<FormActionResponse> {
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "admin");
+        const token = data.token;
+        const addFundRaiser = await API_axiosInstance.delete(`/fund_raise/admin/delete-images/${fundId}/${type}?image=${image}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        const response = addFundRaiser.data;
+        return {
+            msg: response.msg,
+            status: response.status
+        }
+    } catch (e) {
+        console.log(e);
+
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
 
 export async function adminAddFundRaiser(body: IAdminAddFundRaiser): Promise<string | false> {
 

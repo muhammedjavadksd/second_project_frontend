@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { blockProfile } from "@/util/data/helper/APIHelper";
 import { toast } from "react-toastify";
 
-const ChatUserProfile = ({ isBlock, room_id }: { isBlock: boolean, room_id: string }) => {
+const ChatUserProfile = ({ isBlock, room_id }: { isBlock: boolean, room_id?: string }) => {
 
 
     const [block, setBlock] = useState<boolean>(isBlock);
@@ -16,7 +16,7 @@ const ChatUserProfile = ({ isBlock, room_id }: { isBlock: boolean, room_id: stri
 
     function blockConfirm() {
         const status = block ? "unblock" : "block"
-        blockProfile(status, room_id).then((data) => {
+        blockProfile(status, "123").then((data) => {
             if (data.status) {
                 toast.success("Profile blocked")
             } else {
@@ -53,7 +53,7 @@ const ChatUserProfile = ({ isBlock, room_id }: { isBlock: boolean, room_id: stri
                     </div>
                 </div>
                 <div className="mt-4">
-                    <button onClick={blockProfile} className="w-full py-2 bg-red-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-200">Block user</button>
+                    <button onClick={() => blockConfirm()} className="w-full py-2 bg-red-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-200">Block user</button>
                 </div>
             </div>
             {/* <SingleChat /> */}

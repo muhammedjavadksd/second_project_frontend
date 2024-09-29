@@ -72,29 +72,29 @@ function SingleChatScreen({ msg, current_user, room_id }: { msg: ChatHistory[], 
         }
     }
 
-    useEffect(() => {
-        const userDetails = userDetailsFromUseSession(session, "user");
-        const token = userDetails.token;
-        if (token) {
-            const socketIo = io('http://localhost:7001/api/profile', {
-                path: '/api/profile',
-                transports: ['websocket', 'polling'],
-                query: {
-                    token: 'YOUR_AUTH_TOKEN' // If needed
-                }
-            });
+    // useEffect(() => {
+    //     const userDetails = userDetailsFromUseSession(session, "user");
+    //     const token = userDetails.token;
+    //     if (token) {
+    //         const socketIo = io('http://localhost:7001/api/profile', {
+    //             path: '/api/profile',
+    //             transports: ['websocket', 'polling'],
+    //             query: {
+    //                 token: 'YOUR_AUTH_TOKEN' // If needed
+    //             }
+    //         });
 
 
-            socketIo.emit("join", userDetails.profile_id)
-            setSocket(socketIo)
-            setProfile(userDetails.profile_id)
+    //         socketIo.emit("join", userDetails.profile_id)
+    //         setSocket(socketIo)
+    //         setProfile(userDetails.profile_id)
 
 
-            socketIo.on("message", (chat: ChatHistory) => {
-                setHistory((prev) => [...prev, chat])
-            })
-        }
-    }, [session])
+    //         socketIo.on("message", (chat: ChatHistory) => {
+    //             setHistory((prev) => [...prev, chat])
+    //         })
+    //     }
+    // }, [session])
 
     return (
         <div style={{ height: "600px" }} className="w-full bg-gray-100  border-r border-gray-300 dark:border-gray-700 flex flex-col">

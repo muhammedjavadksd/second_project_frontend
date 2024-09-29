@@ -74,6 +74,7 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
                     </div>
                 </div>
             </main >
+
         </SessionProvider >
     );
 }

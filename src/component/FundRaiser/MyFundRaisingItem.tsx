@@ -46,7 +46,7 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
     return (
         <div className="w-full flex mx-auto mb-5 bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden dark:bg-gray-800 dark:border-gray-700">
             <div className="w-3/12">
-                <a href="#">
+                <a href={`my-fundraising/view/${profile.fund_id}`}>
                     <LoadImage className="w-full h-full  object-cover" imageurl={`${process.env.NEXT_PUBLIC_PUBLIC_IMAGE_URL}/fundRaisers/fundRaiser1.png`} />
                 </a>
             </div>

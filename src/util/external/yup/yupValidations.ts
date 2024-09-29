@@ -91,7 +91,7 @@ const validationSchema = yup.object().shape({
 
 const fundRaiserBankAccoutValidation = yup.object().shape({
     account_number: yup.string().matches(/^\d{10,20}$/, "Bank account number must be between 10 and 20 digits").required("Bank account number is required"),
-    re_account_number: yup.string().oneOf([yup.ref('account_number')], "Account Numbers must match"),
+    re_account_number: yup.string().oneOf([yup.ref('account_number')], "Account Numbers must match").required("Bank account number is required"),
     ifsc_code: yup.string().matches(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Enter valid IFSC code").typeError("Please enter valid IFSC code").required("IFSC code is required"),
     holder_name: yup.string().typeError("Please enter valid holder name").required("Bank holder name is required"),
     account_type: yup.string().typeError("Please select valid account type").required("Account type is required"),
@@ -137,4 +137,12 @@ const adminAddFundRaiseValidation = yup.object().shape({
     description: yup.string().required('Please enter a description for the fundraiser.'),
 })
 
-export { closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation }
+const editFundRaiseAboutValidation = yup.object().shape({
+    about: yup.string().typeError("Please enter valid description").test("WordCount", "Please provide minimum 50 words", (val) => val.split(" ").length >= 50).required("Description is required"),
+})
+
+const editFundRaiseDescriptionValidation = yup.object().shape({
+    description: yup.string().typeError("Please enter valid description").test("WordCount", "Please provide minimum 50 words", (val) => val.split(" ").length >= 50).required("Description is required"),
+})
+
+export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation }

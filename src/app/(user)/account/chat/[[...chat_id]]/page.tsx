@@ -22,6 +22,7 @@ function ChatWithDonors() {
     const [currentChatId, setChatId] = useState<string>(null)
 
 
+
     useEffect(() => {
         if (typeof chat_id == "object" && chat_id.length) {
             setChatId(chat_id[0])
@@ -37,7 +38,7 @@ function ChatWithDonors() {
                 <BloodAccountTab />
                 <div className="mt-5">
                     <div className="flex gap-5">
-                        <ChatComposition chat_id={chat_id} />
+                        <ChatComposition chat_id={chat_id.toString()} />
                     </div>
                 </div>
             </div>

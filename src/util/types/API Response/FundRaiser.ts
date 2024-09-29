@@ -1,6 +1,16 @@
 import { FundRaiserStatus } from "../Enums/BasicEnums"
 
 
+
+interface IBankAccount {
+    account_number: number,
+    ifsc_code: string,
+    holder_name: string,
+    account_type: string,
+    account_id: string,
+    is_active: string,
+}
+
 interface ISingleCommentsResponse {
     comment: string,
     comment_id: string,
@@ -166,4 +176,4 @@ export interface IBloodStatitics {
 }
 
 
-export type { IDonateHistoryTemplate, ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse }
+export type { IDonateHistoryTemplate, ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse, IBankAccount }
