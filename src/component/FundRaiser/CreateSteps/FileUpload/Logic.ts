@@ -13,9 +13,6 @@ async function onFileDelete(image_id, onSuccess, onError, type, edit_id) {
     const session = await getSession();
     const user = userDetailsFromGetSession(session, "user")
 
-
-
-
     if (user) {
         const token = user.token;
 

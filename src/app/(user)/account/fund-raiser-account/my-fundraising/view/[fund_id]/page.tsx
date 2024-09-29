@@ -1,12 +1,11 @@
 "use client"
-import AccountTab from '@/component/Account/AccountTab/ProfileTab'
+import { onFileDelete } from '@/component/FundRaiser/CreateSteps/FileUpload/Logic'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
-import EditInput from '@/component/Util/EditInput'
+import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
 import EmptyScreen from '@/component/Util/EmptyScreen'
-import Footer from '@/component/Util/Footer'
 import ImageItem from '@/component/Util/ImageItem'
-import ListImageFile from '@/component/Util/ListImageFile'
+import LoadingDataNotFoundComponent from '@/component/Util/LoadingDataNotFound'
 import ModelHeader from '@/component/Util/Model/ModelHeader'
 import ModelHeaderWithTile from '@/component/Util/Model/ModelHeaderWithTile'
 import ModelItem from '@/component/Util/ModelItem'
@@ -14,15 +13,18 @@ import PaginationSection from '@/component/Util/PaginationSection'
 import TableBody from '@/component/Util/Table/TableBody'
 import TableHead from '@/component/Util/Table/TableHead'
 import const_data from '@/util/data/const'
-import { addBankAccount, getAllBankAccount } from '@/util/data/helper/APIHelper'
+import { addBankAccount, deleteFundRaiserImageAdmin, getAllBankAccount, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
 import { fundRaiserBankAccoutInitialValues } from '@/util/external/yup/initialValues'
 import { editFundRaiseAboutValidation, editFundRaiseDescriptionValidation, fundRaiserBankAccoutValidation } from '@/util/external/yup/yupValidations'
-import { IBankAccount } from '@/util/types/API Response/FundRaiser'
-import { BankAccountType } from '@/util/types/Enums/BasicEnums'
+import { FundRaiserResponse, IBankAccount } from '@/util/types/API Response/FundRaiser'
+import { BankAccountType, FundRaiserFileType, FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
+import { FormActionResponse } from '@/util/types/InterFace/UtilInterface'
 import { CChart } from '@coreui/react-chartjs'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useParams } from 'next/navigation'
-import React, { useRef, useState } from 'react'
+import { title } from 'process'
+import React, { useEffect, useRef, useState } from 'react'
+import { confirmAlert } from 'react-confirm-alert'
 import { FaEdit, FaPlus, FaStar, FaTrash } from 'react-icons/fa'
 import { IoMdAddCircle } from 'react-icons/io'
 import { toast } from 'react-toastify'
@@ -35,8 +37,23 @@ function FundRaiserView(): React.ReactElement {
     const [isAddBankAccountOpen, toggleBankAccount] = useState(false)
     const { fund_id } = useParams()
     const addBankAccountForm = useRef(null);
-    // const [accounts, setAccounts] = useState<IBankAccount[]>([])
     const [refresh, setRefresh] = useState(false);
+    const [pageRefresh, callPageRefresh] = useState(false);
+    const [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse>(null)
+    const [notFound, setProfileNotFound] = useState<boolean>(false)
+
+    async function findProfile() {
+        const findProfile: FormActionResponse = await getSingleActiveFundRaiser(fund_id.toString(), true);
+        if (findProfile.status) {
+            setFundRaiserProfile(findProfile.data)
+        } else {
+            setProfileNotFound(true)
+        }
+    }
+
+    useEffect(() => {
+        findProfile()
+    }, [pageRefresh])
 
     function onAddBankAccount(val) {
         addBankAccount(fund_id, val).then((data) => {
@@ -137,279 +154,326 @@ function FundRaiserView(): React.ReactElement {
                 </div>
             </ModelItem>
 
-            <div className="container mx-auto mt-5 pb-5">
-                <div className="mb-5">
-                    <BreadCrumb path={['Home', 'Profile', 'My Fund Raising', 'Raising Name-ID']} />
-                </div>
-                <div className="flex gap-5">
-                    <div className='w-full'>
-                        <div className="mb-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
-                            <div>
-                                <h4 className="text-2xl font-bold">Muhammed Javad Education Support Post</h4>
-                                <p>Here is complete report for Muhammed Javad</p>
-                            </div>
-                            <div className="gap-5 flex">
-                                <button onClick={() => { }} className="bg-green-800 px-5 py-2 text-white rounded-md">Download report</button>
-                                <button onClick={() => { }} className="bg-red-800 px-5 py-2 text-white rounded-md">Close post</button>
-                            </div>
-                        </div>
-                        <div className="grid gap-5 grid-cols-4">
-                            <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+            <LoadingDataNotFoundComponent isFound={!notFound} isLoading={!(!!fundRaiserProfile)}>
+                <div className="container mx-auto mt-5 pb-5">
+                    <div className="mb-5">
+                        <BreadCrumb path={['Home', 'Profile', 'My Fund Raising', fund_id.toString()]} />
+                    </div>
+                    <div className="flex gap-5">
+                        <div className='w-full'>
+                            <div className="mb-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
                                 <div>
-                                    <div> Amount collected </div>
-                                    <span className='font-bold text-2xl'>{const_data.MONEY_ICON}2500</span>
-                                    <div className='flex mt-3 gap-2'>
-                                        <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
-                                        <span>June 31 2023</span>
-                                    </div>
+                                    <h4 className="text-2xl font-bold">{fundRaiserProfile?.full_name} {fundRaiserProfile?.category} Support Post</h4>
+                                    <p>Here is complete report for {fundRaiserProfile?.full_name}</p>
+                                </div>
+                                <div className="gap-5 flex">
+                                    <button onClick={() => { }} className="bg-green-800 px-5 py-2 text-white rounded-md">Download report</button>
+                                    <button onClick={() => { }} className="bg-red-800 px-5 py-2 text-white rounded-md">Close post</button>
                                 </div>
                             </div>
-                            <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
-                                <div>
-                                    <div> Total Amount  </div>
-                                    <span className='font-bold text-2xl'>{const_data.MONEY_ICON}2500</span>
-                                    <div className='flex mt-3 gap-2'>
-                                        <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
-                                        <span>June 31 2023</span>
+                            <div className="grid gap-5 grid-cols-4">
+                                <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+                                    <div>
+                                        <div> Amount collected </div>
+                                        <span className='font-bold text-2xl'>{const_data.MONEY_ICON}{fundRaiserProfile?.collected}</span>
+                                        <div className='flex mt-3 gap-2'>
+                                            <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
+                                            <span>June 31 2023</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
-                                <div>
-                                    <div> Amount collected </div>
-                                    <span className='font-bold text-2xl'>{const_data.MONEY_ICON}2500</span>
-                                    <div className='flex mt-3 gap-2'>
-                                        <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
-                                        <span>June 31 2023</span>
+                                <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+                                    <div>
+                                        <div> Target amount </div>
+                                        <span className='font-bold text-2xl'>{const_data.MONEY_ICON}{fundRaiserProfile?.amount}</span>
+                                        <div className='flex mt-3 gap-2'>
+                                            <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
+                                            <span>June 31 2023</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
-                                <div>
-                                    <div> Amount collected </div>
-                                    <span className='font-bold text-2xl'>{const_data.MONEY_ICON}2500</span>
-                                    <div className='flex mt-3 gap-2'>
-                                        <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
-                                        <span>June 31 2023</span>
+                                <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+                                    <div>
+                                        <div> Deadline </div>
+                                        <span className='font-bold text-2xl'>{new Date(fundRaiserProfile?.deadline || null).toDateString()}</span>
+                                        <div className='flex mt-3 gap-2'>
+                                            <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
+                                            <span>June 31 2023</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
+                                    <div>
+                                        <div> Status </div>
+                                        <span className='font-bold text-2xl'>{fundRaiserProfile?.status}</span>
+                                        <div className='flex mt-3 gap-2'>
+                                            {<span className='text-red-600'>{fundRaiserProfile?.status != FundRaiserStatus.APPROVED && "Profile not live at this moment"}</span>}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className='mt-5 flex gap-5'>
-                    <div className="w-3/4">
-                        <div className='bg-white p-3 rounded-md'>
-                            <CChart
-                                type="line"
-                                data={{
-                                    labels: ["January", "February", "March", "April", "May", "June", "July"],
-                                    datasets: [
-                                        {
-                                            label: "My First dataset",
-                                            backgroundColor: "rgba(220, 220, 220, 0.2)",
-                                            borderColor: "rgba(220, 220, 220, 1)",
-                                            pointBackgroundColor: "rgba(220, 220, 220, 1)",
-                                            pointBorderColor: "#fff",
-                                            data: [40, 20, 12, 39, 10, 40, 39, 80, 40]
-                                        },
-                                        {
-                                            label: "My Second dataset",
-                                            backgroundColor: "rgba(151, 187, 205, 0.2)",
-                                            borderColor: "rgba(151, 187, 205, 1)",
-                                            pointBackgroundColor: "rgba(151, 187, 205, 1)",
-                                            pointBorderColor: "#fff",
-                                            data: [50, 12, 28, 29, 7, 25, 12, 70, 60]
-                                        },
-                                    ],
-                                }}
-                                options={{
-                                    plugins: {
-                                        legend: {
-                                            labels: {
-
-                                            }
-                                        }
-                                    },
-                                    scales: {
-                                        x: {
-                                            grid: {
-
-                                            },
-                                            ticks: {
-
-                                            },
-                                        },
-                                        y: {
-                                            grid: {
-
-                                            },
-                                            ticks: {
-
-                                            },
-                                        },
-                                    },
-                                }}
-                            />
-                        </div>
-
-
-
-                        <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                            <>
-                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
-                                    <TableHead head={['ID', 'Donation ID', 'Name', 'Amount', 'Date']} />
-                                    <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
-                                    <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
-                                    <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
-                                    <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
-                                </table>
-                            </>
-                        </div>
-
-
-                        <div className='mt-3 mb-3'>
-                            <div className='flex justify-between items-center'>
-                                <div>
-                                    <h4 className='text-2xl font-bold '>Bank account's</h4>
-                                    <p>Manage your bank account's from here</p>
-                                </div>
-                                <button onClick={() => toggleBankAccount(true)} className='flex bg-green-500 p-2 text-white border shadow-inner items-center gap-x-3 rounded-lg'>
-                                    <FaPlus />
-                                    Add bank account
-                                </button>
-                            </div>
-                        </div>
-                        <PaginationSection
-                            api={{
-                                renderType: (page: number, limit: number) => {
-                                    return getAllBankAccount(fund_id.toString(), limit, page);
-                                }
-                            }}
-                            itemsRender={(bankAccounts: IBankAccount[]) => {
-                                return (
-                                    bankAccounts.length ? (
-                                        <div className="grid gap-4 grid-cols-3" >
+                    <div className='mt-5 flex gap-5'>
+                        <div className="w-3/4">
+                            <div className='bg-white p-3 rounded-md'>
+                                <CChart
+                                    type="line"
+                                    data={{
+                                        labels: ["January", "February", "March", "April", "May", "June", "July"],
+                                        datasets: [
                                             {
-                                                bankAccounts.map((account) => {
-                                                    return (
-                                                        <div
-                                                            key={account.account_id}
-                                                            className={`bg-white rounded-lg shadow-md p-6 transition-all duration-300 ${account.is_active ? "ring-2 ring-blue-500" : ""
-                                                                }`}
-                                                        >
-                                                            <div className="flex justify-between items-center mb-4">
-                                                                <h2 className="text-xl font-semibold">{account.holder_name}</h2>
-                                                                <div className="flex space-x-2">
-                                                                    <button
-                                                                        onClick={() => { }}
-                                                                        className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
-                                                                        aria-label="Edit account"
-                                                                    >
-                                                                        <FaEdit />
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={() => { }}
-                                                                        className="text-red-500 hover:text-red-600 transition-colors duration-200"
-                                                                        aria-label="Delete account"
-                                                                    >
-                                                                        <FaTrash />
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={() => { }}
-                                                                        className={`${account.is_active ? "text-yellow-500" : "text-gray-400"} hover:text-yellow-600 transition-colors duration-200`}
-                                                                        aria-label={`${account.is_active ? "Active account" : "Make account active"}`}
-                                                                    >
-                                                                        <FaStar />
-                                                                    </button>
+                                                label: "My First dataset",
+                                                backgroundColor: "rgba(220, 220, 220, 0.2)",
+                                                borderColor: "rgba(220, 220, 220, 1)",
+                                                pointBackgroundColor: "rgba(220, 220, 220, 1)",
+                                                pointBorderColor: "#fff",
+                                                data: [40, 20, 12, 39, 10, 40, 39, 80, 40]
+                                            },
+                                            {
+                                                label: "My Second dataset",
+                                                backgroundColor: "rgba(151, 187, 205, 0.2)",
+                                                borderColor: "rgba(151, 187, 205, 1)",
+                                                pointBackgroundColor: "rgba(151, 187, 205, 1)",
+                                                pointBorderColor: "#fff",
+                                                data: [50, 12, 28, 29, 7, 25, 12, 70, 60]
+                                            },
+                                        ],
+                                    }}
+                                    options={{
+                                        plugins: {
+                                            legend: {
+                                                labels: {
+
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            x: {
+                                                grid: {
+
+                                                },
+                                                ticks: {
+
+                                                },
+                                            },
+                                            y: {
+                                                grid: {
+
+                                                },
+                                                ticks: {
+
+                                                },
+                                            },
+                                        },
+                                    }}
+                                />
+                            </div>
+
+
+
+                            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                                <>
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
+                                        <TableHead head={['ID', 'Donation ID', 'Name', 'Amount', 'Date']} />
+                                        <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
+                                        <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
+                                        <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
+                                        <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
+                                    </table>
+                                </>
+                            </div>
+
+
+                            <div className='mt-3 mb-3'>
+                                <div className='flex justify-between items-center'>
+                                    <div>
+                                        <h4 className='text-2xl font-bold '>Bank account's</h4>
+                                        <p>Manage your bank account's from here</p>
+                                    </div>
+                                    <button onClick={() => toggleBankAccount(true)} className='flex bg-green-500 p-2 text-white border shadow-inner items-center gap-x-3 rounded-lg'>
+                                        <FaPlus />
+                                        Add bank account
+                                    </button>
+                                </div>
+                            </div>
+                            <PaginationSection
+                                api={{
+                                    renderType: (page: number, limit: number) => {
+                                        return getAllBankAccount(fund_id.toString(), limit, page);
+                                    }
+                                }}
+                                itemsRender={(bankAccounts: IBankAccount[]) => {
+                                    return (
+                                        bankAccounts.length ? (
+                                            <div className="grid gap-4 grid-cols-3" >
+                                                {
+                                                    bankAccounts.map((account) => {
+                                                        return (
+                                                            <div
+                                                                key={account.account_id}
+                                                                className={`bg-white rounded-lg shadow-md p-6 transition-all duration-300 ${account.is_active ? "ring-2 ring-blue-500" : ""
+                                                                    }`}
+                                                            >
+                                                                <div className="flex justify-between items-center mb-4">
+                                                                    <h2 className="text-xl font-semibold">{account.holder_name}</h2>
+                                                                    <div className="flex space-x-2">
+                                                                        <button
+                                                                            onClick={() => { }}
+                                                                            className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
+                                                                            aria-label="Edit account"
+                                                                        >
+                                                                            <FaEdit />
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => { }}
+                                                                            className="text-red-500 hover:text-red-600 transition-colors duration-200"
+                                                                            aria-label="Delete account"
+                                                                        >
+                                                                            <FaTrash />
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => { }}
+                                                                            className={`${account.is_active ? "text-yellow-500" : "text-gray-400"} hover:text-yellow-600 transition-colors duration-200`}
+                                                                            aria-label={`${account.is_active ? "Active account" : "Make account active"}`}
+                                                                        >
+                                                                            <FaStar />
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="space-y-2">
+                                                                    <p>
+                                                                        <span className="font-semibold">Account Number:</span>{" "}
+                                                                        {account.account_number}
+                                                                    </p>
+                                                                    <p>
+                                                                        <span className="font-semibold">Account Holder:</span>{" "}
+                                                                        {account.holder_name}
+                                                                    </p>
+                                                                    <p>
+                                                                        <span className="font-semibold">IFSC Code:</span>
+                                                                        {account.ifsc_code}
+                                                                    </p>
                                                                 </div>
                                                             </div>
-                                                            <div className="space-y-2">
-                                                                <p>
-                                                                    <span className="font-semibold">Account Number:</span>{" "}
-                                                                    {account.account_number}
-                                                                </p>
-                                                                <p>
-                                                                    <span className="font-semibold">Account Holder:</span>{" "}
-                                                                    {account.holder_name}
-                                                                </p>
-                                                                <p>
-                                                                    <span className="font-semibold">IFSC Code:</span>
-                                                                    {account.ifsc_code}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        ) : <EmptyScreen msg='No bank account found' />
+                                    )
+                                }}
+
+                                paginationProps={{
+                                    current_page: 1,
+                                    currentLimit: 10
+                                }}
+                                refresh={refresh}
+                            >
+                            </PaginationSection>
+
+                        </div>
+                        <div className="w-1/4">
+                            <div className="mb-5 picturesList shadow-inner border  overflow-auto">
+                                <ModelHeaderWithTile title='Manage pictures'>
+                                    <button className='text-white'><IoMdAddCircle /></button>
+                                </ModelHeaderWithTile>
+                                {
+                                    fundRaiserProfile?.picture.map((each, index) => {
+                                        return (
+                                            <ImageItem
+                                                onClose={(e) => {
+                                                    confirmAlert({
+                                                        title: "Are you sure want to delete this picture",
+                                                        message: "Delete picture",
+                                                        customUI: ({ title, onClose }) => {
+                                                            return <DangerUIConfirm title={title} onClose={onClose} onConfirm={() => {
+                                                                onFileDelete(each, () => {
+                                                                    callPageRefresh(!pageRefresh)
+                                                                    toast.success("Document delete success")
+                                                                    onClose()
+                                                                }, (err) => {
+                                                                    toast.error(err)
+                                                                }, FundRaiserFileType.Pictures, fund_id)
+                                                            }
+                                                            } />
+                                                        }
+                                                    })
+                                                }}
+                                                imageName={`Picture - ${index + 1}`} imageURL={each} />
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className="mb-5 picturesList shadow-inner border  overflow-auto">
+                                <ModelHeaderWithTile title='Manage Documents'>
+                                    <button className='text-white'><IoMdAddCircle /></button>
+                                </ModelHeaderWithTile>
+                                {
+                                    fundRaiserProfile?.documents.map((each, index) => {
+                                        return (
+                                            <ImageItem
+                                                onClose={(e) => {
+                                                    confirmAlert({
+                                                        title: "Are you sure want to delete this document",
+                                                        message: "Delete docs",
+                                                        customUI: ({ title, onClose }) => {
+                                                            return <DangerUIConfirm title={title} onClose={onClose} onConfirm={() => {
+                                                                onFileDelete(each, () => {
+                                                                    callPageRefresh(!pageRefresh)
+                                                                    toast.success("Document delete success")
+                                                                    onClose()
+                                                                }, (err) => {
+                                                                    toast.error(err)
+                                                                }, FundRaiserFileType.Document, fund_id)
+                                                            }
+                                                            } />
+                                                        }
+                                                    })
+                                                }}
+                                                imageName={`Document - ${index + 1}`} imageURL={each} />
+                                        )
+                                    })
+                                }
+                            </div>
+
+                            <div className="gap-5 flex mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5">
+                                <div className='text-ellipsis w-full'>
+                                    <div className="text-left mt-2 w-full rtl:text-right">
+                                        <div className='flex justify-between mb-2'>
+                                            <div className="mb-3 text-xs">About this fund raiser</div>
+                                            <i onClick={() => toggleAbout(true)} className="cursor-pointer  fa-solid text-sm fa-pencil" title='Edit about content'></i>
                                         </div>
-                                    ) : <EmptyScreen msg='No bank account found' />
-                                )
-                            }}
 
-                            paginationProps={{
-                                current_page: 1,
-                                currentLimit: 10
-                            }}
-                            refresh={refresh}
-                        >
-                        </PaginationSection>
-
-                    </div>
-                    <div className="w-1/4">
-                        <div className="mb-5 picturesList shadow-inner border  overflow-auto">
-                            <ModelHeaderWithTile title='Manage pictures'>
-                                <button className='text-white'><IoMdAddCircle /></button>
-                            </ModelHeaderWithTile>
-                            <ImageItem onClose={(e) => { }} imageName={"Image one.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
-                            <ImageItem onClose={(e) => { }} imageName={"Image two.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
-                            <ImageItem onClose={(e) => { }} imageName={"Image three.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
-                        </div>
-                        <div className="mb-5 picturesList shadow-inner border  overflow-auto">
-                            <ModelHeaderWithTile title='Manage Documents'>
-                                <button className='text-white'><IoMdAddCircle /></button>
-                            </ModelHeaderWithTile>
-                            <ImageItem onClose={(e) => { }} imageName={"Image one.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
-                            <ImageItem onClose={(e) => { }} imageName={"Image two.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
-                            <ImageItem onClose={(e) => { }} imageName={"Image three.jpeg"} imageURL={'https://kettocdn.gumlet.io/media/campaigns/944000/944330/image/kMVdRrxJy0hBG4OyI9MWGazxTbpJsTpb71CQbDN2.jpg?w=768&dpr=2.0'}></ImageItem>
-                        </div>
-
-                        <div className="gap-5 flex mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5">
-                            <div className='text-ellipsis w-full'>
-                                <div className="text-left mt-2 w-full rtl:text-right">
-                                    <div className='flex justify-between mb-2'>
-                                        <div className="mb-3 text-xs">About this fund raiser</div>
-                                        <i onClick={() => toggleAbout(true)} className="cursor-pointer  fa-solid text-sm fa-pencil" title='Edit about content'></i>
-                                    </div>
-
-                                    {/* <EditInput rows={6} onSubmit={() => { }} as='textarea' data={{ key: "about", value: "Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator. Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator." }} isEditAllowed={() => true}  > */}
-                                    <div className="-mt-1 font-sans text-sm font-semibold">
-                                        Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-                                        Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-                                    </div>
-                                    {/* </EditInput> */}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="gap-5 flex mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5">
-                            <div className='text-ellipsis'>
-                                <div className="text-left mt-2 rtl:text-right w-fit">
-                                    <div className='flex justify-between mb-2'>
-                                        <div className="mb-3 text-xs">Description this fund raiser</div>
-                                        <i onClick={() => toggleDescription(true)} className="cursor-pointer  fa-solid text-sm fa-pencil" title='Edit description content'></i>
-                                    </div>
-                                    <div className="-mt-1 font-sans text-sm font-semibold">
-                                        Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-                                        Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
+                                        {/* <EditInput rows={6} onSubmit={() => { }} as='textarea' data={{ key: "about", value: "Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator. Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator." }} isEditAllowed={() => true}  > */}
+                                        <div className="-mt-1 font-sans text-sm font-semibold">
+                                            Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
+                                            Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
+                                        </div>
+                                        {/* </EditInput> */}
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                            <div className="gap-5 flex mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5">
+                                <div className='text-ellipsis'>
+                                    <div className="text-left mt-2 rtl:text-right w-fit">
+                                        <div className='flex justify-between mb-2'>
+                                            <div className="mb-3 text-xs">Description this fund raiser</div>
+                                            <i onClick={() => toggleDescription(true)} className="cursor-pointer  fa-solid text-sm fa-pencil" title='Edit description content'></i>
+                                        </div>
+                                        <div className="-mt-1 font-sans text-sm font-semibold">
+                                            Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
+                                            Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-            </div >
+                </div >
+            </LoadingDataNotFoundComponent >
         </div >
     )
 }
