@@ -15,14 +15,16 @@ import PaginationSection from '@/component/Util/PaginationSection'
 import TableBody from '@/component/Util/Table/TableBody'
 import TableHead from '@/component/Util/Table/TableHead'
 import const_data from '@/util/data/const'
-import { addBankAccount, deleteFundRaiserImageAdmin, getAllBankAccount, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
+import { addBankAccount, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
+import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
 import { fundRaiserBankAccoutInitialValues } from '@/util/external/yup/initialValues'
 import { editFundRaiseAboutValidation, editFundRaiseDescriptionValidation, fundRaiserBankAccoutValidation } from '@/util/external/yup/yupValidations'
-import { FundRaiserResponse, IBankAccount } from '@/util/types/API Response/FundRaiser'
+import { FundRaiserResponse, IBankAccount, IDonateHistoryTemplate } from '@/util/types/API Response/FundRaiser'
 import { BankAccountType, FundRaiserFileType, FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
 import { FormActionResponse } from '@/util/types/InterFace/UtilInterface'
 import { CChart } from '@coreui/react-chartjs'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
+import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { title } from 'process'
 import React, { useEffect, useRef, useState } from 'react'
@@ -177,6 +179,7 @@ function FundRaiserView(): React.ReactElement {
                                 <div className="gap-5 flex">
                                     <button onClick={() => { }} className="bg-green-800 px-5 py-2 text-white rounded-md">Download report</button>
                                     <button onClick={() => { }} className="bg-red-800 px-5 py-2 text-white rounded-md">Close post</button>
+                                    <Link href={`/fund-raising/view/${fund_id}?isForce=true`} className="bg-blue-600 px-5 py-2 text-white rounded-md">View live</Link>
                                 </div>
                             </div>
                             <div className="grid gap-5 grid-cols-4">
@@ -280,16 +283,50 @@ function FundRaiserView(): React.ReactElement {
 
 
 
-                            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                                <>
-                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
-                                        <TableHead head={['ID', 'Donation ID', 'Name', 'Amount', 'Date']} />
-                                        <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
-                                        <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
-                                        <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
-                                        <TableBody data={['123', 'rnjwej', 'Muhammed Javad', `100${const_data.MONEY_ICON}`, '12th may']} />
-                                    </table>
-                                </>
+                            <div className="mt-5 overflow-hidden  md:rounded-lg">
+
+
+                                <div >
+                                    <h4 className='text-2xl font-bold '>Donation history</h4>
+                                    <p className='text-sm text-red-500'>If you notice any missing donation history, it may be because some donors have chosen to hide their profiles from the public.</p>
+                                </div>
+                                <div >
+                                    <PaginationSection
+                                        api={{
+                                            renderType: async (page, limit) => {
+                                                const history = await findDonationHistroyApi(limit, page, fund_id.toString())
+                                                console.log(history);
+                                                return history
+                                            },
+                                        }}
+                                        itemsRender={(tableBody: IDonateHistoryTemplate[]) => {
+                                            return <>
+                                                {
+                                                    tableBody.length ? (
+                                                        <>
+                                                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
+                                                                <TableHead head={['#', 'Donation ID', 'Name', 'Amount', 'Date']} />
+                                                                {
+                                                                    tableBody.map((item, index) => {
+                                                                        return <TableBody data={[index + 1, item.donation_id, item.name, `${item.name}${const_data.MONEY_ICON}`, formatDateToMonthNameAndDate(item.date)]} />
+                                                                    })
+                                                                }
+                                                            </table>
+                                                        </>
+                                                    ) : (
+                                                        <div className="mt-3 inline-table w-full">
+                                                            <EmptyScreen msg="Wait for your first donation" />
+                                                        </div>
+                                                    )
+                                                }
+                                            </>
+                                        }}
+                                        paginationProps={{ current_page: 1, currentLimit: 10 }}
+                                        refresh={null}
+                                    >
+
+                                    </PaginationSection >
+                                </div>
                             </div>
 
 

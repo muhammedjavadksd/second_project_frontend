@@ -17,12 +17,6 @@ interface PaginationProps {
 }
 
 
-
-
-
-
-
-
 function PaginationSection({ itemsRender, api, paginationProps, refresh }: { itemsRender: Function, api: PaginatedApi, paginationProps: PaginationProps, refresh: boolean }) {
 
     const [page, setPage] = useState<number>(paginationProps.current_page)
@@ -33,12 +27,16 @@ function PaginationSection({ itemsRender, api, paginationProps, refresh }: { ite
 
 
     async function fetchData() {
-        console.log(api);
-        const { paginated, total_records } = await api.renderType(page, limit);
-        console.log(paginated);
+        try {
+            console.log(api);
+            const { paginated, total_records } = await api.renderType(page, limit);
+            console.log(paginated);
 
-        setResponse(paginated ?? []);
-        setTotalRecords(total_records);
+            setResponse(paginated ?? []);
+            setTotalRecords(total_records);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     useEffect(() => {

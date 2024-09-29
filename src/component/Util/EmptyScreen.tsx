@@ -3,7 +3,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import CustomeConfirmUI from './ConfirmUI';
 
 
-function EmptyScreen({ msg = "There is no expresss intrest from your side" }) {
+function EmptyScreen({ msg }) {
 
 
 
@@ -16,7 +16,6 @@ function EmptyScreen({ msg = "There is no expresss intrest from your side" }) {
         <h2 className='text-xl font-semibold text-gray-800 mb-2'>
             No Records Found
         </h2>
-        {/* <button onClick={() => handleShowConfirm()}>Show Confirm</button> */}
         <p className='text-gray-600'>{msg}</p>
     </div>
     )

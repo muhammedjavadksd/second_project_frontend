@@ -79,7 +79,7 @@ function PaginationTab({ onClick, item_per_page, total_records }: IPaginationBut
       <span className="text-sm text-end font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing
         <span className="font-semibold text-gray-900 dark:text-white"> {currentPage}-{totalPages}</span> of
         <span className="font-semibold text-gray-900 dark:text-white"> {total_records}</span></span>
-      <nav className="flex bg-white p-5 pt-2 pb-2 pt-2 items-center flex-column flex-wrap md:flex-row justify-end pe-0" aria-label="Table navigation">
+      <nav className="flex  p-5 pt-2 pb-2 pt-2 items-center flex-column flex-wrap md:flex-row justify-end pe-0" aria-label="Table navigation">
 
         <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
           <button onClick={() => {
