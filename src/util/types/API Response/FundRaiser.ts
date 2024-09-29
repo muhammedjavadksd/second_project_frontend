@@ -13,7 +13,7 @@ interface IBankAccount {
     ifsc_code: string,
     holder_name: string,
     account_type: string,
-    account_id: string,
+    befId: string,
     is_active: string,
 }
 

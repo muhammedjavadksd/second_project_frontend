@@ -11,6 +11,39 @@ import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, FundR
 import { toast } from "react-toastify";
 
 
+
+export async function deleteBankAccountByUser(fund_id, benf_id): Promise<FormActionResponse> {
+
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user")
+        if (user) {
+            const requestAPI = await API_axiosInstance.delete(`/fund_raise/delete-bank-account/${fund_id}/${benf_id}`, {
+                headers: {
+                    "authorization": `Bearer ${user.token}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            const response = requestAPI.data;
+            return {
+                msg: response.msg,
+                status: !!response.status
+            }
+        }
+
+        return {
+            msg: "Un authraized access",
+            status: false
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false,
+        }
+    }
+}
+
 export const userFundRaiserEdit = async (data: Partial<FundRaiserResponse>, fund_id: string): Promise<boolean> => {
 
     const session = await getSession();
@@ -98,6 +131,8 @@ export async function getAllBankAccount(fund_id: string, limit: number, page: nu
             }
         })
         const response = addFundRaiser.data;
+        console.log(response);
+
         if (response.status) {
             return response.data
         } else {

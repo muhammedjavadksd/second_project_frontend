@@ -4,6 +4,7 @@ import { onFileDelete, onFileUpload } from '@/component/FundRaiser/CreateSteps/F
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
+import EditInput from '@/component/Util/EditInput'
 import EmptyScreen from '@/component/Util/EmptyScreen'
 import ImageItem from '@/component/Util/ImageItem'
 import ImageModel from '@/component/Util/ImageModel'
@@ -16,7 +17,7 @@ import PaginationSection from '@/component/Util/PaginationSection'
 import TableBody from '@/component/Util/Table/TableBody'
 import TableHead from '@/component/Util/Table/TableHead'
 import const_data from '@/util/data/const'
-import { addBankAccount, closeFundRaise, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getDonationStatitics, getSingleActiveFundRaiser, userFundRaiserEdit } from '@/util/data/helper/APIHelper'
+import { addBankAccount, closeFundRaise, deleteBankAccountByUser, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getDonationStatitics, getSingleActiveFundRaiser, userFundRaiserEdit } from '@/util/data/helper/APIHelper'
 import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
 import { fundRaiserBankAccoutInitialValues } from '@/util/external/yup/initialValues'
 import { editFundRaiseAboutValidation, editFundRaiseDescriptionValidation, fundRaiserBankAccoutValidation } from '@/util/external/yup/yupValidations'
@@ -121,6 +122,10 @@ function FundRaiserView(): React.ReactElement {
             toast.error("Something went wrong")
         })
     }
+
+
+    const dateLeft = new Date(fundRaiserProfile?.deadline).getDate() - new Date().getDate()
+
 
     return (
         <div className='bg-gray-100'>
@@ -267,10 +272,7 @@ function FundRaiserView(): React.ReactElement {
                                     <div>
                                         <div> Amount collected </div>
                                         <span className='font-bold text-2xl'>{const_data.MONEY_ICON}{fundRaiserProfile?.collected}</span>
-                                        <div className='flex mt-3 gap-2'>
-                                            <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
-                                            <span>June 31 2023</span>
-                                        </div>
+
                                     </div>
                                 </div>
                                 <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
@@ -278,18 +280,27 @@ function FundRaiserView(): React.ReactElement {
                                         <div> Target amount </div>
                                         <span className='font-bold text-2xl'>{const_data.MONEY_ICON}{fundRaiserProfile?.amount}</span>
                                         <div className='flex mt-3 gap-2'>
-                                            <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
-                                            <span>June 31 2023</span>
+                                            <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>{fundRaiserProfile?.amount - fundRaiserProfile?.collected}{const_data.MONEY_ICON}</span>
+                                            <span>
+                                                Need
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className='bg-white rounded-lg items-center p-4 gap-3 flex shadow-inner border'>
                                     <div>
                                         <div> Deadline </div>
-                                        <span className='font-bold text-2xl'>{new Date(fundRaiserProfile?.deadline || null).toDateString()}</span>
+
+                                        <span className='font-bold text-2xl'>
+                                            <EditInput label='Enter the deadline' type="date" data={{ key: "deadline", value: new Date(fundRaiserProfile?.deadline || new Date()).toISOString().slice(0, 10) }} isEditAllowed={() => true} onSubmit={(val) => { userFundRaiserEdit({ deadline: val['deadline'] }, fund_id.toString()) && toast.success("Deadline updated") }} >
+                                                {new Date(fundRaiserProfile?.deadline || null).toDateString()}
+                                            </EditInput>
+                                        </span>
+
                                         <div className='flex mt-3 gap-2'>
-                                            <span className=' text-green-800 font-bold px-3 text-sm bg-green-300  rounded-lg'>4% </span>
-                                            <span>June 31 2023</span>
+                                            <span>
+                                                {dateLeft < 1 ? `Deadline  passed by ${Math.abs(dateLeft)} days` : `${dateLeft} more day's to go`}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -401,22 +412,44 @@ function FundRaiserView(): React.ReactElement {
                                                     bankAccounts.map((account) => {
                                                         return (
                                                             <div
-                                                                key={account.account_id}
+                                                                key={account.befId}
                                                                 className={`bg-white rounded-lg shadow-md p-6 transition-all duration-300 ${account.is_active ? "ring-2 ring-blue-500" : ""
                                                                     }`}
                                                             >
                                                                 <div className="flex justify-between items-center mb-4">
                                                                     <h2 className="text-xl font-semibold">{account.holder_name}</h2>
                                                                     <div className="flex space-x-2">
+
                                                                         <button
-                                                                            onClick={() => { }}
-                                                                            className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
-                                                                            aria-label="Edit account"
-                                                                        >
-                                                                            <FaEdit />
-                                                                        </button>
-                                                                        <button
-                                                                            onClick={() => { }}
+                                                                            onClick={() => {
+                                                                                confirmAlert({
+                                                                                    title: "Are you sure want to delete the account?",
+                                                                                    message: "delete the account?",
+
+                                                                                    customUI: ({ onClose, title }) => {
+                                                                                        return (
+                                                                                            <DangerUIConfirm
+                                                                                                onClose={onClose}
+                                                                                                onConfirm={() => {
+                                                                                                    deleteBankAccountByUser(fund_id.toString(), account.befId).then((data) => {
+                                                                                                        if (data.status) {
+                                                                                                            toast.success("Bank account deleted")
+                                                                                                            setRefresh(!refresh)
+                                                                                                            onClose()
+                                                                                                        } else {
+                                                                                                            toast.error(data.msg)
+                                                                                                        }
+                                                                                                    }).catch((err) => {
+                                                                                                        console.log(err);
+                                                                                                    })
+                                                                                                }}
+                                                                                                title={title}
+                                                                                            />
+                                                                                        )
+                                                                                    }
+                                                                                })
+
+                                                                            }}
                                                                             className="text-red-500 hover:text-red-600 transition-colors duration-200"
                                                                             aria-label="Delete account"
                                                                         >
