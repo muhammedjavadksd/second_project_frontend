@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
-import { FundRaiserResponse, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
+import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, FundRaiserFileType, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 
@@ -38,6 +38,33 @@ export async function addBankAccount(fund_id, { account_number, re_account_numbe
         return {
             msg: errorMsg,
             status: false
+        }
+    }
+}
+
+export async function getAllBankAccount(fund_id: string, limit: number, page: number): Promise<IPaginatedResponse<IBankAccount>> {
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "user");
+        const token = data.token;
+        const addFundRaiser = await API_axiosInstance.get(`/fund_raise/bank-accounts/${fund_id}/${limit}/${page}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        const response = addFundRaiser.data;
+        if (response.status) {
+            return response.data
+        } else {
+            return {
+                paginated: [],
+                total_records: 0
+            }
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
         }
     }
 }

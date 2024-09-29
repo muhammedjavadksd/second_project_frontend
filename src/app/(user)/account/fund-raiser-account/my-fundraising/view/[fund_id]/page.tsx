@@ -3,18 +3,18 @@ import AccountTab from '@/component/Account/AccountTab/ProfileTab'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import EditInput from '@/component/Util/EditInput'
+import EmptyScreen from '@/component/Util/EmptyScreen'
 import Footer from '@/component/Util/Footer'
 import ImageItem from '@/component/Util/ImageItem'
 import ListImageFile from '@/component/Util/ListImageFile'
 import ModelHeader from '@/component/Util/Model/ModelHeader'
 import ModelHeaderWithTile from '@/component/Util/Model/ModelHeaderWithTile'
 import ModelItem from '@/component/Util/ModelItem'
-import SliderComponent from '@/component/Util/SliderComponent'
-import StatisticCard from '@/component/Util/StatisticCard'
+import PaginationSection from '@/component/Util/PaginationSection'
 import TableBody from '@/component/Util/Table/TableBody'
 import TableHead from '@/component/Util/Table/TableHead'
 import const_data from '@/util/data/const'
-import { addBankAccount } from '@/util/data/helper/APIHelper'
+import { addBankAccount, getAllBankAccount } from '@/util/data/helper/APIHelper'
 import { fundRaiserBankAccoutInitialValues } from '@/util/external/yup/initialValues'
 import { editFundRaiseAboutValidation, editFundRaiseDescriptionValidation, fundRaiserBankAccoutValidation } from '@/util/external/yup/yupValidations'
 import { IBankAccount } from '@/util/types/API Response/FundRaiser'
@@ -35,15 +35,13 @@ function FundRaiserView(): React.ReactElement {
     const [isAddBankAccountOpen, toggleBankAccount] = useState(false)
     const { fund_id } = useParams()
     const addBankAccountForm = useRef(null);
-
-
-    const [accounts, setAccounts] = useState<IBankAccount[]>([])
+    // const [accounts, setAccounts] = useState<IBankAccount[]>([])
+    const [refresh, setRefresh] = useState(false);
 
     function onAddBankAccount(val) {
         addBankAccount(fund_id, val).then((data) => {
             if (data.status) {
-                val.account_id = data.data
-                setAccounts((prev) => [...prev, val])
+                setRefresh(!refresh)
                 toast.success("Bank account created success")
                 addBankAccountForm.current.resetForm()
                 toggleBankAccount(false)
@@ -282,56 +280,80 @@ function FundRaiserView(): React.ReactElement {
                                 </button>
                             </div>
                         </div>
-                        <div className="grid grid-cols-3 gap-3">
-                            {accounts.map((account) => (
-                                <div
-                                    key={account.account_id}
-                                    className={`bg-white rounded-lg shadow-md p-6 transition-all duration-300 ${account.is_active ? "ring-2 ring-blue-500" : ""
-                                        }`}
-                                >
-                                    <div className="flex justify-between items-center mb-4">
-                                        <h2 className="text-xl font-semibold">{account.holder_name}</h2>
-                                        <div className="flex space-x-2">
-                                            <button
-                                                onClick={() => { }}
-                                                className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
-                                                aria-label="Edit account"
-                                            >
-                                                <FaEdit />
-                                            </button>
-                                            <button
-                                                onClick={() => { }}
-                                                className="text-red-500 hover:text-red-600 transition-colors duration-200"
-                                                aria-label="Delete account"
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                            <button
-                                                onClick={() => { }}
-                                                className={`${account.is_active ? "text-yellow-500" : "text-gray-400"} hover:text-yellow-600 transition-colors duration-200`}
-                                                aria-label={`${account.is_active ? "Active account" : "Make account active"}`}
-                                            >
-                                                <FaStar />
-                                            </button>
+                        <PaginationSection
+                            api={{
+                                renderType: (page: number, limit: number) => {
+                                    return getAllBankAccount(fund_id.toString(), limit, page);
+                                }
+                            }}
+                            itemsRender={(bankAccounts: IBankAccount[]) => {
+                                return (
+                                    bankAccounts.length ? (
+                                        <div className="grid gap-4 grid-cols-3" >
+                                            {
+                                                bankAccounts.map((account) => {
+                                                    return (
+                                                        <div
+                                                            key={account.account_id}
+                                                            className={`bg-white rounded-lg shadow-md p-6 transition-all duration-300 ${account.is_active ? "ring-2 ring-blue-500" : ""
+                                                                }`}
+                                                        >
+                                                            <div className="flex justify-between items-center mb-4">
+                                                                <h2 className="text-xl font-semibold">{account.holder_name}</h2>
+                                                                <div className="flex space-x-2">
+                                                                    <button
+                                                                        onClick={() => { }}
+                                                                        className="text-blue-500 hover:text-blue-600 transition-colors duration-200"
+                                                                        aria-label="Edit account"
+                                                                    >
+                                                                        <FaEdit />
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => { }}
+                                                                        className="text-red-500 hover:text-red-600 transition-colors duration-200"
+                                                                        aria-label="Delete account"
+                                                                    >
+                                                                        <FaTrash />
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => { }}
+                                                                        className={`${account.is_active ? "text-yellow-500" : "text-gray-400"} hover:text-yellow-600 transition-colors duration-200`}
+                                                                        aria-label={`${account.is_active ? "Active account" : "Make account active"}`}
+                                                                    >
+                                                                        <FaStar />
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div className="space-y-2">
+                                                                <p>
+                                                                    <span className="font-semibold">Account Number:</span>{" "}
+                                                                    {account.account_number}
+                                                                </p>
+                                                                <p>
+                                                                    <span className="font-semibold">Account Holder:</span>{" "}
+                                                                    {account.holder_name}
+                                                                </p>
+                                                                <p>
+                                                                    <span className="font-semibold">IFSC Code:</span>
+                                                                    {account.ifsc_code}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
                                         </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <p>
-                                            <span className="font-semibold">Account Number:</span>{" "}
-                                            {account.account_number}
-                                        </p>
-                                        <p>
-                                            <span className="font-semibold">Account Holder:</span>{" "}
-                                            {account.holder_name}
-                                        </p>
-                                        <p>
-                                            <span className="font-semibold">IFSC Code:</span>
-                                            {account.ifsc_code}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                    ) : <EmptyScreen msg='No bank account found' />
+                                )
+                            }}
+
+                            paginationProps={{
+                                current_page: 1,
+                                currentLimit: 10
+                            }}
+                            refresh={refresh}
+                        >
+                        </PaginationSection>
 
                     </div>
                     <div className="w-1/4">
@@ -387,8 +409,8 @@ function FundRaiserView(): React.ReactElement {
 
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
