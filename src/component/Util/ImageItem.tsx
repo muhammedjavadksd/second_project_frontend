@@ -4,7 +4,7 @@ function ImageItem({ imageURL, imageName, onClose }) {
     return (
         <>
 
-            <div className='w-100 p-2 bg-white rounded-lg'>
+            <div className='w-100 p-2 bg-white rounded-lg border-b'>
                 <div className='flex gap-4 items-center'>
                     {/* <div style={{ backgroundImage: `url(${BASE_PATH + " / " + each})` }}></div> */}
                     <div style={{ backgroundImage: `url('${imageURL}')`, width: "50px", height: "40px", borderRadius: "21px", backgroundSize: "contain" }} />

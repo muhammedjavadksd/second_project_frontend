@@ -1,10 +1,12 @@
 "use client"
-import { onFileDelete } from '@/component/FundRaiser/CreateSteps/FileUpload/Logic'
+import { onFileDelete, onFileUpload } from '@/component/FundRaiser/CreateSteps/FileUpload/Logic'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
 import EmptyScreen from '@/component/Util/EmptyScreen'
 import ImageItem from '@/component/Util/ImageItem'
+import ImageModel from '@/component/Util/ImageModel'
+import LoadingComponent from '@/component/Util/LoadingComponent'
 import LoadingDataNotFoundComponent from '@/component/Util/LoadingDataNotFound'
 import ModelHeader from '@/component/Util/Model/ModelHeader'
 import ModelHeaderWithTile from '@/component/Util/Model/ModelHeaderWithTile'
@@ -39,8 +41,13 @@ function FundRaiserView(): React.ReactElement {
     const addBankAccountForm = useRef(null);
     const [refresh, setRefresh] = useState(false);
     const [pageRefresh, callPageRefresh] = useState(false);
+    const [imageFocus, setImageFocus] = useState(null);
+    const [picturesLoading, togglePictureLoading] = useState(false);
+    const [documentsLoading, toggleDocumentsLoading] = useState(false);
     const [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse>(null)
     const [notFound, setProfileNotFound] = useState<boolean>(false)
+    const imageUploadRef = useRef(null)
+    const documentUploadRef = useRef(null)
 
     async function findProfile() {
         const findProfile: FormActionResponse = await getSingleActiveFundRaiser(fund_id.toString(), true);
@@ -73,6 +80,7 @@ function FundRaiserView(): React.ReactElement {
     return (
         <div className='bg-gray-100'>
             <Header />
+            <ImageModel ZIndex='99' imageURL={imageFocus} isOpen={!!imageFocus} onImageClose={() => setImageFocus(null)} />
 
             <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isEditAboutOpen} onClose={() => toggleAbout(false)}>
                 <ModelHeader title="Edit about content"></ModelHeader>
@@ -374,68 +382,111 @@ function FundRaiserView(): React.ReactElement {
 
                         </div>
                         <div className="w-1/4">
-                            <div className="mb-5 picturesList shadow-inner border  overflow-auto">
-                                <ModelHeaderWithTile title='Manage pictures'>
-                                    <button className='text-white'><IoMdAddCircle /></button>
-                                </ModelHeaderWithTile>
-                                {
-                                    fundRaiserProfile?.picture.map((each, index) => {
-                                        return (
-                                            <ImageItem
-                                                onClose={(e) => {
-                                                    confirmAlert({
-                                                        title: "Are you sure want to delete this picture",
-                                                        message: "Delete picture",
-                                                        customUI: ({ title, onClose }) => {
-                                                            return <DangerUIConfirm title={title} onClose={onClose} onConfirm={() => {
-                                                                onFileDelete(each, () => {
-                                                                    callPageRefresh(!pageRefresh)
-                                                                    toast.success("Document delete success")
-                                                                    onClose()
-                                                                }, (err) => {
-                                                                    toast.error(err)
-                                                                }, FundRaiserFileType.Pictures, fund_id)
-                                                            }
-                                                            } />
-                                                        }
-                                                    })
-                                                }}
-                                                imageName={`Picture - ${index + 1}`} imageURL={each} />
-                                        )
-                                    })
-                                }
-                            </div>
-                            <div className="mb-5 picturesList shadow-inner border  overflow-auto">
-                                <ModelHeaderWithTile title='Manage Documents'>
-                                    <button className='text-white'><IoMdAddCircle /></button>
-                                </ModelHeaderWithTile>
-                                {
-                                    fundRaiserProfile?.documents.map((each, index) => {
-                                        return (
-                                            <ImageItem
-                                                onClose={(e) => {
-                                                    confirmAlert({
-                                                        title: "Are you sure want to delete this document",
-                                                        message: "Delete docs",
-                                                        customUI: ({ title, onClose }) => {
-                                                            return <DangerUIConfirm title={title} onClose={onClose} onConfirm={() => {
-                                                                onFileDelete(each, () => {
-                                                                    callPageRefresh(!pageRefresh)
-                                                                    toast.success("Document delete success")
-                                                                    onClose()
-                                                                }, (err) => {
-                                                                    toast.error(err)
-                                                                }, FundRaiserFileType.Document, fund_id)
-                                                            }
-                                                            } />
-                                                        }
-                                                    })
-                                                }}
-                                                imageName={`Document - ${index + 1}`} imageURL={each} />
-                                        )
-                                    })
-                                }
-                            </div>
+                            <LoadingComponent closeOnClick={false} isLoading={picturesLoading} paddingNeed={false}>
+                                <div className="mb-5 bg-white picturesList shadow-inner border  overflow-auto">
+                                    <input type="file" multiple className='hidden' onChange={(e) => {
+                                        togglePictureLoading(true),
+                                            onFileUpload(e.target.files, () => {
+                                                callPageRefresh(!pageRefresh)
+                                                togglePictureLoading(false)
+                                            },
+                                                (msg) => {
+                                                    toast.error(msg)
+                                                    togglePictureLoading(false)
+                                                },
+                                                () => { }
+                                                ,
+                                                FundRaiserFileType.Pictures,
+                                                fund_id
+                                            )
+                                    }
+                                    } ref={imageUploadRef} name="" id="" />
+                                    <ModelHeaderWithTile title='Manage pictures'>
+                                        <button className='text-white'><IoMdAddCircle onClick={() => imageUploadRef.current.click()} /></button>
+                                    </ModelHeaderWithTile>
+                                    {
+                                        fundRaiserProfile?.picture.map((each, index) => {
+                                            return (
+                                                <div onClick={() => setImageFocus(each)}>
+                                                    <ImageItem
+
+                                                        onClose={(e) => {
+                                                            confirmAlert({
+                                                                title: "Are you sure want to delete this picture",
+                                                                message: "Delete picture",
+                                                                customUI: ({ title, onClose }) => {
+                                                                    return <DangerUIConfirm title={title} onClose={onClose} onConfirm={() => {
+                                                                        onFileDelete(each, () => {
+                                                                            callPageRefresh(!pageRefresh)
+                                                                            toast.success("Document delete success")
+                                                                            onClose()
+                                                                        }, (err) => {
+                                                                            toast.error(err)
+                                                                        }, FundRaiserFileType.Pictures, fund_id)
+                                                                    }
+                                                                    } />
+                                                                }
+                                                            })
+                                                        }}
+                                                        imageName={`Picture - ${index + 1}`} imageURL={each} />
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </LoadingComponent>
+                            <LoadingComponent closeOnClick={false} isLoading={documentsLoading} paddingNeed={false} >
+                                <div className="mb-5 bg-white picturesList shadow-inner border  overflow-auto">
+                                    <input type="file" multiple className='hidden' onChange={(e) => {
+                                        toggleDocumentsLoading(true),
+                                            onFileUpload(e.target.files, () => {
+                                                callPageRefresh(!pageRefresh)
+                                                toggleDocumentsLoading(false)
+                                            },
+                                                (msg) => {
+                                                    toast.error(msg)
+                                                    toggleDocumentsLoading(false)
+                                                },
+                                                () => { }
+                                                ,
+                                                FundRaiserFileType.Document,
+                                                fund_id
+                                            )
+                                    }
+                                    } ref={documentUploadRef} name="" id="" />
+                                    <ModelHeaderWithTile title='Manage Documents'>
+                                        <button className='text-white'><IoMdAddCircle onClick={() => documentUploadRef.current.click()} /></button>
+                                    </ModelHeaderWithTile>
+                                    {
+                                        fundRaiserProfile?.documents.map((each, index) => {
+                                            return (
+                                                <div onClick={() => setImageFocus(each)}>
+                                                    <ImageItem
+                                                        onClose={(e) => {
+                                                            confirmAlert({
+                                                                title: "Are you sure want to delete this document",
+                                                                message: "Delete docs",
+                                                                customUI: ({ title, onClose }) => {
+                                                                    return <DangerUIConfirm title={title} onClose={onClose} onConfirm={() => {
+                                                                        onFileDelete(each, () => {
+                                                                            callPageRefresh(!pageRefresh)
+                                                                            toast.success("Document delete success")
+                                                                            onClose()
+                                                                        }, (err) => {
+                                                                            toast.error(err)
+                                                                        }, FundRaiserFileType.Document, fund_id)
+                                                                    }
+                                                                    } />
+                                                                }
+                                                            })
+                                                        }}
+                                                        imageName={`Document - ${index + 1}`} imageURL={each} />
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </LoadingComponent>
 
                             <div className="gap-5 flex mt-5 w-full   bg-white   focus:ring-4 focus:outline-none focus:ring-gray-300 text-black rounded-lg  items-center justify-center px-4 py-2.5">
                                 <div className='text-ellipsis w-full'>
