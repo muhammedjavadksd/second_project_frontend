@@ -1,4 +1,5 @@
 "use client"
+import getAIDescription from '@/component/FundRaiser/CreateSteps/AIDescription/Logic'
 import { onFileDelete, onFileUpload } from '@/component/FundRaiser/CreateSteps/FileUpload/Logic'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
@@ -15,11 +16,11 @@ import PaginationSection from '@/component/Util/PaginationSection'
 import TableBody from '@/component/Util/Table/TableBody'
 import TableHead from '@/component/Util/Table/TableHead'
 import const_data from '@/util/data/const'
-import { addBankAccount, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
+import { addBankAccount, closeFundRaise, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getDonationStatitics, getSingleActiveFundRaiser, userFundRaiserEdit } from '@/util/data/helper/APIHelper'
 import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
 import { fundRaiserBankAccoutInitialValues } from '@/util/external/yup/initialValues'
 import { editFundRaiseAboutValidation, editFundRaiseDescriptionValidation, fundRaiserBankAccoutValidation } from '@/util/external/yup/yupValidations'
-import { FundRaiserResponse, IBankAccount, IDonateHistoryTemplate } from '@/util/types/API Response/FundRaiser'
+import { FundRaiserResponse, IBankAccount, IDonateHistoryTemplate, IDonationStatitics } from '@/util/types/API Response/FundRaiser'
 import { BankAccountType, FundRaiserFileType, FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
 import { FormActionResponse } from '@/util/types/InterFace/UtilInterface'
 import { CChart } from '@coreui/react-chartjs'
@@ -29,7 +30,7 @@ import { useParams } from 'next/navigation'
 import { title } from 'process'
 import React, { useEffect, useRef, useState } from 'react'
 import { confirmAlert } from 'react-confirm-alert'
-import { FaEdit, FaPlus, FaStar, FaTrash } from 'react-icons/fa'
+import { FaEdit, FaMagic, FaPlus, FaStar, FaTrash } from 'react-icons/fa'
 import { IoMdAddCircle } from 'react-icons/io'
 import { toast } from 'react-toastify'
 
@@ -46,10 +47,12 @@ function FundRaiserView(): React.ReactElement {
     const [imageFocus, setImageFocus] = useState(null);
     const [picturesLoading, togglePictureLoading] = useState(false);
     const [documentsLoading, toggleDocumentsLoading] = useState(false);
+    const [donationStatics, setDonationStatics] = useState<IDonationStatitics[]>(null);
     const [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse>(null)
     const [notFound, setProfileNotFound] = useState<boolean>(false)
     const imageUploadRef = useRef(null)
     const documentUploadRef = useRef(null)
+    const [AIDescription, setAiDescription] = useState(null)
 
     async function findProfile() {
         const findProfile: FormActionResponse = await getSingleActiveFundRaiser(fund_id.toString(), true);
@@ -59,6 +62,46 @@ function FundRaiserView(): React.ReactElement {
             setProfileNotFound(true)
         }
     }
+
+
+    function close() {
+        confirmAlert({
+            title: "Are you sure want to close the post?",
+            message: "close the post?",
+
+            customUI: ({ onClose, title }) => {
+                return (
+                    <DangerUIConfirm
+                        onClose={onClose}
+                        onConfirm={() => {
+                            closeFundRaise(fund_id.toString()).then((closed) => {
+                                if (closed) {
+                                    toast.success("An verification email has to be sent to your email address")
+                                } else {
+                                    toast.error("Something went wrong")
+                                }
+                            }).catch((err) => {
+                                toast.error("Something went wrong")
+                            })
+                            onClose()
+                        }}
+                        title={title}
+                    />
+                )
+            }
+        })
+    }
+
+
+    useEffect(() => {
+        const fromDate = new Date();
+        fromDate.setFullYear(fromDate.getFullYear() - 1)
+        getDonationStatitics(fund_id.toString(), new Date(), fromDate).then((data) => {
+            data && setDonationStatics(data)
+        }).catch((err) => { })
+
+
+    }, [])
 
     useEffect(() => {
         findProfile()
@@ -86,12 +129,22 @@ function FundRaiserView(): React.ReactElement {
 
             <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isEditAboutOpen} onClose={() => toggleAbout(false)}>
                 <ModelHeader title="Edit about content"></ModelHeader>
-                <div className='bg-white p-5 w-96'>
-                    <Formik initialValues={{}} validationSchema={editFundRaiseAboutValidation} onSubmit={() => { }}>
+                <div className='bg-white p-5 min-w-[600px] max-w-full'>
+                    <Formik enableReinitialize initialValues={{ about: fundRaiserProfile?.about }} validationSchema={editFundRaiseAboutValidation} onSubmit={(val) => {
+                        userFundRaiserEdit(val, fund_id.toString()).then((data) => {
+                            if (data) {
+                                toast.success("About content updated")
+                                setFundRaiserProfile({ ...fundRaiserProfile, about: val.about })
+                                toggleAbout(false)
+                            } else {
+                                toast.error("Something went wrong")
+                            }
+                        })
+                    }}>
                         <Form>
                             <div className='w-full rounded-lg  block'>
                                 <label htmlFor="about" className='text-sm mb-2 block'>About content</label>
-                                <Field type="text" rows='5' as="textarea" name="about" id="about" placeholder="Enter about content" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
+                                <Field type="text" rows='7' as="textarea" name="about" id="about" placeholder="Enter about content" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
                                 <ErrorMessage className='errorMessage' component="div" name='about' />
                             </div>
                             <button type="submit" className="mt-3 col-span-2 w-full bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300">
@@ -101,14 +154,41 @@ function FundRaiserView(): React.ReactElement {
                     </Formik>
                 </div>
             </ModelItem>
+
             <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isEditDescriptionOpen} onClose={() => toggleDescription(false)}>
                 <ModelHeader title="Edit description content"></ModelHeader>
-                <div className='bg-white p-5 w-96'>
-                    <Formik initialValues={{}} validationSchema={editFundRaiseDescriptionValidation} onSubmit={() => { }}>
+                <div className='bg-white p-5 min-w-[600px] max-w-full'>
+                    <Formik initialValues={{ description: AIDescription || fundRaiserProfile?.description }} enableReinitialize validationSchema={editFundRaiseDescriptionValidation} onSubmit={(val) => {
+                        userFundRaiserEdit(val, fund_id.toString()).then((data) => {
+                            if (data) {
+                                toast.success("Description content updated")
+                                setFundRaiserProfile({ ...fundRaiserProfile, description: val.description })
+                                toggleDescription(false)
+                            } else {
+                                toast.error("Something went wrong")
+                            }
+                        })
+                    }}>
                         <Form>
                             <div className='w-full rounded-lg  block'>
-                                <label htmlFor="description" className='text-sm mb-2 block'>Description</label>
-                                <Field type="text" rows='5' as="textarea" name="description" id="description" placeholder="Enter description content" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
+                                <div className='flex justify-between mb-2 items-center'>
+                                    <label htmlFor="description" className='text-sm  block'>Description</label>
+                                    <button onClick={() => getAIDescription(fundRaiserProfile.amount, fundRaiserProfile.category, fundRaiserProfile.sub_category, fundRaiserProfile.full_name, fundRaiserProfile.age, fundRaiserProfile.benificiary_relation, fundRaiserProfile.about, fundRaiserProfile.city, fundRaiserProfile.pincode, fundRaiserProfile.state, fundRaiserProfile.district).then((data) => {
+                                        if (data) {
+                                            setAiDescription(data)
+                                        } else {
+                                            toast.error("AI Generation failed")
+                                        }
+                                        console.log(data);
+
+                                    }).catch((err) => {
+                                        console.log(err);
+                                    })} type='button' className='text-sm flex gap-2 items-center bg-gray-200 rounded-lg p-2'>
+                                        <FaMagic />
+                                        Generate With AI
+                                    </button>
+                                </div>
+                                <Field type="text" rows='12' as="textarea" name="description" id="description" placeholder="Enter description content" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
                                 <ErrorMessage className='errorMessage' component="div" name='description' />
                             </div>
                             <button type="submit" className="mt-3 col-span-2 w-full bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300">
@@ -178,7 +258,7 @@ function FundRaiserView(): React.ReactElement {
                                 </div>
                                 <div className="gap-5 flex">
                                     <button onClick={() => { }} className="bg-green-800 px-5 py-2 text-white rounded-md">Download report</button>
-                                    <button onClick={() => { }} className="bg-red-800 px-5 py-2 text-white rounded-md">Close post</button>
+                                    <button onClick={close} className="bg-red-800 px-5 py-2 text-white rounded-md">Close post</button>
                                     <Link href={`/fund-raising/view/${fund_id}?isForce=true`} className="bg-blue-600 px-5 py-2 text-white rounded-md">View live</Link>
                                 </div>
                             </div>
@@ -231,52 +311,17 @@ function FundRaiserView(): React.ReactElement {
                                 <CChart
                                     type="line"
                                     data={{
-                                        labels: ["January", "February", "March", "April", "May", "June", "July"],
+                                        labels: donationStatics ? donationStatics.map((each) => each.date) : [],
                                         datasets: [
                                             {
-                                                label: "My First dataset",
-                                                backgroundColor: "rgba(220, 220, 220, 0.2)",
-                                                borderColor: "rgba(220, 220, 220, 1)",
-                                                pointBackgroundColor: "rgba(220, 220, 220, 1)",
-                                                pointBorderColor: "#fff",
-                                                data: [40, 20, 12, 39, 10, 40, 39, 80, 40]
-                                            },
-                                            {
-                                                label: "My Second dataset",
+                                                label: "Donation History by date",
                                                 backgroundColor: "rgba(151, 187, 205, 0.2)",
                                                 borderColor: "rgba(151, 187, 205, 1)",
                                                 pointBackgroundColor: "rgba(151, 187, 205, 1)",
                                                 pointBorderColor: "#fff",
-                                                data: [50, 12, 28, 29, 7, 25, 12, 70, 60]
+                                                data: donationStatics ? donationStatics.map((each) => each.amount) : []
                                             },
                                         ],
-                                    }}
-                                    options={{
-                                        plugins: {
-                                            legend: {
-                                                labels: {
-
-                                                }
-                                            }
-                                        },
-                                        scales: {
-                                            x: {
-                                                grid: {
-
-                                                },
-                                                ticks: {
-
-                                                },
-                                            },
-                                            y: {
-                                                grid: {
-
-                                                },
-                                                ticks: {
-
-                                                },
-                                            },
-                                        },
                                     }}
                                 />
                             </div>
@@ -535,8 +580,7 @@ function FundRaiserView(): React.ReactElement {
 
                                         {/* <EditInput rows={6} onSubmit={() => { }} as='textarea' data={{ key: "about", value: "Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator. Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator." }} isEditAllowed={() => true}  > */}
                                         <div className="-mt-1 font-sans text-sm font-semibold">
-                                            Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-                                            Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
+                                            {fundRaiserProfile?.about}
                                         </div>
                                         {/* </EditInput> */}
                                     </div>
@@ -551,8 +595,7 @@ function FundRaiserView(): React.ReactElement {
                                             <i onClick={() => toggleDescription(true)} className="cursor-pointer  fa-solid text-sm fa-pencil" title='Edit description content'></i>
                                         </div>
                                         <div className="-mt-1 font-sans text-sm font-semibold">
-                                            Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-                                            Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
+                                            {fundRaiserProfile?.description}
                                         </div>
                                     </div>
                                 </div>

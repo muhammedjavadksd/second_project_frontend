@@ -15,33 +15,7 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
     console.log(profile);
     const collectedPercentage = (+profile.collected) / (profile.amount) * 100
 
-    function close() {
-        confirmAlert({
-            title: "Are you sure want to close the post?",
-            message: "close the post?",
 
-            customUI: ({ onClose, title }) => {
-                return (
-                    <DangerUIConfirm
-                        onClose={onClose}
-                        onConfirm={() => {
-                            closeFundRaise(profile.fund_id).then((closed) => {
-                                if (closed) {
-                                    toast.success("An verification email has to be sent to your email address")
-                                } else {
-                                    toast.error("Something went wrong")
-                                }
-                            }).catch((err) => {
-                                toast.error("Something went wrong")
-                            })
-                            onClose()
-                        }}
-                        title={title}
-                    />
-                )
-            }
-        })
-    }
 
     return (
         <div className="w-full flex mx-auto mb-5 bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden dark:bg-gray-800 dark:border-gray-700">
@@ -62,8 +36,9 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
                             </p>
                             <div className="flex items-center justify-between mt-4">
                                 {
-                                    profile.status != FundRaiserStatus.CLOSED ? <button onClick={close} type="button" className="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
-                                        <i className="fa-solid fa-lock mr-2"></i> Close Post
+                                    profile.status != FundRaiserStatus.CLOSED ? <button type="button" className="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                        <i className="fa-solid fa-lock mr-2"></i> Open
+
                                     </button> : <img src='/images/icons/closed.png' className='w-12' />
                                 }
                                 <Link href={'/'} type="button" className="text-sm font-medium text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600">Edit Post</Link>

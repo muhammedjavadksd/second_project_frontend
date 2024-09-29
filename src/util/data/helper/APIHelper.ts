@@ -5,9 +5,54 @@ import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
-import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
+import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IDonationStatitics, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, FundRaiserFileType, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
+import { toast } from "react-toastify";
+
+
+export const userFundRaiserEdit = async (data: Partial<FundRaiserResponse>, fund_id: string): Promise<boolean> => {
+
+    const session = await getSession();
+    const user = userDetailsFromGetSession(session, "user")
+    if (user) {
+
+        const token = user.token
+
+        try {
+            const requestAPI = await API_axiosInstance.patch(`/fund_raise/edit/${fund_id}`, { ...data }, {
+                headers: {
+                    "authorization": `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            const response = requestAPI.data;
+            if (response.status) {
+                return true
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    return false
+}
+
+export async function getDonationStatitics(fundId: string, fromDate: Date, endDate: Date): Promise<IDonationStatitics[] | false> {
+
+    try {
+        const addFundRaiser = await API_axiosInstance.get(`/fund_raise/donation-statistics/${fundId}?from_date=${fromDate}&to_date=${endDate}`);
+        const response = addFundRaiser.data;
+
+        if (response.status) {
+            return response.data
+        }
+        return false
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        toast.error(errorMsg)
+        return false
+    }
+}
 
 
 export async function addBankAccount(fund_id, { account_number, re_account_number, ifsc_code, holder_name, account_type }) {

@@ -1,6 +1,12 @@
+
+
 import { FundRaiserStatus } from "../Enums/BasicEnums"
 
 
+interface IDonationStatitics {
+    date: string,
+    amount: number
+}
 
 interface IBankAccount {
     account_number: number,
@@ -176,4 +182,4 @@ export interface IBloodStatitics {
 }
 
 
-export type { IDonateHistoryTemplate, ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse, IBankAccount }
+export type { IDonateHistoryTemplate, ISingleCommentsResponse, ICommentsResponse, FundRaiserResponse, AxiosResponse, IBankAccount, IDonationStatitics }
