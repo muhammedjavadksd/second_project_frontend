@@ -1,25 +1,19 @@
-import { showIntrestForDonateBlood } from '@/util/data/helper/APIHelper';
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper';
-import { error } from 'console';
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react'
 import { toast } from 'react-toastify';
 import BloodCard from './IncomingBloodCard';
 import { StatusCode } from '@/util/types/Enums/BasicEnums';
-import ModelItem from '../Util/ModelItem';
 import ModelHeader from '../Util/Model/ModelHeader';
 import { confirmAlert } from 'react-confirm-alert';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import Select from 'react-select/creatable'
 import FormikSelectField from '../Util/FormikFieldSelect';
 import { bloodDonationFormInitialValues } from '@/util/external/yup/initialValues';
 import { validationSchema } from '@/util/external/yup/yupValidations';
-import DateTimeComponent from '../Util/DateTimeComponent';
 import DatePicker from 'react-multi-date-picker';
 import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 import API_axiosInstance from '@/util/external/axios/api_axios_instance';
-// import DateTimePicker from ''
 
 
 
@@ -241,34 +235,6 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
                 )
             }
         })
-        return;
-
-        const userDetails = userDetailsFromUseSession(session, "user");
-
-        if (userDetails) {
-            if (userDetails.blood_donor_id) {
-                showIntrestForDonateBlood(req_id, () => {
-
-                }, (msg, statusCode) => {
-                    console.log(msg);
-                    if (statusCode == StatusCode.BAD_REQUEST) {
-                        toast.error(msg)
-                    } else {
-                        router.push("/account/profile?open_donor_model=true")
-                    }
-                }).catch((err) => {
-                    console.log(err);
-                    toast.error("Something went wrong")
-                })
-                // router.push("/account/profile?open_donor_model=true")
-            } else {
-                //if logged but do not have donor profile
-                router.push("/account/profile?open_donor_model=true")
-            }
-        } else {
-            router.push("auth/sign_in?next=account/profile?open_donor_model=true")
-            //if not logged
-        }
     }
 
 

@@ -1,4 +1,4 @@
-import { MONEY_ICON } from '@/util/data/const'
+import const_data from '@/util/data/const'
 import React from 'react'
 import DownloadButton from '../Util/downloadButton'
 
@@ -47,11 +47,11 @@ function FundDonatedHistoryCard() {
                                 <tbody>
                                     <tr class="flex">
                                         <td class="flex-1 py-1">Aaradh Donation</td>
-                                        <td class="min-w-[44px]">100 {MONEY_ICON}</td>
+                                        <td class="min-w-[44px]">100 {const_data.MONEY_ICON}</td>
                                     </tr>
                                     <tr class="flex py-1">
                                         <td class="flex-1">Life Link Donation</td>
-                                        <td class="min-w-[44px]">20 {MONEY_ICON}</td>
+                                        <td class="min-w-[44px]">20 {const_data.MONEY_ICON}</td>
                                     </tr>
                                 </tbody>
                             </table>
