@@ -16,9 +16,11 @@ const ChatUserProfile = ({ isBlock, room_id }: { isBlock: boolean, room_id?: str
 
     function blockConfirm() {
         const status = block ? "unblock" : "block"
-        blockProfile(status, "123").then((data) => {
+        alert(status)
+        blockProfile(status, room_id).then((data) => {
             if (data.status) {
-                toast.success("Profile blocked")
+                toast.success(data.msg)
+                setBlock(!block)
             } else {
                 toast.error(data.msg)
             }
@@ -29,11 +31,14 @@ const ChatUserProfile = ({ isBlock, room_id }: { isBlock: boolean, room_id?: str
 
     function blockProfileEvent() {
         confirmAlert({
-            title: "Are you want to block this profile?",
+            title: "Are you want to update this profile?",
             message: "Block this profile?",
             customUI: ({ onClose, title }) => {
                 return (
-                    <DangerUIConfirm onClose={onClose} onConfirm={blockConfirm} title={title} />
+                    <DangerUIConfirm onClose={onClose} onConfirm={() => {
+                        blockConfirm()
+                        onClose()
+                    }} title={title} />
                 )
             }
         })
@@ -53,7 +58,7 @@ const ChatUserProfile = ({ isBlock, room_id }: { isBlock: boolean, room_id?: str
                     </div>
                 </div>
                 <div className="mt-4">
-                    <button onClick={() => blockConfirm()} className="w-full py-2 bg-red-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-200">Block user</button>
+                    <button onClick={blockProfileEvent} className="w-full py-2 bg-red-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-200">{block ? "Un block" : "block"} user</button>
                 </div>
             </div>
             {/* <SingleChat /> */}

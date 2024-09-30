@@ -33,16 +33,16 @@ function ChatWithDonors() {
 
     return (
         <UserPrivateRouter>
+
             <Header />
-            <div className="container mx-auto mt-5 mb-5">
+            <div className=" mt-5">
                 <BloodAccountTab />
                 <div className="mt-5">
                     <div className="flex gap-5">
-                        <ChatComposition chat_id={chat_id.toString()} />
+                        <ChatComposition chat_id={chat_id && chat_id.toString()} />
                     </div>
                 </div>
             </div>
-            <Footer />
         </UserPrivateRouter>
     )
 }

@@ -94,6 +94,7 @@ export interface Message {
 
 export interface BlockedStatus {
     status: boolean;
+    blocked_from
 }
 
 export interface ChatHistory {
@@ -102,7 +103,10 @@ export interface ChatHistory {
     timeline: Date;
     msg: string;
     seen: boolean;
-    is_block: boolean;
+    is_block: {
+        status: boolean,
+        blocked_from: string
+    }
     profile_id: string;
 }
 

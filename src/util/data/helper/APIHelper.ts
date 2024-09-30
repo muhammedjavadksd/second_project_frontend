@@ -12,6 +12,29 @@ import { toast } from "react-toastify";
 
 
 
+export async function seenMessage(room_id: string): Promise<boolean> {
+
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user")
+        if (user) {
+            const requestAPI = await API_axiosInstance.patch(`/profile/seen-message/${room_id}`, {}, {
+                headers: {
+                    "authorization": `Bearer ${user.token}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            const response = requestAPI.data;
+            return true
+        }
+        return false
+    } catch (e) {
+        console.log(e);
+        return false
+    }
+}
+
+
 export async function deleteBankAccountByUser(fund_id, benf_id): Promise<FormActionResponse> {
 
     try {
@@ -623,7 +646,7 @@ export async function blockProfile(status: string, room_id: string): Promise<For
 
     try {
 
-        const session = getSession();
+        const session = await getSession();
         const userProfile = userDetailsFromGetSession(session, "user")
         const token = userProfile.token;
         const blockProfile = await API_axiosInstance.patch(`/profile/block-status/${status}/${room_id}`, {}, {
@@ -633,10 +656,11 @@ export async function blockProfile(status: string, room_id: string): Promise<For
         });
         const responseData = blockProfile.data;
         return {
-            msg: "Profile updated",
+            msg: responseData.msg || "Something went wrong",
             status: true,
         }
     } catch (e) {
+        console.log(e);
         const errorMsg = e.response?.data?.msg ?? "Something went wrong"
         return {
             msg: errorMsg,
