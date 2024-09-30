@@ -1,5 +1,4 @@
 import { COOKIE_DATA_KEY } from "@/util/data/const";
-import { setAuthSignUpToken } from "@/app/_util/_const/helperFunctions";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { cookies } from "next/headers";
 
