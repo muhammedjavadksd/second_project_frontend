@@ -116,6 +116,8 @@ async function OnBloodGroupUpdate(val, successCB, errorCB) {
                 bloodauthorization: `Bearer ${user.blood_token}`
             }
         })
+
+
         const data = createdPresignedUrl?.data?.data;
         console.log(data);
 

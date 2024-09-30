@@ -70,7 +70,10 @@ async function onFileUpload(my_files, onSuccess, onError, ifNotLogged, type, fun
             if (response && response.status) {
                 const url = response.data?.url;
                 presignedUrl.push(url)
-                const request = axios.put(url, my_files[fileIndex], { headers: { "Content-Type": my_files[fileIndex].type || "application/octet-stream" } })
+                const request = axios.put(url, my_files[fileIndex],
+                    {
+                        headers: { "Content-Type": my_files[fileIndex].type || "application/octet-stream" }
+                    })
                 uploadImagePromises.push(request)
             }
         }

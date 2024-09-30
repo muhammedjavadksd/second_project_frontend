@@ -412,6 +412,11 @@ dialog {
 Prevent resizing textareas horizontally by default.
 */
 
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
 textarea {
   resize: vertical;
 }
