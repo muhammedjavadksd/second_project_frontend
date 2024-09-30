@@ -7,9 +7,6 @@ export async function GET(request) {
         let url = new URL(request.url);
         let { searchParams } = url;
 
-
-
-
         let amount = searchParams.get("amount") ?? 5000;
         let category = searchParams.get("category") ?? "Education";
         let subCategory = searchParams.get("sub_category") ?? "Higher Education"
@@ -42,7 +39,7 @@ export async function GET(request) {
 
 
         const openai = new OpenAI({
-            apiKey: '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',
+            apiKey: process.env.NEXT_PUBLIC_NVIDIA_API,
             baseURL: 'https://integrate.api.nvidia.com/v1',
         })
 
@@ -73,17 +70,12 @@ export async function GET(request) {
         let description = fullResponse.substring(jsonStartIndex, jsonEndIndex);
 
 
-        // let description = Object.values(jsonData)[0]
-
-        // console.log("Reached here");
-
-
         console.log('Full Response:', description);
 
         return new Response(JSON.stringify({ status: true, data: description }), { status: 200 })
     } catch (e) {
         console.log(e);
-        return new Response(JSON.stringify({ status: false, data: description }), { status: 500 })
+        return new Response(JSON.stringify({ status: false, data: "Something went wrong" }), { status: 500 })
     }
 
 

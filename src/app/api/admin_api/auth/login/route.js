@@ -1,4 +1,4 @@
-import API_axiosInstance from "@/external/axios/api_axios_instance";
+import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 
 
 export async function POST(request) {
@@ -17,6 +17,8 @@ export async function POST(request) {
         console.log("API response is : ");
         console.log(response);
         if (response.status && response.token) {
+            console.log("Token is");
+            console.log(response.token);
             return new Response(JSON.stringify({
                 status: true,
                 msg: "Admin login success",

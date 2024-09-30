@@ -1,5 +1,4 @@
-import { getUserDetails } from "@/app/_util/helper/authHelper";
-import API_axiosInstance from "@/external/axios/api_axios_instance";
+import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { getServerSession } from "next-auth";
 import { getSession } from "next-auth/react";
 
@@ -9,6 +8,7 @@ export async function POST(request) {
 
         let header = request.headers;
         let authData = header.get("authorization");
+        console.log(header);
         console.log("Here");
         console.log("The token is  : " + authData);
         let splitToken = authData.split(" ");

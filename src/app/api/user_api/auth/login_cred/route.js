@@ -1,7 +1,7 @@
 // src/app/api/hello/route.js
 
-import { COOKIE_DATA_KEY } from "@/app/_util/_const/const";
-import API_axiosInstance from "@/external/axios/api_axios_instance";
+import { COOKIE_DATA_KEY } from "@/util/data/const";
+import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { cookies } from "next/headers";
 
 export async function POST(request) {
@@ -15,8 +15,6 @@ export async function POST(request) {
     })
     let response = loginRequest.data;
 
-    console.log("The response is:");
-    console.log(response);
 
     if (response && response?.status) {
 
@@ -32,9 +30,7 @@ export async function POST(request) {
       return new Response(JSON.stringify({ status: false, msg: response?.msg }))
     }
   } catch (e) {
-    console.log(e);
     let errorMessage = e?.response?.data?.msg ?? "Something went wrong"
-    console.log(errorMessage);
     return new Response(JSON.stringify({ status: false, msg: errorMessage }))
   }
 }
