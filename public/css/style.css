@@ -67,7 +67,7 @@
     justify-content: end;
 }
 
-.iconCard{
+.iconCard {
     padding: 10px;
     width: 60px;
     height: 55px;
@@ -76,7 +76,7 @@
 }
 
 
-.adminBody{
+.adminBody {
     background-color: #E0E2E7;
     min-height: 100vh;
 }

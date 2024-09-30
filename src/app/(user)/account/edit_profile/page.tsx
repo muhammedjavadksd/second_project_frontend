@@ -1,3 +1,4 @@
+"use client"
 import AccountTab from '@/component/Account/AccountTab/ProfileTab'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
@@ -12,13 +13,13 @@ function EditProfile(): React.ReactElement {
                 <BreadCrumb path={['Home', 'Profile', 'Edit Profile']} />
                 <div className="flex gap-10 mt-5">
                     <div className='w-1/4'>
-                        <AccountTab />
+                        {/* <AccountTab /> */}
                     </div>
                     <div className='w-4/5'>
                         {/* <h4 className='font-medium text-2xl'>Basic profile</h4> */}
 
                         <div className='mt-5 bg-white shadow-mds'>
-                            <div className="grid flex gap-10 grid-cols-2">
+                            <div className="grid  gap-10 grid-cols-2">
                                 <div>
                                     <label htmlFor="large-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
                                     <input placeholder='Enter first name' type="text" id="large-input" className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />

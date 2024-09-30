@@ -1,29 +1,27 @@
 "use client"
 import Header from '@/component/Header/Header'
 import Footer from '@/component/Util/Footer'
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, Suspense, useState } from 'react'
 import BannerForCreating from '@/component/FundRaiser/BannerForCreating'
 import { requestBanner } from './Data'
 import { CreateFormComponent } from './Logic'
-import { FundRaiseCreationStep } from '@/util/types/InterFace/PropInterFace'
-// import OnGoingBloodRequest from '@/util/context/OnGoingBloodRequest'
 import { useSearchParams } from 'next/navigation'
+import { FundRaiseCreationStep } from '@/util/types/InterFace/PropInterFace'
 
+export default function Page() {
 
-// Patient name
-// Unit need
-// Date of need
-//Blood group
-//relation
-//Hospital name, hospital id
-//Address
-//Phone number
+    return (
+        <Suspense>
+            <CreateFundRaisingPost />
+        </Suspense>
+    )
+}
 
 
 function CreateFundRaisingPost(): React.ReactElement {
 
     const params = useSearchParams();
-    const stepIndex = +params.get("step_index") ?? 0
+    const stepIndex = +(params.get("step_index") ?? 0)
 
     let [step, setStep] = useState<number>(stepIndex)
     let StepForm: FunctionComponent<FundRaiseCreationStep> = CreateFormComponent(step);
@@ -48,4 +46,4 @@ function CreateFundRaisingPost(): React.ReactElement {
     )
 }
 
-export default CreateFundRaisingPost
+// export default CreateFundRaisingPost

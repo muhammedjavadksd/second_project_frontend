@@ -42,9 +42,9 @@ function BloodAvailabilitySection() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
                     {
-                        Object.keys(bloodStatics).map((each) => {
+                        Object.keys(bloodStatics).map((each, index) => {
                             return (
-                                <div className="flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-xs mx-auto transform hover:scale-105 transition-transform duration-300">
+                                <div key={index} className="flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-xs mx-auto transform hover:scale-105 transition-transform duration-300">
                                     <div className="flex items-center justify-center py-5 space-x-4">
                                         <div className="relative flex items-center justify-center w-24 h-24 bg-gradient-to-t from-red-600 to-red-600 rounded-full shadow-md">
                                             <span className="text-white text-4xl font-extrabold">{each}</span>

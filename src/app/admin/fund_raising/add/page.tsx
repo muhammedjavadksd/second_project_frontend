@@ -69,7 +69,7 @@ function AdminFundRaiseAdd(): React.ReactElement {
                                                 {
                                                     const_data.RELATIONSHIP.map((each) => {
                                                         return (
-                                                            <option value={each}>{each}</option>
+                                                            <option key={each} value={each}>{each}</option>
                                                         )
                                                     })
                                                 }
@@ -96,7 +96,7 @@ function AdminFundRaiseAdd(): React.ReactElement {
                                                 {
                                                     getMainCategory().map((item) => {
                                                         return (
-                                                            <option value={item}>{item}</option>
+                                                            <option key={item} value={item}>{item}</option>
                                                         )
                                                     })
                                                 }
@@ -111,7 +111,7 @@ function AdminFundRaiseAdd(): React.ReactElement {
                                                 {
                                                     subCategory.map((item) => {
                                                         return (
-                                                            <option value={item}>{item}</option>
+                                                            <option key={item} value={item}>{item}</option>
                                                         )
                                                     })
                                                 }
@@ -176,7 +176,7 @@ function AdminFundRaiseAdd(): React.ReactElement {
                                                 <option value="" label="Choose a state" />
                                                 {
                                                     Object.keys(const_data.STATE_WITH_DISTRICT).map((item) => {
-                                                        return <option value={item}>{item}</option>
+                                                        return <option key={item} value={item}>{item}</option>
                                                     })
                                                 }
                                             </Field>
@@ -194,7 +194,7 @@ function AdminFundRaiseAdd(): React.ReactElement {
                                                 <option value="" label="Choose a district" />
                                                 {
                                                     district.map((item) => {
-                                                        return <option value={item}>{item}</option>
+                                                        return <option key={item} value={item}>{item}</option>
                                                     })
                                                 }
                                             </Field>

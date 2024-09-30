@@ -49,9 +49,9 @@ function SignUpStart({ state }) {
                     onSignUpHandler(val, onSignUpFormSubmit, onSignUpError)
                 }} initialValues={signUpInitialValues} validationSchema={signUpValidator} className="max-w-sm mt-10" >
                     {({ setFieldValue, validateForm }) => {
-                        useEffect(() => {
-                            validateForm()
-                        }, [validateForm])
+                        // useEffect(() => {
+                        //     validateForm()
+                        // }, [validateForm])
                         return (<Form>
                             <div className="grid gap-5 grid-cols-2">
                                 <div className="mb-5">

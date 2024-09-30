@@ -1,8 +1,6 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client"
 import React, { useEffect, useState } from 'react'
 import NavbarLinks from './NavbarLinks';
-import Image from 'next/image';
 import { getSession, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,7 +8,7 @@ import { userDetailsFromGetSession } from '@/util/data/helper/authHelper';
 
 function Header() {
 
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null);
   let session = getSession();
   const router = useRouter()
   useEffect(() => {
@@ -78,7 +76,7 @@ function Header() {
             <div className="flex flex-shrink-0 items-center mr-5">
               <img
                 className="h-8 w-auto"
-                src="images/company/logo.png"
+                src="/images/company/logo.png"
                 alt="Your Company"
               />
             </div>
@@ -126,13 +124,13 @@ function Header() {
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"
-                tabIndex="-1"
+                tabIndex={1}
               >
                 <Link
                   href="/account/profile"
                   className="block px-4 py-2 text-sm text-gray-700"
                   role="menuitem"
-                  tabIndex="-1"
+                  tabIndex={2}
                   id="user-menu-item-0"
                 >
                   {user?.first_name + "'s Profile" ?? "Profile"}
@@ -141,7 +139,7 @@ function Header() {
                   href="/account/blood-account"
                   className="block px-4 py-2 text-sm text-gray-700"
                   role="menuitem"
-                  tabIndex="-1"
+                  tabIndex={2}
                   id="user-menu-item-0"
                 >
                   Blood Account
@@ -150,7 +148,7 @@ function Header() {
                   href="/account/fund-raiser-account"
                   className="block px-4 py-2 text-sm text-gray-700"
                   role="menuitem"
-                  tabIndex="-1"
+                  tabIndex={3}
                   id="user-menu-item-0"
                 >
                   Fund Raiser Account
@@ -159,7 +157,7 @@ function Header() {
                   href="#"
                   className="block px-4 py-2 text-sm text-gray-700"
                   role="menuitem"
-                  tabIndex="-1"
+                  tabIndex={4}
                   id="user-menu-item-1"
                 >
                   Settings
@@ -174,7 +172,7 @@ function Header() {
                   }}
                   className="block px-4 py-2 text-sm text-gray-700"
                   role="menuitem"
-                  tabIndex="-1"
+                  tabIndex={5}
                   id="user-menu-item-2"
                 >
                   Sign out

@@ -11,7 +11,7 @@ import NewsSlider from "@/component/section/Home/NewsSlider";
 import Footer from "@/component/Util/Footer";
 import { SessionProvider } from "next-auth/react"
 import HomeHero from "@/component/Hero/HomeHero";
-import Header from "@/component/Header/Header";
+// import Header from "@/component/Header/Header";
 import BloodAvailabilitySection from "@/component/section/Home/BloodAvailabilityView";
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import SectionTitle from "@/component/Util/SectionTitle";
@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser";
 import { getLimitedFundRaiserPost } from "@/util/data/helper/APIHelper";
+import Header from "@/component/Header/Header";
 // import 'react-confirm-alert/src/'
 
 

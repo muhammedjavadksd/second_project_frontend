@@ -1,13 +1,7 @@
 "use client"
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import ImageModel from '../../Util/ImageModel'
-import ModelItem from '../../Util/ModelItem'
-import BloodAccountStart from '../../Blood/bloodAccountStart/BloodAccountStart'
-import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
-import LoadingComponent from '../../Util/LoadingComponent'
-import API_axiosInstance from '@/util/external/axios/api_axios_instance'
+import React, { useState } from 'react'
 import Link from 'next/link'
 
 function Profil(): React.ReactElement {
@@ -15,18 +9,11 @@ function Profil(): React.ReactElement {
     const router = useRouter()
     const params = useSearchParams();
     const open_donor_model = params.get("open_donor_model");
-    const [isBloodAccountStart, setBloodAccountStart] = useState<boolean>(!!open_donor_model);
 
 
     return (
         <div>
 
-            {/* <ModelItem closeOnOutSideClock={false} ZIndex={1} isOpen={isBloodAccountStart} onClose={() => setBloodAccountStart(false)}>
-                {isBloodAccountStart ? "s" : "n"}
-                <BloodAccountStart profile={} onComplete={() => setBloodAccountStart(false)}></BloodAccountStart>
-            </ModelItem> */}
-
-            {/* <h2>Profile editing</h2> */}
             <div className=" w-full bg-white rounded-lg p-2">
                 <ul className="space-y-4 text-sm font-medium text-gray-600">
                     <li>

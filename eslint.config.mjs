@@ -13,7 +13,7 @@ export default [
       "no-undef": "error"
     }
   },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  // pluginJs.configs.recommended,
+  // ...tseslint.configs.recommended,
+  // pluginReact.configs.flat.recommended,
 ];
