@@ -43,10 +43,6 @@ async function OnDonorPersonDataEditSubmit(val, successCB, errorCB) {
 
 async function onBloodDonationSubmit(val, location, successCB, errorCb) {
 
-    console.log(location);
-    console.log("Usr loc");
-
-
 
     try {
         const {
