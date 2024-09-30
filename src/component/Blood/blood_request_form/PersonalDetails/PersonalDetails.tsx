@@ -96,7 +96,7 @@ function BloodPersonalDetails({ state }): React.ReactElement {
                                     <option value="">Select the relationship</option>
                                     {
                                         const_data.RELATIONSHIP.map((relation) => {
-                                            return <option value={relation}>{relation}</option>
+                                            return <option key={relation} value={relation}>{relation}</option>
                                         })
                                     }
                                 </Field>
@@ -108,7 +108,7 @@ function BloodPersonalDetails({ state }): React.ReactElement {
                                     <option value="">Select the gender</option>
                                     {
                                         const_data.GENDERS.map((gender) => {
-                                            return <option value={gender}>{gender}</option>
+                                            return <option key={gender} value={gender}>{gender}</option>
                                         })
                                     }
                                 </Field>

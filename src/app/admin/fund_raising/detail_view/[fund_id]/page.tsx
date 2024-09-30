@@ -278,7 +278,7 @@ function FundRaiserDetailView(): React.ReactElement {
                         <LoadingComponent closeOnClick={false} isLoading={isDocsLoading} paddingNeed={false}>
                             < div className='bg-white shadow-inner border mt-5'>
                                 <div className="container mx-auto px-4 py-2">
-                                    <h2 className="text-2xl font-bold mb-6 mt-3">Document's</h2>
+                                    <h2 className="text-2xl font-bold mb-6 mt-3">Document&apos;s</h2>
                                     <div className="flex overflow-x-auto space-x-4 pb-4">
                                         <div className="flex-shrink-0 w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out">
                                             <label htmlFor="upload-input-docs" className="cursor-pointer">

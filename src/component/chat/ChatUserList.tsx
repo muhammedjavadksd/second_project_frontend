@@ -55,7 +55,7 @@ function ChatUsersList({ refresh }) {
                     chatProfile.map((user: IChatRoomResponse, index) => {
 
                         return (
-                            <Link href={`chat/${user.chat_id}`}>
+                            <Link key={index} href={`chat/${user.chat_id}`}>
                                 <li key={index} className={`flex items-center p-2 rounded-lg cursor-pointer transition-all ${user?.messages?.unseen_message_count && user.messages.last_message_from != userDetails?.profile_id ? ' bg-blue-300' : index % 2 === 0 ? 'hover:bg-gray-200 dark:hover:bg-gray-700' : 'bg-gray-200 dark:bg-gray-700'}`}>
                                     <AvatarIcon name={user.chat_person.first_name + " " + user.chat_person.last_name} />
                                     <div className="ml-3">

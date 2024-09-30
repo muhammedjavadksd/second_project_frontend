@@ -62,7 +62,7 @@ function OutGoingBloodCard({ blood_id, group, unit, deadLine, closed, closed_rea
                                 closed && <p className="text-red-500 text-sm">This request was closed becuase <strong>{closed_reason}</strong></p>
                             ) : intrest_submission?.length ? (
                                 <p>{intrest_submission.length}  others have shown interest</p>
-                            ) : <p>We are finding for the donor's</p>
+                            ) : <p>We are finding for the donor&apos;s</p>
                         }
                     </p>
                 </div>

@@ -99,7 +99,7 @@ function BloodRequestDetails({ state }): React.ReactElement {
                                     <option value="">Select the blood group</option>
                                     {
                                         const_data.BLOOD_GROUPS.map((bgroup) => {
-                                            return <option value={bgroup}>{bgroup}</option>
+                                            return <option key={bgroup} value={bgroup}>{bgroup}</option>
                                         })
                                     }
                                 </Field>

@@ -173,8 +173,8 @@ function ViewFundRaising(): React.ReactElement {
                                     <TableHead head={['Raising ID', 'Collected amount', 'Target Amount', 'Dead Line', 'Status', 'Action']} />
                                     {
                                         fundRaiserData.map((item) => {
-                                            return <TableBody data={[
-                                                <span className='flex items-center gap-3'>
+                                            return <TableBody key={item._id} data={[
+                                                <span key={1} className='flex items-center gap-3'>
                                                     <div>
                                                         <LoadImage className="w-12 h-12 rounded-full" imageurl={item.picture[0]} />
                                                     </div>
@@ -184,7 +184,7 @@ function ViewFundRaising(): React.ReactElement {
                                                 `${item.amount}${const_data.MONEY_ICON}`,
                                                 item.deadline,
                                                 item.status,
-                                                <Link href={`/admin/fund_raising/detail_view/${item.fund_id}`} className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2' > <i className="fa-solid fa-eye" > </i> View</Link >]} />
+                                                <Link key={item._id} href={`/admin/fund_raising/detail_view/${item.fund_id}`} className='text-white rounded-lg pl-3 pe-3 bg-blue-500 p-2' > <i className="fa-solid fa-eye" > </i> View</Link >]} />
                                         })
                                     }
                                 </table>

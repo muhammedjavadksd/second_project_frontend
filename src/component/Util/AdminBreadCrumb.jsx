@@ -15,7 +15,7 @@ function AdminBreadCrumb({ title, root, paths = [] }) {
                 {
                     paths.map((each, index) => {
                         return (
-                            <li className='text-sm'>
+                            <li key={index} className='text-sm'>
                                 <Link href={each.href}>{each.title}</Link>
                                 {index != paths.length - 1 && <span>
                                     &#8594;

@@ -35,7 +35,7 @@ function BloodAccount(): React.ReactElement {
                 <div className="mb-4 mt-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
                     <div>
                         <h4 className="text-2xl font-bold">All your blood request</h4>
-                        <p>Listing all your blood requirement's</p>
+                        <p>Listing all your blood requirement&apos;s</p>
                     </div>
                     <div className="gap-5 flex">
                         <button onClick={() => { setStatus(null) }} className="bg-blue-800 px-5 py-2 text-white rounded-md">Show all</button>
@@ -58,7 +58,7 @@ function BloodAccount(): React.ReactElement {
                                     <div className="grid gap-y-2 gap-x-4 mt-5 grid-cols-3">
                                         {
                                             data.map((item) => {
-                                                return <VerifyBloodRequestItem currentStatus={item.status} setUpdate={setRefresh} donation_id={item._id} date={item.date} fullName={item.donor_profile?.full_name} message={messageFromBloodConcernce(item.requirement.patientName, item.concerns, formatDateToMonthNameAndDate(item.meet_expect), item.requirement.locatedAt.hospital_name)} profile_id={item.donor_profile.donor_id} />
+                                                return <VerifyBloodRequestItem key={item._id} currentStatus={item.status} setUpdate={setRefresh} donation_id={item._id} date={item.date} fullName={item.donor_profile?.full_name} message={messageFromBloodConcernce(item.requirement.patientName, item.concerns, formatDateToMonthNameAndDate(item.meet_expect), item.requirement.locatedAt.hospital_name)} profile_id={item.donor_profile.donor_id} />
                                             })
                                         }
                                     </div>

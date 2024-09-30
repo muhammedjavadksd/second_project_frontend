@@ -31,7 +31,7 @@ function ListImageFile({ data = [], BASE_PATH, onClose }: IListImageFile) {
               let image = BASE_PATH ? BASE_PATH + "/" + each : each
               return (
 
-                <li>
+                <li key={each}>
                   <div className='cursor-pointer mb-3' onClick={() => {
                     setCurrentImage(image)
                   }}

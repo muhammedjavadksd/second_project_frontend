@@ -27,6 +27,7 @@ function BloodDonationHistoryProfile() {
                                         items.map((each: IBloodDonate) => {
                                             return (
                                                 <BloodDonationHistoryCard
+                                                    key={each._id}
                                                     patientName={each?.requirement?.patientName}
                                                     certificate={each.certificate} fullName={each?.donor_profile?.full_name} hospitalName={each.requirement?.locatedAt?.hospital_name} unit={each.unit} date={formatDateToMonthNameAndDate(each.meet_expect)} bloodGroup={each?.requirement?.blood_group} />
                                             )

@@ -100,7 +100,7 @@ function BloodProfileOverView() {
                                     <span className="sr-only">Info</span>
                                     <div>
                                         <span className="font-medium">Info !</span>
-                                        Your'r blood profile is live,
+                                        Your blood profile is live,
                                     </div>
                                 </div>
                                 <label className="inline-flex items-center cursor-pointer">

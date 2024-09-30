@@ -94,8 +94,8 @@ function SupportTicket(): React.ReactElement {
                                                         {
                                                             listTicket.map((item) => {
                                                                 return (
-                                                                    <TableBody data={[item.ticket_id, item.title, item.category, item.status, formatDateToMonthNameAndDate(item.updated_at),
-                                                                    <Link className='underline text-blue-600' href={`support/${item.ticket_id}`}>View</Link>
+                                                                    <TableBody key={item.ticket_id} data={[item.ticket_id, item.title, item.category, item.status, formatDateToMonthNameAndDate(item.updated_at),
+                                                                    <Link key={item.ticket_id} className='underline text-blue-600' href={`support/${item.ticket_id}`}>View</Link>
                                                                     ]} />
                                                                 )
                                                             })

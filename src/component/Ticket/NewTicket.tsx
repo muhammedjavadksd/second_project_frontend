@@ -70,7 +70,7 @@ function NewTicketForm({ state, onComplete }): React.ReactElement {
                                     <option>Select the priority</option>
                                     {
                                         Object.values(TicketPriority).map((item) => {
-                                            return <option value={item}>{item}</option>
+                                            return <option key={item} value={item}>{item}</option>
                                         })
                                     }
                                 </Field>
@@ -83,7 +83,7 @@ function NewTicketForm({ state, onComplete }): React.ReactElement {
                                     <option value={""}>Select the category</option>
                                     {
                                         Object.values(TicketCategory).map((item) => {
-                                            return <option value={item}>{item}</option>
+                                            return <option key={item} value={item}>{item}</option>
                                         })
                                     }
                                 </Field>

@@ -9,7 +9,7 @@ import BreadCrumb from '@/component/Util/BreadCrumb'
 import Footer from '@/component/Util/Footer'
 import React, { useState } from 'react'
 
-function page(): React.ReactElement {
+function Page(): React.ReactElement {
 
     let [editPersonalDetails, setEditPersonalDetails] = useState<boolean>(false);
 
@@ -65,4 +65,4 @@ function page(): React.ReactElement {
     )
 }
 
-export default page
+export default Page

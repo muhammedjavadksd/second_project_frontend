@@ -235,7 +235,7 @@ function FundRaiserView(): React.ReactElement {
                                     <option>Select bank account</option>
                                     {
                                         Object.values(BankAccountType).map((each) => {
-                                            return <option value={each}>{each}</option>
+                                            return <option key={each} value={each}>{each}</option>
                                         })
                                     }
                                 </Field>
@@ -364,7 +364,7 @@ function FundRaiserView(): React.ReactElement {
                                                                 <TableHead head={['#', 'Donation ID', 'Name', 'Amount', 'Date']} />
                                                                 {
                                                                     tableBody.map((item, index) => {
-                                                                        return <TableBody data={[index + 1, item.donation_id, item.name, `${item.name}${const_data.MONEY_ICON}`, formatDateToMonthNameAndDate(item.date)]} />
+                                                                        return <TableBody key={index} data={[index + 1, item.donation_id, item.name, `${item.name}${const_data.MONEY_ICON}`, formatDateToMonthNameAndDate(item.date)]} />
                                                                     })
                                                                 }
                                                             </table>
@@ -389,8 +389,8 @@ function FundRaiserView(): React.ReactElement {
                             <div className='mt-3 mb-3'>
                                 <div className='flex justify-between items-center'>
                                     <div>
-                                        <h4 className='text-2xl font-bold '>Bank account's</h4>
-                                        <p>Manage your bank account's from here</p>
+                                        <h4 className='text-2xl font-bold '>Bank account&apos;s</h4>
+                                        <p>Manage your bank account&apos;s from here</p>
                                     </div>
                                     <button onClick={() => toggleBankAccount(true)} className='flex bg-green-500 p-2 text-white border shadow-inner items-center gap-x-3 rounded-lg'>
                                         <FaPlus />
@@ -522,7 +522,7 @@ function FundRaiserView(): React.ReactElement {
                                     {
                                         fundRaiserProfile?.picture.map((each, index) => {
                                             return (
-                                                <div onClick={() => setImageFocus(each)}>
+                                                <div key={index} onClick={() => setImageFocus(each)}>
                                                     <ImageItem
 
                                                         onClose={(e) => {
@@ -575,7 +575,7 @@ function FundRaiserView(): React.ReactElement {
                                     {
                                         fundRaiserProfile?.documents.map((each, index) => {
                                             return (
-                                                <div onClick={() => setImageFocus(each)}>
+                                                <div key={index} onClick={() => setImageFocus(each)}>
                                                     <ImageItem
                                                         onClose={(e) => {
                                                             confirmAlert({

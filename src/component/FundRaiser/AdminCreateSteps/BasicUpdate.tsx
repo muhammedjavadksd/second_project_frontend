@@ -50,7 +50,7 @@ export default function BasicDetails({ state }: { state: Function }): React.Reac
                                     {
                                         const_data.RELATIONSHIP.map((each) => {
                                             return (
-                                                <option value={each}>{each}</option>
+                                                <option key={each} value={each}>{each}</option>
                                             )
                                         })
                                     }
@@ -82,7 +82,7 @@ export default function BasicDetails({ state }: { state: Function }): React.Reac
                                     {
                                         getMainCategory().map((item) => {
                                             return (
-                                                <option value={item}>{item}</option>
+                                                <option key={item} value={item}>{item}</option>
                                             )
                                         })
                                     }
@@ -97,7 +97,7 @@ export default function BasicDetails({ state }: { state: Function }): React.Reac
                                     {
                                         subCategory.map((item) => {
                                             return (
-                                                <option value={item}>{item}</option>
+                                                <option key={item} value={item}>{item}</option>
                                             )
                                         })
                                     }
@@ -162,7 +162,7 @@ export default function BasicDetails({ state }: { state: Function }): React.Reac
                                     <option value="" label="Choose a state" />
                                     {
                                         Object.keys(const_data.STATE_WITH_DISTRICT).map((item) => {
-                                            return <option value={item}>{item}</option>
+                                            return <option key={item} value={item}>{item}</option>
                                         })
                                     }
                                 </Field>
@@ -180,7 +180,7 @@ export default function BasicDetails({ state }: { state: Function }): React.Reac
                                     <option value="" label="Choose a district" />
                                     {
                                         district.map((item) => {
-                                            return <option value={item}>{item}</option>
+                                            return <option key={item} value={item}>{item}</option>
                                         })
                                     }
                                 </Field>

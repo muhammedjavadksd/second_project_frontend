@@ -39,7 +39,7 @@ function OnCloseForm({ onClose, blood_id, onSuccess }) {
                                 <option value="">Select reason</option>
                                 {
                                     Object.values(BloodCloseCategory).map((item) => {
-                                        return <option value={item}>{item}</option>
+                                        return <option key={item} value={item}>{item}</option>
                                     })
                                 }
                             </Field>

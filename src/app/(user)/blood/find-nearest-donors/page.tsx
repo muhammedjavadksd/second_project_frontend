@@ -113,9 +113,9 @@ const BloodDonorSearch = () => {
                         className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                     >
                         {
-                            Object.values(BloodGroup).map((group: BloodGroup) => {
+                            Object.values(BloodGroup).map((group: BloodGroup, index: number) => {
                                 return (
-                                    <option value={group}>{group}</option>
+                                    <option key={index} value={group}>{group}</option>
                                 )
                             })
                         }

@@ -82,7 +82,7 @@ function Basic({ state }) {
                   {
                     getMainCategory().map((item) => {
                       return (
-                        <option value={item}>{item}</option>
+                        <option key={item} value={item}>{item}</option>
                       )
                     })
                   }
@@ -97,7 +97,7 @@ function Basic({ state }) {
                   {
                     subCategory.map((item) => {
                       return (
-                        <option value={item}>{item}</option>
+                        <option key={item} value={item}>{item}</option>
                       )
                     })
                   }

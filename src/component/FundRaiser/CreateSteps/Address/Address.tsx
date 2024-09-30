@@ -109,7 +109,7 @@ function Address({ state }) {
                   <option value="" label="Choose a state" />
                   {
                     Object.keys(const_data.STATE_WITH_DISTRICT).map((item) => {
-                      return <option value={item}>{item}</option>
+                      return <option key={item} value={item}>{item}</option>
                     })
                   }
                 </Field>
@@ -127,7 +127,7 @@ function Address({ state }) {
                   <option value="" label="Choose a district" />
                   {
                     district.map((item) => {
-                      return <option value={item}>{item}</option>
+                      return <option key={item} value={item}>{item}</option>
                     })
                   }
                 </Field>

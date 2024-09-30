@@ -55,12 +55,12 @@ function Page() {
                         <div>
                             <div>
                                 <div className="pe-10">
-                                    <h1 className="text-4xl font-bold ">Together, Let's Save Lives</h1>
+                                    <h1 className="text-4xl font-bold ">Together, Let&apos;s Save Lives</h1>
                                     <p className="mt-3 text-lg text-gray-700">
                                         Your decision to donate blood could be the difference between life and death for someone in need. By creating your blood donor profile, you take the first step toward becoming a hero for patients relying on blood donations for survival.
                                     </p>
                                     <p className="mt-2 text-gray-600">
-                                        Complete the form carefully to ensure you're notified whenever someone requires your specific blood type. Every drop counts, and your help can make all the difference.
+                                        Complete the form carefully to ensure you&apos;re notified whenever someone requires your specific blood type. Every drop counts, and your help can make all the difference.
                                     </p>
                                 </div>
 
@@ -100,9 +100,9 @@ function Page() {
                                         <Field as="select" name="blood_group" id="blood_group" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
                                             <option>Select Blood Group</option>
                                             {
-                                                Object.values(BloodGroup).map((each) => {
+                                                Object.values(BloodGroup).map((each, index) => {
                                                     return (
-                                                        <option value={each}>{each}</option>
+                                                        <option key={index} value={each}>{each}</option>
                                                     )
                                                 })
                                             }

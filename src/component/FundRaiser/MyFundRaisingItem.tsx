@@ -29,7 +29,7 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
                     <div className="w-full flex gap-10">
                         <div className='w-2/4'>
                             <a href="#">
-                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">{profile.full_name}'s Fund Raiser for {profile.category} in {profile.district}</h3>
+                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">{profile.full_name}&apos;s Fund Raiser for {profile.category} in {profile.district}</h3>
                             </a>
                             <p className="mb-4 text-sm text-gray-700 dark:text-gray-400">
                                 {profile.about}

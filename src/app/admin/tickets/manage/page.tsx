@@ -43,7 +43,7 @@ function ManageTicket() {
                         <div className="flex justify-between">
                             <div>
                                 <div className='buttonGroups flex items-center justify-start mt-3 gap-3' >
-                                    <button className={`${!ticketStatus && 'bg-blue-900'} bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => setStatus(undefined)} > <i className="fa-solid fa-bars" > </i> All case's</button >
+                                    <button className={`${!ticketStatus && 'bg-blue-900'} bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => setStatus(undefined)} > <i className="fa-solid fa-bars" > </i> All case&apos;s</button >
                                     <button className={`${ticketStatus == TicketStatus.Answered ? "bg-blue-900" : "bg-blue-600"} text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => setStatus(TicketStatus.Answered)} > <i className="fa-solid fa-bars" > </i> Answerd Only</button >
                                     <button className={`${ticketStatus == TicketStatus.Closed ? "bg-blue-900" : "bg-blue-600"} text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => setStatus(TicketStatus.Closed)}> <i className="fa-solid fa-bars" > </i> Closed Only </button >
                                     <button className={`${ticketStatus == TicketStatus.Raised ? "bg-blue-900" : "bg-blue-600"} text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => setStatus(TicketStatus.Raised)} > <i className="fa-solid fa-bars" > </i> Rasied Tickets </button >
@@ -52,9 +52,9 @@ function ManageTicket() {
                                 <div className='buttonGroups flex items-center justify-start mt-3 gap-3' >
                                     <button className={`${!category && 'bg-blue-900'} bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => setCategory(null)} > <i className="fa-solid fa-bars" > </i> All</button >
                                     {
-                                        Object.values(TicketCategory).map((cate) => {
+                                        Object.values(TicketCategory).map((cate, index) => {
                                             return (
-                                                <button className={`${cate == category ? 'bg-blue-900' : 'bg-blue-600'}  text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => setCategory(cate)} > <i className="fa-solid fa-bars" > </i> {cate}</button >
+                                                <button key={index} className={`${cate == category ? 'bg-blue-900' : 'bg-blue-600'}  text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => setCategory(cate)} > <i className="fa-solid fa-bars" > </i> {cate}</button >
                                             )
                                         })
                                     }
@@ -85,8 +85,8 @@ function ManageTicket() {
                                                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                                     <TableHead head={['ID', 'Title', 'Category', 'Status', 'Updated Date', 'Action']} />
                                                     {
-                                                        item.map((ticket: ProfileTicket) => {
-                                                            return <TableBody data={[ticket.ticket_id, ticket.title, ticket.category, ticket.status, formatDateToMonthNameAndDate(ticket.updated_at), <Link className='p-3 px-5 rounded-md text-white bg-blue-600' href={`${ticket.ticket_id}`}>View</Link>]} />
+                                                        item.map((ticket: ProfileTicket, key) => {
+                                                            return <TableBody key={key} data={[ticket.ticket_id, ticket.title, ticket.category, ticket.status, formatDateToMonthNameAndDate(ticket.updated_at), <Link className='p-3 px-5 rounded-md text-white bg-blue-600' href={`${ticket.ticket_id}`}>View</Link>]} />
                                                         })
                                                     }
                                                 </table>

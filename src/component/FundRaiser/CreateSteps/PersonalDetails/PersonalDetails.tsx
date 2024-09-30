@@ -92,7 +92,7 @@ function PersonalDetails({ state }) {
                 {
                   const_data.RELATIONSHIP.map((each) => {
                     return (
-                      <option value={each}>{each}</option>
+                      <option key={each} value={each}>{each}</option>
                     )
                   })
                 }

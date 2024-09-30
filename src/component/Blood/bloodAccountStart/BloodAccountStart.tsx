@@ -156,7 +156,7 @@ function BloodAccountStart({ onComplete, profile }): React.ReactElement {
                                             {
                                                 Object.values(BloodGroup).map((each) => {
                                                     return (
-                                                        <option value={each}>{each}</option>
+                                                        <option key={each} value={each}>{each}</option>
                                                     )
                                                 })
                                             }

@@ -5,7 +5,7 @@ function CountDisplay() {
         <div class="grid grid-cols-3 gap-4 items-center	">
             <div className="countItems">
                 <h2>250+</h2>
-                <span>Donator's</span>
+                <span>Donator&apos;s</span>
             </div>
             <div className="countItems">
                 <h2>842M+</h2>

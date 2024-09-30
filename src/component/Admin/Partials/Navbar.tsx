@@ -83,7 +83,7 @@ function AdminNavbar({ onMenuClick, onSearch }) {
                                             </div>
                                         </div>
                                         <div className="pl-3 w-full">
-                                            <div className="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">New message from <span className="font-semibold text-gray-900 dark:text-white">Bonnie Green</span>: "Hey, what's up? All set for the presentation?"</div>
+                                            <div className="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">New message from <span className="font-semibold text-gray-900 dark:text-white">Bonnie Green</span>: &quot;Hey, what&lsquo;s up? All set for the presentation?&quot;</div>
                                             <div className="text-xs font-medium text-primary-700 dark:text-primary-400">a few moments ago</div>
                                         </div>
                                     </a>

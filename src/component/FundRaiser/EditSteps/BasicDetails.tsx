@@ -9,7 +9,7 @@ function BasicFundRaiseEdit(): React.ReactNode {
             <div className="mb-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
                 <div>
                     <h4 className="text-2xl font-bold">Edit basic fund raising details</h4>
-                    <p>Correct you basic's of profile</p>
+                    <p>Correct you basic&apos;s of profile</p>
                 </div>
             </div >
             <div className='bg-gray-100 p-3'>

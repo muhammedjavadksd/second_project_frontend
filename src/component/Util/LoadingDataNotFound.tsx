@@ -26,7 +26,7 @@ const LoadingDataNotFoundComponent = ({ children, isLoading, isFound }: { childr
             <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
                 <FaExclamationTriangle className="text-5xl text-yellow-500 mb-4" />
                 <h2 className="text-2xl font-semibold text-gray-700 mb-2">Oops! No data found</h2>
-                <p className="text-gray-500 mb-4">We couldn't find the data you're looking for.</p>
+                <p className="text-gray-500 mb-4">We couldn&apos;t find the data you&apos;re looking for.</p>
             </div>
         );
     }

@@ -52,15 +52,15 @@ function DashboardPage(): React.ReactElement {
 
 
         <div className='mt-0'>
-          <h4 className='font-medium text-2xl'>Blood static's</h4>
+          <h4 className='font-medium text-2xl'>Blood static&apos;s</h4>
           <div className='grid grid-cols-4 mt-2 gap-5 flex'>
             <DashboardCard icon={null} classNames={'bg-white'} title={"Total donor's"} data={bloodStatitics?.blood_donor?.totalDonors || 0} />
             <DashboardCard icon={null} classNames={'bg-white'} title={"Active donors"} data={bloodStatitics?.blood_donor?.openDonors || 0} />
             <DashboardCard icon={null} classNames={'bg-white'} title={"In active donors"} data={bloodStatitics?.blood_donor?.closedDonors || 0} />
 
             {
-              bloodStatitics?.blood_donor?.donorsByBloodGroup.map((item) => {
-                return <DashboardCard icon={null} classNames={'bg-white'} title={`${item._id} Donors`} data={item.count} />
+              bloodStatitics?.blood_donor?.donorsByBloodGroup.map((item, index) => {
+                return <DashboardCard key={index} icon={null} classNames={'bg-white'} title={`${item._id} Donors`} data={item.count} />
               })
             }
 
@@ -70,19 +70,19 @@ function DashboardPage(): React.ReactElement {
             <DashboardCard icon={null} classNames={'bg-white'} title={"Total unit need"} data={bloodStatitics?.blood_requirement?.totalUnitsNeeded || 0} />
             {
               bloodStatitics?.blood_requirement?.requestsByBloodGroup?.map((item) => {
-                return <DashboardCard icon={null} classNames={'bg-white'} title={`${item._id}  need`} data={item?.count || 0} />
+                return <DashboardCard key={item._id} icon={null} classNames={'bg-white'} title={`${item._id}  need`} data={item?.count || 0} />
               })
             }
             {
               bloodStatitics?.blood_requirement?.requestsByStatus?.map((item) => {
-                return <DashboardCard icon={null} classNames={'bg-white'} title={`Blood req ${item._id}`} data={item?.count || 0} />
+                return <DashboardCard key={item._id} icon={null} classNames={'bg-white'} title={`Blood req ${item._id}`} data={item?.count || 0} />
               })
             }
           </div>
         </div>
 
         <div className='mt-5'>
-          <h4 className='font-medium text-2xl'>Fund raiser static's</h4>
+          <h4 className='font-medium text-2xl'>Fund raiser static&apos;s</h4>
           <div className='grid grid-cols-4 mt-2 gap-5 flex'>
             <DashboardCard
               icon={null}
@@ -122,8 +122,8 @@ function DashboardPage(): React.ReactElement {
           <div className='grid grid-cols-4 mt-2 gap-5 flex'>
             {
               bloodGroupStatitics && (
-                Object.keys(bloodGroupStatitics).map((item) => {
-                  return <DashboardCard icon={null} classNames={'bg-white'} title={`${item} Group`} data={bloodGroupStatitics[item]} />
+                Object.keys(bloodGroupStatitics).map((item, index) => {
+                  return <DashboardCard key={index} icon={null} classNames={'bg-white'} title={`${item} Group`} data={bloodGroupStatitics[item]} />
                 })
               )
             }

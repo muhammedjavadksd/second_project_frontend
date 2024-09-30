@@ -94,7 +94,7 @@ function AddBloodRequirement() {
                                             {
                                                 Object.values(BloodGroup).map((bGroup) => {
                                                     return (
-                                                        <option className="capitalize" value={bGroup}>{bGroup}</option>
+                                                        <option key={bGroup} className="capitalize" value={bGroup}>{bGroup}</option>
                                                     )
                                                 })
                                             }

@@ -49,7 +49,7 @@ function Page() {
                                                 {
                                                     Object.values(BloodGroup).map((item) => {
                                                         return (
-                                                            <option value={item}>{item}</option>
+                                                            <option key={item} value={item}>{item}</option>
                                                         )
                                                     })
                                                 }

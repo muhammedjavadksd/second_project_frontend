@@ -36,7 +36,7 @@ function ExpressedIntrest() {
                     <div className="mb-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
                         <div>
                             <h4 className="text-2xl font-bold">All your blood request</h4>
-                            <p>Listing all your blood requirement's</p>
+                            <p>Listing all your blood requirements</p>
                         </div>
                         <div className="gap-5 flex">
                             <button onClick={() => { setStatus(null), setRefresh(!refresh) }} className="bg-blue-800 px-5 py-2 text-white rounded-md">Show all</button>
@@ -60,7 +60,7 @@ function ExpressedIntrest() {
                                     <div className="grid grid-cols-3 gap-10">
                                         {
                                             showenIntrest.map((intrest: IShowedIntrest) => {
-                                                return <ExpressIntrestItem cords={intrest.requirement.locatedAt.coordinates} meetTime={intrest.meet_expect} blood_group={intrest?.requirement?.blood_group} deadLine={formatDateToMonthNameAndDate(intrest?.requirement?.neededAt)} unit={intrest?.requirement?.unit} />
+                                                return <ExpressIntrestItem key={intrest._id} cords={intrest.requirement.locatedAt.coordinates} meetTime={intrest.meet_expect} blood_group={intrest?.requirement?.blood_group} deadLine={formatDateToMonthNameAndDate(intrest?.requirement?.neededAt)} unit={intrest?.requirement?.unit} />
                                             })
                                         }
                                     </div>

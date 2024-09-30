@@ -40,7 +40,7 @@ function MyFundRaising(): React.ReactElement {
                     <div className="mb-4 mt-5 bg-white shadow-inner border  p-3 flex justify-between items-center">
                         <div>
                             <h4 className="text-2xl font-bold">My Fund Raising</h4>
-                            <p>Manage you'r fund raising post</p>
+                            <p>Manage you&apos;r fund raising post</p>
                         </div>
                         <div className="gap-5 flex">
                             <button onClick={() => { setStatus(null), setRefresh(!refresh) }} className="bg-blue-800 px-5 py-2 text-white rounded-md">Show all</button>

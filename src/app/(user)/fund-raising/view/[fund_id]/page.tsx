@@ -1,5 +1,4 @@
 "use client"
-import BiddingItemCard from '@/component/Bidding/BiddingItemCard'
 import FundRaiserComment from '@/component/FundRaiser/FundRaiserComment'
 import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
 import SuccessBanner from '@/component/FundRaiser/SuccessBanner'
@@ -81,9 +80,9 @@ function ViewFundRaising(): React.ReactElement {
     const words = description.split('.');
 
     let imageIndex = 0
-    const content = words.map((each) => {
+    const content = words.map((each, index) => {
       return (
-        <div>
+        <div key={index}>
           <p>{each}</p>
           {
             imageIndex < fundRaiserPictures.length && <div className='mt-3 mb-3'>
@@ -229,9 +228,9 @@ function ViewFundRaising(): React.ReactElement {
                     <LoadImage className='w-full' imageurl={focusPicture} />
                     <ul className='flex gap-5 bg-white shadow-lg py-5 ml-5'>
                       {
-                        fundRaiserPictures.map((pic) => {
+                        fundRaiserPictures.map((pic, index) => {
                           return (
-                            <li onClick={() => setFocusPictures(pic)} className={pic == focusPicture && 'border-b-4 border-s-4 border-t-4 border-e-4 border-blue-600'}>
+                            <li key={index} onClick={() => setFocusPictures(pic)} className={pic == focusPicture && 'border-b-4 border-s-4 border-t-4 border-e-4 border-blue-600'}>
                               <LoadImage className="w-20" imageurl={pic}></LoadImage>
                             </li>
                           )
@@ -251,7 +250,7 @@ function ViewFundRaising(): React.ReactElement {
                     </li>
 
                     <li>
-                      <button onClick={() => setTabListing(FundRaiserTabItems.COMMENT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.COMMENT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Comment's</button>
+                      <button onClick={() => setTabListing(FundRaiserTabItems.COMMENT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.COMMENT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Comment&apos;s</button>
                     </li>
                   </ul>
 
@@ -270,12 +269,12 @@ function ViewFundRaising(): React.ReactElement {
                     </TabItem>
                     <TabItem keyid={2} isShow={tabListing == FundRaiserTabItems.DOCUMENT}>
                       <div>
-                        <h4 className='text-center text-2xl font-bold mb-3'>Document's</h4>
+                        <h4 className='text-center text-2xl font-bold mb-3'>Document&apos;s</h4>
                         <ul>
                           {
-                            fundRaiserDocuments.map((each) => {
+                            fundRaiserDocuments.map((each, index) => {
                               return (
-                                <li className='cursor-pointer mb-5' onClick={() => setFocusImage(each)}>
+                                <li key={index} className='cursor-pointer mb-5' onClick={() => setFocusImage(each)}>
                                   <LoadImage imageurl={each} className="w-full" />
                                 </li>
                               )
@@ -438,9 +437,9 @@ function ViewFundRaising(): React.ReactElement {
                   </div>
                   <div className="w-full h-px bg-gray-300 "></div>
                   {
-                    donationHistory.map((histroy) => {
+                    donationHistory.map((histroy, index) => {
                       return (
-                        <div className="flex flex-col items-center">
+                        <div key={index} className="flex flex-col items-center">
                           <div className="flex p-3 items-center w-full justify-start mb-2">
                             <div className="w-16 h-12 flex items-center justify-center bg-gray-200 rounded-full">
                               <strong>{findNameAvatar(histroy.name)}</strong>
@@ -469,7 +468,7 @@ function ViewFundRaising(): React.ReactElement {
             </div>
           </div>
         </div >
-        <div>
+        {/* <div>
           <SectionTitle title='Bid for this case' focus_text='Help' sub_title='Join with below bid and help this raiser'></SectionTitle>
           <SliderComponent arrow={true} dots={true} isGap={true} slidesToScroll={1} slidesToShow={4}>
             <BiddingItemCard></BiddingItemCard>
@@ -477,7 +476,8 @@ function ViewFundRaising(): React.ReactElement {
             <BiddingItemCard></BiddingItemCard>
             <BiddingItemCard></BiddingItemCard>
           </SliderComponent>
-        </div><div>
+        </div> */}
+        <div>
           {matchedProfile.length &&
             <>
               <SectionTitle title='Similer Cases' focus_text='Help' sub_title='There are many people who suffer'></SectionTitle>

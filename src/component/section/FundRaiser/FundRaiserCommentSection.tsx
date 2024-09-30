@@ -88,10 +88,10 @@ function FundRaiserCommentSection({ fund_id }) {
                                 commends.length ? (
                                     <>
                                         {
-                                            commends.map((cmd) => {
+                                            commends.map((cmd, index) => {
                                                 console.log(cmd);
 
-                                                return <FundRaiserComment mention={null} isNested={false} fund_id={cmd.fund_id} nestedComments={cmd.replay} onDelete={onCommentDelete} comment_id={cmd.comment_id} comment={cmd.comment} date={formatDateToMonthNameAndDate(cmd.date)} user_id={cmd.user_id} user_name={cmd.user_name} />
+                                                return <FundRaiserComment key={index} mention={null} isNested={false} fund_id={cmd.fund_id} nestedComments={cmd.replay} onDelete={onCommentDelete} comment_id={cmd.comment_id} comment={cmd.comment} date={formatDateToMonthNameAndDate(cmd.date)} user_id={cmd.user_id} user_name={cmd.user_name} />
                                             })
                                         }
                                     </>

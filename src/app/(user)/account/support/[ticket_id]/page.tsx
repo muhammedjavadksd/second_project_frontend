@@ -92,9 +92,9 @@ function ViewTicket() {
 
                                     <ul className="max-h-96 overflow-auto">
                                         {
-                                            ticket.chats.map((chat) => {
+                                            ticket.chats.map((chat, index) => {
                                                 return (
-                                                    <li>
+                                                    <li key={index}>
                                                         <div className="mb-4 overflow-hidden">
                                                             <div className={`bg-gray-100 p-4 mb-2 rounded-md border-l-4 w-2/4 ${chat.from == TicketChatFrom.User ? "border-blue-500 float-right " : "border-green-500"}`}>
                                                                 <div className="flex justify-between items-center">

@@ -53,7 +53,7 @@ function FundPaymentModel({ fund_id }) {
     const [amount, setAmount] = useState<number>(0)
     return (
         <div className="bg-white min-h-96 min-w-96 rounded-lg">
-            <script src="https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js"></script>
+            <script async src="https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js"></script>
 
             <div className="p-3 text-center bg-gray-300 rounded-ss-lg rounded-se-lg">
                 <h2 className="text-blue-600 text-xl font-bold">Choose a donation amount</h2>

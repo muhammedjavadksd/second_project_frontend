@@ -109,7 +109,7 @@ function Page() {
                     {
                         (isCrossed && !requirement?.is_closed) && (
                             <div className="bg-red-500 p-3 mt-3 text-white rounded-md">
-                                This requirement's deadline has already passed. Please contact us as soon as possible.
+                                This requirement&apos;s deadline has already passed. Please contact us as soon as possible.
                             </div>
                         )
                     }
@@ -195,9 +195,9 @@ function Page() {
                                             {
                                                 items.length ? < div className="grid  gap-4 grid-cols-3">
                                                     {
-                                                        items.map((each) => {
+                                                        items.map((each, index) => {
                                                             return (
-                                                                <BloodIntrestCard bloodGroup={each.requirement.blood_group} concernc={messageFromBloodConcernce(each.requirement.patientName, each.concerns, each.meet_expect.toString(), each.requirement.locatedAt.hospital_name)} donationId={each.donation_id} donorName={each.donor_profile?.full_name} meetExpect={new Date(each.meet_expect).toDateString()} phone_number={each.donor_profile?.phoneNumber + ""} status={each.status as BloodDonationStatus} />
+                                                                <BloodIntrestCard key={index} bloodGroup={each.requirement.blood_group} concernc={messageFromBloodConcernce(each.requirement.patientName, each.concerns, each.meet_expect.toString(), each.requirement.locatedAt.hospital_name)} donationId={each.donation_id} donorName={each.donor_profile?.full_name} meetExpect={new Date(each.meet_expect).toDateString()} phone_number={each.donor_profile?.phoneNumber + ""} status={each.status as BloodDonationStatus} />
                                                             )
                                                         })
                                                     }

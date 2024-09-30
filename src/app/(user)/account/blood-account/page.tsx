@@ -15,9 +15,9 @@ function BloodAccount(): React.ReactElement {
     function itemsRender(item = []) {
         return (
             <>
-                {item.map((each) => {
+                {item.map((each, index) => {
                     return (
-                        <div className='bg-red'>
+                        <div key={index} className='bg-red'>
                             {each.id}
                         </div>
                     )

@@ -15,7 +15,7 @@ function VerifyTokenError() {
                             <strong> Review Fundraising Outcomes:</strong> <br /> Ensure that you can still assess the total amount raised and compare it with your goals.<br />
                             <br /><strong>Express Gratitude:</strong> <br />Confirm that you are able to send thank-you messages to all contributors and supporters.<br />
                             <br /><strong>Update Financial Records:</strong><br />Verify that you can accurately record and categorize all donations and expenses.<br />
-                            <br /><strong>Communicate Results:</strong><br /> Verify that you can share the campaign's success and impact with donors and supporters.<br />
+                            <br /><strong>Communicate Results:</strong><br /> Verify that you can share the campaign&apos;s success and impact with donors and supporters.<br />
                             <br /><strong>Plan for Future Campaigns:</strong> <br />Ensure you can use the insights gained to plan future fundraising efforts.</p>
                         <p className="text-center">Please check your access credentials and token validity. If the issue persists, contact support for assistance.</p>
 

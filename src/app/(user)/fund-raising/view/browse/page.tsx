@@ -138,7 +138,7 @@ function AdvanceFundRaiserView() {
                                     <div className="grid grid-cols-3 mt-5">
                                         {
                                             response.map((profile) => {
-                                                return <FundRaiserSingleItem profile={profile} />
+                                                return <FundRaiserSingleItem key={profile._id} profile={profile} />
                                             })
                                         }
                                     </div>

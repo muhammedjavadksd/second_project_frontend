@@ -56,9 +56,9 @@ function FundDonationHistory() {
                                     },
                                 }}
                                 itemsRender={(item: IDonateHistoryTemplate[]) => {
-                                    return item.map((each: IDonateHistoryTemplate) => {
+                                    return item.map((each: IDonateHistoryTemplate, index: number) => {
                                         return (
-                                            <DonationHistroyItem amount={each.amount} certificateUrl={each.receipt} date={formatDateToMonthNameAndDate(each.date)} fundImage={each.fund_profile?.picture[0]} title={generateFundRaiserTitle(each.fund_profile)} fundId={each.fund_id} />
+                                            <DonationHistroyItem key={index} amount={each.amount} certificateUrl={each.receipt} date={formatDateToMonthNameAndDate(each.date)} fundImage={each.fund_profile?.picture[0]} title={generateFundRaiserTitle(each.fund_profile)} fundId={each.fund_id} />
                                         )
                                     })
                                 }}

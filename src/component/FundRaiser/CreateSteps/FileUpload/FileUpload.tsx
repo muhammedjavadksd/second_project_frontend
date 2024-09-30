@@ -105,7 +105,7 @@ function FileUpload({ state }) {
 
 
           <div>
-            <label htmlFor="">Select Picture's</label>
+            <label htmlFor="">Select Picture&apos;s</label>
             <div className="flex mt-3">
               <div className='w-2/4'>
                 <div>
@@ -118,11 +118,11 @@ function FileUpload({ state }) {
                 </div>
               </div>
             </div>
-            {checkValidation && (pictures.length < 3 && <span className='errorMessage'>Please select minimum 3 picture's</span>)}
+            {checkValidation && (pictures.length < 3 && <span className='errorMessage'>Please select minimum 3 picture&apos;s</span>)}
           </div>
 
           <div className='mt-3'>
-            <label htmlFor="">Select Document's</label>
+            <label htmlFor="">Select Document&apos;s</label>
             <div className="flex mt-3">
               <div className='w-2/4'>
                 <div>
@@ -133,7 +133,7 @@ function FileUpload({ state }) {
                 <ListImageFile onClose={(image_id) => onFileDelete(image_id, onFileDeleted, onError, "Document", currentApplication)} data={Documents} BASE_PATH={null} />
               </div>
             </div>
-            {checkValidation && (Documents.length < 3 && <span className='errorMessage'>Please select minimum 3 document's</span>)}
+            {checkValidation && (Documents.length < 3 && <span className='errorMessage'>Please select minimum 3 document&apos;s</span>)}
 
           </div>
 

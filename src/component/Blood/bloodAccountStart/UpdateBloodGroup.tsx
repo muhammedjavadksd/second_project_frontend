@@ -48,7 +48,7 @@ function UpdateBloodGroup({ onComplete }: { onComplete: Function }): React.React
                                     {
                                         Object.values(BloodGroup).map((each) => {
                                             return (
-                                                <option value={each}>{each}</option>
+                                                <option key={each} value={each}>{each}</option>
                                             )
                                         })
                                     }

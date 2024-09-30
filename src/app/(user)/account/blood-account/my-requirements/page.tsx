@@ -48,7 +48,7 @@ function MyRequirements() {
                         <div className="mb-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
                             <div>
                                 <h4 className="text-2xl font-bold">All your blood request</h4>
-                                <p>Listing all your blood requirement's</p>
+                                <p>Listing all your blood requirements</p>
                             </div>
                             <div className="gap-5 flex">
                                 <button onClick={() => { setStatus(null), setRefresh(!refresh) }} className="bg-blue-800 px-5 py-2 text-white rounded-md">Show all</button>
@@ -69,8 +69,8 @@ function MyRequirements() {
                                     ) : (
                                         <div className="grid gap-5 grid-cols-3" >
                                             {
-                                                requirement.map((item) => {
-                                                    return <OutGoingBloodCard closed_reason={item.close_details?.category} blood_id={item.blood_id} onCloseRequest={() => setRefresh(!refresh)} closed={item.status == BloodStatus.Closed} intrest_submission={item.intrest_submission} deadLine={formatDateToMonthNameAndDate(item.neededAt)} group={item.blood_group} unit={item.unit} />
+                                                requirement.map((item, index) => {
+                                                    return <OutGoingBloodCard key={index} closed_reason={item.close_details?.category} blood_id={item.blood_id} onCloseRequest={() => setRefresh(!refresh)} closed={item.status == BloodStatus.Closed} intrest_submission={item.intrest_submission} deadLine={formatDateToMonthNameAndDate(item.neededAt)} group={item.blood_group} unit={item.unit} />
                                                 })
                                             }
                                         </div>

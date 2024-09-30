@@ -6,9 +6,9 @@ function TableBody({ data }) {
         <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
             <tr>
                 {
-                    data.map((item) => {
+                    data.map((item, index) => {
                         return (
-                            <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                            <td key={index} className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                 {item}
                             </td>
                         )
