@@ -112,7 +112,8 @@ async function OnBloodGroupUpdate(val, successCB, errorCB) {
 
         const createdPresignedUrl = await API_axiosInstance.post("/blood/presigned_url_blood_group_change", {}, {
             headers: {
-                authorization: `Bearer ${user.token}`
+                authorization: `Bearer ${user.token}`,
+                bloodauthorization: `Bearer ${user.blood_token}`
             }
         })
         const data = createdPresignedUrl?.data?.data;
