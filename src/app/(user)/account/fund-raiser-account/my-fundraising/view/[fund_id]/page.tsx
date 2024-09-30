@@ -262,7 +262,7 @@ function FundRaiserView(): React.ReactElement {
                                     <p>Here is complete report for {fundRaiserProfile?.full_name}</p>
                                 </div>
                                 <div className="gap-5 flex">
-                                    <button onClick={() => { }} className="bg-green-800 px-5 py-2 text-white rounded-md">Download report</button>
+                                    {/* <button onClick={() => { }} className="bg-green-800 px-5 py-2 text-white rounded-md">Download report</button> */}
                                     <button onClick={close} className="bg-red-800 px-5 py-2 text-white rounded-md">Close post</button>
                                     <Link href={`/fund-raising/view/${fund_id}?isForce=true`} className="bg-blue-600 px-5 py-2 text-white rounded-md">View live</Link>
                                 </div>
@@ -319,6 +319,7 @@ function FundRaiserView(): React.ReactElement {
                     <div className='mt-5 flex gap-5'>
                         <div className="w-3/4">
                             <div className='bg-white p-3 rounded-md'>
+                                <input type="date" />
                                 <CChart
                                     type="line"
                                     data={{
@@ -522,7 +523,7 @@ function FundRaiserView(): React.ReactElement {
                                     {
                                         fundRaiserProfile?.picture.map((each, index) => {
                                             return (
-                                                <div key={index} onClick={() => setImageFocus(each)}>
+                                                <div key={index} >
                                                     <ImageItem
 
                                                         onClose={(e) => {
@@ -543,7 +544,7 @@ function FundRaiserView(): React.ReactElement {
                                                                 }
                                                             })
                                                         }}
-                                                        imageName={`Picture - ${index + 1}`} imageURL={each} />
+                                                        imageName={<span onClick={() => setImageFocus(each)}>Picture - ${index + 1}</span>} imageURL={each} />
                                                 </div>
                                             )
                                         })
@@ -575,7 +576,7 @@ function FundRaiserView(): React.ReactElement {
                                     {
                                         fundRaiserProfile?.documents.map((each, index) => {
                                             return (
-                                                <div key={index} onClick={() => setImageFocus(each)}>
+                                                <div key={index} >
                                                     <ImageItem
                                                         onClose={(e) => {
                                                             confirmAlert({
@@ -595,7 +596,7 @@ function FundRaiserView(): React.ReactElement {
                                                                 }
                                                             })
                                                         }}
-                                                        imageName={`Document - ${index + 1}`} imageURL={each} />
+                                                        imageName={<span onClick={() => setImageFocus(each)}>Document - ${index + 1}</span>} imageURL={each} />
                                                 </div>
                                             )
                                         })

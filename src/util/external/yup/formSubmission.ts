@@ -4,6 +4,7 @@ import API_axiosInstance from "../axios/api_axios_instance";
 import { AxiosResponse } from "@/util/types/API Response/FundRaiser";
 import store from "../redux/store/store";
 import { updateFundRaiseData } from "../redux/slicer/fundRaiserForm";
+import { addBankAccount } from "@/util/data/helper/APIHelper";
 
 
 export async function initialFundPayment(full_name: string, phone_number: number, email_id: string, hide_profile: boolean, amount: number, successCB: Function, errorCB: Function, fund_id: string) {
@@ -117,39 +118,59 @@ export async function onBankAccountSubmit(values, successCB, errorCB) {
         if (user) {
             const token = user.token
             if (token) {
-                const requestAPI: AxiosResponse = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
-                    withdraw_docs: {
-                        account_number,
-                        ifsc_code,
-                        holder_name,
-                        account_type
-                    }
-                }, {
-                    headers: {
-                        "authorization": `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                })
 
-                const response = requestAPI.data;
-                if (response.status) {
-                    successCB()
-                    store.dispatch(updateFundRaiseData({
-                        data: {
-                            account_number,
-                            re_account_number,
-                            ifsc_code,
-                            holder_name,
-                            account_type,
-                        }
-                    }))
-                } else {
-                    errorCB(response.msg)
-                }
+                addBankAccount(currentApplication, { account_number, account_type, holder_name, ifsc_code, re_account_number: account_number }).then((addBank) => {
+                    if (addBank.status) {
+                        successCB()
+                        store.dispatch(updateFundRaiseData({
+                            data: {
+                                account_number,
+                                re_account_number,
+                                ifsc_code,
+                                holder_name,
+                                account_type,
+                            }
+                        }))
+                    } else {
+                        errorCB(addBank.msg)
+                    }
+                }).catch((err) => {
+                    errorCB("Something went wrong")
+                })
+                // const requestAPI: AxiosResponse = await API_axiosInstance.patch(`/fund_raise/edit/${currentApplication}`, {
+                //     withdraw_docs: {
+                //         account_number,
+                //         ifsc_code,
+                //         holder_name,
+                //         account_type
+                //     }
+                // }, {
+                //     headers: {
+                //         "authorization": `Bearer ${token}`,
+                //         'Content-Type': 'application/json'
+                //     },
+                // })
+
+                // const response = requestAPI.data;
+                // if (response.status) {
+                //     successCB()
+                //     store.dispatch(updateFundRaiseData({
+                //         data: {
+                //             account_number,
+                //             re_account_number,
+                //             ifsc_code,
+                //             holder_name,
+                //             account_type,
+                //         }
+                //     }))
+                // } else {
+                //     errorCB(response.msg)
+                // }
                 return;
             }
+        } else {
+            errorCB("Unauthraized access")
         }
-        errorCB("Unauthraized access")
     } catch (e) {
         console.log(e);
 

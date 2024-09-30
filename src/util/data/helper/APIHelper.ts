@@ -111,7 +111,7 @@ export async function getDonationStatitics(fundId: string, fromDate: Date, endDa
 }
 
 
-export async function addBankAccount(fund_id, { account_number, re_account_number, ifsc_code, holder_name, account_type }) {
+export async function addBankAccount(fund_id, { account_number, re_account_number, ifsc_code, holder_name, account_type }): Promise<FormActionResponse> {
     try {
         const session = await getSession();
         const data = userDetailsFromGetSession(session, "user");

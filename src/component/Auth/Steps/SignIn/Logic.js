@@ -82,9 +82,6 @@ export const otpInitialValues = {
 
 export async function onLoginOtpSubmit(values, onsuccessCB, errorCB) {
 
-    const user = await getSession();
-    console.log(user);
-
     try {
         const otp_number = values.otp_number
         const token = js_cookies.get(const_data.COOKIE_DATA_KEY.SIGN_IN_DATA);

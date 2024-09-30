@@ -16,16 +16,9 @@ function SignIn(): React.ReactElement {
 
   let [loginStepIndex, setLoginStepIndex] = useState<number>(0)
 
-
   const LoginStepComponent: FunctionComponent<UserAuthStepInterFace> = loginSteps[loginStepIndex];
 
-  function onGoogleAuth() {
 
-  }
-
-  function onFacebookAuth() {
-
-  }
 
   return (
     <UserBlackedRouter>

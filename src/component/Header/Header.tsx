@@ -146,7 +146,7 @@ function Header() {
                   Blood Account
                 </Link>
                 <Link
-                  href="/account/fund-raiser-account"
+                  href="/account/fund-raiser-account/my-fundraising"
                   className="block px-4 py-2 text-sm text-gray-700"
                   role="menuitem"
                   tabIndex={3}

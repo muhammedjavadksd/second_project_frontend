@@ -58,7 +58,7 @@ function NewTicketForm({ state, onComplete }): React.ReactElement {
                                 <div className="flex items-center justify-between mb-2">
                                     <label htmlFor="priority" className="block  text-sm font-medium text-gray-900 dark:text-white">Priority</label>
                                     <button onClick={() => {
-                                        toast.warning("Ensure that high-priority tickets can be raised only once per month.")
+                                        toast.warning("Ensure that high-priority tickets can be raised only once for every 30 days.")
                                     }} type="button" className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-1 px-2 py-2 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
                                         <svg className="w-3 h-3 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 19">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 12 5.419 3.871A1 1 0 0 0 16 15.057V2.943a1 1 0 0 0-1.581-.814L9 6m0 6V6m0 6H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h7m-5 6h3v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-5Zm15-3a3 3 0 0 1-3 3V6a3 3 0 0 1 3 3Z" />
