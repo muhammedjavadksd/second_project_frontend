@@ -1,13 +1,14 @@
 import const_data from '@/util/data/const'
 import React from 'react'
 import DownloadButton from '../Util/downloadButton'
+import Image from 'next/image'
 
 function FundDonatedHistoryCard() {
     return (
         <div className='mt-5'>
             <div class="w-full">
                 <div class="flex rounded bg-gray-50 px-6 pt-0 shadow-lg">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="chippz" class="py-4 mr-10" />
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="chippz" class="py-4 mr-10" />
                     <div className='flex gap-10 pt-3 pb-3 items-center justify-center w-full'>
                         <div class="w-2/6">
                             <h4 class="font-semibold">Name : Aaradh Km</h4>

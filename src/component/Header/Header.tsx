@@ -5,6 +5,7 @@ import { getSession, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { userDetailsFromGetSession } from '@/util/data/helper/authHelper';
+import Image from 'next/image';
 
 function Header() {
 
@@ -74,7 +75,7 @@ function Header() {
           </div>
           <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center mr-5">
-              <img
+              <Image
                 className="h-8 w-auto"
                 src="/images/company/logo.png"
                 alt="Your Company"
@@ -107,7 +108,7 @@ function Header() {
                     Sign In
                   </Link>
                 ) : (
-                  <img
+                  <Image
                     onClick={() => {
                       setShowToggle((prev) => !prev);
                     }}

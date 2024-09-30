@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react'
 import NavbarLinks from './NavbarLinks';
+import Image from 'next/image';
 
 function SimpleHeader() {
 
@@ -30,7 +31,7 @@ function SimpleHeader() {
                     </div>
                     <div class="flex flex-1 items-center   sm:items-stretch sm:justify-start">
                         <div class="flex flex-shrink-0 items-center mr-5">
-                            <img class="h-8 w-auto" src={`${process.env.NEXT_PUBLIC_PUBLIC_IMAGE_URL}/company/logo.png`} alt="Your Company" />
+                            <Image class="h-8 w-auto" src={`/${process.env.NEXT_PUBLIC_PUBLIC_IMAGE_URL}/company/logo.png`} alt="Your Company" />
                         </div>
 
                     </div>

@@ -1,9 +1,11 @@
+import Image from "next/image"
+
 function DangerUIConfirm({ onClose, onConfirm, title, }) {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full text-center">
-                <img
+                <Image
                     src="/images/icons/warning.png"
                     alt="Confirmation"
                     className="w-16 h-16 mx-auto mb-4"

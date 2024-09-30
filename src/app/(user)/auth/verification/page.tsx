@@ -1,5 +1,6 @@
 import Header from "@/component/Header/Header";
 import Footer from "@/component/Util/Footer";
+import Image from "next/image";
 import { Fragment } from "react";
 
 
@@ -11,7 +12,7 @@ function AccountVerification() {
             <div className="container mx-auto h-full mt-5 mb-5 ">
                 <div className="bgBox h-screen  w-full  p-3 flex justify-center items-center">
                     <div className="flex -mt-48  border p-10 shadow-inner pb-5 bg-white flex-col items-center gap-3">
-                        <img src="/images/icons/verification.png" width={"130px"} alt="" />
+                        <Image src="/images/icons/verification.png" width={130} alt="" />
                         <div className="text-center mt-3 flex flex-col gap-3">
                             <h4 className="font-bold text-2xl">Account need action</h4>
                             <p>We need more details for your account! Please check the mail for complete your account</p>

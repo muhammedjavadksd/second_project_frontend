@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FaCheck, FaDownload, FaTimes } from "react-icons/fa";
 
 const isApproved = true;
@@ -17,7 +18,7 @@ function BloodChangeItem() {
                 <div className="mb-4">
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">Blood Certificate</h3>
                     <div className="relative bg-gray-100 rounded-lg overflow-hidden">
-                        <img
+                        <Image
                             src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80"
                             alt="Blood Certificate"
                             className="w-full h-48 object-cover"

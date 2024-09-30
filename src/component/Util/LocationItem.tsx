@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 import react from 'react'
 
@@ -5,7 +6,7 @@ function LocationItem({ name, address }): React.ReactElement {
     return (
         <a href="#" className="flex px-4 py-3 bg-white">
             <div className="flex-shrink-0">
-                <img className="rounded-full w-11 h-11" src="/images/blood/hospital.png" alt="Jese image" />
+                <Image className="rounded-full w-11 h-11" src="/images/blood/hospital.png" alt="Jese image" />
                 <div className="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-blue-600 border border-white rounded-full dark:border-gray-800">
                     <svg className="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                         <path d="M1 18h16a1 1 0 0 0 1-1v-6h-4.439a.99.99 0 0 0-.908.6 3.978 3.978 0 0 1-7.306 0 .99.99 0 0 0-.908-.6H0v6a1 1 0 0 0 1 1Z" />

@@ -22,6 +22,7 @@ import LoadingComponent from '@/component/Util/LoadingComponent'
 import { confirmAlert } from 'react-confirm-alert'
 import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
 import LoadingDataNotFoundComponent from '@/component/Util/LoadingDataNotFound'
+import Image from 'next/image'
 
 
 function FundRaiserDetailView(): React.ReactElement {
@@ -130,7 +131,7 @@ function FundRaiserDetailView(): React.ReactElement {
                     <div className='w-1/4'>
                         <div className="bg-white shadow-xl rounded-lg py-3">
                             <div className="photo-wrapper p-2">
-                                <img className="w-32 h-32 rounded-full mx-auto" src={`${fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]}`} alt="John Doe" />
+                                <Image className="w-32 h-32 rounded-full mx-auto" src={`${fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]}`} alt="John Doe" />
                             </div>
                             <div className="p-2">
                                 <h3 className="text-center text-xl text-gray-900 font-medium leading-8">{fundRaiserProfile?.full_name}</h3>
@@ -255,7 +256,8 @@ function FundRaiserDetailView(): React.ReactElement {
                                                 key={Math.random()}
                                                 className="flex-shrink-0 w-40 h-40 relative group"
                                             >
-                                                <img
+                                                <Image
+                                                    alt=''
                                                     src={image}
                                                     className="w-full h-full object-cover rounded-lg"
                                                 />
@@ -291,7 +293,8 @@ function FundRaiserDetailView(): React.ReactElement {
                                                 key={Math.random()}
                                                 className="flex-shrink-0 w-40 h-40 relative group"
                                             >
-                                                <img
+                                                <Image
+                                                    alt=''
                                                     src={image}
                                                     className="w-full h-full object-cover rounded-lg"
                                                 />

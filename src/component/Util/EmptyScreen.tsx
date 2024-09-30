@@ -1,6 +1,7 @@
 import React from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomeConfirmUI from './ConfirmUI';
+import Image from 'next/image';
 
 
 function EmptyScreen({ msg }) {
@@ -8,7 +9,7 @@ function EmptyScreen({ msg }) {
 
 
     return (<div className='bg-gray-100 min-h-96 flex items-center justify-center flex-col border border-gray-200 rounded-lg shadow-md p-6 text-center'>
-        <img
+        <Image
             src="/images/icons/no-data-found.png"
             alt="No data found"
             className='w-24 h-24 mx-auto mb-4'

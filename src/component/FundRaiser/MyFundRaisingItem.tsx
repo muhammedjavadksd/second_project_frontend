@@ -9,6 +9,7 @@ import { confirmAlert } from 'react-confirm-alert'
 import DangerUIConfirm from '../Util/DangerUIConfirm'
 import { FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
 import Link from 'next/link'
+import Image from 'next/image'
 
 function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
 
@@ -39,7 +40,7 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
                                     profile.status != FundRaiserStatus.CLOSED ? <button type="button" className="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
                                         <i className="fa-solid fa-lock mr-2"></i> Open
 
-                                    </button> : <img src='/images/icons/closed.png' className='w-12' />
+                                    </button> : <Image alt='' src='/images/icons/closed.png' className='w-12' />
                                 }
                                 <Link href={'/'} type="button" className="text-sm font-medium text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600">Edit Post</Link>
                             </div>

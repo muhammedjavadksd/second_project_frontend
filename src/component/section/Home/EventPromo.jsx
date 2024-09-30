@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 function EventPromo() {
@@ -15,7 +16,7 @@ function EventPromo() {
                     <div>
 
                         <div class="flex flex-col items-center mb-3 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                            <img class="flex-1 ml-3 object-cover w-full rounded-t-lg h-20" src="images/fundRaisers/fundRaiser1.png" alt="" />
+                            <Image class="flex-1 ml-3 object-cover w-full rounded-t-lg h-20" src="/images/fundRaisers/fundRaiser1.png" alt="" />
                             <div class="flex flex-col justify-between p-2 leading-normal">
                                 <h5 class="mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
                                 <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
@@ -23,7 +24,7 @@ function EventPromo() {
                         </div>
 
                         <div class="flex flex-col items-center mb-3 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                            <img class="flex-1 ml-3 object-cover w-full rounded-t-lg h-20" src="images/fundRaisers/fundRaiser1.png" alt="" />
+                            <Image class="flex-1 ml-3 object-cover w-full rounded-t-lg h-20" src="/images/fundRaisers/fundRaiser1.png" alt="" />
                             <div class="flex flex-col justify-between p-2 leading-normal">
                                 <h5 class="mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
                                 <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>

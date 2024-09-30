@@ -1,3 +1,4 @@
+import NextImage from "next/image";
 import { useEffect, useState } from "react"
 
 
@@ -14,7 +15,7 @@ function LoadImage({ imageurl, ...props }) {
 
     return (
         <div>
-            <img src={src} {...props} />
+            <NextImage alt="" src={src} {...props} />
         </div>
     )
 }

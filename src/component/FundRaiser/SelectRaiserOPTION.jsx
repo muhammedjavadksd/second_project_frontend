@@ -1,10 +1,11 @@
+import Image from 'next/image'
 import React from 'react'
 
-function SelectRaiserOPTION({name, image="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}) {
+function SelectRaiserOPTION({ name, image = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" }) {
     return (
         <div>
             <span class="flex items-center">
-                <img src={image} alt="" class="h-5 w-5 flex-shrink-0 rounded-full" />
+                <Image src={image} alt="" class="h-5 w-5 flex-shrink-0 rounded-full" />
                 <span class="ml-3 block truncate">{name}</span>
             </span>
             <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">

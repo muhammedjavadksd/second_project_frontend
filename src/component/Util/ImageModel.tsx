@@ -1,7 +1,8 @@
 import { IImageModel } from '@/util/types/InterFace/PropInterFace'
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
-function ImageModel({ imageURL, isOpen, onImageClose,ZIndex }: IImageModel) {
+function ImageModel({ imageURL, isOpen, onImageClose, ZIndex }: IImageModel) {
 
     let [isModelOpen, setModelOpen] = useState<boolean>(false)
 
@@ -19,7 +20,7 @@ function ImageModel({ imageURL, isOpen, onImageClose,ZIndex }: IImageModel) {
 
             <div style={{ zIndex: ZIndex }} onClick={() => closeThisModel()} className={`${!isModelOpen && "hidden"}  top-0 left-0 right-0 bg-black bg-opacity-80 flex items-center justify-center fixed w-full h-screen`}>
                 <div className="modelScreen" onClick={(e) => e.stopPropagation()}>
-                    <img style={{ maxWidth: "100%", maxHeight: "500px" }} src={imageURL} alt="" />
+                    {imageURL && <Image style={{ maxWidth: "100%", maxHeight: "500px" }} src={imageURL} alt="" />}
                 </div>
             </div></>
     )
