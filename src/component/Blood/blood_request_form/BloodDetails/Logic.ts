@@ -8,16 +8,8 @@ import { getSession } from "next-auth/react";
 async function onBloodDetailsSubmit(val, location, successCallback, errorCallback, notLogged) {
 
 
-    alert(location)
-    // alert("Hello world")
-    console.log(val);
     const session = await getSession();
     const user = userDetailsFromGetSession(session, "user");
-
-    console.log(user);
-
-
-
     if (!user) {
         notLogged();
         return;

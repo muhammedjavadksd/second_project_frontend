@@ -1,6 +1,7 @@
 "use client"
 import { onBloodDonationSubmit } from "@/component/Blood/bloodAccountStart/Logic";
 import Header from "@/component/Header/Header";
+import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter";
 import BreadCrumb from "@/component/Util/BreadCrumb";
 import { userDetailsFromUseSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
@@ -12,16 +13,22 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import * as Yup from 'yup'
 
 
 function Page() {
 
     const [currentLocation, setCurrentLocation] = useState(null);
+    const [formInitialValues, setInitialValues] = useState(bloodDonatationFormValues);
+
     const session = useSession()
     const router = useRouter();
     const formik = useRef(null)
 
+    useEffect(() => {
+        const userData = userDetailsFromUseSession(session, "user");
+        console.log(userData);
+        setInitialValues({ email_address: userData.email, full_name: `${userData.first_name}  ${userData.last_name}`, phone_number: userData.phone, location: null, blood_group: null });
+    }, [session])
 
     async function successCB(donor_id: string) {
         const user = userDetailsFromUseSession(session, "user")
@@ -35,14 +42,13 @@ function Page() {
 
     function onLocationSelect() {
         navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-            const { latitude, longitude } = coords
             console.log(coords);
             setCurrentLocation(coords)
         })
     }
 
     return (
-        <Fragment>
+        <UserPrivateRouter>
             <div className="bg-gray-100">
                 <Header />
                 <div className='container mx-auto'>
@@ -68,7 +74,7 @@ function Page() {
                         </div>
                         <div className="w-full">
 
-                            <Formik innerRef={formik} initialValues={bloodDonatationFormValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => {
+                            <Formik innerRef={formik} enableReinitialize initialValues={formInitialValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => {
                                 console.log(currentLocation);
 
                                 if (!currentLocation) {
@@ -118,13 +124,13 @@ function Page() {
                     <div className="buttonNavigation shadow-2xl bg-white fixed bottom-0  left-0 right-0 min-h-20">
                         <div className="flex p-4 pb-0 h-full  items-center justify-between">
                             <div></div>
-                            <button onClick={formik.current && formik.current.submit()} className={`bg-green-600 rounded-lg px-7 py-2 text-white hover:bg-green-800`}>Save & Submit</button>
+                            <button onClick={() => { formik.current && formik.current.submit() }} className={`bg-green-600 rounded-lg px-7 py-2 text-white hover:bg-green-800`}>Save & Submit</button>
                         </div>
                     </div>
 
                 </div >
             </div>
-        </Fragment >
+        </UserPrivateRouter >
     )
 }
 

@@ -27,7 +27,6 @@ function BloodRequestDetails({ state }): React.ReactElement {
     const [isSearching, setSearching] = useState<boolean>(false)
 
     async function findNearestPlace(query) {
-        console.log(query);
 
         try {
             setSearching(true)
@@ -70,7 +69,7 @@ function BloodRequestDetails({ state }): React.ReactElement {
 
     function successCallback(msg: string) {
         toast.success(msg);
-        router.replace("/blood/request/success");
+        router.replace("/account/blood-account/my-requirements");
         sessionStorage.clear();
     }
 

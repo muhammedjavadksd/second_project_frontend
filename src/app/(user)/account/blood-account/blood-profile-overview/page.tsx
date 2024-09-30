@@ -5,6 +5,7 @@ import UpdateBloodGroup from "@/component/Blood/bloodAccountStart/UpdateBloodGro
 import UpdatePersonalDetails from "@/component/Blood/bloodAccountStart/UpdatePersonalDetails";
 import BloodRequirementSingleItem from "@/component/Blood/BloodRequirementSingleItem";
 import Header from "@/component/Header/Header";
+import PrivateAccountForBlood from "@/component/LoginComponent/PrivateAccountForBlood";
 import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter";
 import BloodReqSlider from "@/component/section/Home/BloodReqSlider";
 import BreadCrumb from "@/component/Util/BreadCrumb";
@@ -82,7 +83,7 @@ function BloodProfileOverView() {
 
     return (
         <Fragment>
-            <UserPrivateRouter>
+            <PrivateAccountForBlood>
                 <Header />
 
                 <div className="container mx-auto mt-5 mb-5">
@@ -119,16 +120,10 @@ function BloodProfileOverView() {
                         </div>
                         <div className="w-2/6">
                             <BloodAccountStart profile={bloodProfile?.profile} onComplete={() => { }} />
-
-                            {/* <UpdatePersonalDetails onComplete={() => { }} profile={{}} /> */}
-                            {/* <div className="bg-gray-100">
-                                <ModelHeader title={"Update blood group"}></ModelHeader>
-                                <UpdateBloodGroup onComplete={() => { }} />
-                            </div> */}
                         </div>
                     </div>
                 </div>
-            </UserPrivateRouter>
+            </PrivateAccountForBlood>
         </Fragment >
     )
 }
