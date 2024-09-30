@@ -21,10 +21,10 @@ function Profil(): React.ReactElement {
     return (
         <div>
 
-            <ModelItem closeOnOutSideClock={false} ZIndex={1} isOpen={isBloodAccountStart} onClose={() => setBloodAccountStart(false)}>
+            {/* <ModelItem closeOnOutSideClock={false} ZIndex={1} isOpen={isBloodAccountStart} onClose={() => setBloodAccountStart(false)}>
                 {isBloodAccountStart ? "s" : "n"}
-                <BloodAccountStart onComplete={() => setBloodAccountStart(false)}></BloodAccountStart>
-            </ModelItem>
+                <BloodAccountStart profile={} onComplete={() => setBloodAccountStart(false)}></BloodAccountStart>
+            </ModelItem> */}
 
             {/* <h2>Profile editing</h2> */}
             <div className=" w-full bg-white rounded-lg p-2">
