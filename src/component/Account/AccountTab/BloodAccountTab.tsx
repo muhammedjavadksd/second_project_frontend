@@ -31,7 +31,7 @@ function BloodAccountTab(): React.ReactElement {
             <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
                 <ul className="flex flex-wrap -mb-px">
                     <li className="me-2">
-                        <Link href="/account/blood-account/blood-profile-overview" className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Profile Overview</Link>
+                        <Link href="/account/blood-account" className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Profile Overview</Link>
                     </li>
                     {
                         userDetails.blood_token && <li className="me-2">

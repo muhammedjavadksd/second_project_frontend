@@ -17,7 +17,7 @@ function PrivateAccountForBlood({ children }) {
             if (userLogged) {
 
                 if (userLogged.blood_token) {
-                    router.replace("/account/blood-account/blood-profile-overview");
+                    router.replace("/account/blood-account");
                 } else {
                     setAuth(true)
                 }
