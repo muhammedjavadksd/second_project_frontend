@@ -10,6 +10,29 @@ import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } fr
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, FundRaiserFileType, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
+export async function getBloodRequirement(page: number, limit: number, bloodGroup: BloodGroup, urgency?: string): Promise<IPaginatedResponse<IBloodReq>> {
+
+    try {
+        const find = await API_axiosInstance.get(`blood/blood_availability/${page}/${limit}/${bloodGroup}`);
+        const response = find.data;
+        console.log(response);
+
+        if (response.status) {
+            return response.data
+        }
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+        return null
+    }
+}
+
 
 
 export async function seenMessage(room_id: string): Promise<boolean> {

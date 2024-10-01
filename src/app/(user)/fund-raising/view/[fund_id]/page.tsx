@@ -323,7 +323,7 @@ function ViewFundRaising(): React.ReactElement {
                   </span>
 
                   <span className="raised supporters ng-star-inserted text-gray-500">
-                    <span className='text-2xl font-bold text-black'>{dateLeft} </span>  Days Left
+                    <span className='text-2xl font-bold text-black'>{Math.abs(dateLeft)} </span>  Days Left
                   </span>
                 </div>
 

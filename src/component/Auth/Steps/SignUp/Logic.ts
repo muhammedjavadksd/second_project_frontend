@@ -59,64 +59,28 @@ async function signUpDataHandler(data) {
 }
 
 
-function onSignUpHandler(values, successCB, onSignUpError) {
+async function onSignUpHandler(values, successCB, onSignUpError) {
     const userSignUpData = {
         first_name: values.first_name,
         last_name: values.last_name,
         email_address: values.email_address,
         blood_group: values.bloodGroup,
         phone_number: values.phone_number,
-        location: {}
     }
 
+    try {
 
-    console.log(userSignUpData);
-
-
-
-
-
-    getCurrentPosition(async (location) => {
-        console.log(location);
-        if (location.coords) {
-            userSignUpData.location = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude
-            };
-        }
-        try {
-
-            const data = await signUpDataHandler(userSignUpData)
-            console.log({ data });
-            if (data.status) {
-                toast.success("Check your email for the OTP number");
-                successCB()
-                //Invoce Callback for signup success
-            } else {
-                onSignUpError(data.msg)
-            }
-        } catch (e) {
-            console.log("Errs");
-
-            console.log(e);
-
-            const errorMessage = e?.response?.data?.msg ?? "Something went wrong"
-            onSignUpError(errorMessage);
-        }
-    }, async (err) => {
-        console.log(err);
         const data = await signUpDataHandler(userSignUpData)
-        console.log(data);
-        console.log("API after error");
         if (data.status) {
-            // onSignUpError("Sign Up Success");
+            toast.success("Check your email for the OTP number");
             successCB()
-            //Invoce Callback for signup success
         } else {
             onSignUpError(data.msg)
         }
-    })
-
+    } catch (e) {
+        const errorMessage = e?.response?.data?.msg ?? "Something went wrong"
+        onSignUpError(errorMessage);
+    }
 }
 
 const signUpValidator = yup.object().shape({
