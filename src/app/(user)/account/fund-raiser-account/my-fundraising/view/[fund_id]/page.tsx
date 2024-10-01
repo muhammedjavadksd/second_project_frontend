@@ -35,7 +35,6 @@ import { FaEdit, FaMagic, FaPlus, FaStar, FaTrash } from 'react-icons/fa'
 import { IoMdAddCircle } from 'react-icons/io'
 import DatePicker, { DateObject } from 'react-multi-date-picker'
 import { toast } from 'react-toastify'
-import { DateRangePicker } from "@nextui-org/date-picker";
 
 
 
@@ -127,6 +126,8 @@ function FundRaiserView(): React.ReactElement {
             toast.error("Something went wrong")
         })
     }
+
+
 
 
     const dateLeft = new Date(fundRaiserProfile?.deadline).getDate() - new Date().getDate()
@@ -324,22 +325,11 @@ function FundRaiserView(): React.ReactElement {
                     <div className='mt-5 flex gap-5'>
                         <div className="w-3/4">
                             <div className='bg-white p-3 rounded-md'>
-                                <DateRangePicker
-                                    label="Stay duration"
-                                    className="max-w-xs"
-                                />
-                                {/* <DateRangePicker localeText={{ start: 'Check-in', end: 'Check-out' }} /> */}
-                                {/* <DatePicker
-                                    //@ts-ignore
-                                    selectsRange={true}
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    onChange={(update) => {
-                                        alert(update)
-                                        // setDateRange(update);
-                                    }}
-                                    withPortal
-                                /> */}
+                                <div className='flex gap-2 items-center mb-3'>
+                                    {/* <label htmlFor="">Filter by date</label> */}
+
+
+                                </div>
                                 <CChart
                                     type="line"
                                     data={{

@@ -83,8 +83,8 @@ export function getCurrentPosition(successCB: Function, errorDB: Function): void
 
 export function formatDateToMonthNameAndDate(date) {
     const months = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
+        'Jan', 'Feb', 'March', 'April', 'May', 'June',
+        'July', 'August', 'Sept', 'Octbr', 'Nov', 'Dec'
     ];
     const d = new Date(date);
     const monthName = months[d.getMonth()];

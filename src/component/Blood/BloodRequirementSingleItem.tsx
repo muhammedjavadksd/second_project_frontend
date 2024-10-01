@@ -15,7 +15,7 @@ import DatePicker from 'react-multi-date-picker';
 import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 import API_axiosInstance from '@/util/external/axios/api_axios_instance';
 import Image from 'next/image';
-
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
 function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, username }) {

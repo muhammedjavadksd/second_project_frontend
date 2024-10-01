@@ -25,7 +25,7 @@ function BloodDonorCard({ name, bloodGroup, distance, long, lati, email_id }) {
         const user = userDetailsFromUseSession(session, "user");
         if (user && user.token) {
 
-            createChat(email_id, generateBloodRequest(values.unit, values.hospital_name, values.deadLine), CreateChatVia.Email).then((data) => {
+            createChat(email_id, generateBloodRequest(values.unit, values.hospital_name, values.deadLine), CreateChatVia.DonorId).then((data) => {
                 if (data) {
                     toast.success("Message has been sent");
                 } else {

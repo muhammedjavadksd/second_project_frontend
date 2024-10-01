@@ -1,19 +1,15 @@
 "use client"
-// import HomeHero from "@/component/Hero/HomeHero";
-// HomeHero
 import FundRaiserSlider from "@/component/section/Home/FundRaiserSlider";
 import './global.css'
 import CouldHelp from "@/component/section/Home/CouldHelp";
 import BloodReqSlider from "@/component/section/Home/BloodReqSlider";
 import EventPromo from "@/component/section/Home/EventPromo";
 import NewsSlider from "@/component/section/Home/NewsSlider";
-// import Header from "@/component/Header/Header";
 import Footer from "@/component/Util/Footer";
 import { SessionProvider } from "next-auth/react"
 import HomeHero from "@/component/Hero/HomeHero";
-// import Header from "@/component/Header/Header";
 import BloodAvailabilitySection from "@/component/section/Home/BloodAvailabilityView";
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import SectionTitle from "@/component/Util/SectionTitle";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";

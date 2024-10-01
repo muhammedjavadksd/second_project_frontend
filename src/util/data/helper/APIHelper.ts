@@ -16,15 +16,17 @@ export async function createChat(to_profileid: string, msg: string, type: Create
         const session = await getSession();
         const user = userDetailsFromGetSession(session, "user")
         if (user) {
-            const requestAPI = await API_axiosInstance.patch(`/profile/create_chat/${type}`, {
+            const requestAPI = await API_axiosInstance.post(`/profile/create_chat/${type}`, {
                 to_profile: to_profileid,
                 msg
-            }, {
-                headers: {
-                    "authorization": `Bearer ${user.token}`,
-                    'Content-Type': 'application/json'
-                },
-            })
+            },
+                {
+                    headers: {
+                        "authorization": `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+            )
             const response = requestAPI.data;
             return response.status
         }
