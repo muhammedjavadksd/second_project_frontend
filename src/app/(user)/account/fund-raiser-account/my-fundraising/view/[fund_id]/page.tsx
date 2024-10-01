@@ -33,7 +33,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { confirmAlert } from 'react-confirm-alert'
 import { FaEdit, FaMagic, FaPlus, FaStar, FaTrash } from 'react-icons/fa'
 import { IoMdAddCircle } from 'react-icons/io'
+import DatePicker, { DateObject } from 'react-multi-date-picker'
 import { toast } from 'react-toastify'
+import { DateRangePicker } from "@nextui-org/date-picker";
+
 
 
 function FundRaiserView(): React.ReactElement {
@@ -54,6 +57,9 @@ function FundRaiserView(): React.ReactElement {
     const imageUploadRef = useRef(null)
     const documentUploadRef = useRef(null)
     const [AIDescription, setAiDescription] = useState(null)
+    const [filterDate, setDate] = useState<Date | null>(null);
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [startDate, endDate] = dateRange;
 
     async function findProfile() {
         const findProfile: FormActionResponse = await getSingleActiveFundRaiser(fund_id.toString(), true);
@@ -95,11 +101,10 @@ function FundRaiserView(): React.ReactElement {
 
 
     useEffect(() => {
-        const fromDate = new Date();
-        fromDate.setFullYear(fromDate.getFullYear() - 1)
-        getDonationStatitics(fund_id.toString(), new Date(), fromDate).then((data) => {
-            data && setDonationStatics(data)
-        }).catch((err) => { })
+
+        // getDonationStatitics(fund_id.toString(), new Date(), fromDate).then((data) => {
+        //     data && setDonationStatics(data)
+        // }).catch((err) => { })
 
 
     }, [])
@@ -319,7 +324,22 @@ function FundRaiserView(): React.ReactElement {
                     <div className='mt-5 flex gap-5'>
                         <div className="w-3/4">
                             <div className='bg-white p-3 rounded-md'>
-                                <input type="date" />
+                                <DateRangePicker
+                                    label="Stay duration"
+                                    className="max-w-xs"
+                                />
+                                {/* <DateRangePicker localeText={{ start: 'Check-in', end: 'Check-out' }} /> */}
+                                {/* <DatePicker
+                                    //@ts-ignore
+                                    selectsRange={true}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    onChange={(update) => {
+                                        alert(update)
+                                        // setDateRange(update);
+                                    }}
+                                    withPortal
+                                /> */}
                                 <CChart
                                     type="line"
                                     data={{

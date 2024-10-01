@@ -7,7 +7,7 @@ const nextConfig = {
         PUBLIC_IMAGE_URL: "/images"
     },
     images: {
-        domains: ['localhost', 'fund-raiser.s3.amazonaws.com', 'kettocdn.gumlet.io', 'flowbite.com'],
+        domains: ['localhost', 'fund-raiser.s3.amazonaws.com', 'kettocdn.gumlet.io', 'flowbite.com', 'images.unsplash.com'],
     },
     typescript: {
         ignoreBuildErrors: true,

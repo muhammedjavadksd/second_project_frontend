@@ -7,8 +7,32 @@ import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IDonationStatitics, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, FundRaiserFileType, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
+import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, CreateChatVia, FundRaiserFileType, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
+
+export async function createChat(to_profileid: string, msg: string, type: CreateChatVia): Promise<boolean> {
+
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user")
+        if (user) {
+            const requestAPI = await API_axiosInstance.patch(`/profile/create_chat/${type}`, {
+                to_profile: to_profileid,
+                msg
+            }, {
+                headers: {
+                    "authorization": `Bearer ${user.token}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            const response = requestAPI.data;
+            return response.status
+        }
+        return false
+    } catch (e) {
+        return false
+    }
+}
 
 export async function getBloodRequirement(page: number, limit: number, bloodGroup: BloodGroup, urgency?: string): Promise<IPaginatedResponse<IBloodReq>> {
 

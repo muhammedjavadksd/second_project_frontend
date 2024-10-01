@@ -13,6 +13,11 @@ const updateBloodGroupInitialValues = {
     certificate: null
 }
 
+const requestPersonalBloodInitialValues = {
+    unit: '',
+    deadline: '',
+    hospital: ''
+};
 
 function updateBloodDonorPersonalDetailsValues(profile) {
 
@@ -112,4 +117,4 @@ const adminAddFundRaiserInitialValues = {
     about: "",
     description: "",
 }
-export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues }
+export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues, requestPersonalBloodInitialValues }

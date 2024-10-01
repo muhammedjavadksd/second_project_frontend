@@ -49,6 +49,18 @@ interface IBloodDonor {
     __v: number
 }
 
+interface INearestDonor {
+    _id: string
+    donor_id: string
+    full_name: string
+    blood_group: string
+    locatedAt: LocatedAt
+    phoneNumber: number
+    email_address: string
+    status: string
+    distance: string
+}
+
 interface BloodProfile {
     profile: IBloodDonor
     blood_group: string
@@ -60,4 +72,4 @@ interface BloodProfile {
 }
 
 export default IBloodReq
-export type { IBloodDonor, Sample, ILocatedAt, BloodProfile }
+export type { IBloodDonor, Sample, ILocatedAt, BloodProfile, INearestDonor }

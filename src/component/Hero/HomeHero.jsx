@@ -24,7 +24,7 @@ function HomeHero() {
                     </div>
                 </div>
                 <div className='flex justify-center items-center' >
-                    <Image src="/images/promotion/hero-icon.png" width={500} alt="" />
+                    <Image src="/images/promotion/hero-icon.png" height={0} width={500} alt="" />
                 </div>
             </div>
         </div>

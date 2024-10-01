@@ -76,6 +76,8 @@ function Header() {
           <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center mr-5">
               <Image
+                width={64}
+                height={64}
                 className="h-8 w-auto"
                 src="/images/company/logo.png"
                 alt="Your Company"
@@ -109,6 +111,8 @@ function Header() {
                   </Link>
                 ) : (
                   <Image
+                    width={64}
+                    height={64}
                     onClick={() => {
                       setShowToggle((prev) => !prev);
                     }}

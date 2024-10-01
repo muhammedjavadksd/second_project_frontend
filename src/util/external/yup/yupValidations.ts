@@ -145,4 +145,17 @@ const editFundRaiseDescriptionValidation = yup.object().shape({
     description: yup.string().typeError("Please enter valid description").test("WordCount", "Please provide minimum 50 words", (val) => val.split(" ").length >= 50).required("Description is required"),
 })
 
-export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation }
+const requestPersonalBlood = yup.object().shape({
+    unit: yup.number()
+        .required('Unit is required')
+        .positive('Unit must be a positive number')
+        .integer('Unit must be an integer'),
+    deadline: yup.date()
+        .required('Deadline is required')
+        .min(new Date(), 'Deadline cannot be in the past'),
+    hospital: yup.string()
+        .required('Hospital name is required')
+        .min(2, 'Hospital name must be at least 2 characters')
+});
+
+export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation, requestPersonalBlood }

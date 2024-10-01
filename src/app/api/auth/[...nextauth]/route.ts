@@ -7,7 +7,7 @@ import API_axiosInstance from "@/util/external/axios/api_axios_instance"
 import { IAdminSessionData, IOrganizationSessionData, IUserSessionData } from "@/util/types/InterFace/UtilInterface"
 import { userDetailsFromGetSession } from "@/util/data/helper/authHelper"
 import { getSession } from "next-auth/react"
-import { headers } from "next/headers"
+import { cookies, headers } from "next/headers"
 import { log, profile } from "console"
 import Cookies from "universal-cookie"
 import { serialize } from "cookie"
@@ -103,10 +103,10 @@ let authOptions = {
                                     blood_token: user_data.blood_token,
                                     profile_id: user_data.profile_id,
                                 }
-                                console.log("Storing data");
 
-                                console.log(storingData);
-
+                                // sessionStorage.setItem("name", "My name")
+                                const cookieStore = cookies();
+                                cookieStore.set("name", "My name is")
                                 return storingData
                             } else {
                                 return null

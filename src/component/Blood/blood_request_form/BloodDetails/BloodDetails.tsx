@@ -125,22 +125,17 @@ function BloodRequestDetails({ state }): React.ReactElement {
                                 </div>
                                 <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select hospital</label>
                                 <Select options={location}
-                                    //     onChange={(new)=>{
-                                    // }}
+
                                     onChange={(newVal) => {
                                         console.log(newVal)
                                         setSelectedLocation(newVal)
                                     }}
                                     onInputChange={(newPlace) => {
-                                        // alert(newPlace)
                                         findNearestPlace(newPlace)
                                     }}>
                                 </Select>
 
-                                {/* <Field type="text" id="hospital_name" name="hospital_name" className=" shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-ligh" /> */}
-                                {/* <ul className="absolute w-full rounded-lg shadow-lg">
-                                    <li><LocationItem /></li>
-                                </ul> */}
+
                                 <ErrorMessage name="hospital_name" component="div" className="errorMessage" />
                             </div>
 

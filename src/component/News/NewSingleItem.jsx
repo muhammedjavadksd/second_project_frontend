@@ -6,7 +6,7 @@ function NewSingleItem() {
         <div>
             <div class="mb-5 max-w-sm bg-white border border-gray-200  shadow dark:bg-gray-800 dark:border-gray-700">
                 <a href="#">
-                    <Image className="next-image" src="/images/fundRaisers/fundRaiser1.png" alt="" />
+                    {/* <Image width={300} className="next-image" src="/images/fundRaisers/fundRaiser1.png" alt="" /> */}
                 </a>
                 <div class="p-5 pb-0">
                     <div class="grid  mb-3 grid-cols-3 gap-3 items-center	">

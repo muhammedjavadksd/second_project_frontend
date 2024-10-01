@@ -10,11 +10,15 @@ import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 function EditProfileComponent({ editPersonalDetails }): React.ReactElement {
 
     const [initialValues, setInitialValues] = useState({})
-    const session = useSession();
+    const { data: session, update } = useSession();
 
-    function successCB(): void {
+    async function successCB(): Promise<void> {
         console.log("Profile update success");
         toast.success("Profile updated success")
+        const newData = { ...session, token: { ...session['token'] || {}, user: { ...session['token']['user'], first_name: "My name is Muhammed Javad" } } }
+        await update(newData)
+        console.log("My session");
+        console.log(newData);
     }
 
     function errorCB(err: string): void {
@@ -25,6 +29,9 @@ function EditProfileComponent({ editPersonalDetails }): React.ReactElement {
         console.log(session);
 
         const profile = userDetailsFromUseSession(session, "user");
+        console.log(session);
+
+        // const firstName = new Cookies
         console.log(profile);
 
         if (profile) {

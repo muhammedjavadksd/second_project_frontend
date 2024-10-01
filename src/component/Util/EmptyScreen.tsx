@@ -10,6 +10,8 @@ function EmptyScreen({ msg }) {
 
     return (<div className='bg-gray-100 min-h-96 flex items-center justify-center flex-col border border-gray-200 rounded-lg shadow-md p-6 text-center'>
         <Image
+            width={64}
+            height={64}
             src="/images/icons/no-data-found.png"
             alt="No data found"
             className='w-24 h-24 mx-auto mb-4'

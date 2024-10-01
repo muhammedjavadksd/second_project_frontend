@@ -63,6 +63,10 @@ export function createFundRaiserWhatsappMessage(profile: FundRaiserResponse, sha
     return `https://wa.me/?text=${whatsappMessage}`;
 }
 
+export function generateBloodRequest(units, hospitalName, deadline) {
+    return `Urgent request for ${units} units with in ${deadline}  at ${hospitalName}. Could you come overthere and donate your blood. Thank you.`;
+}
+
 
 export function objectToUrlQuery(object) {
     let query = new URLSearchParams(object)

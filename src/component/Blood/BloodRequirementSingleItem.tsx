@@ -248,7 +248,7 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
             <div className="mb-5 w-full bg-white border border-gray-200  shadow dark:bg-gray-800 dark:border-gray-700">
 
                 <a href="#">
-                    <Image className="w-100" src="/images/blood/APositive.png" alt="" />
+                    <Image className="w-100" width={68} height={68} src="/images/blood/APositive.png" alt="" />
                 </a>
                 <BloodCard location={location} group={group} onDonateBlood={onDonateBlood} unit={unit} username={username} deadLine={deadLine} />
             </div>

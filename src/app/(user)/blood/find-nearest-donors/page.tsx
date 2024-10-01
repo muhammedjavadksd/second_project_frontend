@@ -6,17 +6,20 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { FaSearch, FaTint, FaMapMarkerAlt } from 'react-icons/fa';
 import SectionTitle from '@/component/Util/SectionTitle'
-import { findNearest } from '@/util/data/helper/APIHelper'
+import { findNearest, findPlaces } from '@/util/data/helper/APIHelper'
 import PaginationSection from '@/component/Util/PaginationSection'
-import { IPaginatedResponse } from '@/util/types/InterFace/UtilInterface'
-import { IBloodDonor } from '@/util/types/API Response/Blood'
+import { IPaginatedResponse, SelectedHospital } from '@/util/types/InterFace/UtilInterface'
+import { IBloodDonor, INearestDonor } from '@/util/types/API Response/Blood'
 import { toast } from 'react-toastify';
 import ModelItem from '@/component/Util/ModelItem';
 import AskLocation from '@/component/Util/AskLocation';
 import ModelHeader from '@/component/Util/Model/ModelHeader';
+import BloodDonorCard from '@/component/Blood/DonorCard';
+import EmptyScreen from '@/component/Util/EmptyScreen';
+import { usePlacesWidget } from 'react-google-autocomplete';
+import Select from 'react-select'
 
 const BloodDonorSearch = () => {
-    const [map, setMap] = useState(null);
     const [center, setCenter] = useState({ lat: 40.7128, lng: -74.0060 });
     const [zoom, setZoom] = useState(8);
     const [selectedDonor, setSelectedDonor] = useState<IBloodDonor>(null);
@@ -26,10 +29,12 @@ const BloodDonorSearch = () => {
     const [donors, setDonors] = useState<IBloodDonor[]>([]);
     const [locationAccess, setLocationAccess] = useState(null);
     const [isOpen, setIsOpen] = useState(true);
+    const [location, setLocation] = useState([]);
+    const [isSearching, setSearching] = useState<boolean>(false)
+    const [selectedLocation, setSelectedLocation] = useState<SelectedHospital>(null);
 
 
     useEffect(() => {
-        alert(currentLocation)
         if (currentLocation) {
             setCenter({ lat: currentLocation[1], lng: currentLocation[0] })
         }
@@ -38,18 +43,14 @@ const BloodDonorSearch = () => {
 
 
     useEffect(() => {
-        // alert(currentLocation)
         setRefresh(!refresh)
     }, [bloodTypeFilter, currentLocation])
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(({ coords }) => {
-            // alert(coords)
             setCurrentLocation([coords.longitude, coords.latitude])
         }, (err) => {
             console.log(err);
-
-            // alert(err)
         })
     }, [])
 
@@ -57,6 +58,35 @@ const BloodDonorSearch = () => {
         width: '100%',
         height: '400px',
     };
+    async function findNearestPlace(query) {
+
+        try {
+            setSearching(true)
+            const find = await findPlaces(query)
+            console.log(find);
+
+            if (find) {
+                const allLocation = find.map((city) => {
+
+                    const streetName = city?.display_name
+                    const streetId = city?.place_id
+                    return {
+                        value: streetId,
+                        label: streetName
+                    }
+                })
+                console.log(allLocation);
+
+                setLocation(allLocation)
+            } else {
+                setSearching(false)
+            }
+        } catch (e) {
+            console.log(e);
+            setSearching(false)
+        }
+    }
+
 
 
     async function handleSearch(page: number, limit: number): Promise<IPaginatedResponse<IBloodDonor[]>> {
@@ -82,7 +112,10 @@ const BloodDonorSearch = () => {
         }
     };
 
-    const filteredDonors = []
+    // const { ref } = usePlacesWidget({
+    //     apiKey: "AIzaSyDr2_r_ejwoLRx5FB3sMdwSbTdxRUIsY8k",
+    //     onPlaceSelected: (place) => console.log(place)
+    // })
 
     return (
         <>
@@ -99,7 +132,12 @@ const BloodDonorSearch = () => {
 
                     <div className=" flex justify-center p-1">
                         <div className="relative w-full">
-                            <input type="text" className="w-full backdrop-blur-sm bg-white/20 py-2 pl-10 pr-4 rounded-lg focus:outline-none border-2 border-gray-100 focus:border-violet-300 transition-colors duration-300" placeholder="Search..." />
+                            {/* <AutoComplete
+                                apiKey={YOUR_GOOGLE_MAPS_API_KEY}
+                                onPlaceSelected={(place) => console.log(place)}
+                            /> */}
+                            <input type="text" className="w-full backdrop-blur-sm bg-white/20 py-2 pl-10 pr-4 rounded-lg focus:outline-none border-2 border-gray-100 focus:border-violet-300 transition-colors duration-300" placeholder="Search location..." />
+
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg className="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
@@ -122,12 +160,11 @@ const BloodDonorSearch = () => {
                     </select>
                 </div>
 
-                <LoadScript googleMapsApiKey="AIzaSyDr2_r_ejwoLRx5FB3sMdwSbTdxRUIsY8k_">
+                <LoadScript googleMapsApiKey="AIzaSyDr2_r_ejwoLRx5FB3sMdwSbTdxRUIsY8k">
                     <GoogleMap
                         mapContainerStyle={mapContainerStyle}
                         center={center}
                         zoom={zoom}
-                        onLoad={(map) => setMap(map)}
                     >
                         {donors.map((donor) => (
                             <Marker
@@ -163,8 +200,18 @@ const BloodDonorSearch = () => {
                                 return handleSearch(page, limit)
                             },
                         }}
-                        itemsRender={(donors) => {
-                            return donors.length
+                        itemsRender={(donors: INearestDonor[]) => {
+                            return donors && donors.length ? (
+                                <div className='grid grid-cols-3 gap-5'>
+                                    {
+                                        donors.map((each, index) => {
+                                            return (
+                                                <BloodDonorCard lati={each.locatedAt.coordinates[0]} long={each.locatedAt.coordinates[1]} key={index} bloodGroup={each.blood_group} distance={each.distance} email_id={each.email_address} name={each.full_name} />
+                                            )
+                                        })
+                                    }
+                                </div>
+                            ) : <EmptyScreen msg={"No donor's found"} />
                         }}
                         paginationProps={{ current_page: 1, currentLimit: 10 }}
                         refresh={!!refresh}
