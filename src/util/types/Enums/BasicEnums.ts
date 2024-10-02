@@ -1,4 +1,10 @@
 
+enum BloodGroupUpdateStatus {
+    Pending = "pending",
+    Completed = "completed",
+    Rejected = "rejected"
+}
+
 enum CreateChatVia {
     DonorId = "donor-id",
     ProfileId = "profile_id"
@@ -190,4 +196,4 @@ enum FundRaiserEdit {
     Description
 }
 
-export { TicketStatus, FileAcceptType, BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode, FundRaiserEdit, BankAccountType, CreateChatVia }
+export { TicketStatus, FileAcceptType, BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode, FundRaiserEdit, BankAccountType, CreateChatVia, BloodGroupUpdateStatus }

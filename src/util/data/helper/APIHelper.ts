@@ -1,6 +1,6 @@
 
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
-import IBloodReq, { BloodProfile, IBloodDonor, ILocatedAt } from "@/util/types/API Response/Blood";
+import IBloodReq, { BloodProfile, IBloodDonor, IBloodGroupUpdateTemplate, ILocatedAt } from "@/util/types/API Response/Blood";
 import { FormActionResponse, HospitalResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
@@ -8,10 +8,77 @@ import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IDonationStatitics, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
+import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
-//add-requirement 
+//blood_group_change_requests/:limit/:page/:status
+
+export async function getBloodGroupChangeRequest(page: number, limit: number, status: BloodGroupUpdateStatus): Promise<IPaginatedResponse<IBloodGroupUpdateTemplate>> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const params = status ? `${limit}/${page}/${status}` : `${limit}/${page}`
+            const requestAPI = await API_axiosInstance.get(`/blood/admin/blood_group_change_requests/${params}`,
+                {
+                    headers: {
+                        "authorization": `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+            )
+            const response = requestAPI.data;
+            return response.data
+        } else {
+            return {
+                paginated: [],
+                total_records: 0
+            }
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
+
+export async function updateBloodGroupAdmin(request_id: string, status: BloodGroupUpdateStatus): Promise<FormActionResponse> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const requestAPI = await API_axiosInstance.patch(`/blood/admin/update_blood_group/${request_id}/${status}`, {},
+                {
+                    headers: {
+                        "authorization": `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+            )
+            const response = requestAPI.data;
+            return {
+                msg: response.msg,
+                status: response.status
+            }
+        } else {
+            return {
+                msg: "Un authraized access",
+                status: false
+            }
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
+
+
 export async function adminAddBloodReq(patientName: string, unit: number, neededAt: Date, status: BloodStatus, blood_group: BloodGroup, locatedAt: HospitalResponse, address: string, phoneNumber: number, email_address: string): Promise<FormActionResponse> {
     try {
         const session = await getSession();

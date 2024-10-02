@@ -1,7 +1,17 @@
-import { BloodCloseCategory, BloodGroup, BloodStatus, Relationship } from "../Enums/BasicEnums"
+import { BloodCloseCategory, BloodGroup, BloodGroupUpdateStatus, BloodStatus, Relationship } from "../Enums/BasicEnums"
 
 interface Sample {
     name: string
+}
+
+interface IBloodGroupUpdateTemplate {
+    _id: string,
+    donor_id: string,
+    date: Date,
+    new_group: BloodGroup,
+    certificate: string,
+    status: BloodGroupUpdateStatus,
+    donor: IBloodDonor
 }
 
 interface ILocatedAt {
@@ -72,4 +82,4 @@ interface BloodProfile {
 }
 
 export default IBloodReq
-export type { IBloodDonor, Sample, ILocatedAt, BloodProfile, INearestDonor }
+export type { IBloodDonor, Sample, ILocatedAt, BloodProfile, INearestDonor, IBloodGroupUpdateTemplate }
