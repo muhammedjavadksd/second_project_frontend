@@ -13,6 +13,11 @@ async function getAIDescription(amount: number, category: string, sub_category: 
     const urlParamsObject = { amount, category, sub_category, raiser_name, raiser_age, benificiary_relation, description, city, pinCode, state, district };
     const query = objectToUrlQuery(urlParamsObject);
 
+    console.log(query);
+    console.log("The query is ehere");
+
+
+
     try {
         if (const_data.AI_DESCRIPTION_GENERATION) {
             const data: AxiosResponse = await axios_instance.get(`/api/user_api/fund_raiser/ai_description?${query}`)

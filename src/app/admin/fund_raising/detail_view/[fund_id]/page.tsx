@@ -14,10 +14,10 @@ import { getSingleUser } from '../../logic/fund-raiser-logic'
 import TableHead from '@/component/Util/Table/TableHead'
 import TableBody from '@/component/Util/Table/TableBody'
 import { FaCloudUploadAlt, FaTrash } from 'react-icons/fa'
-import { adminFundRaiserFileUpload, deleteFundRaiserImageAdmin, findDonationHistroyApi, getDonationStatitics } from '@/util/data/helper/APIHelper'
+import { adminFundRaiserFileUpload, closeFundRaise, closeFundRaiseByAdmin, deleteFundRaiserImageAdmin, findDonationHistroyApi, getDonationStatitics, updateFundRaiserStatus } from '@/util/data/helper/APIHelper'
 import { SetPicturs } from '@/util/external/redux/slicer/fundRaiserForm'
 import { toast } from 'react-toastify'
-import { FundRaiserFileType } from '@/util/types/Enums/BasicEnums'
+import { FundRaiserFileType, FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
 import LoadingComponent from '@/component/Util/LoadingComponent'
 import { confirmAlert } from 'react-confirm-alert'
 import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
@@ -26,8 +26,13 @@ import Image from 'next/image'
 import LoadImage from '@/component/Util/ImageLoading'
 import PaginationSection from '@/component/Util/PaginationSection'
 import EmptyScreen from '@/component/Util/EmptyScreen'
-import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
-
+import { closeFundRaiserText, formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
+import CustomeConfirmUI from '@/component/Util/ConfirmUI'
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import ModelItem from '@/component/Util/ModelItem'
+import ModelHeader from '@/component/Util/Model/ModelHeader'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { boolean } from 'yup'
 
 function FundRaiserDetailView(): React.ReactElement {
     var CanvasJSChart: CanvasJSReact = CanvasJSReact.CanvasJSChart;
@@ -43,26 +48,38 @@ function FundRaiserDetailView(): React.ReactElement {
     const date = new Date();
     date.setDate(date.getDate() - 30);
     const [dateRange, setDateRange] = useState([date, new Date()]);
+    const [status, setStatus] = useState<FundRaiserStatus>(null);
+    const [closeModel, toggleModel] = useState<boolean>(false);
+    const [verificationText, setVerificationText] = useState<string>(null);
+    const [isClosed, toggleClose] = useState<boolean>(false);
 
 
-    useEffect(() => {
-        getDonationStatitics(fund_id.toString(), dateRange[1], dateRange[0]).then((data) => {
-            if (data) {
-                const fundRaiserGrowth = data.map((each) => {
-                    return {
-                        x: each.date,
-                        y: each.amount
-                    }
-                })
-                setFundRaiserGraph(fundRaiserGrowth)
+    function onUpdateStatus(status: FundRaiserStatus) {
+        confirmAlert({
+            title: "Are you sure want to update this profile?",
+            message: "Update profile",
+            customUI: ({ onClose, title }) => {
+                return (
+                    <CustomeConfirmUI
+                        onClose={onClose}
+                        onConfirm={() => {
+                            updateFundRaiserStatus(status, fund_id.toString()).then((data) => {
+                                setStatus(status)
+                                toast.success("Status updated")
+                                onClose()
+                                toggleClose(true)
+                            }).catch((err) => {
+                                toast.error("Fund raiser status not allowed!")
+                                onClose()
+                            })
+                        }}
+                        title={title}
+                    />
+                )
             }
-        }).catch((err) => { })
-    }, [])
+        })
 
-
-
-
-
+    }
 
     function onFileUpload(files: FileList, type: FundRaiserFileType) {
         if (type == FundRaiserFileType.Document) {
@@ -92,11 +109,40 @@ function FundRaiserDetailView(): React.ReactElement {
                 setFundRaiserProfile(fund_raiser_profile)
                 setImages(fund_raiser_profile.picture)
                 setDocuments(fund_raiser_profile.documents)
+                setStatus(fund_raiser_profile.status)
+                setVerificationText(closeFundRaiserText(fund_raiser_profile.full_name))
+                toggleClose(fund_raiser_profile.closed)
             } else {
                 // router.back()
             }
         } catch (e) {
             console.log(e);
+        }
+    }
+
+    function onClosePost(text) {
+
+        if (verificationText == text) {
+            confirmAlert({
+                title: "Closing fund raiser post?",
+                message: "Close",
+                customUI: ({ onClose, title }) => {
+                    return (
+                        <DangerUIConfirm title={title} onClose={onClose} onConfirm={() => {
+                            closeFundRaiseByAdmin(fund_id.toString()).then((data) => {
+                                data.status ? toast.success(data.msg) : toast.error(data.msg);
+                            }).catch((err) => {
+                                toast.error("Something went wrong")
+                            }).finally(() => {
+                                onClose();
+                                toggleModel(false)
+                            })
+                        }} />
+                    )
+                }
+            })
+        } else {
+            toast.error("Incorrect verification text")
         }
     }
 
@@ -132,25 +178,90 @@ function FundRaiserDetailView(): React.ReactElement {
         })
     }
 
+
+
     useEffect(() => {
         fetchProfile()
+        getDonationStatitics(fund_id.toString(), dateRange[1], dateRange[0]).then((data) => {
+            if (data) {
+                const fundRaiserGrowth = data.map((each) => {
+                    return {
+                        x: each.date,
+                        y: each.amount
+                    }
+                })
+                setFundRaiserGraph(fundRaiserGrowth)
+            }
+        }).catch((err) => { })
     }, [])
+
+    const dateLeft = new Date(fundRaiserProfile?.deadline).getDate() - new Date().getDate()
 
 
     return (
         < AdminLayout onSearch={() => { }} >
             <div className='grid grid-cols-2'>
                 <div>
-                    <AdminBreadCrumb root={{ title: "Dashboard", href: "/" }} title={`Detail view for ${fundRaiserProfile?.full_name}`} paths={[{ title: "Manage Fund Raiser's", href: "/" }, { title: "View Fund Raiser", href: "/" }]} />
+                    <AdminBreadCrumb root={{ title: "Dashboard", href: "/" }} title={`Detail view for ${fundRaiserProfile?.full_name ?? ""}`} paths={[{ title: "Manage Fund Raiser's", href: "/" }, { title: "View Fund Raiser", href: "/" }]} />
                 </div>
 
                 <div className='buttonGroups flex items-center justify-end gap-3'>
-                    <button className='bg-blue-600 text-sm text-white p-2 rounded-lg pl-5 pr-5'><i className="fa-solid fa-download"></i> Export </button>
-                    <button className='bg-red-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Close the case </button>
-                    <button className='bg-green-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Verify Case </button>
+                    {
+                        !isClosed && (
+                            <button onClick={() => toggleModel(true)} className='bg-red-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Close the case </button>
+                        )
+                    }
+                    {
+                        !isClosed && (
+                            <div className='flex gap-2'>
+                                {
+                                    status != FundRaiserStatus.APPROVED && <button className='bg-green-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => onUpdateStatus(FundRaiserStatus.APPROVED)}> Approve case </button>
+                                }
+                                {status != FundRaiserStatus.HOLD && <button className='bg-yellow-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => onUpdateStatus(FundRaiserStatus.HOLD)}> Hold case </button>}
+                                {status != FundRaiserStatus.REJECTED && <button className='bg-red-700 text-sm text-white p-2 rounded-lg pl-5 pr-5' onClick={() => onUpdateStatus(FundRaiserStatus.REJECTED)}> Reject case </button>}
 
+                            </div>
+                        )
+                    }
                 </div>
             </div>
+
+            {
+                isClosed && (
+                    <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 mt-2 dark:text-red-400" role="alert">
+                        <span className="font-medium">Closed!</span> This fund raiser campign already closed!
+                    </div>
+                )
+            }
+
+
+
+            <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={closeModel} onClose={() => toggleModel(false)} >
+                <ModelHeader title={"Close the fund raiser"} />
+                <div className='bg-white  p-5'>
+                    <Formik onSubmit={(val) => onClosePost(val.validation_text)} initialValues={{ validation_text: "" }}>
+                        {({ values }) => {
+                            return <Form>
+                                <div className="mb-5" >
+                                    <div className='mb-2'>
+                                        <label htmlFor="validation_text" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white" >
+                                            To verify, type : <span className='text-sm font-light'>{verificationText}</span>
+                                        </label >
+                                    </div>
+                                    <Field type="text" name="validation_text" id="validation_text" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required placeholder="" />
+                                    <ErrorMessage component={"div"} className='errorMessage' name="validation_text"></ErrorMessage>
+                                </div >
+                                {
+                                    values['validation_text'] == verificationText && <div className='mt-5 ml-auto flex gap-3 justify-end w-full overflow-hidden'>
+                                        <button type="submit" className={`w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>Conform</button>
+                                    </div >
+                                }
+                            </Form>
+                        }}
+                    </Formik>
+                </div>
+            </ModelItem>
+
             <LoadingDataNotFoundComponent isFound={!!fundRaiserProfile} isLoading={!((!!fundRaiserProfile))}>
                 <div className='flex mt-5 gap-5'>
                     <div className='w-1/4'>
@@ -234,6 +345,9 @@ function FundRaiserDetailView(): React.ReactElement {
                             <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Target"} data={`${fundRaiserProfile?.amount}${const_data.MONEY_ICON}`} />
                             <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Collected"} data={`${fundRaiserProfile?.collected}${const_data.MONEY_ICON}`} />
                             <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Deadline"} data={new Date(fundRaiserProfile?.deadline).toLocaleDateString()} />
+                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Day's left"} data={dateLeft} />
+                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Goal"} data={`${((fundRaiserProfile?.amount - fundRaiserProfile?.collected) < 0 ? `+${fundRaiserProfile?.amount - fundRaiserProfile?.collected}` : fundRaiserProfile?.amount - fundRaiserProfile?.collected)} ${const_data.MONEY_ICON}`} />
+                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Status"} data={status} />
                         </div>
                         <div className="mt-5 w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
                             <div className="flex justify-between">

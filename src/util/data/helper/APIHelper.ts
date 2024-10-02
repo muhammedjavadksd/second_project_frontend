@@ -7,9 +7,35 @@ import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IDonationStatitics, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, CreateChatVia, FundRaiserFileType, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
+import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
+export async function updateFundRaiserStatus(status: FundRaiserStatus, fundId: string): Promise<boolean> {
+
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const requestAPI = await API_axiosInstance.patch(`/fund_raise/admin/update-status`, {
+                status
+            },
+                {
+                    headers: {
+                        "authorization": `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+            )
+            const response = requestAPI.data;
+            return response.status
+        } else {
+            return false
+        }
+    } catch (e) {
+        return false
+    }
+}
 
 export async function adminUpdateSettings(email_id: string, password: string): Promise<FormActionResponse> {
 
@@ -888,6 +914,34 @@ export async function closeFundRaise(fund_id: string): Promise<boolean> {
         }
     } catch (e) {
         return false
+    }
+}
+
+export async function closeFundRaiseByAdmin(fund_id: string): Promise<FormActionResponse> {
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "admin");
+        const token = data.token;
+
+        const closeRequest = await API_axiosInstance.patch(`fund_raise/admin/close/${fund_id}`, {}, {
+            headers: {
+                authorization: `Bearer ${token}`,
+            }
+        })
+        const response = closeRequest.data;
+
+        return {
+            msg: response.msg,
+            status: response.status
+        }
+
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        console.log(errorMsg);
+        return {
+            msg: errorMsg,
+            status: false
+        }
     }
 }
 

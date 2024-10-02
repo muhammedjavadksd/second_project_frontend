@@ -5,6 +5,11 @@ import axios from "axios"
 import { confirmAlert } from "react-confirm-alert"
 
 
+export function closeFundRaiserText(name) {
+    return `Close ${name} fund raiser's post`
+}
+
+
 export function createFundRaiserWhatsappMessage(profile: FundRaiserResponse, shareLink: string) {
 
     const {

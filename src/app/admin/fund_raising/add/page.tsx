@@ -12,28 +12,26 @@ import { adminAddFundRaiser } from '@/util/data/helper/APIHelper'
 import { useRouter } from 'next/navigation'
 import { adminAddFundRaiseValidation } from '@/util/external/yup/yupValidations'
 import getAIDescription from '@/component/FundRaiser/CreateSteps/AIDescription/Logic'
+import LoadingComponent from '@/component/Util/LoadingComponent'
 
 function AdminFundRaiseAdd(): React.ReactElement {
 
     let router = useRouter();
     let [subCategory, setSubCategory] = useState([])
     const [district, setDistrict] = useState([])
-    const [isLoading, setLoading] = useState(true)
-    const [initialValues, setInitialValues] = useState(adminAddFundRaiserInitialValues)
+    const [isLoading, setLoading] = useState(false)
 
 
     const reGenerateAIDescription = (val) => {
-        getAIDescription(val?.amount, val.category, val.sub_category, val.raiser_name, val.raiser_age, val.benificiary_relation, val.description, val.city, val.pinCode, val.state, val.district).then((data) => {
-            console.log("The wait is over");
-            console.log("The ai data");
-            console.log(data);
-            setInitialValues({ ...initialValues, description: data })
-            setLoading(false)
-        }).catch((err) => {
-            console.log(err);
-            console.log("Error occured");
-            setLoading(false)
-        })
+        try {
+            console.log(val);
+            alert("Check console")
+
+            const data = getAIDescription(val?.amount, val.category, val.sub_category, val.raiser_name, val.raiser_age, val.benificiary_relation, val.description, val.city, val.pinCode, val.state, val.district)
+            return data
+        } catch (e) {
+            return null
+        }
     }
 
 
@@ -58,8 +56,12 @@ function AdminFundRaiseAdd(): React.ReactElement {
                             validationSchema={adminAddFundRaiseValidation}
                             initialValues={adminAddFundRaiserInitialValues}
                         >
-                            {({ errors, values, setFieldValue, setFieldTouched, handleSubmit, isValid }) => (
-                                <Form>
+                            {({ errors, values, setFieldValue, setFieldTouched, handleSubmit, isValid, dirty }) => {
+
+                                const canProceed = Object.keys(errors).length == 1 && !!errors['description']
+                                const canRegenerate = Object.keys(errors).length == 0
+
+                                return <Form>
                                     <div className="grid  gap-x-10 gap-y-5 grid-cols-2 mb-1">
 
                                         <div>
@@ -243,23 +245,36 @@ function AdminFundRaiseAdd(): React.ReactElement {
 
                                     </div>
 
+
+
+
                                     {
-                                        isValid && <div className='mt-5'>
+                                        (canProceed && dirty || values['description']) && <div className='mt-5'>
                                             <div className='flex justify-between'>
                                                 <label htmlFor="description" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Provide a detailed description of the cause you are fundraising for. </label>
-                                                <button disabled={isLoading} onClick={() => reGenerateAIDescription(values)} className="disabled:cursor-not-allowed disabled:opacity-50 bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                                <button type="button" disabled={isLoading} onClick={() =>
+
+                                                    (canProceed || canRegenerate) && (
+                                                        setLoading(true),
+                                                        reGenerateAIDescription(values).then((data) => setFieldValue("description", data)).finally(() => {
+                                                            setLoading(false)
+                                                        })
+                                                    )
+                                                } className={`${!(canProceed || canRegenerate) && "cursor-not-allowed"} bg-blue-500 ml-auto hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full`}>
                                                     Re-generate FROM AI
                                                 </button>
                                             </div>
-                                            <Field rows={4} as="textarea" name="description" id="description" className="mb-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                            <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false} >
+                                                <Field rows={4} as="textarea" name="description" id="description" className="mb-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                            </LoadingComponent>
                                             <ErrorMessage className='errorMessage' component={"div"} name='description'></ErrorMessage>
                                         </div>
                                     }
                                     <div className='mt-5 ml-auto flex gap-3 justify-end w-full overflow-hidden'>
-                                        <button type="submit" disabled={!isValid} className={`${!isValid && "cursor-not-allowed"} float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>Next <i className="fa-solid fa-chevron-right"></i></button>
+                                        <button type="submit" disabled={!canProceed} className={`${(!canProceed) && "cursor-not-allowed"} float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>Next <i className="fa-solid fa-chevron-right"></i></button>
                                     </div >
                                 </Form>
-                            )}
+                            }}
                         </Formik>
                     </div>
                 </div>

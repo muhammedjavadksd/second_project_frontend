@@ -102,7 +102,7 @@ function ViewFundRaising(): React.ReactElement {
 
     useEffect(() => {
         fetchAllData(tableLimit, tablePage)
-    }, [query, status])
+    }, [query, status, tablePage])
 
 
 
