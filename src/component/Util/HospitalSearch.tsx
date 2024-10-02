@@ -4,6 +4,9 @@ import { HospitalResponse } from '@/util/types/InterFace/UtilInterface';
 
 
 const HospitalSearch = ({ selectedHospital, searchRef }: { selectedHospital: Function, searchRef: Ref<HTMLInputElement> }) => {
+
+    console.log(process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "");
+
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "",
         libraries: ['places']
@@ -42,7 +45,7 @@ const HospitalSearch = ({ selectedHospital, searchRef }: { selectedHospital: Fun
                     ref={searchRef}
                     onChange={handleInputChange}
                     type="text"
-                    placeholder="Search for a location..."
+                    placeholder="Search for a hospital..."
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
                 />
             </Autocomplete>

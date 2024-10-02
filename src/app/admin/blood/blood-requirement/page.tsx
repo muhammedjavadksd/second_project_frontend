@@ -6,12 +6,16 @@ import AdminPrivateRouter from "@/component/LoginComponent/AdminPrivateRouter"
 import BloodReqSlider from "@/component/section/Home/BloodReqSlider"
 import AdminBreadCrumb from "@/component/Util/AdminBreadCrumb"
 import DropDownItem from "@/component/Util/DropdownItem"
+import EmptyScreen from "@/component/Util/EmptyScreen"
+import HospitalSearch from "@/component/Util/HospitalSearch"
 import PaginationSection from "@/component/Util/PaginationSection"
-import { findBloodResponse, searchHealthCenters } from "@/util/data/helper/APIHelper"
+import { findBloodResponse, findPaginatedBloodRequirement, searchHealthCenters } from "@/util/data/helper/APIHelper"
+import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper"
+import IBloodReq from "@/util/types/API Response/Blood"
 import { BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums"
-import { MapApiResponse } from "@/util/types/InterFace/UtilInterface"
+import { IOptionLabel, MapApiResponse, SelectedHospital } from "@/util/types/InterFace/UtilInterface"
 import { useRouter } from "next/navigation"
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import ReactSelect from "react-select"
 
 
@@ -19,17 +23,21 @@ function Page() {
 
     const [selectedBloodGroup, setBloodGroup] = useState<BloodGroup>()
     const [closedOnly, setClosed] = useState<boolean | null>()
-    const [status, setStatus] = useState<BloodStatus>()
+    const [status, setStatus] = useState<IOptionLabel>()
     const [hospitals, setAllHospitals] = useState<MapApiResponse[]>([])
     const [nearestHospital, setHospitals] = useState<[]>([])
     const [places, setPlaces] = useState<{}[]>([])
     const [isLoading, setLoading] = useState<boolean>(false)
+    const [refresh, setRefresh] = useState<boolean>(false)
+    const [hospital, setHospital] = useState<SelectedHospital>(null)
     const router = useRouter();
+    const hospitalRef = useRef();
 
     function reset() {
         setBloodGroup(null)
         setClosed(null)
         setStatus(null)
+        setRefresh(!refresh)
     }
 
     useEffect(() => {
@@ -69,38 +77,41 @@ function Page() {
                         </div>
                         <div className="flex justify-between">
                             <div className='buttonGroups flex items-center justify-start mt-3 gap-3' >
-                                <button className={`${closedOnly ? 'bg-blue-800' : 'bg-blue-600'} text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => { setClosed(!closedOnly) }}> <i className="fa-solid fa-bars" > </i> Closed Only</button >
-                                <DropDownItem callBack={(val) => { setStatus(val) }} isOpen={false} options={Object.values(BloodStatus)} title="Select  status" />
-                                <DropDownItem callBack={(val) => { setBloodGroup(val) }} isOpen={false} options={Object.values(BloodGroup)} title="Select blood group" />
+                                <button className={`${closedOnly ? 'bg-blue-800' : 'bg-blue-600'} text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => { setClosed(!closedOnly), setRefresh(!refresh) }}> <i className="fa-solid fa-bars" > </i> Closed Only</button >
+                                <DropDownItem callBack={(val) => { setStatus(val), setRefresh(!refresh) }} isOpen={false} optionsType={[{ label: "All", value: null }, { label: "Approved", value: BloodStatus.Approved }, { label: "Pending", value: BloodStatus.Pending }]} title="Select  status" />
+                                <DropDownItem callBack={(val) => { setBloodGroup(val), setRefresh(!refresh) }} isOpen={false} options={Object.values(BloodGroup)} title="Select blood group" />
                             </div>
-                            <form action="#" method="GET" className="hidden lg:block lg:pl-2">
-                                <label htmlFor="topbar-search" className="sr-only">Search</label>
-                                <div className="relative mt-1 lg:w-96">
-                                    <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                                        <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" /> </svg>
+                            <HospitalSearch searchRef={hospitalRef} selectedHospital={(hsptl) => { setHospital(hsptl), setRefresh(!refresh) }} />
+                        </div>
+
+
+
+
+                        <PaginationSection
+                            api={{
+                                renderType: (page: number, limit: number) => {
+                                    return findPaginatedBloodRequirement(page, limit, status ? status.value as BloodStatus : null, closedOnly, selectedBloodGroup, hospital);
+                                }
+                            }}
+                            itemsRender={(items: IBloodReq[]) => {
+                                return (items && items.length) ? (
+                                    <div className="grid grid-cols-3 mt-5 gap-3">
+                                        {
+                                            items.map((each) => {
+                                                return (
+                                                    <BloodRequirementItem unit={each.unit} username={each.patientName} deadLine={formatDateToMonthNameAndDate(new Date(each.neededAt))} group={each.blood_group} location={each.locatedAt.hospital_name} onView={() => router.push(`blood-requirement/${each.blood_id}`)} />
+                                                )
+                                            })
+                                        }
                                     </div>
-                                    {/* <SearchSele */}
-                                    <ReactSelect isLoading={isLoading} onInputChange={(e) => searchHospitals(e)} isSearchable options={places} className="pl-10 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                ) : <EmptyScreen msg={'No blood requirement found'} />
+                            }}
+                            paginationProps={{ current_page: 1, currentLimit: 10 }}
+                            refresh={refresh}
+                        >
 
-                                    </ReactSelect>
-                                    {/* <input onChange={(e) => setHospital(e.target.value)} type="text" name="email" id="topbar-search" className="pl-10 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search by hospital name" /> */}
-                                </div>
-                            </form>
-                        </div>
+                        </PaginationSection>
 
-                        <div className="grid grid-cols-3 mt-5 gap-3">
-
-
-
-
-                            <BloodRequirementItem unit={10} username={null} deadLine={new Date().getMilliseconds()} group={BloodGroup.AB_NEGATIVE} location={"Kasaragod"} onView={() => router.push("blood-requirement/123")} />
-                            <BloodRequirementItem unit={10} username={null} deadLine={new Date().getMilliseconds()} group={BloodGroup.AB_NEGATIVE} location={"Kasaragod"} onView={() => router.push("blood-requirement/123")} />
-                            <BloodRequirementItem unit={10} username={null} deadLine={new Date().getMilliseconds()} group={BloodGroup.AB_NEGATIVE} location={"Kasaragod"} onView={() => router.push("blood-requirement/123")} />
-                            <BloodRequirementItem unit={10} username={null} deadLine={new Date().getMilliseconds()} group={BloodGroup.AB_NEGATIVE} location={"Kasaragod"} onView={() => router.push("blood-requirement/123")} />
-                            <BloodRequirementItem unit={10} username={null} deadLine={new Date().getMilliseconds()} group={BloodGroup.AB_NEGATIVE} location={"Kasaragod"} onView={() => router.push("blood-requirement/123")} />
-                            <BloodRequirementItem unit={10} username={null} deadLine={new Date().getMilliseconds()} group={BloodGroup.AB_NEGATIVE} location={"Kasaragod"} onView={() => router.push("blood-requirement/123")} />
-
-                        </div>
 
 
                     </div>

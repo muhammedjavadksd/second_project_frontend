@@ -1,7 +1,7 @@
 
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq, { BloodProfile, IBloodDonor, IBloodGroupUpdateTemplate, ILocatedAt } from "@/util/types/API Response/Blood";
-import { FormActionResponse, HospitalResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
+import { FormActionResponse, HospitalResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi, SelectedHospital } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
@@ -11,7 +11,44 @@ import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } fr
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
-//blood_group_change_requests/:limit/:page/:status
+
+export async function findPaginatedBloodRequirement(page: number, limit: number, status: BloodStatus, closedOnly: boolean, blood_group?: BloodGroup, hospital?: SelectedHospital): Promise<IPaginatedResponse<IBloodReq>> {
+    try {
+        const session = await getSession();
+        const userProfile = userDetailsFromGetSession(session, "admin")
+        const token = userProfile.token;
+
+        let params: string = status ? `${limit}/${page}/${status}` : `${limit}/${page}`
+        let queryObject: Record<string, any> = {};
+        if (blood_group) {
+            queryObject['blood_group'] = blood_group
+            // query = `&blood_group=${blood_group}`
+        }
+        if (hospital) {
+            queryObject['lang'] = hospital.location[0]
+            queryObject['long'] = hospital.location[1]
+        }
+
+        const queryString = new URLSearchParams(queryObject).toString()
+        let query: string = queryString ? `?${queryString}` : "";
+        const find = await API_axiosInstance.get(`blood/admin/blood-requirements/${params}?closed=${closedOnly}${query}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        const response = find.data;
+        return response.data
+    } catch (e) {
+        console.log(e);
+
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
+
 
 export async function getBloodGroupChangeRequest(page: number, limit: number, status: BloodGroupUpdateStatus): Promise<IPaginatedResponse<IBloodGroupUpdateTemplate>> {
     try {
