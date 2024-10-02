@@ -162,4 +162,27 @@ const requestPersonalBlood = yup.object().shape({
         .min(2, 'Hospital name must be at least 2 characters')
 });
 
-export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation, requestPersonalBlood, adminSiteSettings }
+const hospitalSchema = yup.object().shape({
+    hospital_id: yup.string().required('Select active hospital'),
+    coordinates: yup.array()
+        .of(yup.number().required('Select active hospital'))
+        .length(2, 'Select active hospital'),
+    hospital_name: yup.string().required('Select active hospital'),
+});
+
+
+const bloodRequirementAdminValidation = yup.object().shape({
+    email_id: yup.string().email('Invalid email format').required('Email is required'),
+    patientName: yup.string().required('Patient name is required'),
+    unit: yup.number().positive('Unit must be a positive number').required('Unit is required'),
+    status: yup.string().required('Status is required'),
+    blood_group: yup.string().required('Blood group is required'),
+    hospital: hospitalSchema.required("Select valid hospital"),
+    address: yup.string().required('Address is required'),
+    phoneNumber: yup.string().matches(/^[0-9]{10}$/, 'Phone number must be 10 digits').required('Phone number is required'),
+    neededAt: yup.date()
+        .required('Date needed is required')
+        .min(new Date(), 'Date needed must be in the future')
+})
+
+export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation, requestPersonalBlood, adminSiteSettings, bloodRequirementAdminValidation }

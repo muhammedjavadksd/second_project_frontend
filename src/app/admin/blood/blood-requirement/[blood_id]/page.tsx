@@ -9,16 +9,17 @@ import BloodIntrestCard from "@/component/Blood/AdminBloodIntrestCard"
 import MatchedDonors from "@/component/Blood/MatchedDonors"
 import LoadingDataNotFoundComponent from "@/component/Util/LoadingDataNotFound"
 import IBloodReq, { IBloodDonor } from "@/util/types/API Response/Blood"
-import { closeBloodRequestFromAdmin, findBloodResponse, findMatchedBlood, findSingleBloodrequirement } from "@/util/data/helper/APIHelper"
+import { adminBloodVerify, closeBloodRequestFromAdmin, findBloodResponse, findMatchedBlood, findSingleBloodrequirement } from "@/util/data/helper/APIHelper"
 import { useParams } from "next/navigation"
 import PaginationSection from "@/component/Util/PaginationSection"
 import { IBloodDonate, IShowedIntrest } from "@/util/types/InterFace/UtilInterface"
 import EmptyScreen from "@/component/Util/EmptyScreen"
-import { BloodDonationStatus, BloodGroup } from "@/util/types/Enums/BasicEnums"
+import { BloodDonationStatus, BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums"
 import { messageFromBloodConcernce } from "@/util/data/helper/utilHelper"
 import { confirmAlert } from "react-confirm-alert"
 import DangerUIConfirm from "@/component/Util/DangerUIConfirm"
 import { toast } from "react-toastify"
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
 
@@ -29,8 +30,26 @@ function Page() {
     const [isCrossed, setCrossed] = useState<boolean>(false)
     const [requirement, setRequirement] = useState<IBloodReq>(null)
     const [isClosed, setClose] = useState<boolean>(false)
+    const [status, setStatus] = useState<BloodStatus>(null)
     const [closedExaplnataion, setClosingExplanation] = useState<Record<string, any>>({ category: null, explanation: "" })
     const { blood_id } = useParams();
+
+
+    function verifyRequest(status: BloodStatus) {
+        confirmAlert({
+            title: "Are you sure want to verify this request?",
+            message: "Verify requirement",
+            customUI: ({ onClose, title }) => {
+                return <DangerUIConfirm onClose={onClose} onConfirm={() => {
+                    adminBloodVerify(status, blood_id.toString()).then((response) => {
+                        response.status ? toast.success(response.msg) : toast.error(response.msg);
+                    }).finally(() => {
+                        setStatus(status)
+                    })
+                }} title={title}></DangerUIConfirm>
+            }
+        })
+    }
 
 
     function onClose() {
@@ -95,7 +114,7 @@ function Page() {
                             <AdminBreadCrumb title={"Blood requirement"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Blood requirement", href: "/blood/blood-reuirement" }]} />
                         </div>
                         <div className='buttonGroups flex items-center justify-end gap-3'>
-                            <button className='bg-green-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Verify Case </button>
+                            {(!isClosed && status != BloodStatus.Approved) && <button onClick={() => verifyRequest(BloodStatus.Approved)} className='bg-green-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Verify Case </button>}
                             {!isClosed && <button onClick={onClose} className='bg-red-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Close the case </button>}
                         </div>
                     </div>
@@ -169,6 +188,13 @@ function Page() {
                                         <div className="mt-1 flex items-center">
                                             <FaCalendar className="h-5 w-5 text-gray-400 mr-2" />
                                             <span>{new Date(requirement.neededAt).toDateString()}</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Status</label>
+                                        <div className="mt-1 flex items-center">
+                                            <FaCalendar className="h-5 w-5 text-gray-400 mr-2" />
+                                            <span>{status}</span>
                                         </div>
                                     </div>
                                 </div>

@@ -14,7 +14,7 @@ import { getSingleUser } from '../../logic/fund-raiser-logic'
 import TableHead from '@/component/Util/Table/TableHead'
 import TableBody from '@/component/Util/Table/TableBody'
 import { FaCloudUploadAlt, FaTrash } from 'react-icons/fa'
-import { adminFundRaiserFileUpload, closeFundRaise, closeFundRaiseByAdmin, deleteFundRaiserImageAdmin, findDonationHistroyApi, getDonationStatitics, updateFundRaiserStatus } from '@/util/data/helper/APIHelper'
+import { adminEditFundRaiser, adminFundRaiserFileUpload, closeFundRaise, closeFundRaiseByAdmin, deleteFundRaiserImageAdmin, findDonationHistroyApi, getDonationStatitics, updateFundRaiserStatus } from '@/util/data/helper/APIHelper'
 import { SetPicturs } from '@/util/external/redux/slicer/fundRaiserForm'
 import { toast } from 'react-toastify'
 import { FundRaiserFileType, FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
@@ -33,6 +33,7 @@ import ModelItem from '@/component/Util/ModelItem'
 import ModelHeader from '@/component/Util/Model/ModelHeader'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { boolean } from 'yup'
+import EditInput from '@/component/Util/EditInput'
 
 function FundRaiserDetailView(): React.ReactElement {
     var CanvasJSChart: CanvasJSReact = CanvasJSReact.CanvasJSChart;
@@ -178,6 +179,15 @@ function FundRaiserDetailView(): React.ReactElement {
         })
     }
 
+    function onFundRaiserUpdate(newData) {
+        adminEditFundRaiser(fund_id.toString(), newData).then((data) => {
+            if (data) {
+                toast.success("Campign updated success")
+            } else {
+                toast.error("Campign updated failed")
+            }
+        })
+    }
 
 
     useEffect(() => {
@@ -279,15 +289,27 @@ function FundRaiserDetailView(): React.ReactElement {
                                 <table className="text-xs my-3">
                                     <tbody><tr>
                                         <td className="px-2 py-2 text-gray-500 font-semibold">Address</td>
-                                        <td className="px-2 py-2">{fundRaiserProfile?.full_address}</td>
+                                        <td className="px-2 py-2">
+                                            <EditInput data={{ key: "address", value: fundRaiserProfile?.full_address }} isEditAllowed={() => true} label='Enter new address' onSubmit={onFundRaiserUpdate} uiCallback={(newAddress) => newAddress} >
+                                                {fundRaiserProfile?.full_address}
+                                            </EditInput>
+                                        </td>
                                     </tr>
                                         <tr>
                                             <td className="px-2 py-2 text-gray-500 font-semibold">Phone</td>
-                                            <td className="px-2 py-2">{fundRaiserProfile?.phone_number}</td>
+                                            <td className="px-2 py-2">
+                                                <EditInput data={{ key: "phone_number", value: fundRaiserProfile?.phone_number }} isEditAllowed={() => true} label='Enter phone number' onSubmit={onFundRaiserUpdate} uiCallback={(phones) => phones} >
+                                                    {fundRaiserProfile?.phone_number}
+                                                </EditInput>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td className="px-2 py-2 text-gray-500 font-semibold">Email</td>
-                                            <td className="px-2 py-2  break-all">{fundRaiserProfile?.email_id}</td>
+                                            <td className="px-2 py-2  break-all">
+                                                <EditInput data={{ key: "email_id", value: fundRaiserProfile?.email_id }} isEditAllowed={() => true} label='Enter phone number' onSubmit={onFundRaiserUpdate} uiCallback={(email_id) => email_id} >
+                                                    {fundRaiserProfile?.email_id}
+                                                </EditInput>
+                                            </td>
                                         </tr>
                                     </tbody></table>
 
@@ -324,7 +346,12 @@ function FundRaiserDetailView(): React.ReactElement {
                             <div className='text-ellipsis'>
                                 <div className="text-left mt-2 rtl:text-right w-fit">
                                     <div className="mb-3 text-xs">About this fund raiser</div>
-                                    <div className="-mt-1 font-sans text-sm font-semibold">{fundRaiserProfile?.about ?? ""}</div>
+                                    <div className="-mt-1 font-sans text-sm font-semibold">
+                                        {/* {fundRaiserProfile?.about ?? ""} */}
+                                        <EditInput as="textarea" rows={10} data={{ key: "about", value: fundRaiserProfile?.about }} isEditAllowed={() => true} label='About' onSubmit={onFundRaiserUpdate} uiCallback={(about) => about} >
+                                            {fundRaiserProfile?.about}
+                                        </EditInput>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -333,7 +360,12 @@ function FundRaiserDetailView(): React.ReactElement {
                             <div className='text-ellipsis'>
                                 <div className="text-left mt-2 rtl:text-right w-fit">
                                     <div className="mb-3 text-xs">Description</div>
-                                    <div className="-mt-1 font-sans text-sm font-semibold">{fundRaiserProfile?.description ?? ""}</div>
+                                    <div className="-mt-1 font-sans text-sm font-semibold">
+                                        {/* {fundRaiserProfile?.description ?? ""} */}
+                                        <EditInput as="textarea" rows={10} data={{ key: "description", value: fundRaiserProfile?.description }} isEditAllowed={() => true} label='Description' onSubmit={onFundRaiserUpdate} uiCallback={(description) => description} >
+                                            {fundRaiserProfile?.description}
+                                        </EditInput>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -342,11 +374,11 @@ function FundRaiserDetailView(): React.ReactElement {
                     </div>
                     <div className='w-3/4'>
                         <div className='grid grid-cols-3 flex gap-5 '>
-                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Target"} data={`${fundRaiserProfile?.amount}${const_data.MONEY_ICON}`} />
+                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Target"} data={<EditInput data={{ key: "amount", value: fundRaiserProfile?.amount ?? "" }} isEditAllowed={() => true} label='Enter amount' onSubmit={onFundRaiserUpdate} uiCallback={(text) => { return `${text}${const_data.MONEY_ICON}` }}>{fundRaiserProfile?.amount}</EditInput>} />
                             <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Collected"} data={`${fundRaiserProfile?.collected}${const_data.MONEY_ICON}`} />
-                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Deadline"} data={new Date(fundRaiserProfile?.deadline).toLocaleDateString()} />
+                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Deadline"} data={<EditInput type="date" data={{ key: "deadline", value: new Date(fundRaiserProfile?.deadline) }} isEditAllowed={() => true} label='New deadline' uiCallback={(newDate) => { return `${newDate}` }} onSubmit={onFundRaiserUpdate}>{new Date(fundRaiserProfile?.deadline).toLocaleDateString('en-GB')}</EditInput>} />
                             <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Day's left"} data={dateLeft} />
-                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Goal"} data={`${((fundRaiserProfile?.amount - fundRaiserProfile?.collected) < 0 ? `+${fundRaiserProfile?.amount - fundRaiserProfile?.collected}` : fundRaiserProfile?.amount - fundRaiserProfile?.collected)} ${const_data.MONEY_ICON}`} />
+                            <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"To go"} data={`${((fundRaiserProfile?.amount - fundRaiserProfile?.collected) < 0 ? `+${fundRaiserProfile?.amount - fundRaiserProfile?.collected}` : fundRaiserProfile?.amount - fundRaiserProfile?.collected)} ${const_data.MONEY_ICON}`} />
                             <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Status"} data={status} />
                         </div>
                         <div className="mt-5 w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">

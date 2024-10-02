@@ -99,6 +99,19 @@ const bloodApproveUnitValues = {
 }
 
 
+const bloodRequirementAdminInitialValues = {
+    email_id: "",
+    neededAt: new Date(),
+    patientName: "",
+    unit: "",
+    status: "",
+    blood_group: "",
+    hospital: null,
+    address: "",
+    phoneNumber: "",
+}
+
+
 const adminAddFundRaiserInitialValues = {
     raiser_name: "",
     raiser_age: null,
@@ -119,4 +132,4 @@ const adminAddFundRaiserInitialValues = {
 }
 
 
-export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues, requestPersonalBloodInitialValues }
+export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues, requestPersonalBloodInitialValues, bloodRequirementAdminInitialValues }

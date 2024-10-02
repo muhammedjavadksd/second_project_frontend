@@ -8,7 +8,7 @@ function AdminAuthCard({ children }) {
                     <a href="#" class="flex  items-center mb-6 text-2xl font-semibold text-white dark:text-white">
                         Life Link
                     </a>
-                    <div class="w-full bg-white rounded-lg shadow-inner md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                    <div class="w-full bg-white rounded-lg shadow-inner md:mt-0 sm:max-w-md xl:p-0 ">
                         {children}
                     </div>
                 </div>

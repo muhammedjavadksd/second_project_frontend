@@ -96,6 +96,7 @@ function ViewFundRaising(): React.ReactElement {
             objectFind.max = maxPrice;
         }
         const queryString = new URLSearchParams(objectFind).toString();
+
         setQuery(queryString || "")
 
     }, [categorySelect, subCategorySelect, urgentSelected, stateSelect, minPrice, maxPrice])
@@ -127,7 +128,7 @@ function ViewFundRaising(): React.ReactElement {
                         <DropDownItem isOpen={isStatusOpen} options={Object.values(FundRaiserStatus)} title="Select Status" callBack={(val) => setStatus(val)}></DropDownItem>
                         <DropDownItem isOpen={isCategoryOpen} options={Object.keys(const_data.FUNDRAISER_CATEGORY)} title="Select category" callBack={(val) => setSelectedCategory(val)}></DropDownItem>
                         <DropDownItem isOpen={isSubCategoryOpen} options={categorySelect ? const_data.FUNDRAISER_CATEGORY[categorySelect] : []} title="Select sub category" callBack={(val) => setSelectedSubCategory(val)}></DropDownItem>
-                        <DropDownItem isOpen={isSubCategoryOpen} options={['Urgent', 'Not urgent']} title="Select Urgency" callBack={(val) => setUrgentSelected(val)}></DropDownItem>
+                        <DropDownItem isOpen={isSubCategoryOpen} optionsType={[{ label: "Urgent", value: "urgent" }, { label: "Not urgent", value: 'not_urgent' }]} title="Select Urgency" callBack={(val) => setUrgentSelected(val['value'])}></DropDownItem>
                         <DropDownItem isOpen={isSubCategoryOpen} options={Object.keys(const_data.STATE_WITH_DISTRICT)} title="Select State" callBack={(val) => setSelectedState(val)}></DropDownItem>
                     </div>
                 </div>

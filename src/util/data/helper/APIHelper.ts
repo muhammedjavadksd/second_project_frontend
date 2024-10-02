@@ -1,6 +1,7 @@
+
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq, { BloodProfile, IBloodDonor, ILocatedAt } from "@/util/types/API Response/Blood";
-import { FormActionResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
+import { FormActionResponse, HospitalResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
@@ -9,6 +10,112 @@ import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, I
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
+
+//add-requirement 
+export async function adminAddBloodReq(patientName: string, unit: number, neededAt: Date, status: BloodStatus, blood_group: BloodGroup, locatedAt: HospitalResponse, address: string, phoneNumber: number, email_address: string): Promise<FormActionResponse> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const requestAPI = await API_axiosInstance.post(`/blood/admin/add-requirement`, {
+                patientName,
+                unit,
+                neededAt,
+                status,
+                blood_group,
+                locatedAt,
+                address,
+                phoneNumber,
+                email_address
+            },
+                {
+                    headers: {
+                        "authorization": `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+            )
+            const response = requestAPI.data;
+            return {
+                msg: response.msg,
+                status: response.status
+            }
+        } else {
+            return {
+                msg: "Un authraized access",
+                status: false
+            }
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
+
+export async function adminEditFundRaiser(fund_id: string, data: Record<string, any>): Promise<boolean> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const requestAPI = await API_axiosInstance.patch(`/fund_raise/admin/edit/${fund_id}`, {
+                edit_data: data
+            },
+                {
+                    headers: {
+                        "authorization": `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+            )
+            const response = requestAPI.data;
+            return response.status
+        } else {
+            return false
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return false
+    }
+}
+
+export async function adminBloodVerify(status: BloodStatus, requirement_id: string): Promise<FormActionResponse> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const requestAPI = await API_axiosInstance.patch(`/blood/admin/update-requirement-status/${requirement_id}/${status}`, {},
+                {
+                    headers: {
+                        "authorization": `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+            )
+            const response = requestAPI.data;
+            return {
+                status: response.status,
+                msg: response.msg
+            }
+        } else {
+            return {
+                status: false,
+                msg: "Un authraized access"
+            }
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false,
+        }
+    }
+}
 
 export async function updateFundRaiserStatus(status: FundRaiserStatus, fundId: string): Promise<boolean> {
 
@@ -219,7 +326,7 @@ export async function getDonationStatitics(fundId: string, fromDate: Date, endDa
         return false
     } catch (e) {
         const errorMsg = e.response?.data?.msg ?? "Something went wrong"
-        toast.error(errorMsg)
+        // toast.error(errorMsg)
         return false
     }
 }

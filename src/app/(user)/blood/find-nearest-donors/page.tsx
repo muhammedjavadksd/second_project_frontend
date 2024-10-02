@@ -160,7 +160,7 @@ const BloodDonorSearch = () => {
                     </select>
                 </div>
 
-                <LoadScript googleMapsApiKey="AIzaSyDr2_r_ejwoLRx5FB3sMdwSbTdxRUIsY8k">
+                <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY}>
                     <GoogleMap
                         mapContainerStyle={mapContainerStyle}
                         center={center}

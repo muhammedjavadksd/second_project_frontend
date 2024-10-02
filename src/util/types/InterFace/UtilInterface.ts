@@ -2,10 +2,22 @@ import { FundRaiserFormInitialValues } from "./FormInitialValues";
 import IBloodReq, { ILocatedAt } from "../API Response/Blood";
 import { BloodGroup, BloodStatus, Relationship } from "../Enums/BasicEnums";
 
+
+interface HospitalResponse {
+    hospital_id: string,
+    coordinates: [number, number],
+    hospital_name: string
+}
+
 interface FormActionResponse {
     status: boolean,
     msg: string,
     data?: any
+}
+
+interface IOptionLabel {
+    label: string,
+    value: string
 }
 
 
@@ -250,4 +262,4 @@ interface IAdminAddFundRaiser {
     description: string;               // Detailed description of the fundraiser
 }
 
-export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider, IAdminAddFundRaiser }
+export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider, IAdminAddFundRaiser, IOptionLabel, HospitalResponse }

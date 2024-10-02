@@ -8,7 +8,7 @@ interface IEditInputInstance {
     value: any
 }
 
-function EditInput({ children, data, isEditAllowed, onSubmit, label, editValidation, ...props }: { children: React.ReactNode, data: IEditInputInstance, isEditAllowed: Function, onSubmit: Function, label: string, [key: string]: any }) {
+function EditInput({ children, data, isEditAllowed, onSubmit, label, editValidation, uiCallback, ...props }: { children: React.ReactNode, data: IEditInputInstance, isEditAllowed: Function, onSubmit: Function, label: string, uiCallback: Function, [key: string]: any }) {
 
     const [isEdit, setEdit] = useState<boolean>(false)
     const [uiText, setUiText] = useState<React.ReactNode>(children)
@@ -52,9 +52,9 @@ function EditInput({ children, data, isEditAllowed, onSubmit, label, editValidat
                 </ModelItem>
             </div>
 
-            <div className="flex ui-text-bar gap-5">
-                {uiText}
-                <i onClick={() => { setEdit(true) }} className="cursor-pointer fa-solid text-lg fa-pencil"></i>
+            <div className="flex ui-text-bar items-center  gap-5">
+                {uiCallback(uiText)}
+                <i onClick={() => { setEdit(true) }} className="cursor-pointer fa-solid text-xs fa-pencil"></i>
             </div>
         </div >
     )

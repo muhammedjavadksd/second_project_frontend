@@ -2,12 +2,21 @@
 import AdminLayout from "@/component/Admin/AdminLayout";
 import AdminPrivateRouter from "@/component/LoginComponent/AdminPrivateRouter";
 import AdminBreadCrumb from "@/component/Util/AdminBreadCrumb";
+import HospitalSearch from "@/component/Util/HospitalSearch";
+import { adminAddBloodReq } from "@/util/data/helper/APIHelper";
+import { bloodRequirementAdminInitialValues } from "@/util/external/yup/initialValues";
+import { bloodRequirementAdminValidation } from "@/util/external/yup/yupValidations";
 import { BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
+import ReactGoogleAutocomplete, { usePlacesWidget } from "react-google-autocomplete";
+import { toast } from "react-toastify";
 
 
 function AddBloodRequirement() {
+
+
+    const searchRef = useRef(null)
 
     return (
         <Fragment>
@@ -16,13 +25,31 @@ function AddBloodRequirement() {
                     <AdminBreadCrumb title={"Add Blood requirement"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Add blood requirement", href: "/blood/blood-reuirement" }]} />
 
                     <Formik
-
-                        initialValues={{}}
-                        onSubmit={() => { }}
+                        initialValues={bloodRequirementAdminInitialValues}
+                        validationSchema={bloodRequirementAdminValidation}
+                        onSubmit={(val, { resetForm }) => {
+                            adminAddBloodReq(val.patientName, +val.unit, val.neededAt as Date, val.status as BloodStatus, val.blood_group as BloodGroup, val.hospital, val.address, +val.phoneNumber, val.email_id).then((data) => {
+                                if (data.status) {
+                                    toast.success("Blood requirement created success")
+                                    resetForm()
+                                    if (searchRef.current) {
+                                        searchRef.current.value = "";
+                                    }
+                                } else {
+                                    toast.error(data.msg)
+                                }
+                            }).catch((err) => {
+                                toast.error("Blood requirement creation failed")
+                                resetForm()
+                            })
+                        }}
                     >
-                        {({ isSubmitting }) => (
+                        {({ isSubmitting, setFieldValue }) => (
                             <Form>
                                 <div className="grid mt-5 gap-5 grid-cols-2">
+
+
+
 
 
                                     {/* Email */}
@@ -34,7 +61,7 @@ function AddBloodRequirement() {
                                             placeholder="Enter Email"
                                             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                                         />
-                                        <ErrorMessage name="email_id" component="div" />
+                                        <ErrorMessage className='errorMessage' name="email_id" component="div" />
                                     </div>
 
                                     {/* Patient Name */}
@@ -46,7 +73,7 @@ function AddBloodRequirement() {
                                             placeholder="Enter Patient Name"
                                             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                                         />
-                                        <ErrorMessage name="patientName" component="div" />
+                                        <ErrorMessage className='errorMessage' name="patientName" component="div" />
                                     </div>
 
                                     {/* Unit */}
@@ -58,7 +85,7 @@ function AddBloodRequirement() {
                                             placeholder="Enter Blood Unit"
                                             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                                         />
-                                        <ErrorMessage name="unit" component="div" />
+                                        <ErrorMessage className='errorMessage' name="unit" component="div" />
                                     </div>
 
                                     {/* Needed At */}
@@ -69,7 +96,7 @@ function AddBloodRequirement() {
                                             name="neededAt"
                                             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                                         />
-                                        <ErrorMessage name="neededAt" component="div" />
+                                        <ErrorMessage className='errorMessage' name="neededAt" component="div" />
                                     </div>
 
                                     {/* Status */}
@@ -78,10 +105,9 @@ function AddBloodRequirement() {
                                         <Field as="select" type="text" name="status" placeholder="Enter Status" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
                                             <option>Select status</option>
                                             <option className="capitalize" value={BloodStatus.Approved}>Approved</option>
-                                            <option className="capitalize" value={BloodStatus.Closed}>Closed</option>
                                             <option className="capitalize" value={BloodStatus.Pending}>Pending</option>
                                         </Field>
-                                        <ErrorMessage name="status" component="div" />
+                                        <ErrorMessage className='errorMessage' name="status" component="div" />
                                     </div>
 
 
@@ -99,21 +125,13 @@ function AddBloodRequirement() {
                                                 })
                                             }
                                         </Field>
-                                        <ErrorMessage name="blood_group" component="div" />
+                                        <ErrorMessage className='errorMessage' name="blood_group" component="div" />
                                     </div>
 
-
-
-
                                     <div>
-                                        <label htmlFor="hospital_name">Hospital Name</label>
-                                        <Field
-                                            type="text"
-                                            name="hospital_name"
-                                            placeholder="Enter Hospital Name"
-                                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                                        />
-                                        <ErrorMessage name="hospital_name" component="div" />
+                                        <label htmlFor="hospital">Hospital Name</label>
+                                        <HospitalSearch searchRef={searchRef} selectedHospital={(val) => setFieldValue("hospital", val)} />
+                                        <ErrorMessage className='errorMessage' name="hospital" component="div" />
                                     </div>
 
                                     {/* Address */}
@@ -125,7 +143,7 @@ function AddBloodRequirement() {
                                             placeholder="Enter Address"
                                             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                                         />
-                                        <ErrorMessage name="address" component="div" />
+                                        <ErrorMessage className='errorMessage' name="address" component="div" />
                                     </div>
 
                                     {/* Phone Number */}
@@ -137,7 +155,7 @@ function AddBloodRequirement() {
                                             placeholder="Enter Phone Number"
                                             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                                         />
-                                        <ErrorMessage name="phoneNumber" component="div" />
+                                        <ErrorMessage className='errorMessage' name="phoneNumber" component="div" />
                                     </div>
 
                                 </div>
@@ -150,7 +168,7 @@ function AddBloodRequirement() {
                     </Formik>
                 </AdminLayout>
             </AdminPrivateRouter>
-        </Fragment>
+        </Fragment >
     )
 }
 
