@@ -8,13 +8,13 @@ import React, { useEffect, useState } from 'react'
 import { fundRaiserGraph } from './data'
 import { useParams } from 'next/navigation'
 import { getSingleFundRaisingProfile } from './logic'
-import { FundRaiserResponse, AxiosResponse } from '@/util/types/API Response/FundRaiser'
+import { FundRaiserResponse, AxiosResponse, IDonateHistoryTemplate, IDonationStatitics } from '@/util/types/API Response/FundRaiser'
 import { useRouter } from 'next/navigation'
 import { getSingleUser } from '../../logic/fund-raiser-logic'
 import TableHead from '@/component/Util/Table/TableHead'
 import TableBody from '@/component/Util/Table/TableBody'
 import { FaCloudUploadAlt, FaTrash } from 'react-icons/fa'
-import { adminFundRaiserFileUpload, deleteFundRaiserImageAdmin } from '@/util/data/helper/APIHelper'
+import { adminFundRaiserFileUpload, deleteFundRaiserImageAdmin, findDonationHistroyApi, getDonationStatitics } from '@/util/data/helper/APIHelper'
 import { SetPicturs } from '@/util/external/redux/slicer/fundRaiserForm'
 import { toast } from 'react-toastify'
 import { FundRaiserFileType } from '@/util/types/Enums/BasicEnums'
@@ -23,6 +23,10 @@ import { confirmAlert } from 'react-confirm-alert'
 import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
 import LoadingDataNotFoundComponent from '@/component/Util/LoadingDataNotFound'
 import Image from 'next/image'
+import LoadImage from '@/component/Util/ImageLoading'
+import PaginationSection from '@/component/Util/PaginationSection'
+import EmptyScreen from '@/component/Util/EmptyScreen'
+import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
 
 
 function FundRaiserDetailView(): React.ReactElement {
@@ -35,6 +39,27 @@ function FundRaiserDetailView(): React.ReactElement {
     const [documents, setDocuments] = useState<string[]>([]);
     const [isDocsLoading, setDocLoad] = useState<boolean>(false);
     const [isPicsLoading, setPicsLoad] = useState<boolean>(false);
+    const [graphDonation, setFundRaiserGraph] = useState(null);
+    const date = new Date();
+    date.setDate(date.getDate() - 30);
+    const [dateRange, setDateRange] = useState([date, new Date()]);
+
+
+    useEffect(() => {
+        getDonationStatitics(fund_id.toString(), dateRange[1], dateRange[0]).then((data) => {
+            if (data) {
+                const fundRaiserGrowth = data.map((each) => {
+                    return {
+                        x: each.date,
+                        y: each.amount
+                    }
+                })
+                setFundRaiserGraph(fundRaiserGrowth)
+            }
+        }).catch((err) => { })
+    }, [])
+
+
 
 
 
@@ -130,8 +155,9 @@ function FundRaiserDetailView(): React.ReactElement {
                 <div className='flex mt-5 gap-5'>
                     <div className='w-1/4'>
                         <div className="bg-white shadow-xl rounded-lg py-3">
-                            <div className="photo-wrapper p-2">
-                                <Image className="w-32 h-32 rounded-full mx-auto" src={`${fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]}`} alt="John Doe" />
+                            <div className="photo-wrapper items-center flex justify-center w-full p-2">
+                                <LoadImage width={70} height={110} className="block rounded-full" imageurl={fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]} />
+                                {/* <Image width={32} height={32} className="w-32 h-32 rounded-full mx-auto" src={`${fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]}`} alt="John Doe" /> */}
                             </div>
                             <div className="p-2">
                                 <h3 className="text-center text-xl text-gray-900 font-medium leading-8">{fundRaiserProfile?.full_name}</h3>
@@ -225,19 +251,54 @@ function FundRaiserDetailView(): React.ReactElement {
                             </div>
 
                             <div className='mt-5'>
-                                <CanvasJSChart options={fundRaiserGraph}
+                                <CanvasJSChart options={{
+                                    ...fundRaiserGraph,
+                                    data: [
+                                        {
+                                            ...fundRaiserGraph.data[0],
+                                            dataPoints: graphDonation
+                                        }
+                                    ]
+                                }}
                                 />
                             </div>
                         </div>
 
+
                         <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
-                                <TableHead head={['#', 'Amount', 'Date', 'Name', ' Donation ID']} />
-                                <TableBody data={['1', '100', '12th May', 'Muhammed Javad', '123456']} />
-                                <TableBody data={['1', '100', '12th May', 'Muhammed Javad', '123456']} />
-                                <TableBody data={['1', '100', '12th May', 'Muhammed Javad', '123456']} />
-                                <TableBody data={['1', '100', '12th May', 'Muhammed Javad', '123456']} />
-                            </table>
+                            <PaginationSection
+                                api={{
+                                    renderType: async (page, limit) => {
+                                        const history = await findDonationHistroyApi(limit, page, fund_id.toString())
+                                        console.log(history);
+                                        return history
+                                    },
+                                }}
+                                itemsRender={(tableBody: IDonateHistoryTemplate[]) => {
+                                    return <>
+                                        {
+                                            tableBody.length ? (
+                                                <>
+                                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
+                                                        <TableHead head={['#', 'Donation ID', 'Name', 'Amount', 'Date']} />
+                                                        {
+                                                            tableBody.map((item, index) => {
+                                                                return <TableBody key={index} data={[index + 1, item.donation_id, item.name, `${item.name}${const_data.MONEY_ICON}`, formatDateToMonthNameAndDate(item.date)]} />
+                                                            })
+                                                        }
+                                                    </table>
+                                                </>
+                                            ) : (
+                                                <div className="mt-3 inline-table w-full">
+                                                    <EmptyScreen msg="NO donation histrory on this profile" />
+                                                </div>
+                                            )
+                                        }
+                                    </>
+                                }}
+                                paginationProps={{ current_page: 1, currentLimit: 10 }}
+                                refresh={null}
+                            />
                         </div>
 
                         <LoadingComponent closeOnClick={false} isLoading={isPicsLoading} paddingNeed={false}>
@@ -257,6 +318,8 @@ function FundRaiserDetailView(): React.ReactElement {
                                                 className="flex-shrink-0 w-40 h-40 relative group"
                                             >
                                                 <Image
+                                                    width={32}
+                                                    height={32}
                                                     alt=''
                                                     src={image}
                                                     className="w-full h-full object-cover rounded-lg"
@@ -294,6 +357,8 @@ function FundRaiserDetailView(): React.ReactElement {
                                                 className="flex-shrink-0 w-40 h-40 relative group"
                                             >
                                                 <Image
+                                                    width={32}
+                                                    height={32}
                                                     alt=''
                                                     src={image}
                                                     className="w-full h-full object-cover rounded-lg"

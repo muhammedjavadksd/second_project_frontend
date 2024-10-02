@@ -42,7 +42,7 @@ function AdminSideBar({ isShow }) {
             {isShow &&
                 <aside className="flex w-full flex-col w-64 h-screen px-5 pt-4 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l border-gray-300">
                     <a href="#" className='flex gap-5'>
-                        <Image className="w-auto h-7" src="https://merakiui.com/images/logo.svg" alt="" />
+                        <Image width={32} height={32} className="w-auto h-7" src="https://merakiui.com/images/logo.svg" alt="" />
                         <h4 className='text-medium text-2xl'>Life Link</h4>
                     </a>
 

@@ -6,6 +6,8 @@ import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 function BloodAccountTab(): React.ReactElement {
 

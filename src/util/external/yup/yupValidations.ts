@@ -3,6 +3,10 @@ import const_data from '@/util/data/const'
 import { BloodCloseCategory, BloodGroup } from '@/util/types/Enums/BasicEnums'
 import * as yup from 'yup'
 
+let adminSiteSettings = yup.object().shape({
+    email: yup.string().email("Please enter valid email address").required("Email address is required").typeError("Please enter valid password"),
+})
+
 const bloodDonatationFormValidation = yup.object().shape({
     full_name: yup.string().typeError("Please enter valid full name").required("Full name is required"),
     phone_number: yup.number().typeError("Please enter valid phone number").required("Phone number is required"),
@@ -158,4 +162,4 @@ const requestPersonalBlood = yup.object().shape({
         .min(2, 'Hospital name must be at least 2 characters')
 });
 
-export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation, requestPersonalBlood }
+export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation, requestPersonalBlood, adminSiteSettings }

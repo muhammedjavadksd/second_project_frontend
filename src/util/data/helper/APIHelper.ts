@@ -10,6 +10,45 @@ import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } fr
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodStatus, CreateChatVia, FundRaiserFileType, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
+
+export async function adminUpdateSettings(email_id: string, password: string): Promise<FormActionResponse> {
+
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const requestAPI = await API_axiosInstance.patch(`/auth/admin/update-settings`, {
+                email_id,
+                password
+            },
+                {
+                    headers: {
+                        "authorization": `Bearer ${user.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+            )
+            const response = requestAPI.data;
+            return {
+                msg: response.msg,
+                status: response.status
+            }
+        } else {
+            return {
+                msg: "Un authrazied access",
+                status: false
+            }
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false,
+        }
+    }
+}
+
 export async function createChat(to_profileid: string, msg: string, type: CreateChatVia): Promise<boolean> {
 
     try {

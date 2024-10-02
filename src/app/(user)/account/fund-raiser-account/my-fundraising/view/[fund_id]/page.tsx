@@ -35,6 +35,8 @@ import { FaEdit, FaMagic, FaPlus, FaStar, FaTrash } from 'react-icons/fa'
 import { IoMdAddCircle } from 'react-icons/io'
 import DatePicker, { DateObject } from 'react-multi-date-picker'
 import { toast } from 'react-toastify'
+import { DateRangePicker } from 'rsuite';
+import 'rsuite/DateRangePicker/styles/index.css';
 
 
 
@@ -57,8 +59,9 @@ function FundRaiserView(): React.ReactElement {
     const documentUploadRef = useRef(null)
     const [AIDescription, setAiDescription] = useState(null)
     const [filterDate, setDate] = useState<Date | null>(null);
-    const [dateRange, setDateRange] = useState([null, null]);
-    const [startDate, endDate] = dateRange;
+    const date = new Date();
+    date.setDate(date.getDate() - 30);
+    const [dateRange, setDateRange] = useState([date, new Date()]);
 
     async function findProfile() {
         const findProfile: FormActionResponse = await getSingleActiveFundRaiser(fund_id.toString(), true);
@@ -98,15 +101,12 @@ function FundRaiserView(): React.ReactElement {
         })
     }
 
-
     useEffect(() => {
+        getDonationStatitics(fund_id.toString(), dateRange[1], dateRange[0]).then((data) => {
+            data && setDonationStatics(data)
+        }).catch((err) => { })
 
-        // getDonationStatitics(fund_id.toString(), new Date(), fromDate).then((data) => {
-        //     data && setDonationStatics(data)
-        // }).catch((err) => { })
-
-
-    }, [])
+    }, [dateRange])
 
     useEffect(() => {
         findProfile()
@@ -326,8 +326,8 @@ function FundRaiserView(): React.ReactElement {
                         <div className="w-3/4">
                             <div className='bg-white p-3 rounded-md'>
                                 <div className='flex gap-2 items-center mb-3'>
-                                    {/* <label htmlFor="">Filter by date</label> */}
-
+                                    <label htmlFor="">Filter by date</label>
+                                    <DateRangePicker format="yyyy-MM-dd" character=" – " onChange={(date) => setDateRange([date[1], date[0]])} />;
 
                                 </div>
                                 <CChart

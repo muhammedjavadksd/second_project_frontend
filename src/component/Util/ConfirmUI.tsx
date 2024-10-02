@@ -6,6 +6,8 @@ function CustomeConfirmUI({ onClose, onConfirm, title, }) {
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full text-center">
                 <Image
+                    width={16}
+                    height={16}
                     src="/images/icons/check-mark.png"
                     alt="Confirmation"
                     className="w-16 h-16 mx-auto mb-4"
