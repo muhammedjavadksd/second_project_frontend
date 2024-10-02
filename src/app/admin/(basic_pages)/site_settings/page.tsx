@@ -33,7 +33,7 @@ function Page() {
                     <AdminBreadCrumb title={"site settings"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Site settings", href: "/site_settings" }]} />
 
                     <div className="mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span className="font-medium">Notice!</span> Keep the password empty if you don't wish to change the password
+                        <span className="font-medium">Notice!</span> Keep the password empty if you dont wish to change the password
                     </div>
                     <div className="mt-5">
                         <Formik enableReinitialize initialValues={initialValues} validationSchema={adminSiteSettings} onSubmit={(val) => {
