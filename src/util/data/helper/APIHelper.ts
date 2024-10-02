@@ -11,6 +11,39 @@ import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } fr
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
+export async function adminFindNearestDonor(page: number, limit: number, closedOnly: boolean, blood_group?: BloodGroup): Promise<IPaginatedResponse<IBloodReq>> {
+    try {
+        const session = await getSession();
+        const userProfile = userDetailsFromGetSession(session, "admin")
+        const token = userProfile.token;
+
+        let params: string = status ? `${limit}/${page}/${status}` : `${limit}/${page}`
+        let queryObject: Record<string, any> = {};
+        if (blood_group) {
+            queryObject['blood_group'] = blood_group
+            // query = `&blood_group=${blood_group}`
+        }
+
+
+        const queryString = new URLSearchParams(queryObject).toString()
+        let query: string = queryString ? `?${queryString}` : "";
+        const find = await API_axiosInstance.get(`blood/admin/blood-requirements/${params}?closed=${closedOnly}${query}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        const response = find.data;
+        return response.data
+    } catch (e) {
+        console.log(e);
+
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
 
 export async function findPaginatedBloodRequirement(page: number, limit: number, status: BloodStatus, closedOnly: boolean, blood_group?: BloodGroup, hospital?: SelectedHospital): Promise<IPaginatedResponse<IBloodReq>> {
     try {

@@ -225,13 +225,13 @@ function ViewFundRaising(): React.ReactElement {
               <div className='w-3/4 mb-5'>
                 <div className='bg-white shadow rounded-sm'>
                   <div>
-                    <LoadImage className='w-full' imageurl={focusPicture} />
+                    <LoadImage unoptimized className='w-full' imageurl={focusPicture} />
                     <ul className='flex gap-5 bg-white shadow-lg py-5 ml-5'>
                       {
                         fundRaiserPictures.map((pic, index) => {
                           return (
                             <li key={index} onClick={() => setFocusPictures(pic)} className={pic == focusPicture && 'border-b-4 border-s-4 border-t-4 border-e-4 border-blue-600'}>
-                              <LoadImage className="w-20" imageurl={pic}></LoadImage>
+                              <LoadImage unoptimized className="w-20" imageurl={pic}></LoadImage>
                             </li>
                           )
                         })

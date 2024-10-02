@@ -2,7 +2,7 @@ import NextImage from "next/image";
 import { useEffect, useState } from "react"
 
 
-function LoadImage({ imageurl, ...props }) {
+function LoadImage({ imageurl, ...props }: { imageurl: string, [key: string]: any }) {
 
 
     const [src, setsrc] = useState('/skelton.gif');
@@ -15,7 +15,7 @@ function LoadImage({ imageurl, ...props }) {
 
     return (
         <div>
-            <NextImage width={64} height={64} alt="" src={src} {...props} />
+            <NextImage width={64} height={64} alt="" src={src}   {...props} />
         </div>
     )
 }

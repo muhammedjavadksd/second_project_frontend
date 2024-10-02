@@ -277,7 +277,10 @@ function FundRaiserDetailView(): React.ReactElement {
                     <div className='w-1/4'>
                         <div className="bg-white shadow-xl rounded-lg py-3">
                             <div className="photo-wrapper items-center flex justify-center w-full p-2">
-                                <LoadImage width={70} height={110} className="block rounded-full" imageurl={fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]} />
+                                {/* <LoadImage width={70} height={110} className="block rounded-full" imageurl={fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]} /> */}
+                                <LoadImage className="w-36 h-36 rounded-full" imageurl={fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]} alt="Extra large avatar" />
+                                {/* <img class="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Rounded avatar"> */}
+
                                 {/* <Image width={32} height={32} className="w-32 h-32 rounded-full mx-auto" src={`${fundRaiserProfile?.picture?.length && fundRaiserProfile?.picture[0]}`} alt="John Doe" /> */}
                             </div>
                             <div className="p-2">

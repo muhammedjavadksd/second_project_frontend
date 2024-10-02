@@ -108,7 +108,7 @@ const commentPostValidation = yup.object().shape({
 
 const fundRaisePaymentValidation = yup.object().shape({
     full_name: yup.string().typeError("Please enter valid name").required("Full name is required"),
-    phone_number: yup.number().typeError("Please enter valid phone number").required("Phone number is required"),
+    phone_number: yup.string().typeError("Please enter valid phone number").matches(/^\d{10}$/, "Phone number must be exactly 10 digits").required("Phone number is required"),
     email_id: yup.string().email().typeError("Please enter valid email id").required("email id is required"),
     hide_profile: yup.bool().typeError("Please enter valid profile status").required("Do you want to hide your profile?")
 })
