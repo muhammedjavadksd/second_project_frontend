@@ -19,7 +19,7 @@ function BloodDonorCard({ name, bloodGroup, distance, long, lati, email_id }) {
 
     const session = useSession()
     const router = useRouter();
-    const [modelOpen, toggleModel] = useState(true);
+    const [modelOpen, toggleModel] = useState(false);
 
     function sendMessage(values) {
         const user = userDetailsFromUseSession(session, "user");

@@ -122,7 +122,7 @@ const BloodDonorSearch = () => {
             <Header />
             <ModelItem ZIndex={99} closeOnOutSideClock={false} isOpen={!(!!currentLocation)} onClose={() => { }} >
                 <ModelHeader title={'Access location'} />
-                <AskLocation />
+                <AskLocation isLoading={true} isRejected={false} />
             </ModelItem>
             <div className="container mx-auto px-4 py-8">
                 <div className='-mt-10'>

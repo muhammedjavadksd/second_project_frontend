@@ -148,14 +148,17 @@ function ViewFundRaising(): React.ReactElement {
   useEffect(() => {
     if (fundRaiserProfile) {
       document.title = `Help ${fundRaiserProfile?.full_name || ""} for their ${fundRaiserProfile?.category || ""}`
-      const favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement;
-      if (favicon) {
-        favicon.href = fundRaiserProfile.picture[0]; // Specify the new favicon path here
-      } else {
-        const newFavicon = document.createElement('link');
-        newFavicon.rel = 'icon';
-        newFavicon.href = fundRaiserProfile.picture[0]; // Specify the new favicon path here
-        document.head.appendChild(newFavicon);
+      const favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement || document.createElement('link');
+
+
+      favicon.rel = 'icon';
+      favicon.href = fundRaiserProfile.picture[0]; // Specify the new favicon path here
+      document.head.appendChild(favicon);
+
+
+      return () => {
+        document.title = "Life link"
+        favicon.href = "null"
       }
     }
   }, [fundRaiserProfile])

@@ -68,7 +68,6 @@ function AdvanceFundRaiserView() {
             <Header />
             <div className='container mx-auto mt-5 mb-5 '>
                 <BreadCrumb path={['Home', 'Fund Raiser', 'Browse']} />
-                {minPrice}
 
                 <div className="w-full  t-5 gap-5">
                     <div className="mb-5">
