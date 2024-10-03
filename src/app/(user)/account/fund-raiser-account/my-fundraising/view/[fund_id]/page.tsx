@@ -57,6 +57,7 @@ function FundRaiserView(): React.ReactElement {
     const [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse>(null)
     const [notFound, setProfileNotFound] = useState<boolean>(false)
     const [addBankAcocuntLoader, setBankAccountLoader] = useState<boolean>(false)
+    const [AIDescriptionLoading, setDescriptionLoading] = useState<boolean>(false)
     const [activeBankAccount, setActiveAccount] = useState<string>(null)
     const imageUploadRef = useRef(null)
     const documentUploadRef = useRef(null)
@@ -206,47 +207,61 @@ function FundRaiserView(): React.ReactElement {
             </ModelItem>
 
             <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isEditDescriptionOpen} onClose={() => toggleDescription(false)}>
-                <ModelHeader title="Edit description content"></ModelHeader>
-                <div className='bg-white p-5 min-w-[600px] max-w-full'>
-                    <Formik initialValues={{ description: AIDescription || fundRaiserProfile?.description }} enableReinitialize validationSchema={editFundRaiseDescriptionValidation} onSubmit={(val) => {
-                        userFundRaiserEdit(val, fund_id.toString()).then((data) => {
-                            if (data) {
-                                toast.success("Description content updated")
-                                setFundRaiserProfile({ ...fundRaiserProfile, description: val.description })
-                                toggleDescription(false)
-                            } else {
-                                toast.error("Something went wrong")
-                            }
-                        })
-                    }}>
-                        <Form>
-                            <div className='w-full rounded-lg  block'>
-                                <div className='flex justify-between mb-2 items-center'>
-                                    <label htmlFor="description" className='text-sm  block'>Description</label>
-                                    <button onClick={() => getAIDescription(fundRaiserProfile.amount, fundRaiserProfile.category, fundRaiserProfile.sub_category, fundRaiserProfile.full_name, fundRaiserProfile.age, fundRaiserProfile.benificiary_relation, fundRaiserProfile.about, fundRaiserProfile.city, fundRaiserProfile.pincode, fundRaiserProfile.state, fundRaiserProfile.district).then((data) => {
-                                        if (data) {
-                                            setAiDescription(data)
-                                        } else {
-                                            toast.error("AI Generation failed")
-                                        }
-                                        console.log(data);
+                <LoadingComponent closeOnClick={false} isLoading={AIDescriptionLoading} paddingNeed={false}>
+                    <>
+                        <ModelHeader title="Edit description content"></ModelHeader>
+                        <div className='bg-white p-5 min-w-[600px] max-w-full'>
+                            <Formik initialValues={{ description: AIDescription || fundRaiserProfile?.description }} enableReinitialize validationSchema={editFundRaiseDescriptionValidation} onSubmit={(val) => {
 
-                                    }).catch((err) => {
-                                        console.log(err);
-                                    })} type='button' className='text-sm flex gap-2 items-center bg-gray-200 rounded-lg p-2'>
-                                        <FaMagic />
-                                        Generate With AI
+                                userFundRaiserEdit(val, fund_id.toString()).then((data) => {
+                                    if (data) {
+                                        toast.success("Description content updated")
+                                        setFundRaiserProfile({ ...fundRaiserProfile, description: val.description })
+                                        toggleDescription(false)
+                                    } else {
+                                        toast.error("Something went wrong")
+                                    }
+                                }).finally(() => {
+                                    setAiDescription(false)
+                                })
+                            }}>
+                                <Form>
+                                    <div className='w-full rounded-lg  block'>
+                                        <div className='flex justify-between mb-2 items-center'>
+                                            <label htmlFor="description" className='text-sm  block'>Description</label>
+                                            <button onClick={() => {
+                                                setDescriptionLoading(true)
+                                                getAIDescription(fundRaiserProfile.amount, fundRaiserProfile.category, fundRaiserProfile.sub_category, fundRaiserProfile.full_name, fundRaiserProfile.age, fundRaiserProfile.benificiary_relation, fundRaiserProfile.about, fundRaiserProfile.city, fundRaiserProfile.pincode, fundRaiserProfile.state, fundRaiserProfile.district).then((data) => {
+                                                    if (data) {
+                                                        setAiDescription(data)
+                                                        setDescriptionLoading(data)
+                                                    } else {
+                                                        toast.error("AI Generation failed")
+                                                    }
+                                                    console.log(data);
+
+                                                }).catch((err) => {
+                                                    console.log(err);
+                                                }).finally(() => {
+                                                    setDescriptionLoading(false)
+                                                })
+                                            }
+                                            } type='button' className='text-sm flex gap-2 items-center bg-gray-200 rounded-lg p-2'>
+                                                <FaMagic />
+                                                Generate With AI
+                                            </button>
+                                        </div>
+                                        <Field type="text" rows='12' as="textarea" name="description" id="description" placeholder="Enter description content" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
+                                        <ErrorMessage className='errorMessage' component="div" name='description' />
+                                    </div>
+                                    <button type="submit" className="mt-3 col-span-2 w-full bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300">
+                                        Save
                                     </button>
-                                </div>
-                                <Field type="text" rows='12' as="textarea" name="description" id="description" placeholder="Enter description content" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
-                                <ErrorMessage className='errorMessage' component="div" name='description' />
-                            </div>
-                            <button type="submit" className="mt-3 col-span-2 w-full bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300">
-                                Save
-                            </button>
-                        </Form>
-                    </Formik>
-                </div>
+                                </Form>
+                            </Formik>
+                        </div>
+                    </>
+                </LoadingComponent>
             </ModelItem>
 
             <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isAddBankAccountOpen} onClose={() => toggleBankAccount(false)}>

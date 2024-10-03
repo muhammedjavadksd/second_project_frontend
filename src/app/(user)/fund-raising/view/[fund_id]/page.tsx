@@ -78,7 +78,7 @@ function ViewFundRaising(): React.ReactElement {
 
   function aboutDescription(description: string, fundRaiserPictures: string[]) {
 
-    const words = description.split('.');
+    const words = description ? description.split('.') : [];
 
     let imageIndex = 0
     const content = words.map((each, index) => {

@@ -25,7 +25,7 @@ async function getAIDescription(amount: number, category: string, sub_category: 
             const response = data?.data;
             if (response.status) {
                 const AI_Description = response.data
-                return AI_Description
+                return AI_Description.trim()
             } else {
                 return false
             }
