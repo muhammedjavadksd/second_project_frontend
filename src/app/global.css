@@ -8,6 +8,10 @@
 */
 
 
+.nestedImageFull>img {
+  height: 100% !important;
+}
+
 .raisingRange>div {
   max-width: 100%;
 }

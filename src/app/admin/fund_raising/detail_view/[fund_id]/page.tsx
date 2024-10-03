@@ -34,6 +34,7 @@ import ModelHeader from '@/component/Util/Model/ModelHeader'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { boolean } from 'yup'
 import EditInput from '@/component/Util/EditInput'
+import AIDescriptionModel from '@/component/FundRaiser/AIDescriptionModel'
 
 function FundRaiserDetailView(): React.ReactElement {
     var CanvasJSChart: CanvasJSReact = CanvasJSReact.CanvasJSChart;
@@ -53,6 +54,8 @@ function FundRaiserDetailView(): React.ReactElement {
     const [closeModel, toggleModel] = useState<boolean>(false);
     const [verificationText, setVerificationText] = useState<string>(null);
     const [isClosed, toggleClose] = useState<boolean>(false);
+    const [isEditDescriptionOpen, toggleDescription] = useState(false)
+
 
 
     function onUpdateStatus(status: FundRaiserStatus) {
@@ -245,6 +248,12 @@ function FundRaiserDetailView(): React.ReactElement {
             }
 
 
+            <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isEditDescriptionOpen} onClose={() => toggleDescription(false)}>
+                <AIDescriptionModel role='admin' finallyCallback={() => toggleDescription(false)} profile={fundRaiserProfile} successCallBack={(val) => {
+                    setFundRaiserProfile({ ...fundRaiserProfile, description: val })
+                }} />
+            </ModelItem>
+
 
             <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={closeModel} onClose={() => toggleModel(false)} >
                 <ModelHeader title={"Close the fund raiser"} />
@@ -366,9 +375,8 @@ function FundRaiserDetailView(): React.ReactElement {
                                         <div className="mb-3 text-xs">Description</div>
                                         <div className="-mt-1 font-sans text-sm font-semibold">
                                             {/* {fundRaiserProfile?.description ?? ""} */}
-                                            <EditInput as="textarea" rows={10} data={{ key: "description", value: fundRaiserProfile?.description }} isEditAllowed={() => true} label='Description' onSubmit={onFundRaiserUpdate} uiCallback={(description) => description} >
-                                                {fundRaiserProfile?.description}
-                                            </EditInput>
+                                            <i onClick={() => toggleDescription(true)} className="cursor-pointer  fa-solid text-sm fa-pencil" title='Edit description content'></i>
+                                            {fundRaiserProfile?.description}
                                         </div>
                                     </div>
                                 </div>

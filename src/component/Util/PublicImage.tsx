@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-
-function PublicImage({ imageurl, className }: { imageurl: string, className: string }) {
+function PublicImage({ imageurl, ...props }: { imageurl: string, [key: string]: any }) {
 
     const [src, setSrc] = useState(imageurl);
 
@@ -11,7 +10,7 @@ function PublicImage({ imageurl, className }: { imageurl: string, className: str
     };
 
     return (
-        <Image onError={handleError} className={className} layout="responsive" width={1} height={1} style={{ height: "100%", width: "100%" }} src={src} alt="Public image" />
+        <Image onError={handleError} layout="responsive" width={1} height={1} src={src} {...props} alt="Public image" />
     )
 }
 

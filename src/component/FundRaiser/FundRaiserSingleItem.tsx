@@ -9,13 +9,19 @@ function FundRaiserSingleItem({ profile }: { profile: FundRaiserResponse }) {
 
     console.log(profile);
 
+    const toGo = profile.amount - profile.collected
+    const isPositive = toGo < 1
+
     return (
         <div className="mb-5 max-w-sm bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700">
             <Link href={`/fund-raising/view/${profile.fund_id}`}>
-                <PublicImage
-                    className="w-full h-48 object-cover"
-                    imageurl='http://localhost:3000/images/fundRaisers/fundRaiser1.png'
-                />
+                <div className='h-[250px] nestedImageFull'>
+                    <PublicImage
+                        style={{ height: "100% !important" }}
+                        className="w-full h-full object-cover"
+                        imageurl={profile.picture[0] || ""}
+                    />
+                </div>
                 {/* <img
                     className="w-full h-48 object-cover"
                     src={`${process.env.NEXT_PUBLIC_PUBLIC_IMAGE_URL}/fundRaisers/fundRaiser1.png`}
@@ -34,7 +40,14 @@ function FundRaiserSingleItem({ profile }: { profile: FundRaiserResponse }) {
                     </div>
                     <div className="text-right">
                         <span className="text-sm">To go</span>
-                        <h6 className="text-blue-500">{const_data.MONEY_ICON}{Math.floor(profile.amount - profile.collected)}</h6>
+                        <h6 className="text-blue-500">{
+                            isPositive ? (
+                                <span className='text-green-600 font-bold'>
+                                    +{const_data.MONEY_ICON}{Math.abs(toGo)}
+                                </span>
+                            ) : `${const_data.MONEY_ICON}${toGo}`
+                        }
+                        </h6>
                     </div>
                 </div>
                 <Link href={`/fund-raising/view/${profile.fund_id}`}>
