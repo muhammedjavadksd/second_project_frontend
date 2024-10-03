@@ -11,10 +11,43 @@ import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } fr
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
+
+
+export async function activeAccount(fundId: string, benfId: string): Promise<FormActionResponse> {
+
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "user")
+
+        if (user) {
+            const find = await API_axiosInstance.patch(`fund_raise/active-bank/${fundId}/${benfId}`, {}, {
+                headers: {
+                    authorization: `Bearer ${user.token}`
+                }
+            });
+            const response = find.data;
+            return {
+                msg: response.msg,
+                status: response.status
+            }
+        }
+        return {
+            msg: "Un authraized access",
+            status: false
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
+
 export async function getActiveBankAccount(page: number, limit: number, fundId: string): Promise<IPaginatedResponse<IBankAccount>> {
 
     try {
-        const find = await API_axiosInstance.get(`bank-active-accounts/${fundId}/${limit}/${page}`);
+        const find = await API_axiosInstance.get(`fund_raise/bank-active-accounts/${fundId}/${limit}/${page}`);
         const response = find.data;
         console.log(response);
 
@@ -1149,14 +1182,21 @@ export async function closeFundRaise(fund_id: string): Promise<boolean> {
         const data = userDetailsFromGetSession(session, "user");
         const token = data.token;
 
-        const closeRequest = await API_axiosInstance.patch(`fund_raise/close/${fund_id}`, {}, {
-            headers: {
-                authorization: `Bearer ${token}`,
+        if (token) {
+
+
+
+            const closeRequest = await API_axiosInstance.patch(`fund_raise/close/${fund_id}`, {}, {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                }
+            })
+            const response = closeRequest.data;
+            if (response.status) {
+                return true
+            } else {
+                return false
             }
-        })
-        const response = closeRequest.data;
-        if (response.status) {
-            return true
         } else {
             return false
         }

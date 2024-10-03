@@ -62,7 +62,8 @@ interface FundRaiserResponse {
     pincode: number,
     state: string,
     deadline: Date
-    description: string
+    description: string,
+    withdraw_docs: WithdrawDocs
 }
 
 
@@ -136,10 +137,7 @@ export interface Profile {
 }
 
 export interface WithdrawDocs {
-    account_number: string
-    ifsc_code: string
-    holder_name: string
-    account_type: string
+    benf_id: string
 }
 
 

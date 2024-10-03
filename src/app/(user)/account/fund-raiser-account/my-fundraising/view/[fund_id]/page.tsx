@@ -17,7 +17,7 @@ import PaginationSection from '@/component/Util/PaginationSection'
 import TableBody from '@/component/Util/Table/TableBody'
 import TableHead from '@/component/Util/Table/TableHead'
 import const_data from '@/util/data/const'
-import { addBankAccount, closeFundRaise, deleteBankAccountByUser, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getDonationStatitics, getSingleActiveFundRaiser, userFundRaiserEdit } from '@/util/data/helper/APIHelper'
+import { activeAccount, addBankAccount, closeFundRaise, deleteBankAccountByUser, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getDonationStatitics, getSingleActiveFundRaiser, userFundRaiserEdit } from '@/util/data/helper/APIHelper'
 import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper'
 import { fundRaiserBankAccoutInitialValues } from '@/util/external/yup/initialValues'
 import { editFundRaiseAboutValidation, editFundRaiseDescriptionValidation, fundRaiserBankAccoutValidation } from '@/util/external/yup/yupValidations'
@@ -30,13 +30,14 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { title } from 'process'
 import React, { useEffect, useRef, useState } from 'react'
+import 'rsuite/DateRangePicker/styles/index.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import { confirmAlert } from 'react-confirm-alert'
 import { FaEdit, FaMagic, FaPlus, FaStar, FaTrash } from 'react-icons/fa'
 import { IoMdAddCircle } from 'react-icons/io'
 import DatePicker, { DateObject } from 'react-multi-date-picker'
 import { toast } from 'react-toastify'
 import { DateRangePicker } from 'rsuite';
-import 'rsuite/DateRangePicker/styles/index.css';
 
 
 
@@ -56,6 +57,7 @@ function FundRaiserView(): React.ReactElement {
     const [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse>(null)
     const [notFound, setProfileNotFound] = useState<boolean>(false)
     const [addBankAcocuntLoader, setBankAccountLoader] = useState<boolean>(false)
+    const [activeBankAccount, setActiveAccount] = useState<string>(null)
     const imageUploadRef = useRef(null)
     const documentUploadRef = useRef(null)
     const [AIDescription, setAiDescription] = useState(null)
@@ -72,6 +74,40 @@ function FundRaiserView(): React.ReactElement {
             setProfileNotFound(true)
         }
     }
+
+    async function setAsPrimaryAccount(benfId: string) {
+
+        confirmAlert({
+            title: "Are you sure want to make this account as primary?",
+            message: "set as primary?",
+            customUI: ({ onClose, title }) => {
+                return (
+                    <DangerUIConfirm
+                        onClose={onClose}
+                        onConfirm={() => {
+                            activeAccount(fund_id.toString(), benfId).then((data) => {
+                                if (data.status) {
+                                    setActiveAccount(benfId);
+                                    toast.success(data.msg)
+                                } else {
+                                    toast.error(data.msg)
+                                }
+                            }).catch((err) => {
+                                toast.error("Something went wrong")
+                            }).finally(() => {
+                                onClose()
+                            })
+                        }}
+                        title={title}
+                    />
+                )
+            }
+        })
+    }
+
+    useEffect(() => {
+        setActiveAccount(fundRaiserProfile?.withdraw_docs?.benf_id)
+    }, [fundRaiserProfile])
 
 
     function close() {
@@ -122,10 +158,10 @@ function FundRaiserView(): React.ReactElement {
                 toggleBankAccount(false)
             } else {
                 toast.error(data.msg)
-                setBankAccountLoader(false)
             }
         }).catch((err) => {
             toast.error("Something went wrong")
+        }).finally(() => {
             setBankAccountLoader(false)
         })
     }
@@ -419,6 +455,9 @@ function FundRaiserView(): React.ReactElement {
                                         </button>
                                     </div>
                                 </div>
+                                <div className="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+                                    <span className="font-medium">Notification alert!</span> The primary account will receive all donation payments.
+                                </div>
                                 <PaginationSection
                                     api={{
                                         renderType: (page: number, limit: number) => {
@@ -476,13 +515,7 @@ function FundRaiserView(): React.ReactElement {
                                                                             >
                                                                                 <FaTrash />
                                                                             </button>
-                                                                            <button
-                                                                                onClick={() => { }}
-                                                                                className={`${account.is_active ? "text-yellow-500" : "text-gray-400"} hover:text-yellow-600 transition-colors duration-200`}
-                                                                                aria-label={`${account.is_active ? "Active account" : "Make account active"}`}
-                                                                            >
-                                                                                <FaStar />
-                                                                            </button>
+
                                                                         </div>
                                                                     </div>
                                                                     <div className="space-y-2">
@@ -499,6 +532,15 @@ function FundRaiserView(): React.ReactElement {
                                                                             {account.ifsc_code}
                                                                         </p>
                                                                     </div>
+                                                                    {
+                                                                        activeBankAccount == account.befId ? (
+                                                                            <>
+                                                                                <button className='bg-green-600 mt-3 text-white w-full p-3 rounded-md'>Primary Account</button>
+                                                                            </>
+                                                                        ) : <>
+                                                                            <button onClick={() => setAsPrimaryAccount(account.befId)} className='bg-blue-600 mt-3 text-white w-full p-3 rounded-md'>Switch to Primary</button>
+                                                                        </>
+                                                                    }
                                                                 </div>
                                                             )
                                                         })
