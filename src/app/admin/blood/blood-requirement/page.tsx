@@ -97,9 +97,9 @@ function Page() {
                                 return (items && items.length) ? (
                                     <div className="grid grid-cols-3 mt-5 gap-3">
                                         {
-                                            items.map((each) => {
+                                            items.map((each, index) => {
                                                 return (
-                                                    <BloodRequirementItem unit={each.unit} username={each.patientName} deadLine={formatDateToMonthNameAndDate(new Date(each.neededAt))} group={each.blood_group} location={each.locatedAt.hospital_name} onView={() => router.push(`blood-requirement/${each.blood_id}`)} />
+                                                    <BloodRequirementItem key={index} unit={each.unit} username={each.patientName} deadLine={formatDateToMonthNameAndDate(new Date(each.neededAt))} group={each.blood_group} location={each.locatedAt.hospital_name} onView={() => router.push(`blood-requirement/${each.blood_id}`)} />
                                                 )
                                             })
                                         }

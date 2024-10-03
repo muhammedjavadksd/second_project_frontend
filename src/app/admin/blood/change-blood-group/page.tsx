@@ -42,8 +42,8 @@ function ChangeBloodGroup() {
                             (items && items.length) ? (
                                 <div className="grid grid-cols-3 mt-3 gap-3">
                                     {
-                                        items.map((each) => {
-                                            return <BloodChangeItem req_id={each._id} certificate={each.certificate} currentStatus={each.status} bloodGroup={each.donor.blood_group} date={each.date} name={each.donor.full_name} newGroup={each.new_group} />
+                                        items.map((each, index) => {
+                                            return <BloodChangeItem key={index} req_id={each._id} certificate={each.certificate} currentStatus={each.status} bloodGroup={each.donor.blood_group} date={each.date} name={each.donor.full_name} newGroup={each.new_group} />
                                         })
                                     }
                                 </div>
