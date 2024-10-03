@@ -132,144 +132,146 @@ function Page() {
                             </div>
                         )
                     }
-                    <LoadingDataNotFoundComponent isFound={!!requirement} isLoading={isLoading} >
-                        {requirement && <div className="bg-white shadow-lg mt-4 rounded-lg overflow-hidden mb-8">
-                            <div className="p-6">
-                                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Requirement Information</h2>
-                                <div className="grid  grid-cols-3 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Blood Group</label>
-                                        <div className="mt-1 flex items-center">
-                                            <BiDonateBlood className="h-5 w-5 text-red-500 mr-2" />
-                                            <span className="text-lg font-semibold">{requirement.blood_group}</span>
+                    <div className="min-h-screen grid">
+                        <LoadingDataNotFoundComponent isFound={!!requirement} isLoading={isLoading} >
+                            {requirement && <div className="bg-white shadow-lg mt-4 rounded-lg overflow-hidden mb-8">
+                                <div className="p-6">
+                                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">Requirement Information</h2>
+                                    <div className="grid  grid-cols-3 gap-6">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Blood Group</label>
+                                            <div className="mt-1 flex items-center">
+                                                <BiDonateBlood className="h-5 w-5 text-red-500 mr-2" />
+                                                <span className="text-lg font-semibold">{requirement.blood_group}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Quantity Required</label>
+                                            <span className="text-lg font-semibold">{requirement.unit} units</span>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Location for Donation</label>
+                                            <div className="mt-1 flex items-center">
+                                                <FaMapMarkerAlt className="h-5 w-5 text-gray-400 mr-2" />
+                                                <span>{requirement.locatedAt.hospital_name}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Contact Information</label>
+                                            <div className="mt-1 flex items-center">
+                                                <FaPhone className="h-5 w-5 text-gray-400 mr-2" />
+                                                <span>{requirement.phoneNumber}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Email Information</label>
+                                            <div className="mt-1 flex items-center">
+                                                <FaEnvelope className="h-5 w-5 text-gray-400 mr-2" />
+                                                <span>{requirement.email}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Created by </label>
+                                            <div className="mt-1 flex items-center">
+                                                <FaUser className="h-5 w-5 text-gray-400 mr-2" />
+                                                <span>{requirement.relationship}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Patient name</label>
+                                            <div className="mt-1 flex items-center">
+                                                <FaUser className="h-5 w-5 text-gray-400 mr-2" />
+                                                <span>{requirement.patientName}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Deadline</label>
+                                            <div className="mt-1 flex items-center">
+                                                <FaCalendar className="h-5 w-5 text-gray-400 mr-2" />
+                                                <span>{new Date(requirement.neededAt).toDateString()}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Status</label>
+                                            <div className="mt-1 flex items-center">
+                                                <FaCalendar className="h-5 w-5 text-gray-400 mr-2" />
+                                                <span>{status}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Quantity Required</label>
-                                        <span className="text-lg font-semibold">{requirement.unit} units</span>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Location for Donation</label>
-                                        <div className="mt-1 flex items-center">
-                                            <FaMapMarkerAlt className="h-5 w-5 text-gray-400 mr-2" />
-                                            <span>{requirement.locatedAt.hospital_name}</span>
+                                    {
+                                        isDeadlinenearst && <div className="mt-6">
+                                            <label className="block text-sm font-medium text-gray-700">Special Instructions</label>
+                                            <p className="mt-1 text-sm text-gray-600">Urgent requirement. Please contact as soon as possible. Donation needed within 24 hours.</p>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Contact Information</label>
-                                        <div className="mt-1 flex items-center">
-                                            <FaPhone className="h-5 w-5 text-gray-400 mr-2" />
-                                            <span>{requirement.phoneNumber}</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Email Information</label>
-                                        <div className="mt-1 flex items-center">
-                                            <FaEnvelope className="h-5 w-5 text-gray-400 mr-2" />
-                                            <span>{requirement.email}</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Created by </label>
-                                        <div className="mt-1 flex items-center">
-                                            <FaUser className="h-5 w-5 text-gray-400 mr-2" />
-                                            <span>{requirement.relationship}</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Patient name</label>
-                                        <div className="mt-1 flex items-center">
-                                            <FaUser className="h-5 w-5 text-gray-400 mr-2" />
-                                            <span>{requirement.patientName}</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Deadline</label>
-                                        <div className="mt-1 flex items-center">
-                                            <FaCalendar className="h-5 w-5 text-gray-400 mr-2" />
-                                            <span>{new Date(requirement.neededAt).toDateString()}</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Status</label>
-                                        <div className="mt-1 flex items-center">
-                                            <FaCalendar className="h-5 w-5 text-gray-400 mr-2" />
-                                            <span>{status}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                {
-                                    isDeadlinenearst && <div className="mt-6">
-                                        <label className="block text-sm font-medium text-gray-700">Special Instructions</label>
-                                        <p className="mt-1 text-sm text-gray-600">Urgent requirement. Please contact as soon as possible. Donation needed within 24 hours.</p>
-                                    </div>
-                                }
-                            </div>
-                        </div>}
-
-                        <div className="mb-5">
-                            <PaginationSection
-                                api={{
-                                    renderType: (page: number, limit: number) => {
-                                        return findBloodResponse(blood_id.toString(), page, limit)
                                     }
-                                }}
-                                itemsRender={(items: IBloodDonate[]) => {
-                                    return (
-                                        <>
-                                            <h3 className='text-2xl mb-3 '>Showen Intrest</h3>
-                                            {
-                                                items.length ? < div className="grid  gap-4 grid-cols-3">
+                                </div>
+                            </div>}
+
+                            <div className="mb-5">
+                                <PaginationSection
+                                    api={{
+                                        renderType: (page: number, limit: number) => {
+                                            return findBloodResponse(blood_id.toString(), page, limit)
+                                        }
+                                    }}
+                                    itemsRender={(items: IBloodDonate[]) => {
+                                        return (
+                                            <>
+                                                <h3 className='text-2xl mb-3 '>Showen Intrest</h3>
+                                                {
+                                                    items.length ? < div className="grid  gap-4 grid-cols-3">
+                                                        {
+                                                            items.map((each, index) => {
+                                                                return (
+                                                                    <BloodIntrestCard key={index} bloodGroup={each.requirement.blood_group} concernc={messageFromBloodConcernce(each.requirement.patientName, each.concerns, each.meet_expect.toString(), each.requirement.locatedAt.hospital_name)} donationId={each.donation_id} donorName={each.donor_profile?.full_name} meetExpect={new Date(each.meet_expect).toDateString()} phone_number={each.donor_profile?.phoneNumber + ""} status={each.status as BloodDonationStatus} />
+                                                                )
+                                                            })
+                                                        }
+                                                    </div > : <EmptyScreen msg="No intrest on this request" />
+                                                }
+                                            </>
+                                        )
+                                    }}
+                                    paginationProps={{ current_page: 1, currentLimit: 8 }}
+                                    refresh={null}
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <PaginationSection
+                                    api={{
+                                        renderType: (page: number, limit: number) => {
+                                            return findMatchedBlood(requirement.blood_group, limit, page);
+                                        },
+                                    }}
+                                    itemsRender={(donors: IBloodDonor[]) => {
+                                        return donors.length ? (
+                                            <>
+                                                <h3 className='text-2xl mb-3 '>Matched Donors</h3>
+                                                <div className="grid  gap-4 grid-cols-3">
                                                     {
-                                                        items.map((each, index) => {
+                                                        donors.map((items) => {
                                                             return (
-                                                                <BloodIntrestCard key={index} bloodGroup={each.requirement.blood_group} concernc={messageFromBloodConcernce(each.requirement.patientName, each.concerns, each.meet_expect.toString(), each.requirement.locatedAt.hospital_name)} donationId={each.donation_id} donorName={each.donor_profile?.full_name} meetExpect={new Date(each.meet_expect).toDateString()} phone_number={each.donor_profile?.phoneNumber + ""} status={each.status as BloodDonationStatus} />
+                                                                <>
+                                                                    <MatchedDonors bloodGroup={items.blood_group as BloodGroup} donorId={items.donor_id} emailAddress={items.donor_id} phoneNumber={items.phoneNumber} name={items.full_name} />
+                                                                </>
                                                             )
                                                         })
                                                     }
-                                                </div > : <EmptyScreen msg="No intrest on this request" />
-                                            }
-                                        </>
-                                    )
-                                }}
-                                paginationProps={{ current_page: 1, currentLimit: 8 }}
-                                refresh={null}
-                            />
-                        </div>
-                        <div className="mt-4">
-                            <PaginationSection
-                                api={{
-                                    renderType: (page: number, limit: number) => {
-                                        return findMatchedBlood(requirement.blood_group, limit, page);
-                                    },
-                                }}
-                                itemsRender={(donors: IBloodDonor[]) => {
-                                    return donors.length ? (
-                                        <>
-                                            <h3 className='text-2xl mb-3 '>Matched Donors</h3>
-                                            <div className="grid  gap-4 grid-cols-3">
-                                                {
-                                                    donors.map((items) => {
-                                                        return (
-                                                            <>
-                                                                <MatchedDonors bloodGroup={items.blood_group as BloodGroup} donorId={items.donor_id} emailAddress={items.donor_id} phoneNumber={items.phoneNumber} name={items.full_name} />
-                                                            </>
-                                                        )
-                                                    })
-                                                }
-                                            </div>
-                                        </>
-                                    ) : <EmptyScreen msg="No matched donors found" />
-                                }}
-                                paginationProps={{ current_page: 1, currentLimit: 6 }}
-                                refresh={null}
-                            />
-                            {/* 
+                                                </div>
+                                            </>
+                                        ) : <EmptyScreen msg="No matched donors found" />
+                                    }}
+                                    paginationProps={{ current_page: 1, currentLimit: 6 }}
+                                    refresh={null}
+                                />
+                                {/* 
                                 <MatchedDonors />
                                 <MatchedDonors />
                             </div> */}
-                        </div>
-                    </LoadingDataNotFoundComponent>
+                            </div>
+                        </LoadingDataNotFoundComponent>
+                    </div>
                 </AdminLayout>
             </AdminPrivateRouter>
         </Fragment >

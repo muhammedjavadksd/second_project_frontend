@@ -11,6 +11,27 @@ import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } fr
 import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
+export async function getActiveBankAccount(page: number, limit: number, fundId: string): Promise<IPaginatedResponse<IBankAccount>> {
+
+    try {
+        const find = await API_axiosInstance.get(`bank-active-accounts/${fundId}/${limit}/${page}`);
+        const response = find.data;
+        console.log(response);
+
+        if (response.status) {
+            return response.data
+        }
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
 export async function adminFindNearestDonor(page: number, limit: number, closedOnly: boolean, blood_group?: BloodGroup): Promise<IPaginatedResponse<IBloodReq>> {
     try {
         const session = await getSession();
@@ -970,27 +991,10 @@ export async function findNearest(bloodGroup: BloodGroup, location: [number, num
 export async function findOrder(order_id: string) {
 
     try {
-
-        const session = await getSession();
-
-
-        const userProfile = userDetailsFromGetSession(session, "user")
-        const token = userProfile.token;
-        if (token) {
-            const findProfile = await API_axiosInstance.get(`fund_raise/find-payment-order/${order_id}`, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            });
-            console.log(findProfile);
-
-            const response = findProfile.data;
-            console.log(response);
-            if (response.status) {
-                return response.data
-            } else {
-                return null
-            }
+        const findProfile = await API_axiosInstance.get(`fund_raise/find-payment-order/${order_id}`, {});
+        const response = findProfile.data;
+        if (response.status) {
+            return response.data
         } else {
             return null
         }

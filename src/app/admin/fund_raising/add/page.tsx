@@ -25,8 +25,6 @@ function AdminFundRaiseAdd(): React.ReactElement {
     const reGenerateAIDescription = (val) => {
         try {
             console.log(val);
-            alert("Check console")
-
             const data = getAIDescription(val?.amount, val.category, val.sub_category, val.raiser_name, val.raiser_age, val.benificiary_relation, val.description, val.city, val.pinCode, val.state, val.district)
             return data
         } catch (e) {
@@ -248,6 +246,7 @@ function AdminFundRaiseAdd(): React.ReactElement {
 
 
 
+
                                     {
                                         (canProceed && dirty || values['description']) && <div className='mt-5'>
                                             <div className='flex justify-between'>
@@ -270,8 +269,9 @@ function AdminFundRaiseAdd(): React.ReactElement {
                                             <ErrorMessage className='errorMessage' component={"div"} name='description'></ErrorMessage>
                                         </div>
                                     }
+
                                     <div className='mt-5 ml-auto flex gap-3 justify-end w-full overflow-hidden'>
-                                        <button type="submit" disabled={!canProceed} className={`${(!canProceed) && "cursor-not-allowed"} float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>Next <i className="fa-solid fa-chevron-right"></i></button>
+                                        <button type="submit" disabled={!(!!values['description'])} className={`${(!(!!values['description'])) && "cursor-not-allowed"} float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>Next <i className="fa-solid fa-chevron-right"></i></button>
                                     </div >
                                 </Form>
                             }}

@@ -1,4 +1,5 @@
 "use client"
+import BankAccountCard from '@/component/FundRaiser/BankAccountPublic'
 import FundRaiserComment from '@/component/FundRaiser/FundRaiserComment'
 import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
 import SuccessBanner from '@/component/FundRaiser/SuccessBanner'
@@ -27,7 +28,7 @@ import { createFundRaiserWhatsappMessage, findNameAvatar, formatDateToMonthNameA
 import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import { onCommentPost } from '@/util/external/yup/formSubmission'
 import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
-import { FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
+import { BankAccountType, FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
 import { FormActionResponse, PaginatedApi } from '@/util/types/InterFace/UtilInterface'
 import { Field, Form, Formik } from 'formik'
 import { useSession } from 'next-auth/react'
@@ -253,6 +254,10 @@ function ViewFundRaising(): React.ReactElement {
                     </li>
 
                     <li>
+                      <button onClick={() => setTabListing(FundRaiserTabItems.BANKACCOUNT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.COMMENT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Bank Account&apos;s</button>
+                    </li>
+
+                    <li>
                       <button onClick={() => setTabListing(FundRaiserTabItems.COMMENT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.COMMENT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Comment&apos;s</button>
                     </li>
                   </ul>
@@ -285,6 +290,10 @@ function ViewFundRaising(): React.ReactElement {
                           }
                         </ul>
                       </div>
+                    </TabItem>
+
+                    <TabItem keyid={3} isShow={tabListing == FundRaiserTabItems.BANKACCOUNT}>
+                      <BankAccountCard accountNumber='123' holderName='Jamee' ifsc='FDRI' type={BankAccountType.Current} />
                     </TabItem>
 
                     <TabItem keyid={4} isShow={tabListing == FundRaiserTabItems.COMMENT}>

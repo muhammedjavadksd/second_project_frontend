@@ -14,9 +14,7 @@ function LoadImage({ imageurl, ...props }: { imageurl: string, [key: string]: an
     }, [imageurl, props])
 
     return (
-        <div>
-            <NextImage width={64} height={64} alt="" src={src}   {...props} />
-        </div>
+        <NextImage width={64} height={64} alt="" src={src}   {...props} />
     )
 }
 

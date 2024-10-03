@@ -118,58 +118,57 @@ function BloodAccountStart({ onComplete, profile }): React.ReactElement {
     return (
         <LoadingComponent closeOnClick={false} isLoading={isBloodDonorFormLoading} paddingNeed={false}>
 
-            {bloodDonorDetails ? <ViewDonorProfile profile={bloodDonorDetails} /> :
-                <div className='bg-gray-100  rounded-t  rounded-b min-h-10 min-w-96 '>
-                    <>
-                        <ModelHeader title={"Start Blood Account"} />
-                        <div className='p-5'>
-                            <Formik initialValues={bloodDonatationFormValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => {
-                                console.log(currentLocation);
 
-                                if (!currentLocation) {
-                                    toast.error("Please allow the location")
-                                    return;
-                                }
-                                onBloodDonationSubmit(val, currentLocation, successCB, errorCB)
-                            }}>
-                                <Form>
-                                    <div className='mb-5'>
-                                        <label htmlFor="" className='text-sm'>Enter full name</label>
-                                        <Field placeholder="Enter full name" name="full_name" id="full_name" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
-                                        <ErrorMessage name='full_name' component={"div"} className='errorMessage'></ErrorMessage>
-                                    </div>
-                                    <div className='mb-5'>
-                                        <label htmlFor="" className='text-sm'>Enter phone number</label>
-                                        <Field placeholder="Enter phone number" name="phone_number" id="phone_number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
-                                        <ErrorMessage name='phone_number' component={"div"} className='errorMessage'></ErrorMessage>
-                                    </div>
-                                    <div className='mb-5'>
-                                        <label htmlFor="" className='text-sm'>Enter email address</label>
-                                        <Field placeholder="Enter email address" name="email_address" id="email_address" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
-                                        <ErrorMessage name='email_address' component={"div"} className='errorMessage'></ErrorMessage>
-                                    </div>
+            <div className='bg-gray-100  rounded-t  rounded-b min-h-10 min-w-96 '>
+                <>
+                    <ModelHeader title={"Start Blood Account"} />
+                    <div className='p-5'>
+                        <Formik initialValues={bloodDonatationFormValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => {
+                            console.log(currentLocation);
 
-                                    <div>
-                                        <label htmlFor="" className='text-sm'>Select your blood group</label>
-                                        <Field as="select" name="blood_group" id="blood_group" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
-                                            <option>Select Blood Group</option>
-                                            {
-                                                Object.values(BloodGroup).map((each) => {
-                                                    return (
-                                                        <option key={each} value={each}>{each}</option>
-                                                    )
-                                                })
-                                            }
-                                        </Field>
-                                        <ErrorMessage name='blood_group' component={"div"} className='errorMessage'></ErrorMessage>
-                                    </div>
-                                    <button type="submit" className="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save & Submit</button>
-                                </Form>
-                            </Formik>
-                        </div>
-                    </>
-                </div>
-            }
+                            if (!currentLocation) {
+                                toast.error("Please allow the location")
+                                return;
+                            }
+                            onBloodDonationSubmit(val, currentLocation, successCB, errorCB)
+                        }}>
+                            <Form>
+                                <div className='mb-5'>
+                                    <label htmlFor="" className='text-sm'>Enter full name</label>
+                                    <Field placeholder="Enter full name" name="full_name" id="full_name" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                                    <ErrorMessage name='full_name' component={"div"} className='errorMessage'></ErrorMessage>
+                                </div>
+                                <div className='mb-5'>
+                                    <label htmlFor="" className='text-sm'>Enter phone number</label>
+                                    <Field placeholder="Enter phone number" name="phone_number" id="phone_number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                                    <ErrorMessage name='phone_number' component={"div"} className='errorMessage'></ErrorMessage>
+                                </div>
+                                <div className='mb-5'>
+                                    <label htmlFor="" className='text-sm'>Enter email address</label>
+                                    <Field placeholder="Enter email address" name="email_address" id="email_address" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                                    <ErrorMessage name='email_address' component={"div"} className='errorMessage'></ErrorMessage>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="" className='text-sm'>Select your blood group</label>
+                                    <Field as="select" name="blood_group" id="blood_group" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+                                        <option>Select Blood Group</option>
+                                        {
+                                            Object.values(BloodGroup).map((each) => {
+                                                return (
+                                                    <option key={each} value={each}>{each}</option>
+                                                )
+                                            })
+                                        }
+                                    </Field>
+                                    <ErrorMessage name='blood_group' component={"div"} className='errorMessage'></ErrorMessage>
+                                </div>
+                                <button type="submit" className="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Save & Submit</button>
+                            </Form>
+                        </Formik>
+                    </div>
+                </>
+            </div>
         </LoadingComponent>
     )
 }

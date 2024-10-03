@@ -20,15 +20,6 @@ async function onBloodDetailsSubmit(val, location, successCallback, errorCallbac
         if (enquired_with_others == "true") {
             const personDetails = val?.personal_details;
             if (personDetails) {
-
-                const findAddress = await axios.get(`https://nominatim.openstreetmap.org/details.php?place_id=${location}&addressdetails=1&hierarchy=0&group_hierarchy=1&format=json`);
-                const responseAddress = findAddress.data;
-                const hospital = {
-                    hospital_name: responseAddress.localname,
-                    hospital_id: location,
-                    coordinates: responseAddress?.centroid?.coordinates
-                }
-
                 const createBloodRequest: AxiosResponse = await API_axiosInstance.post("blood/blood_request", {
                     patientName: personDetails.patient_name,
                     unit: val.unit,
@@ -36,7 +27,7 @@ async function onBloodDetailsSubmit(val, location, successCallback, errorCallbac
                     blood_group: val.blood_group,
                     relationship: personDetails.relation,
                     email_address: personDetails.email_address,
-                    locatedAt: hospital,
+                    location: location,
                     address: personDetails.address,
                     phoneNumber: personDetails.phone_number,
                     enquired_with_others: enquired_with_others

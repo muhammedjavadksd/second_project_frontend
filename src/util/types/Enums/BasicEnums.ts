@@ -29,7 +29,7 @@ enum TicketStatus {
 enum FundRaiserTabItems {
     ABOUT,
     DOCUMENT,
-    UPDATE,
+    BANKACCOUNT,
     COMMENT
 }
 

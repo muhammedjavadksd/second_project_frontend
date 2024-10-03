@@ -43,7 +43,7 @@ function Page() {
         if (chatRef.current) {
             chatRef.current.scrollTop = chatRef.current.scrollHeight;
         }
-    }, []);
+    }, [ticketChats]);
 
     const handleReplyChange = (e) => {
         setReply(e.target.value);
@@ -91,88 +91,91 @@ function Page() {
                 <AdminLayout onSearch={() => { }}>
                     {/* <AdminBreadCrumb title={`Ticket of ${baseTicket?.profile.first_name} ${baseTicket?.profile.last_name} `} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Manage tickets", href: "" }]} /> */}
 
-                    <LoadingDataNotFoundComponent isLoading={!(!!baseTicket) || isLoading} isFound={!!baseTicket} >
-                        <div className="max-full mx-auto  min-h-screen">
-                            <div className="bg-white mt-2 rounded-lg shadow-md p-6 mb-6">
-                                <h1 className="text-2xl font-bold mb-2">Ticket {ticket_id}</h1>
-                                <h1 className="text-2xl font-bold mb-2">Title : {baseTicket?.title}</h1>
-                                <p className="text-gray-600 mb-1">Status: <span className="font-semibold text-green-600">{baseTicket?.status}</span></p>
-                                <p className="text-gray-600">Created: {new Date(baseTicket?.created_at).toDateString()}</p>
-                                <p className="text-gray-600">Last update: {new Date(baseTicket?.updated_at).toDateString()}</p>
-                            </div>
-
-                            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                                <div
-                                    ref={chatRef}
-                                    className="h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded-md"
-                                    aria-label="Chat history"
-                                >
-                                    {ticketChats && ticketChats.map((message) => (
-                                        <div
-                                            key={message.chat_id}
-                                            className={`mb-4 ${message.from === TicketChatFrom.Admin ? "text-right" : "text-left"}`}
-                                        >
-                                            <div
-                                                className={`inline-block p-3 rounded-lg ${message.from === TicketChatFrom.User ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
-                                            >
-                                                <p className="font-semibold">{message.from}</p>
-                                                <p>{message.text}</p>
-                                                {message.attachment && <a className={`mt-2 mb-3 block underline ${message.from == TicketChatFrom.User ? `text-white` : 'text-blue-600'} `} target="_blank" href={message.attachment}>View attachment</a>}
-                                                <p className="text-xs mt-1 opacity-75">
-                                                    {new Date(message.created_at).toLocaleString()}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    ))}
+                    <div className="min-h-screen grid">
+                        <LoadingDataNotFoundComponent isLoading={!(!!baseTicket) || isLoading} isFound={!!baseTicket} >
+                            <div className="max-full mx-auto  min-h-screen">
+                                <div className="bg-white mt-2 rounded-lg shadow-md p-6 mb-6">
+                                    <h1 className="text-2xl font-bold mb-2">Ticket {ticket_id}</h1>
+                                    <h1 className="text-2xl font-bold mb-2">Title : {baseTicket?.title}</h1>
+                                    <p className="text-gray-600 mb-1">Status: <span className="font-semibold text-green-600">{baseTicket?.status}</span></p>
+                                    <p className="text-gray-600">Created: {new Date(baseTicket?.created_at).toDateString()}</p>
+                                    <p className="text-gray-600">Last update: {new Date(baseTicket?.updated_at).toDateString()}</p>
                                 </div>
 
-                                {
-                                    selectedFile && <div className="imageLabel bg-blue-400 p-2 text-white gap-3 flex items-center rounded-ss-lg rounded-se-lg">
-                                        <div className="flex justify-between w-full">
-                                            <div className="flex gap-2 items-center">
-                                                <i className="fa-solid fa-image"></i>
-                                                <span>{selectedFile?.name}</span>
+                                <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                                    <div
+                                        id="overflow-container"
+                                        ref={chatRef}
+                                        className="h-96 overflow whitespace-nowrap overflow-y-auto mb-4 p-4 bg-gray-50 rounded-md"
+                                        aria-label="Chat history"
+                                    >
+                                        {ticketChats && ticketChats.map((message) => (
+                                            <div
+                                                key={message.chat_id}
+                                                className={`mb-4 ${message.from === TicketChatFrom.Admin ? "text-right" : "text-left"}`}
+                                            >
+                                                <div
+                                                    className={`inline-block p-3 rounded-lg ${message.from === TicketChatFrom.User ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
+                                                >
+                                                    <p className="font-semibold">{message.from}</p>
+                                                    <p>{message.text}</p>
+                                                    {message.attachment && <a className={`mt-2 mb-3 block underline ${message.from == TicketChatFrom.User ? `text-white` : 'text-blue-600'} `} target="_blank" href={message.attachment}>View attachment</a>}
+                                                    <p className="text-xs mt-1 opacity-75">
+                                                        {new Date(message.created_at).toLocaleString()}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <button onClick={() => setFile(null)} className="">
-                                                <i className="fa-solid text-red-900 fa-trash"></i>
+                                        ))}
+                                    </div>
+
+                                    {
+                                        selectedFile && <div className="imageLabel bg-blue-400 p-2 text-white gap-3 flex items-center rounded-ss-lg rounded-se-lg">
+                                            <div className="flex justify-between w-full">
+                                                <div className="flex gap-2 items-center">
+                                                    <i className="fa-solid fa-image"></i>
+                                                    <span>{selectedFile?.name}</span>
+                                                </div>
+                                                <button onClick={() => setFile(null)} className="">
+                                                    <i className="fa-solid text-red-900 fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                    <div className="relative flex items-center">
+                                        <textarea
+                                            className={`w-full p-3 pr-12 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedFile ? 'rounded-ss-none rounded-se-none rounded-es-lg rounded-ee-lg' : "rounded-md"}`}
+                                            rows={1}
+                                            placeholder="Type your reply here..."
+                                            value={reply}
+                                            onChange={handleReplyChange}
+                                            aria-label="Reply input"
+                                        ></textarea>
+
+                                        <div className="absolute right-2 bottom-2 flex">
+                                            <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={ref} className="hidden" />
+                                            <button
+                                                className="bg-gray-200 text-gray-700 p-2 rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200 mr-2"
+                                                onClick={() => {
+                                                    ref.current?.click()
+                                                }}
+                                                aria-label="Attach file"
+
+                                            >
+                                                <FaPaperclip />
+                                            </button>
+                                            <button
+                                                className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                                                onClick={handleSendReply}
+                                                aria-label="Send reply"
+                                            >
+                                                <IoSend />
                                             </button>
                                         </div>
                                     </div>
-                                }
-                                <div className="relative flex items-center">
-                                    <textarea
-                                        className={`w-full p-3 pr-12 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedFile ? 'rounded-ss-none rounded-se-none rounded-es-lg rounded-ee-lg' : "rounded-md"}`}
-                                        rows={1}
-                                        placeholder="Type your reply here..."
-                                        value={reply}
-                                        onChange={handleReplyChange}
-                                        aria-label="Reply input"
-                                    ></textarea>
-
-                                    <div className="absolute right-2 bottom-2 flex">
-                                        <input onChange={(e) => setFile(e.target.files[0])} type="file" ref={ref} className="hidden" />
-                                        <button
-                                            className="bg-gray-200 text-gray-700 p-2 rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200 mr-2"
-                                            onClick={() => {
-                                                ref.current?.click()
-                                            }}
-                                            aria-label="Attach file"
-
-                                        >
-                                            <FaPaperclip />
-                                        </button>
-                                        <button
-                                            className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-                                            onClick={handleSendReply}
-                                            aria-label="Send reply"
-                                        >
-                                            <IoSend />
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </LoadingDataNotFoundComponent>
+                        </LoadingDataNotFoundComponent>
+                    </div>
                     <>
                     </>
                 </AdminLayout>

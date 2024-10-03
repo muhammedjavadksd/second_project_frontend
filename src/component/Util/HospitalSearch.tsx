@@ -3,7 +3,7 @@ import { GoogleMap, useLoadScript, Autocomplete } from '@react-google-maps/api';
 import { HospitalResponse } from '@/util/types/InterFace/UtilInterface';
 
 
-const HospitalSearch = ({ selectedHospital, searchRef }: { selectedHospital: Function, searchRef: Ref<HTMLInputElement> }) => {
+const HospitalSearch = ({ selectedHospital, searchRef }: { selectedHospital: Function, searchRef?: Ref<HTMLInputElement> }) => {
 
     console.log(process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "");
 

@@ -3,6 +3,7 @@ import BloodAccountTab from "@/component/Account/AccountTab/BloodAccountTab";
 import BloodAccountStart from "@/component/Blood/bloodAccountStart/BloodAccountStart";
 import UpdateBloodGroup from "@/component/Blood/bloodAccountStart/UpdateBloodGroup";
 import UpdatePersonalDetails from "@/component/Blood/bloodAccountStart/UpdatePersonalDetails";
+import ViewDonorProfile from "@/component/Blood/bloodAccountStart/ViewDonorProfile";
 import BloodRequirementSingleItem from "@/component/Blood/BloodRequirementSingleItem";
 import Header from "@/component/Header/Header";
 import PrivateAccountForBlood from "@/component/LoginComponent/PrivateAccountForBlood";
@@ -11,10 +12,15 @@ import BloodReqSlider from "@/component/section/Home/BloodReqSlider";
 import BreadCrumb from "@/component/Util/BreadCrumb";
 import CustomeConfirmUI from "@/component/Util/ConfirmUI";
 import DangerUIConfirm from "@/component/Util/DangerUIConfirm";
+import LoadingComponent from "@/component/Util/LoadingComponent";
+import LoadingDataNotFoundComponent from "@/component/Util/LoadingDataNotFound";
 import ModelHeader from "@/component/Util/Model/ModelHeader";
 import StatisticCard from "@/component/Util/StatisticCard";
 import { findMyBloodProfile, openBloodAccountStatus } from "@/util/data/helper/APIHelper";
+import { userDetailsFromUseSession } from "@/util/data/helper/authHelper";
+import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { BloodProfile } from "@/util/types/API Response/Blood";
+import { useSession } from "next-auth/react";
 import { Fragment, useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import { toast } from "react-toastify";
@@ -23,6 +29,10 @@ function BloodProfileOverView() {
 
     const [isOpen, setOpen] = useState<boolean>(false)
     const [bloodProfile, setBloodProfile] = useState<null | BloodProfile>(null)
+    const [bloodDonorDetails, setBloodDonor] = useState(null)
+    const session = useSession()
+    const [isBloodDonorFormLoading, setBloodDonorFormLoading] = useState(true)
+
 
     async function updateBloodProfile() {
 
@@ -68,6 +78,44 @@ function BloodProfileOverView() {
 
     }
 
+
+    async function findDonorDetails() {
+        try {
+            const profile = userDetailsFromUseSession(session, "user");
+            const bloodToken = profile.blood_token;
+            const token = profile.token;
+
+            if (bloodToken && token) {
+                const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile`, {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        bloodAuthorization: `Bearer ${bloodToken}`
+                    }
+                });
+                const response = findBloodDonor.data;
+                console.log(response);
+
+                if (response.status) {
+                    const profile = response.data?.profile?.profile;
+                    console.log(profile);
+
+                    setBloodDonor(profile)
+                }
+                console.log(findBloodDonor);
+
+                setBloodDonorFormLoading(false)
+            }
+        } catch (e) {
+            console.log(e);
+            setBloodDonorFormLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        findDonorDetails()
+        setBloodDonor(null)
+    }, [session])
+
     async function findProfile() {
         const profile = await findMyBloodProfile()
         if (profile.status) {
@@ -77,6 +125,7 @@ function BloodProfileOverView() {
     }
 
     useEffect(() => {
+
         findProfile()
     }, [])
 
@@ -119,7 +168,11 @@ function BloodProfileOverView() {
                             </div>
                         </div>
                         <div className="w-2/6">
-                            <BloodAccountStart profile={bloodProfile?.profile} onComplete={() => { }} />
+                            <div className="h-[420px]">
+                                <LoadingDataNotFoundComponent isFound={!!bloodDonorDetails} isLoading={isBloodDonorFormLoading}>
+                                    <ViewDonorProfile profile={bloodDonorDetails} />
+                                </LoadingDataNotFoundComponent>
+                            </div>
                         </div>
                     </div>
                 </div>

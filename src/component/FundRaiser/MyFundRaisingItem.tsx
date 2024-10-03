@@ -21,8 +21,8 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
     return (
         <div className="w-full flex mx-auto mb-5 bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden dark:bg-gray-800 dark:border-gray-700">
             <div className="w-3/12">
-                <a href={`my-fundraising/view/${profile.fund_id}`}>
-                    <LoadImage className="w-full h-full  object-cover" imageurl={`${process.env.NEXT_PUBLIC_PUBLIC_IMAGE_URL}/fundRaisers/fundRaiser1.png`} />
+                <a href={`my-fundraising/view/${profile.fund_id}`} className='h-full block'>
+                    <LoadImage unoptimized className="w-full h-full  object-cover" imageurl={profile.picture[0] || null} />
                 </a>
             </div>
             <div className="w-9/12">
@@ -30,20 +30,20 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
                     <div className="w-full flex gap-10">
                         <div className='w-2/4'>
                             <a href="#">
-                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">{profile.full_name}&apos;s Fund Raiser for {profile.category} in {profile.district}</h3>
+                                <h3 className="mb-3 text-xl flex items-center font-bold text-gray-900 dark:text-white">
+                                    <Link href={`my-fundraising/view/${profile.fund_id}`} className='underline'>
+                                        {profile.full_name}&apos;s Fund Raiser for {profile.category} in {profile.district}
+
+                                    </Link>
+                                    {
+                                        profile.status == FundRaiserStatus.CLOSED && <Image alt='' width={12} height={12} src='/images/icons/closed.png' className='w-12' />
+                                    }
+                                </h3>
                             </a>
                             <p className="mb-4 text-sm text-gray-700 dark:text-gray-400">
                                 {profile.about}
                             </p>
-                            <div className="flex items-center justify-between mt-4">
-                                {
-                                    profile.status != FundRaiserStatus.CLOSED ? <button type="button" className="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
-                                        <i className="fa-solid fa-lock mr-2"></i> Open
 
-                                    </button> : <Image alt='' width={12} height={12} src='/images/icons/closed.png' className='w-12' />
-                                }
-                                <Link href={'/'} type="button" className="text-sm font-medium text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600">Edit Post</Link>
-                            </div>
                         </div>
 
                         <div className='w-2/4'>
