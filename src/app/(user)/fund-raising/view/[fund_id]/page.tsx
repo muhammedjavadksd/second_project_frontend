@@ -254,7 +254,7 @@ function ViewFundRaising(): React.ReactElement {
                     </li>
 
                     <li>
-                      <button onClick={() => setTabListing(FundRaiserTabItems.BANKACCOUNT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.COMMENT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Bank Account&apos;s</button>
+                      <button onClick={() => setTabListing(FundRaiserTabItems.BANKACCOUNT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.BANKACCOUNT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Bank Account&apos;s</button>
                     </li>
 
                     <li>
@@ -293,7 +293,9 @@ function ViewFundRaising(): React.ReactElement {
                     </TabItem>
 
                     <TabItem keyid={3} isShow={tabListing == FundRaiserTabItems.BANKACCOUNT}>
-                      <BankAccountCard accountNumber='123' holderName='Jamee' ifsc='FDRI' type={BankAccountType.Current} />
+                      <div className="grid grid-cols-2">
+                        <BankAccountCard accountNumber='18910100014554' holderName='Jamee' ifsc='FDRL0001891' type={BankAccountType.Current} />
+                      </div>
                     </TabItem>
 
                     <TabItem keyid={4} isShow={tabListing == FundRaiserTabItems.COMMENT}>

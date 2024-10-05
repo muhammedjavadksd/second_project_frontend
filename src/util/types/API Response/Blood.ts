@@ -64,11 +64,11 @@ interface INearestDonor {
     _id: string
     donor_id: string
     full_name: string
-    blood_group: string
+    blood_group: BloodGroup
     locatedAt: LocatedAt
     phoneNumber: number
     email_address: string
-    status: string
+    status: BloodDonorStatus
     distance: string
 }
 

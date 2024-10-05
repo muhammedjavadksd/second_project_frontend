@@ -93,7 +93,7 @@ function Page() {
 
                     <div className="min-h-screen grid">
                         <LoadingDataNotFoundComponent isLoading={!(!!baseTicket) || isLoading} isFound={!!baseTicket} >
-                            <div className="max-full mx-auto  min-h-screen">
+                            <div className="min-h-screen">
                                 <div className="bg-white mt-2 rounded-lg shadow-md p-6 mb-6">
                                     <h1 className="text-2xl font-bold mb-2">Ticket {ticket_id}</h1>
                                     <h1 className="text-2xl font-bold mb-2">Title : {baseTicket?.title}</h1>

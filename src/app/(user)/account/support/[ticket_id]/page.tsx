@@ -20,11 +20,22 @@ function ViewTicket() {
 
     const [ticket, setTicket] = useState<ProfileTicket>(null)
     const { ticket_id } = useParams();
-    const chatRef = useRef(null)
     const fileRef = useRef(null)
     const [isLoading, setLoading] = useState<boolean>(false)
 
     const [attachment, setAttachment] = useState<File>(null)
+    const chatRef = useRef(null);
+    const messagesRef = useRef(null);
+
+
+    useEffect(() => {
+        if (messagesRef.current) {
+            // alert(messagesRef.current.scrollHeight)
+            console.log(messagesRef.current);
+
+            messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+        }
+    }, [ticket]);
 
     async function addChat() {
         setLoading(true)
@@ -70,19 +81,19 @@ function ViewTicket() {
         <UserPrivateRouter>
             <Header />
             <div className="container mx-auto mt-5 mb-5">
-                <div className="mb-5">
-                    <BreadCrumb path={['Profile', 'View Profile']} />
-                </div>
-                <div className="flex gap-5">
-                    <div className="w-1/4">
+
+                <div>
+
+                    <div className="mb-3">
                         <AccountTab />
                     </div>
-                    <div className="w-4/5 bg-white">
+
+                    <div className="w-full bg-gray-200">
 
                         <div>
 
                             <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false}>
-                                <div className="relative bg-white p-5 overflow-x-auto shadow-md sm:rounded-lg">
+                                <div className="relative bg-gray-200 p-5 overflow-x-auto shadow-md sm:rounded-lg">
                                     <h2 className="text-2xl font-bold mb-4">Ticket #{ticket.ticket_id}</h2>
                                     <div className="mb-4">
                                         <p><strong>Title:</strong> {ticket.title}</p>
@@ -90,7 +101,7 @@ function ViewTicket() {
                                         <p><strong>Status:</strong> {ticket.status}</p>
                                     </div>
 
-                                    <ul className="max-h-96 overflow-auto">
+                                    <ul ref={messagesRef} className="max-h-96 overflow-auto">
                                         {
                                             ticket.chats.map((chat, index) => {
                                                 return (

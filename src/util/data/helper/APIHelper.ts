@@ -12,6 +12,27 @@ import { BloodCloseCategory, BloodDonationStatus, BloodDonorStatus, BloodGroup, 
 
 
 
+export async function adminTokenVerify(token: string): Promise<FormActionResponse> {
+    try {
+        const find = await API_axiosInstance.patch(`auth/admin/verify-update-token`, {}, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+        const response = find.data;
+        return {
+            status: response.status,
+            msg: response.msg
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            status: false,
+            msg: errorMsg
+        }
+    }
+}
+
 export async function adminUpdateDonorStatus(donorId: string, status: BloodDonorStatus, reason?: string): Promise<FormActionResponse> {
     try {
         const session = await getSession();
@@ -173,23 +194,18 @@ export async function getActiveBankAccount(page: number, limit: number, fundId: 
         }
     }
 }
-export async function adminFindNearestDonor(page: number, limit: number, closedOnly: boolean, blood_group?: BloodGroup): Promise<IPaginatedResponse<IBloodReq>> {
+
+export async function adminFindNearestDonor(page: number, limit: number, location: HospitalResponse, blood_group?: BloodGroup): Promise<IPaginatedResponse<IBloodDonor>> {
     try {
         const session = await getSession();
         const userProfile = userDetailsFromGetSession(session, "admin")
         const token = userProfile.token;
 
-        let params: string = status ? `${limit}/${page}/${status}` : `${limit}/${page}`
-        let queryObject: Record<string, any> = {};
-        if (blood_group) {
-            queryObject['blood_group'] = blood_group
-            // query = `&blood_group=${blood_group}`
-        }
+        console.log("Worked this");
 
-
-        const queryString = new URLSearchParams(queryObject).toString()
-        let query: string = queryString ? `?${queryString}` : "";
-        const find = await API_axiosInstance.get(`blood/admin/blood-requirements/${params}?closed=${closedOnly}${query}`, {
+        const locationQuery = `?lati=${location.coordinates[1]}&long=${location.coordinates[0]}`
+        const params = blood_group ? `${limit}/${page}/${blood_group}` : `${limit}/${page}`
+        const find = await API_axiosInstance.get(`blood/admin/nearest/${params}${locationQuery}`, {
             headers: {
                 authorization: `Bearer ${token}`
             }
