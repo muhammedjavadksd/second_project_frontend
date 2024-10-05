@@ -1,5 +1,15 @@
 
 
+const addBloodDonorInitialValues = {
+    full_name: "",
+    blood_group: "",
+    location: '',
+    phone_number: '',
+    email_address: '',
+    status: '',
+}
+
+
 const bloodDonatationFormValues = {
     full_name: '',
     phone_number: '',
@@ -131,4 +141,4 @@ const adminAddFundRaiserInitialValues = {
 }
 
 
-export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues, requestPersonalBloodInitialValues, bloodRequirementAdminInitialValues }
+export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues, requestPersonalBloodInitialValues, bloodRequirementAdminInitialValues, addBloodDonorInitialValues }

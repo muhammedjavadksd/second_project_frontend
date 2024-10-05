@@ -8,10 +8,50 @@ import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IDonationStatitics, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
-import { BloodCloseCategory, BloodDonationStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
+import { BloodCloseCategory, BloodDonationStatus, BloodDonorStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { toast } from "react-toastify";
 
 
+
+export async function addBloodDonorApi(full_name: string, blood_group: BloodGroup, location: HospitalResponse, phone_number: number, email_address: string, status: BloodDonorStatus): Promise<FormActionResponse> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        console.log(location);
+
+
+        if (user) {
+            const find = await API_axiosInstance.post(`blood/admin/add-donor/`, {
+                full_name,
+                blood_group,
+                location,
+                phone_number,
+                email_address,
+                status,
+            }, {
+                headers: {
+                    authorization: `Bearer ${user.token}`
+                }
+            });
+            const response = find.data;
+            return {
+                msg: response.msg,
+                status: response.status
+            }
+        }
+        return {
+            msg: "Un authraized access",
+            status: false
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
 
 export async function activeAccount(fundId: string, benfId: string): Promise<FormActionResponse> {
 

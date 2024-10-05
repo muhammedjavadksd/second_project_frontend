@@ -210,26 +210,33 @@ let authOptions = {
                             return null
                         }
 
-                    } else if (credentials.auth_type == "organization") {
-                        //if it organization
-                        const email_address = credentials.email_address;
-                        const password = credentials.password;
+                    } else if (credentials.auth_type == "user_refresh") {
 
-                        let request = await API_axiosInstance.post("/auth/organization/sign_in", {
-                            email_address,
-                            password
-                        })
+                        const cookies = new Cookies();
+                        const refreshToken = cookies.get("refresh_token");
+
+                        let request = await API_axiosInstance.post("/auth/refresh_token")
+                        const session = await getServerSession();
+                        const userDetails = userDetailsFromGetSession(session, "user");
 
                         let response = request.data;
-                        if (response.status) {
-                            const sessionData: IOrganizationSessionData = {
-                                email: response.email,
-                                id: response.id,
-                                name: response.name,
-                                role: "organization",
-                                token: response.token
+                        if (response.status && userDetails) {
+                            let storingData: IUserSessionData = {
+                                id: userDetails.user_id,
+                                token: userDetails.response.data.access_token,
+                                first_name: userDetails.first_name,
+                                last_name: userDetails.last_name,
+                                phone: userDetails.phone,
+                                email: userDetails.email,
+                                role: "user",
+                                blood_donor_id: userDetails.donor_id,
+                                blood_token: userDetails.blood_token,
+                                profile_id: userDetails.profile_id
                             }
-                            return sessionData as IOrganizationSessionData
+
+                            console.log(storingData);
+
+                            return storingData
                         } else {
                             return null
                         }

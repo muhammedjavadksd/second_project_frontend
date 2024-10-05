@@ -4,7 +4,7 @@ import Footer from '@/component/Util/Footer'
 import { BloodGroup } from '@/util/types/Enums/BasicEnums'
 import React, { useState, useEffect, Fragment } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
-import { FaSearch, FaTint, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaSearch, FaTint, FaMapMarkerAlt, FaSpinner } from 'react-icons/fa';
 import SectionTitle from '@/component/Util/SectionTitle'
 import { findNearest, findPlaces } from '@/util/data/helper/APIHelper'
 import PaginationSection from '@/component/Util/PaginationSection'
@@ -32,6 +32,7 @@ const BloodDonorSearch = () => {
     const [location, setLocation] = useState([]);
     const [isSearching, setSearching] = useState<boolean>(false)
     const [selectedLocation, setSelectedLocation] = useState<SelectedHospital>(null);
+    const [isLoading, setLoading] = useState(true)
 
 
     useEffect(() => {
@@ -49,7 +50,9 @@ const BloodDonorSearch = () => {
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(({ coords }) => {
             setCurrentLocation([coords.longitude, coords.latitude])
+            setLoading(false)
         }, (err) => {
+            setLoading(false)
             console.log(err);
         })
     }, [])
@@ -120,9 +123,13 @@ const BloodDonorSearch = () => {
     return (
         <>
             <Header />
+            {
+            }
             <ModelItem ZIndex={99} closeOnOutSideClock={false} isOpen={!(!!currentLocation)} onClose={() => { }} >
-                <ModelHeader title={'Access location'} />
-                <AskLocation isLoading={true} isRejected={false} />
+                <div>
+                    <ModelHeader title={'Access location'} />
+                    <AskLocation />
+                </div>
             </ModelItem>
             <div className="container mx-auto px-4 py-8">
                 <div className='-mt-10'>

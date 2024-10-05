@@ -1,5 +1,21 @@
+import API_axiosInstance from "@/util/external/axios/api_axios_instance";
+import { StatusCode } from "@/util/types/Enums/BasicEnums";
+import { AxiosError } from "axios";
 import { getSession } from "next-auth/react";
 
+
+export function axiosUnAuthraizedInterceptor() {
+
+    API_axiosInstance.interceptors.response.use((response) => {
+        return response
+    }, (err: AxiosError) => {
+        if (err.code && err.code === StatusCode.UNAUTHORIZED.toString()) {
+
+        } else {
+            return Promise.reject(err)
+        }
+    })
+}
 
 
 

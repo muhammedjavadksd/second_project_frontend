@@ -2,12 +2,24 @@
 import AdminLayout from "@/component/Admin/AdminLayout"
 import AdminPrivateRouter from "@/component/LoginComponent/AdminPrivateRouter"
 import AdminBreadCrumb from "@/component/Util/AdminBreadCrumb"
-import { BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums"
+import HospitalSearch from "@/component/Util/HospitalSearch"
+import LoadingDataNotFoundComponent from "@/component/Util/LoadingDataNotFound"
+import SpinnerLoader from "@/component/Util/SpinningLoader"
+import { addBloodDonorApi } from "@/util/data/helper/APIHelper"
+import { addBloodDonorInitialValues } from "@/util/external/yup/initialValues"
+import { addBloodDonorValidation } from "@/util/external/yup/yupValidations"
+import { BloodDonationStatus, BloodDonorStatus, BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums"
+import { HospitalResponse } from "@/util/types/InterFace/UtilInterface"
 import { ErrorMessage, Field, Form, Formik } from "formik"
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
+import { FaSpinner } from "react-icons/fa"
+import { toast } from "react-toastify"
 
 
 function Page() {
+
+    const [selectedLocation, setLocation] = useState<HospitalResponse>(null)
+    const [isLoading, setLoading] = useState(false)
 
     return (
         <Fragment>
@@ -15,12 +27,32 @@ function Page() {
                 <AdminLayout onSearch={(val) => { }}>
                     <>
                         <AdminBreadCrumb title={"Add blood donor"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Donor", href: "/admin/blood/add-donor" }, { title: "Add", href: "/admin/blood/add-donor" }]} />
+                        <SpinnerLoader isLoading={isLoading} />
+
 
                         <div className="mt-3">
                             <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
                                 <span className="font-medium">Notice!</span> When selecting a location, please choose the nearest option to effectively connect with local donors for your other needs.
                             </div>
-                            <Formik initialValues={{}} onSubmit={(val) => { }}>
+                            <Formik initialValues={addBloodDonorInitialValues} validationSchema={addBloodDonorValidation} onSubmit={(val, { resetForm }) => {
+                                if (!selectedLocation) {
+                                    toast.error("Please select valid location")
+                                    return;
+                                }
+                                setLoading(true)
+                                addBloodDonorApi(val.full_name, val.blood_group as BloodGroup, selectedLocation, val.phone_number as unknown as number, val.email_address, val.status as BloodDonorStatus).then((data) => {
+                                    if (data.status) {
+                                        toast.success("Blood donor created success");
+                                        resetForm()
+                                    } else {
+                                        toast.error(data.msg);
+                                    }
+                                }).catch((err) => {
+                                    toast.error("Something went wrong")
+                                }).finally(() => {
+                                    setLoading(false)
+                                })
+                            }}>
                                 <Form>
 
                                     <div className="grid  gap-x-10 gap-y-5 grid-cols-2 mb-1">
@@ -61,16 +93,15 @@ function Page() {
                                             <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Is he/she available to donate now?</label>
                                             <Field as="select" type="text" id="status" name="status" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
                                                 <option value="">Select status</option>
-                                                <option value="Open">Yes, Avaialble</option>
-                                                <option value="Blocked">Not now</option>
+                                                <option value={BloodDonorStatus.Open}>Yes, Avaialble</option>
+                                                <option value={BloodDonorStatus.Blocked}>Not now</option>
                                             </Field>
-                                            <ErrorMessage className='errorMessage' component={"div"} name='blood_group'></ErrorMessage>
+                                            <ErrorMessage className='errorMessage' component={"div"} name='status'></ErrorMessage>
                                         </div>
 
                                         <div>
                                             <label htmlFor="location" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select nearest location</label>
-                                            <Field type="text" id="location" name="location" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Select location" />
-                                            <ErrorMessage className='errorMessage' component={"div"} name='location'></ErrorMessage>
+                                            <HospitalSearch selectedHospital={(location) => setLocation(location)} />
                                         </div>
 
 

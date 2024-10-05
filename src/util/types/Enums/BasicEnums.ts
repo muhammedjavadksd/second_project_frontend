@@ -77,6 +77,12 @@ enum FundRaiserStatus {
     CLOSED = "CLOSED"
 }
 
+enum BloodDonorStatus {
+    Open = "Open",
+    Blocked = "Blocked",
+    Deleted = "Deleted"
+}
+
 enum BloodGroup {
     A_POSITIVE = "A+",
     A_NEGATIVE = "A-",
@@ -196,4 +202,4 @@ enum FundRaiserEdit {
     Description
 }
 
-export { TicketStatus, FileAcceptType, BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode, FundRaiserEdit, BankAccountType, CreateChatVia, BloodGroupUpdateStatus }
+export { TicketStatus, FileAcceptType, BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode, FundRaiserEdit, BankAccountType, CreateChatVia, BloodGroupUpdateStatus, BloodDonorStatus }
