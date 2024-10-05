@@ -12,6 +12,39 @@ import { BloodCloseCategory, BloodDonationStatus, BloodDonorStatus, BloodGroup, 
 
 
 
+export async function adminUpdateDonorStatus(donorId: string, status: BloodDonorStatus, reason?: string): Promise<FormActionResponse> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const find = await API_axiosInstance.patch(`blood/admin/update-donor-status/${donorId}`, {
+                status,
+                reason
+            }, {
+                headers: {
+                    authorization: `Bearer ${user.token}`
+                }
+            });
+            const response = find.data;
+            return {
+                status: response.status,
+                msg: response.msg
+            }
+        }
+        return {
+            status: false,
+            msg: "Un authraized access"
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            status: false,
+            msg: errorMsg
+        }
+    }
+}
+
 export async function adminFindDonors(page: number, limit: number, blood_group: BloodGroup, isActiveOnly?: string): Promise<IPaginatedResponse<IBloodDonor>> {
     try {
         const session = await getSession();

@@ -9,6 +9,9 @@ const addBloodDonorInitialValues = {
     status: '',
 }
 
+const blockDonorAccountInitialValues = {
+    reason: ""
+}
 
 const bloodDonatationFormValues = {
     full_name: '',
@@ -141,4 +144,4 @@ const adminAddFundRaiserInitialValues = {
 }
 
 
-export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues, requestPersonalBloodInitialValues, bloodRequirementAdminInitialValues, addBloodDonorInitialValues }
+export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues, requestPersonalBloodInitialValues, bloodRequirementAdminInitialValues, addBloodDonorInitialValues, blockDonorAccountInitialValues }

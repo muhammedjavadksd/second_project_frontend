@@ -185,6 +185,9 @@ const bloodRequirementAdminValidation = yup.object().shape({
         .min(new Date(), 'Date needed must be in the future')
 })
 
+const blockDonroAccountValidation = yup.object().shape({
+    reason: yup.string().required("Reason is required").min(5, "Reason should be at least 5 characters long").typeError("Please enter a valid reason"),
+})
 const addBloodDonorValidation = yup.object().shape({
     full_name: yup.string().required('Full name is required').min(3, 'Full name must be at least 3 characters long'),
     blood_group: yup.string().required('Blood group is required').oneOf(Object.values(BloodGroup), 'Invalid blood group'),
@@ -194,4 +197,4 @@ const addBloodDonorValidation = yup.object().shape({
     status: yup.string().oneOf(Object.values(BloodDonorStatus), 'Invalid status')
 })
 
-export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation, requestPersonalBlood, adminSiteSettings, bloodRequirementAdminValidation, addBloodDonorValidation }
+export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation, requestPersonalBlood, adminSiteSettings, bloodRequirementAdminValidation, addBloodDonorValidation, blockDonroAccountValidation }

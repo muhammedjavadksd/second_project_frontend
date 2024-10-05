@@ -56,6 +56,7 @@ interface IBloodDonor {
     phoneNumber: number
     email_address: string
     status: BloodDonorStatus
+    blocked_reason: string
     __v: number
 }
 
