@@ -15,8 +15,7 @@ function DropDownItem({ title, options, isOpen, callBack, optionsType }: { title
                 {title}
 
             </button>
-            <ul role="menu" data-popover="menu-1" data-popover-placement="bottom"
-                className={`${!isVisible && "hidden"} w-64 max-h-56 absolute z-10 min-w-[180px] overflow-auto rounded-md border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none`}>
+            <ul role="menu" data-popover="menu-1" data-popover-placement="bottom" className={`${!isVisible && "hidden"} w-64 max-h-56 absolute z-10 min-w-[180px] overflow-auto rounded-md border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none`}>
                 {
                     options ? <ArrayRender callBack={callBack} data={options} /> : <ObjectOptionRender callBack={callBack} data={optionsType} />
                 }

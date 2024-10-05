@@ -1,4 +1,4 @@
-import { BloodCloseCategory, BloodGroup, BloodGroupUpdateStatus, BloodStatus, Relationship } from "../Enums/BasicEnums"
+import { BloodCloseCategory, BloodDonorStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, Relationship } from "../Enums/BasicEnums"
 
 interface Sample {
     name: string
@@ -51,11 +51,11 @@ interface IBloodDonor {
     _id: string
     donor_id: string
     full_name: string
-    blood_group: string
+    blood_group: BloodGroup
     locatedAt: LocatedAt
     phoneNumber: number
     email_address: string
-    status: string
+    status: BloodDonorStatus
     __v: number
 }
 

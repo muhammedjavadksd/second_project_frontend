@@ -1,9 +1,14 @@
-import { BloodGroup } from "@/util/types/Enums/BasicEnums";
-import { Fragment } from "react";
+import { BloodDonorStatus, BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums";
+import { Fragment, useEffect, useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
 
 
-function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress }: { name: string, bloodGroup: BloodGroup, donorId: string, phoneNumber: number, emailAddress: string }) {
+function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress, status }: { name: string, bloodGroup: BloodGroup, donorId: string, phoneNumber: number, emailAddress: string, status: BloodDonorStatus }) {
+
+    const [bloodStatus, setStatus] = useState(null);
+    useEffect(() => {
+        setStatus(status)
+    }, [status])
 
     return (
         <Fragment>
@@ -18,21 +23,21 @@ function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress }:
 
                     <div className="mt-4 space-y-4 animate-fade-in-down">
                         <div>
-                            <ul className="space-y-2">
-                                <li className="flex justify-between items-center">
+                            <ul className="space-y-2 ">
+                                <li className="grid-cols-2 grid">
                                     <span>Phone number</span>
                                     <span className="text-sm text-gray-500">+91 {phoneNumber}</span>
                                 </li>
-                                <li className="flex justify-between items-center">
+                                <li className="grid-cols-2 grid">
                                     <span>Email number</span>
-                                    <span className="text-sm text-gray-500">{emailAddress}</span>
+                                    <span className="text-sm text-gray-500 break-words">{emailAddress}</span>
                                 </li>
-                                
+
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div className="bg-gray-100 p-4 flex justify-around">
+                <div className="bg-gray-100 p-4 flex justify-between">
                     <a
                         href={`tel:${phoneNumber}`}
                         className="flex items-center text-blue-500 hover:text-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -41,6 +46,10 @@ function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress }:
                         <FaEnvelope className="mr-2" />
                         Call Javad
                     </a>
+                    <label className="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" checked={bloodStatus == BloodDonorStatus.Open} className="sr-only peer" />
+                        <div className="relative w-14 h-7 bg-red-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
 
                 </div>
             </div>

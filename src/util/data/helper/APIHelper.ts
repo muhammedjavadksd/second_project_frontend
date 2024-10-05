@@ -9,9 +9,44 @@ import { userDetailsFromGetSession } from "./authHelper";
 import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IDonationStatitics, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodDonorStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
-import { toast } from "react-toastify";
 
 
+
+export async function adminFindDonors(page: number, limit: number, blood_group: BloodGroup, isActiveOnly?: string): Promise<IPaginatedResponse<IBloodDonor>> {
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const query = isActiveOnly != null ? `active=${isActiveOnly}` : null
+            const params = blood_group ? `${limit}/${page}/${blood_group}` : `${limit}/${page}`
+            const find = await API_axiosInstance.get(`blood/admin/find-donors/${params}?${query}`, {
+                headers: {
+                    authorization: `Bearer ${user.token}`
+                }
+            });
+            const response = find.data;
+            if (response.status) {
+                return response.data
+            } else {
+                return {
+                    paginated: [],
+                    total_records: 0
+                }
+            }
+        }
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
 
 export async function addBloodDonorApi(full_name: string, blood_group: BloodGroup, location: HospitalResponse, phone_number: number, email_address: string, status: BloodDonorStatus): Promise<FormActionResponse> {
     try {
