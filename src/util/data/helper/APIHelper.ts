@@ -477,6 +477,8 @@ export async function adminUpdateSettings(email_id: string, password: string): P
                     },
                 }
             )
+            console.log(requestAPI);
+
             const response = requestAPI.data;
             return {
                 msg: response.msg,

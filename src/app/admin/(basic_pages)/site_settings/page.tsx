@@ -11,6 +11,7 @@ import { adminUpdateSettings } from "@/util/data/helper/APIHelper"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 import { adminSiteSettings } from "@/util/external/yup/yupValidations"
+import SpinnerLoader from "@/component/Util/SpinningLoader"
 
 
 function Page() {
@@ -18,6 +19,7 @@ function Page() {
     const session = useSession();
     const [initialValues, setInitialValues] = useState({ password: null, email: null });
     const router = useRouter();
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         const user = userDetailsFromUseSession(session, "admin");
@@ -28,6 +30,7 @@ function Page() {
 
     return (
         <Fragment>
+            <SpinnerLoader isLoading={isLoading} />
             <AdminPrivateRouter>
                 <AdminLayout>
                     <AdminBreadCrumb title={"site settings"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Site settings", href: "/site_settings" }]} />
@@ -42,11 +45,25 @@ function Page() {
                                 toast.error("Email id cannot same as old");
                                 return;
                             }
+                            setLoading(true);
                             adminUpdateSettings(val['email'], val['password']).then((data) => {
-                                data.status ? (signOut().then(() => {
-                                    router.replace("/admin/auth/sign_in")
-                                })) : toast.error(data.msg)
-                            });
+                                if (data.status) {
+                                    if (initialValues['email'] != val['email']) {
+                                        toast.success("An verification email sent to your email id")
+                                        setTimeout(() => {
+                                            signOut().then(() => {
+                                                router.replace("/admin/auth/sign_in")
+                                            }).catch((err) => { })
+                                        }, 2000)
+                                    } else {
+                                        toast.success("Site settings updates")
+                                    }
+                                } else {
+                                    toast.error(data.msg)
+                                }
+                            }).finally(() => {
+                                setLoading(false)
+                            })
                         }}>
 
                             <Form>
@@ -70,7 +87,7 @@ function Page() {
                     </div>
                 </AdminLayout>
             </AdminPrivateRouter>
-        </Fragment>
+        </Fragment >
     )
 }
 

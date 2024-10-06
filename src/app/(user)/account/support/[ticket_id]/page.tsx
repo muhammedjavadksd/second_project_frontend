@@ -28,14 +28,6 @@ function ViewTicket() {
     const messagesRef = useRef(null);
 
 
-    useEffect(() => {
-        if (messagesRef.current) {
-            // alert(messagesRef.current.scrollHeight)
-            console.log(messagesRef.current);
-
-            messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-        }
-    }, [ticket]);
 
     async function addChat() {
         setLoading(true)
@@ -73,6 +65,16 @@ function ViewTicket() {
     useEffect(() => {
         findTicket()
     }, [])
+
+
+
+    useEffect(() => {
+        console.log(messagesRef.current)
+        if (messagesRef.current) {
+            messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+        }
+    }, [ticket]);
+
     if (!ticket) {
         return <SpalshScreen />
     }
@@ -88,12 +90,12 @@ function ViewTicket() {
                         <AccountTab />
                     </div>
 
-                    <div className="w-full bg-gray-200">
+                    <div className="w-full ">
 
                         <div>
 
                             <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false}>
-                                <div className="relative bg-gray-200 p-5 overflow-x-auto shadow-md sm:rounded-lg">
+                                <div className="relative bg-white border p-5 overflow-x-auto shadow-md sm:rounded-lg">
                                     <h2 className="text-2xl font-bold mb-4">Ticket #{ticket.ticket_id}</h2>
                                     <div className="mb-4">
                                         <p><strong>Title:</strong> {ticket.title}</p>
@@ -101,9 +103,9 @@ function ViewTicket() {
                                         <p><strong>Status:</strong> {ticket.status}</p>
                                     </div>
 
-                                    <ul ref={messagesRef} className="max-h-96 overflow-auto">
+                                    <ul ref={messagesRef} className="h-[580px] overflow-auto border p-2 shadow-inner">
                                         {
-                                            ticket.chats.map((chat, index) => {
+                                            ticket?.chats?.map((chat, index) => {
                                                 return (
                                                     <li key={index}>
                                                         <div className="mb-4 overflow-hidden">

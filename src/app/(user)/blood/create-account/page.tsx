@@ -4,6 +4,7 @@ import Header from "@/component/Header/Header";
 import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter";
 import AskLocation from "@/component/Util/AskLocation";
 import BreadCrumb from "@/component/Util/BreadCrumb";
+import HospitalSearch from "@/component/Util/HospitalSearch";
 import LocationItem from "@/component/Util/LocationItem";
 import ModelItem from "@/component/Util/ModelItem";
 import { userDetailsFromUseSession } from "@/util/data/helper/authHelper";
@@ -11,6 +12,7 @@ import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { bloodDonatationFormValues } from "@/util/external/yup/initialValues";
 import { bloodDonatationFormValidation } from "@/util/external/yup/yupValidations";
 import { BloodGroup } from "@/util/types/Enums/BasicEnums";
+import { SelectedHospital } from "@/util/types/InterFace/UtilInterface";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -20,7 +22,7 @@ import { toast } from "react-toastify";
 
 function Page() {
 
-    const [currentLocation, setCurrentLocation] = useState(null);
+    const [currentLocation, setCurrentLocation] = useState<SelectedHospital>(null);
     const [formInitialValues, setInitialValues] = useState(bloodDonatationFormValues);
 
     const session = useSession()
@@ -39,23 +41,10 @@ function Page() {
         router.replace("/account/blood-account")
     }
 
-    useEffect(() => {
-        onLocationSelect()
-    }, [])
 
-    function onLocationSelect() {
-        navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-            console.log(coords);
-            setCurrentLocation(coords)
-        })
-    }
 
     return (
         <UserPrivateRouter>
-
-            <ModelItem ZIndex={99} closeOnOutSideClock={false} isOpen={!(!!currentLocation)} onClose={() => { }}>
-                <AskLocation />
-            </ModelItem>
 
             <div className="bg-gray-100">
                 <Header />
@@ -114,6 +103,13 @@ function Page() {
                                             <label htmlFor="" className='text-sm'>Enter email address</label>
                                             <Field placeholder="Enter email address" name="email_address" id="email_address" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
                                             <ErrorMessage name='email_address' component={"div"} className='errorMessage'></ErrorMessage>
+                                        </div>
+
+                                        <div className='mb-5'>
+                                            <label htmlFor="" className='text-sm'>Select your location</label>
+                                            <HospitalSearch selectedHospital={(data) => setCurrentLocation(data)} />
+                                            {/* <Field placeholder="Enter email address" name="email_address" id="email_address" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                                            <ErrorMessage name='email_address' component={"div"} className='errorMessage'></ErrorMessage> */}
                                         </div>
 
                                         <div>

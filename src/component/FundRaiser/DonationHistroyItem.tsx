@@ -2,11 +2,19 @@ import Link from "next/link"
 import PublicImage from "../Util/PublicImage"
 import const_data from "@/util/data/const"
 import { downloadCertificate } from "@/util/data/helper/utilHelper"
+import { useState } from "react"
+import { toast } from "react-toastify"
+import SpinnerLoader from "../Util/SpinningLoader"
 
 
 function DonationHistroyItem({ fundId, fundImage, amount, date, title, certificateUrl }) {
+
+
+    const [isLoading, setLoading] = useState(false);
+
     return (
         <div className="mb-5 max-w-sm bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+            <SpinnerLoader isLoading={isLoading} />
             <Link href={`/fund-raising/view/${fundId}`}>
                 <PublicImage className="w-full h-48 object-cover" imageurl={fundImage} />
             </Link>
@@ -33,14 +41,23 @@ function DonationHistroyItem({ fundId, fundImage, amount, date, title, certifica
                 </Link>
                 <div className="flex items-center justify-between">
                     <button
-                        onClick={() => downloadCertificate(certificateUrl, "fund_donation.pdf")}
+                        onClick={() => {
+                            setLoading(true)
+                            downloadCertificate(certificateUrl, "fund_donation.pdf").then((data) => {
+                                if (data) {
+                                    toast.success("Download success")
+                                } else {
+                                    toast.error("Download failed")
+                                }
+                            }).finally(() => setLoading(false))
+                        }}
                         type="button"
                         className="text-blue-600 bg-white border border-blue-600 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5">
                         Download certificate
                     </button>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

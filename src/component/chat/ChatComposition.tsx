@@ -30,7 +30,6 @@ function ChatComposition({ chat_id }) {
     function onMessage() {
         console.log(userDetails.profile_id);
 
-        alert(userDetails.profile_id + " " + currentChat)
         if (userDetails.profile_id && currentChat) {
 
 

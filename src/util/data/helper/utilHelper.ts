@@ -134,16 +134,20 @@ export function generateFundRaiserTitle(profile: FundRaiserResponse): string {
 }
 
 
-export function downloadCertificate(url: string, title: string) {
-    axios({ url: url, method: "GET", responseType: "blob" }).then(response => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
+export async function downloadCertificate(url: string, title: string) {
+    try {
+        const response = await axios({ url, method: "GET", responseType: "blob" })
+        const donwloadUrl = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
-        link.href = url;
+        link.href = donwloadUrl;
         link.setAttribute("download", title);
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
-    });
+        return true
+    } catch (e) {
+        return false
+    }
 }
 
 export function messageFromBloodConcernce(name: string, concerns, meet_date: string, hospital_name: string) {

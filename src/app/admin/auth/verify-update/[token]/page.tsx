@@ -13,12 +13,18 @@ function VerifyToken() {
 
     const [isVisible, setIsVisible] = useState(false);
     const [isVerified, setVerification] = useState<boolean>(false);
-    const [isLoading, setLoading] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(true);
+
+
+
+
 
     useEffect(() => {
         setIsVisible(true);
         adminTokenVerify(token.toString()).then((response) => {
             setVerification(response.status)
+        }).catch((e) => {
+            setVerification(false)
         }).finally(() => {
             setLoading(false)
         })
@@ -29,6 +35,7 @@ function VerifyToken() {
             <SpinnerLoader isLoading={true} />
         </div>
     }
+
 
     return (
         <Fragment>
