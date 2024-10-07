@@ -205,8 +205,8 @@ const ChatUserList = () => {
                         users && users.length ? (
 
                             <ul className="divide-y px-4 h-[400px] w-[380px]  divide-gray-200">
-                                {users.map((user: IChatRoomResponse) => (
-                                    <div onClick={() => openChat(user.chat_id)}>
+                                {users.map((user: IChatRoomResponse, index: number) => (
+                                    <div key={index} onClick={() => openChat(user.chat_id)}>
                                         <>
                                             <ChatPerson unseen_message_count={user.messages.unseen_message_count} chat={user.messages} name={user.chat_person.first_name.concat(" " + user.chat_person.last_name)} />
                                         </>
@@ -217,7 +217,7 @@ const ChatUserList = () => {
                             <div>
                                 <div className="h-[400px] flex flex-col justify-center items-center w-96">
                                     <FaComment className=" text-4xl text-blue-500 mb-4" />
-                                    <h4>No message's found</h4>
+                                    <h4>No message&apos;s found</h4>
 
                                 </div>
                             </div>

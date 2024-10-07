@@ -77,6 +77,9 @@ function ViewFundRaising(): React.ReactElement {
   }
 
 
+  useEffect(() => {
+    openDonationForm(true)
+  }, [orderMethod])
 
   function aboutDescription(description: string, fundRaiserPictures: string[]) {
 
@@ -176,9 +179,7 @@ function ViewFundRaising(): React.ReactElement {
   const collectedPercentage = (+fundRaiserProfile.collected) / (fundRaiserProfile.amount) * 100
   const dateLeft = new Date(fundRaiserProfile.deadline).getDate() - new Date().getDate()
 
-  useEffect(() => {
-    openDonationForm(true)
-  }, [orderMethod])
+
 
 
 

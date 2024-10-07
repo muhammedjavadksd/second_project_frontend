@@ -44,8 +44,8 @@ function Page() {
                                 return (
                                     (items && items.length) ? (
                                         <div className="grid grid-cols-2 gap-10">
-                                            {items.map((each) => {
-                                                return <MatchedDonors place={each.location.hospital_name} distance={each.distance} blockedReason="" bloodGroup={each.blood_group} donorId={each.donor_id} emailAddress={each.email_address} phoneNumber={each.phoneNumber} status={each.status} name={each.full_name} />
+                                            {items.map((each, index) => {
+                                                return <MatchedDonors key={index} place={each.location.hospital_name} distance={each.distance} blockedReason="" bloodGroup={each.blood_group} donorId={each.donor_id} emailAddress={each.email_address} phoneNumber={each.phoneNumber} status={each.status} name={each.full_name} />
                                             })}
                                         </div>
                                     ) : <EmptyScreen msg="No donor found" />

@@ -54,8 +54,8 @@ function BloodBank() {
                                     <>
                                         <div className="grid grid-cols-3 gap-3 mt-5">
                                             {
-                                                items.map((donor: IBloodDonor) => {
-                                                    return <MatchedDonors blockedReason={donor.blocked_reason} status={donor.status} bloodGroup={donor.blood_group} donorId={donor.donor_id} name={donor.full_name} emailAddress={donor.email_address} phoneNumber={donor.phoneNumber} />
+                                                items.map((donor: IBloodDonor, index: number) => {
+                                                    return <MatchedDonors key={index} blockedReason={donor.blocked_reason} status={donor.status} bloodGroup={donor.blood_group} donorId={donor.donor_id} name={donor.full_name} emailAddress={donor.email_address} phoneNumber={donor.phoneNumber} />
                                                 })
                                             }
                                         </div>
