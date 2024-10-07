@@ -15,7 +15,7 @@ import React, { FunctionComponent, useState } from 'react'
 
 function BloodRequirementsView(): React.ReactElement {
 
-    const [selectedBloodGroup, setBloodGroup] = useState<BloodGroup>(BloodGroup.A_POSITIVE);
+    const [selectedBloodGroup, setBloodGroup] = useState<BloodGroup>(null);
     const [refresh, setRefresh] = useState(false)
 
 
@@ -31,6 +31,13 @@ function BloodRequirementsView(): React.ReactElement {
 
                 <div className="flex mt-3 gap-5 items-center">
                     <DropDownItem isOpen={false} options={Object.values(BloodGroup)} title="Select blood group" callBack={(val) => { setBloodGroup(val), setRefresh(!refresh) }}></DropDownItem>
+                    <button onClick={() => {
+                        setBloodGroup(null)
+                        setRefresh(!refresh)
+                    }} className="bg-red-500 p-2 py-2 px-4 rounded-lg text-white flex gap-2 items-center">
+                        <i className="fa-solid fa-rotate-right"></i>
+                        Reset filter
+                    </button>
                 </div>
 
                 <div className="mt-5">

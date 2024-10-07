@@ -53,7 +53,7 @@ function ViewFundRaising(): React.ReactElement {
   const { fund_id } = useParams();
   const [commentsList, setCommentsList] = useState<ISingleCommentsResponse[]>([])
   const [totalRecords, setRecordList] = useState<number>(0)
-  const [orderMethod, setorderMethod] = useState<PaymentVia>(PaymentVia.Manual);
+  const [orderMethod, setorderMethod] = useState<PaymentVia>(null);
 
   const [focusModelImage, setFocusImage] = useState(null);
 
@@ -78,7 +78,7 @@ function ViewFundRaising(): React.ReactElement {
 
 
   useEffect(() => {
-    openDonationForm(true)
+    orderMethod != null && openDonationForm(true)
   }, [orderMethod])
 
   function aboutDescription(description: string, fundRaiserPictures: string[]) {
@@ -289,7 +289,7 @@ function ViewFundRaising(): React.ReactElement {
                             fundRaiserDocuments.map((each, index) => {
                               return (
                                 <li key={index} className='cursor-pointer mb-5' onClick={() => setFocusImage(each)}>
-                                  <LoadImage imageurl={each} className="w-full" />
+                                  <LoadImage unoptimized imageurl={each} className="w-full" />
                                 </li>
                               )
                             })
@@ -522,7 +522,7 @@ function ViewFundRaising(): React.ReactElement {
           </SliderComponent>
         </div> */}
         <div>
-          {matchedProfile.length &&
+          {(matchedProfile && matchedProfile.length > 1) &&
             <>
               <SectionTitle title='Similer Cases' focus_text='Help' sub_title='There are many people who suffer'></SectionTitle>
               <FundRaiserSlider exclude={fundRaiserProfile.fund_id} profiles={matchedProfile} />

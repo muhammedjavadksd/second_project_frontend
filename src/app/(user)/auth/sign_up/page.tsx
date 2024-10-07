@@ -32,12 +32,12 @@ function SignUp(): React.ReactElement {
               <div className="container">
                 <SignUpComponentSteps state={setSignUpStepIndex}></SignUpComponentSteps>
                 <div className="mt-5 ">
-                  <div className="grid grid-cols-2">
+                  {/* <div className="grid grid-cols-2">
                     <div className="mb-2 flex  flex-col justify-start  gap-3">
                       <GoogleProviderButton onSign={() => setSignUpStepIndex(3)}></GoogleProviderButton>
                       <FacebookProviderButton onSign={() => setSignUpStepIndex(3)}></FacebookProviderButton>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

@@ -31,12 +31,12 @@ function SignIn(): React.ReactElement {
               <div className="container">
                 <LoginStepComponent state={setLoginStepIndex}></LoginStepComponent>
                 <div className="mt-5 ">
-                  <div className="grid grid-cols-2">
+                  {/* <div className="grid grid-cols-2">
                     <div className="mb-2 flex  flex-col justify-start  gap-3">
                       <GoogleProviderButton onSign={() => signIn("google")}></GoogleProviderButton>
                       <FacebookProviderButton onSign={() => signIn("facebook")}></FacebookProviderButton>
                     </div>
-                  </div>
+                  </div> */}
 
                 </div>
               </div>

@@ -6,11 +6,13 @@ enum BloodGroupUpdateStatus {
 }
 
 
+
 enum PaymentVia {
-    UPI = "QR",
-    PAYTM = "PAYTM",
+    UPI = "UPI",
+    PAYTM = "QR",
     Manual = "MANUAL"
 }
+
 
 enum CreateChatVia {
     DonorId = "donor-id",

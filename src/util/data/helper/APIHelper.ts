@@ -549,7 +549,9 @@ export async function createChat(to_profileid: string, msg: string, type: Create
 export async function getBloodRequirement(page: number, limit: number, bloodGroup: BloodGroup, urgency?: string): Promise<IPaginatedResponse<IBloodReq>> {
 
     try {
-        const find = await API_axiosInstance.get(`blood/blood_availability/${page}/${limit}/${bloodGroup}`);
+
+        const params = bloodGroup ? `${page}/${limit}/${bloodGroup}` : `${page}/${limit}`
+        const find = await API_axiosInstance.get(`blood/blood_availability/${params}`);
         const response = find.data;
         console.log(response);
 
