@@ -39,7 +39,6 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
 
 
         <SessionProvider>
-            {/* <title>Hellwo </title> */}
             <ChatToggle />
             <main className="flex min-h-screen flex-col bg-white">
                 <div>
