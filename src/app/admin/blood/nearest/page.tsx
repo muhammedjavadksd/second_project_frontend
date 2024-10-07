@@ -45,7 +45,7 @@ function Page() {
                                     (items && items.length) ? (
                                         <div className="grid grid-cols-2 gap-10">
                                             {items.map((each) => {
-                                                return <MatchedDonors distance={each.distance} blockedReason="" bloodGroup={each.blood_group} donorId={each.donor_id} emailAddress={each.email_address} phoneNumber={each.phoneNumber} status={each.status} name={each.full_name} />
+                                                return <MatchedDonors place={each.location.hospital_name} distance={each.distance} blockedReason="" bloodGroup={each.blood_group} donorId={each.donor_id} emailAddress={each.email_address} phoneNumber={each.phoneNumber} status={each.status} name={each.full_name} />
                                             })}
                                         </div>
                                     ) : <EmptyScreen msg="No donor found" />

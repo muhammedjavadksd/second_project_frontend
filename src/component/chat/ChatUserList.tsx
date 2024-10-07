@@ -14,10 +14,6 @@ function ChatUsersList({ refresh }) {
     const userDetails = userDetailsFromUseSession(session, "user");
 
     async function refereshChats() {
-
-
-
-
         const token = userDetails.token;
         if (token) {
             try {

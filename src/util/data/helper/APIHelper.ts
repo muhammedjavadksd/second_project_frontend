@@ -1,7 +1,7 @@
 
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq, { BloodProfile, IBloodDonor, IBloodGroupUpdateTemplate, ILocatedAt } from "@/util/types/API Response/Blood";
-import { FormActionResponse, HospitalResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi, SelectedHospital } from "@/util/types/InterFace/UtilInterface";
+import { ChatApiResponse, FormActionResponse, HospitalResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi, SelectedHospital } from "@/util/types/InterFace/UtilInterface";
 import axios, { AxiosResponse } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
@@ -11,6 +11,27 @@ import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } fr
 import { BloodCloseCategory, BloodDonationStatus, BloodDonorStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 
 
+
+export async function getChatList(token: string): Promise<FormActionResponse> {
+    try {
+        const getMyChats = await API_axiosInstance.get("profile/get_chat_rooms", {
+            headers: {
+                authorization: `Bearer ${token}`,
+            }
+        })
+        const response = getMyChats.data;
+        return {
+            msg: "Chat list found",
+            status: true,
+            data: response?.data?.chats as ChatApiResponse[]
+        }
+    } catch (e) {
+        return {
+            msg: "No list found",
+            status: false
+        }
+    }
+}
 
 export async function adminTokenVerify(token: string): Promise<FormActionResponse> {
     try {

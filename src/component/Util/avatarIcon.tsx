@@ -9,7 +9,7 @@ function AvatarIcon({ name }) {
     }
 
     return (
-        <div className="bg-white rounded-full w-12 flex justify-center items-center text-black h-12">
+        <div className="bg-white  rounded-full w-12 flex justify-center items-center text-black h-12">
             {char}
         </div>
     )

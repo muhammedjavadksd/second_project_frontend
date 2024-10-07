@@ -5,9 +5,10 @@ import { AxiosResponse } from "@/util/types/API Response/FundRaiser";
 import store from "../redux/store/store";
 import { updateFundRaiseData } from "../redux/slicer/fundRaiserForm";
 import { addBankAccount } from "@/util/data/helper/APIHelper";
+import { PaymentVia } from "@/util/types/Enums/BasicEnums";
 
 
-export async function initialFundPayment(full_name: string, phone_number: number, email_id: string, hide_profile: boolean, amount: number, successCB: Function, errorCB: Function, fund_id: string) {
+export async function initialFundPayment(full_name: string, phone_number: number, email_id: string, hide_profile: boolean, amount: number, successCB: Function, errorCB: Function, fund_id: string, paymentVia: PaymentVia) {
     try {
         const session = await getSession();
         const user = userDetailsFromGetSession(session, "user")
@@ -18,7 +19,8 @@ export async function initialFundPayment(full_name: string, phone_number: number
             phone_number,
             email_id,
             amount,
-            hide_profile
+            hide_profile,
+            type: paymentVia
         }, {
             headers: {
                 authorization: `Bearer ${token}`

@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser";
 import { getLimitedFundRaiserPost } from "@/util/data/helper/APIHelper";
 import Header from "@/component/Header/Header";
+import ChatToggle from "@/component/chat/ChatToggle";
 // import 'react-confirm-alert/src/'
 
 
@@ -39,6 +40,7 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
 
         <SessionProvider>
             {/* <title>Hellwo </title> */}
+            <ChatToggle />
             <main className="flex min-h-screen flex-col bg-white">
                 <div>
 

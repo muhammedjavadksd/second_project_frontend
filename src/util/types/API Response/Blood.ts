@@ -66,6 +66,7 @@ interface INearestDonor {
     full_name: string
     blood_group: BloodGroup
     locatedAt: LocatedAt
+    location: ILocatedAt
     phoneNumber: number
     email_address: string
     status: BloodDonorStatus

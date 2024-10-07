@@ -28,10 +28,11 @@ import { createFundRaiserWhatsappMessage, findNameAvatar, formatDateToMonthNameA
 import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import { onCommentPost } from '@/util/external/yup/formSubmission'
 import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
-import { BankAccountType, FundRaiserTabItems } from '@/util/types/Enums/BasicEnums'
+import { BankAccountType, FundRaiserTabItems, PaymentVia } from '@/util/types/Enums/BasicEnums'
 import { FormActionResponse, PaginatedApi } from '@/util/types/InterFace/UtilInterface'
 import { Field, Form, Formik } from 'formik'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 // import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
@@ -52,6 +53,7 @@ function ViewFundRaising(): React.ReactElement {
   const { fund_id } = useParams();
   const [commentsList, setCommentsList] = useState<ISingleCommentsResponse[]>([])
   const [totalRecords, setRecordList] = useState<number>(0)
+  const [orderMethod, setorderMethod] = useState<PaymentVia>(PaymentVia.Manual);
 
   const [focusModelImage, setFocusImage] = useState(null);
 
@@ -174,6 +176,9 @@ function ViewFundRaising(): React.ReactElement {
   const collectedPercentage = (+fundRaiserProfile.collected) / (fundRaiserProfile.amount) * 100
   const dateLeft = new Date(fundRaiserProfile.deadline).getDate() - new Date().getDate()
 
+  useEffect(() => {
+    openDonationForm(true)
+  }, [orderMethod])
 
 
 
@@ -196,7 +201,7 @@ function ViewFundRaising(): React.ReactElement {
             }
           })
         }} >
-          <FundPaymentModel fund_id={fundRaiserProfile.fund_id} />
+          <FundPaymentModel fund_id={fundRaiserProfile.fund_id} type={orderMethod} />
         </ModelItem>
         {success && (
           <SuccessBanner title={"Congrats! Your fundraiser is now active and you can begin receiving donations."} shareURL={`${window.location.host}/fund-raising/view/${fund_id}`}></SuccessBanner>
@@ -254,7 +259,7 @@ function ViewFundRaising(): React.ReactElement {
                     </li>
 
                     <li>
-                      <button onClick={() => setTabListing(FundRaiserTabItems.BANKACCOUNT)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.BANKACCOUNT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Bank Account&apos;s</button>
+                      <button onClick={() => setTabListing(FundRaiserTabItems.PAYEMENT_METHOD)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.PAYEMENT_METHOD ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Bank Account&apos;s</button>
                     </li>
 
                     <li>
@@ -292,9 +297,33 @@ function ViewFundRaising(): React.ReactElement {
                       </div>
                     </TabItem>
 
-                    <TabItem keyid={3} isShow={tabListing == FundRaiserTabItems.BANKACCOUNT}>
-                      <div className="grid grid-cols-2">
+                    <TabItem keyid={3} isShow={tabListing == FundRaiserTabItems.PAYEMENT_METHOD}>
+                      <div className="grid grid-cols-3 gap-3 ">
                         <BankAccountCard accountNumber='18910100014554' holderName='Jamee' ifsc='FDRL0001891' type={BankAccountType.Current} />
+                        <div className='bg-[#f7f7f7] border '>
+                          <div className='pt-3 flex justify-center'>
+                            <Image width={240} height={240} src={"/images/payments/upi.png"} alt={''} />
+                          </div>
+                          <div className="qrBlur relative">
+                            <Image width={450} height={240} src={"/images/payments/qr.png"} alt={''} />
+                            <div className='absolute top-0 w-full h-full backdrop-blur-sm	 flex justify-center items-center'>
+                              <button onClick={() => setorderMethod(PaymentVia.UPI)} className="bg-blue-600 p-2 text-sm text-white rounded-lg">Generate QR Code</button>
+                            </div>
+                          </div>
+                          <h4 className='text-center'>Pay with QR Code</h4>
+                        </div>
+                        <div className='bg-[#f7f7f7] border '>
+                          <div className='pt-3 flex justify-center'>
+                            <Image width={100} height={20} src={"/images/payments/paytm.png"} alt={''} />
+                          </div>
+                          <div className="qrBlur relative">
+                            <Image width={450} height={240} src={"/images/payments/qr.png"} alt={''} />
+                            <div className='absolute top-0 w-full h-full backdrop-blur-sm	 flex justify-center items-center'>
+                              <button onClick={() => setorderMethod(PaymentVia.PAYTM)} className="bg-blue-600 p-2 text-sm text-white rounded-lg">Generate QR Code</button>
+                            </div>
+                          </div>
+                          <h4 className='text-center'>Pay with Paytm Wallet</h4>
+                        </div>
                       </div>
                     </TabItem>
 
@@ -308,7 +337,7 @@ function ViewFundRaising(): React.ReactElement {
               <div className='w-1/4'>
                 <div className='flex flex-col'>
 
-                  <button onClick={() => openDonationForm(true)} className='w-full font-medium text-white p-3 text-lg bg-green-400 rounded-lg'>Donate Now</button>
+                  <button onClick={() => setorderMethod(PaymentVia.Manual)} className='w-full font-medium text-white p-3 text-lg bg-green-400 rounded-lg'>Donate Now</button>
 
                   <div className="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="" data-size="">
                     <a target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(document.location.href)}`} className="flex gap-5  items-center justify-center w-full font-medium text-white p-3 text-lg bg-blue-600 mt-3 rounded-lg">

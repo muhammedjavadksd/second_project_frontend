@@ -32,15 +32,17 @@ function SingleChat({ chat_id }) {
     }
 
     return (
-        <SingleChatScreen
-            room_id={chat_id}
-            current_user={{
-                name: (currentChat.chat_person.first_name.concat(" ", currentChat.chat_person.last_name)),
-            }}
-            msg={
-                currentChat.chat_history
-            }
-        />
+        // <Single ChatScreen
+        //     room_id={chat_id}
+        //     current_user={{
+        //         name: (currentChat.chat_person.first_name.concat(" ", currentChat.chat_person.last_name)),
+        //     }}
+        //     msg={
+        //         currentChat.chat_history
+        //     }
+        // />
+        <>
+        </>
 
     )
 }

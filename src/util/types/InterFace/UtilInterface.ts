@@ -217,6 +217,10 @@ interface IChatRoomResponse {
     messages: IChatMessageDetails
 }
 
+
+
+
+
 interface ChatApiResponse {
     donor_id: string;
     requirement_id: string;
@@ -262,4 +266,4 @@ interface IAdminAddFundRaiser {
     description: string;               // Detailed description of the fundraiser
 }
 
-export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider, IAdminAddFundRaiser, IOptionLabel, HospitalResponse }
+export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider, IAdminAddFundRaiser, IOptionLabel, HospitalResponse, IChatMessageDetails }

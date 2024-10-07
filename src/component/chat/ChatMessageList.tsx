@@ -1,51 +1,44 @@
 import { ChatHistory } from "@/util/types/API Response/Profile"
+import AvatarIcon from "../Util/avatarIcon";
 
 
-export default function ChatMessageList({ chatHistory, profile_id }: { chatHistory: ChatHistory[], profile_id: string }) {
+export default function ChatMessageList({ chatHistory, profile_id, my_name, sender_name }: { chatHistory: ChatHistory[], profile_id: string, my_name: string, sender_name: string }) {
 
-    const msgComponent = []
-    let tempComponent = []
-    let lastProfile = null
+    const msgComponent = chatHistory && chatHistory.map((msg, index) => {
 
-
-    chatHistory.map((msg, index) => {
-        let outerClass = 'w-full max-w-96 mb-1 first:rounded-se-3xl first:rounded-ss-3xl last:rounded-es-3xl last:rounded-ee-3xl bg-white w-3/5 dark:bg-gray-700 p-3 shadow-md';
-        let innerClass = 'flex justify-start';
-        let componentClass = 'w-fit';
-
-        if (msg.profile_id == profile_id && profile_id != null) {
-            outerClass = "w-full max-w-96 mb-1 first:rounded-se-3xl first:rounded-ss-3xl last:rounded-es-3xl last:rounded-ee-3xl ml-auto bg-gray-200 w-3/5 dark:bg-gray-700 p-3 shadow-md";
-            componentClass = 'w-fit ml-auto';
-        }
-
-        if (lastProfile != msg.profile_id) {
-            if (tempComponent.length > 0) {
-                msgComponent.push(
-                    <div className={lastProfile == profile_id ? 'w-fit ml-auto' : 'w-fit'} key={index - 1}>
-                        {tempComponent}
+        if (msg.profile_id != profile_id && profile_id != null) {
+            return <div className="col-start-6 col-end-13 p-3 rounded-lg">
+                <div className="flex items-center justify-start flex-row-reverse">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                        <AvatarIcon name={my_name} />
                     </div>
-                );
-            }
-            tempComponent = [];
-        }
-
-        tempComponent.push(
-            <li className={outerClass} key={index}>
-                <div className={innerClass}>
-                    <p>{msg.msg}</p>
+                    <div
+                        className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
+                    >
+                        <div>
+                            {msg.msg}
+                        </div>
+                    </div>
                 </div>
-            </li>
-        );
-
-        if (index == chatHistory.length - 1) {
-            msgComponent.push(
-                <div className={msg.profile_id == profile_id ? 'w-fit ml-auto' : 'w-fit'} key={index + 1}>
-                    {tempComponent}
+            </div>
+        } else {
+            return <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                <div className="flex flex-row items-center">
+                    <div
+                        className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                    >
+                        <AvatarIcon name={sender_name} />
+                    </div>
+                    <div
+                        className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                    >
+                        <div>
+                            {msg.msg}
+                        </div>
+                    </div>
                 </div>
-            );
+            </div>
         }
-
-        lastProfile = msg.profile_id;
     });
 
     return msgComponent;

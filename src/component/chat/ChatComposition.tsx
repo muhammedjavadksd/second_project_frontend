@@ -152,7 +152,7 @@ function ChatComposition({ chat_id }) {
                                 </div>
                                 <div className="flex-1 p-4 overflow-y-auto">
                                     <ul className="space-y-4 w-full overflow-hidden">
-                                        <ChatMessageList chatHistory={chatHistory} profile_id={userDetails.profile_id} />
+                                        {/* <ChatMessageList my_name={chatHi} chatHistory={chatHistory} profile_id={userDetails.profile_id} /> */}
                                     </ul>
                                 </div>
                                 <div className="flex items-center p-3 border-t border-gray-300 dark:border-gray-700">

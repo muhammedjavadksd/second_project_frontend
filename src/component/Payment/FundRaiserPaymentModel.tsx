@@ -7,6 +7,7 @@ import { fundRaisePaymentValidation } from "@/util/external/yup/yupValidations";
 import { toast } from "react-toastify";
 import { initialFundPayment } from "@/util/external/yup/formSubmission";
 import CashFree from 'cashfree-sdk'
+import { PaymentVia } from "@/util/types/Enums/BasicEnums";
 
 function OtherAmount({ onAmountSelect, initialValue }) {
 
@@ -38,10 +39,12 @@ function OtherAmount({ onAmountSelect, initialValue }) {
     )
 }
 
-function FundPaymentModel({ fund_id }) {
+function FundPaymentModel({ fund_id, type }: { fund_id: string, type: PaymentVia }) {
 
     function orderCreated(session_id) {
+        //@ts-ignore
         if (window && window.Cashfree) {
+            //@ts-ignore
             new window.Cashfree(session_id).redirect();
         } else {
             console.error("Cashfree SDK is not loaded");
@@ -66,7 +69,7 @@ function FundPaymentModel({ fund_id }) {
                         toast.error("Please select valid amount");
                         return;
                     }
-                    initialFundPayment(val.full_name, +val.phone_number, val.email_id, val.hide_profile, amount, orderCreated, () => { }, fund_id)
+                    initialFundPayment(val.full_name, +val.phone_number, val.email_id, val.hide_profile, amount, orderCreated, () => { }, fund_id, type)
 
                 }}>
                     <Form>

@@ -14,7 +14,7 @@ import UpdateDonorStatus from "./DonorUpdateStatus";
 import SpinnerLoader from "../Util/SpinningLoader";
 
 
-function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress, status, blockedReason, distance }: { name: string, bloodGroup: BloodGroup, donorId: string, phoneNumber: number, emailAddress: string, status: BloodDonorStatus, blockedReason: string | null, distance?: string }) {
+function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress, status, blockedReason, distance, place }: { name: string, bloodGroup: BloodGroup, donorId: string, phoneNumber: number, emailAddress: string, status: BloodDonorStatus, blockedReason: string | null, distance?: string, place?: string }) {
 
     const [bloodStatus, setStatus] = useState<BloodDonorStatus>(null);
     const [reason, setReason] = useState<string>(null);
@@ -63,12 +63,23 @@ function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress, s
                                     </div>
                                 </li>
                                 {
-                                    distance && <li className="grid-cols-2 grid">
-                                        <span>Distance</span>
-                                        <div className="flex justify-between">
-                                            <span className="text-sm text-gray-500 break-words">{distance}</span>
-                                        </div>
-                                    </li>
+                                    distance && (
+                                        <>
+                                            <li className="grid-cols-2 grid">
+                                                <span>Distance</span>
+                                                <div className="flex justify-between">
+                                                    <span className="text-sm text-gray-500 break-words">{distance}</span>
+                                                </div>
+                                            </li>
+                                            <li className="grid-cols-2 grid">
+                                                <span>Place</span>
+                                                <div className="flex justify-between">
+                                                    <span className="text-sm text-gray-500 break-words">{place}</span>
+                                                </div>
+                                            </li>
+                                        </>)
+
+
                                 }
 
                             </ul>

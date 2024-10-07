@@ -5,6 +5,13 @@ enum BloodGroupUpdateStatus {
     Rejected = "rejected"
 }
 
+
+enum PaymentVia {
+    UPI = "QR",
+    PAYTM = "PAYTM",
+    Manual = "MANUAL"
+}
+
 enum CreateChatVia {
     DonorId = "donor-id",
     ProfileId = "profile_id"
@@ -29,7 +36,7 @@ enum TicketStatus {
 enum FundRaiserTabItems {
     ABOUT,
     DOCUMENT,
-    BANKACCOUNT,
+    PAYEMENT_METHOD,
     COMMENT
 }
 
@@ -202,4 +209,4 @@ enum FundRaiserEdit {
     Description
 }
 
-export { TicketStatus, FileAcceptType, BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode, FundRaiserEdit, BankAccountType, CreateChatVia, BloodGroupUpdateStatus, BloodDonorStatus }
+export { TicketStatus, FileAcceptType, BloodDonationStatus, BloodCloseCategory, TicketChatFrom, ProductTabItems, BiddingProductUnit, TicketCategory, TicketPriority, TableFilterByDate, AdminCreateFundRaiserStatus, FundRaiserFileType, FundRaiserTabItems, FundRaiserStatus, BloodGroup, SessionStorageKeys, BloodStatus, Relationship, StatusCode, FundRaiserEdit, BankAccountType, CreateChatVia, BloodGroupUpdateStatus, BloodDonorStatus, PaymentVia }
