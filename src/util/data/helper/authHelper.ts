@@ -1,15 +1,25 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { StatusCode } from "@/util/types/Enums/BasicEnums";
 import { AxiosError } from "axios";
-import { getSession } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 
 
 export function axiosUnAuthraizedInterceptor() {
 
     API_axiosInstance.interceptors.response.use((response) => {
         return response
-    }, (err: AxiosError) => {
-        if (err.code && err.code === StatusCode.UNAUTHORIZED.toString()) {
+    }, async (err: AxiosError) => {
+        const originRequest = err.config;
+        if (err.response.status && err.response.status === StatusCode.UNAUTHORIZED && !originRequest['_retry']) {
+
+            originRequest['_retry'] = true;
+            const signInData = await signIn("credentials", { redirect: false, auth_type: "user_login_with_token" })
+            originRequest['headers']['authorization'] = `Bearer ${signInData['token']}`
+
+            const newRequest = API_axiosInstance(originRequest)
+            console.log(newRequest);
+            alert("NEw Request")
+            return newRequest
 
         } else {
             return Promise.reject(err)

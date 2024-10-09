@@ -3,9 +3,17 @@ import { GoogleMap, useLoadScript, Autocomplete } from '@react-google-maps/api';
 import { HospitalResponse } from '@/util/types/InterFace/UtilInterface';
 
 
-const HospitalSearch = ({ selectedHospital, searchRef }: { selectedHospital: Function, searchRef?: Ref<HTMLInputElement> }) => {
+const HospitalSearch = ({ selectedHospital, searchRef, defaultValue }: { selectedHospital: Function, searchRef?: Ref<HTMLInputElement>, defaultValue?: string }) => {
 
     console.log(process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "");
+
+    const [defaultVal, setDefault] = useState(defaultValue);
+
+    useEffect(() => {
+        setDefault(defaultValue)
+    }, [defaultValue])
+
+
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "",
@@ -27,10 +35,12 @@ const HospitalSearch = ({ selectedHospital, searchRef }: { selectedHospital: Fun
             coordinates: [place.geometry.location.toJSON().lng, place.geometry.location.toJSON().lat],
             hospital_name: place.name
         }
+        setDefault(place.name)
         selectedHospital(response)
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDefault(event.target.value)
         if (event.target.value === '') {
             selectedHospital(null);
         }
@@ -42,6 +52,7 @@ const HospitalSearch = ({ selectedHospital, searchRef }: { selectedHospital: Fun
         <div>
             <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                 <input
+                    value={defaultVal}
                     ref={searchRef}
                     onChange={handleInputChange}
                     type="text"

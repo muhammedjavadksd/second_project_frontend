@@ -14,7 +14,7 @@ import { useState } from "react"
 function ChangeBloodGroup() {
 
 
-    const [status, setStatus] = useState<BloodGroupUpdateStatus>(BloodGroupUpdateStatus.Completed)
+    const [status, setStatus] = useState<BloodGroupUpdateStatus>(null)
     const [refresh, setRefresh] = useState<boolean>(false)
 
 
@@ -23,6 +23,13 @@ function ChangeBloodGroup() {
             <AdminLayout>
                 <AdminBreadCrumb title={"Change blood group"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Blood Group Change", href: "/blood/change-blood-grou[" }]} />
                 <div className='buttonGroups flex items-center justify-start mt-3 gap-3' >
+                    <button className={`flex gap-2 items-center bg-green-600 text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => {
+                        setStatus(null)
+                        setRefresh(!refresh)
+                    }}>
+                        <i className="fa-solid fa-rotate-right"></i>
+                        All request
+                    </button >
                     <button className={`${status == BloodGroupUpdateStatus.Completed ? 'bg-blue-800' : 'bg-blue-600'}  text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => { setStatus(BloodGroupUpdateStatus.Completed), setRefresh(!refresh) }}> <i className="fa-solid fa-bars" > </i> Approved Only</button >
                     <button className={`${status == BloodGroupUpdateStatus.Pending ? 'bg-blue-800' : 'bg-blue-600'} text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => { setStatus(BloodGroupUpdateStatus.Pending), setRefresh(!refresh) }} > <i className="fa-solid fa-bars" > </i> Pending Only</button >
                     <button className={`${status == BloodGroupUpdateStatus.Rejected ? 'bg-blue-800' : 'bg-blue-600'} text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => { setStatus(BloodGroupUpdateStatus.Rejected), setRefresh(!refresh) }}> <i className="fa-solid fa-bars" > </i> Rejected Only </button >

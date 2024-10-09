@@ -44,15 +44,12 @@ function ViewFundRaising(): React.ReactElement {
 
   let [tabListing, setTabListing] = useState<FundRaiserTabItems>(FundRaiserTabItems.ABOUT)
   const session = useSession();
-  const userDetails = userDetailsFromUseSession(session, "user");
   const params = useSearchParams()
   const router = useRouter()
 
   const success = params.get("success")
   const isForce = params.get("isForce")
   const { fund_id } = useParams();
-  const [commentsList, setCommentsList] = useState<ISingleCommentsResponse[]>([])
-  const [totalRecords, setRecordList] = useState<number>(0)
   const [orderMethod, setorderMethod] = useState<PaymentVia>(null);
 
   const [focusModelImage, setFocusImage] = useState(null);
@@ -66,7 +63,6 @@ function ViewFundRaising(): React.ReactElement {
   const [fundRaiserProfile, setProfile] = useState<FundRaiserResponse>(null)
 
   const [isDonationOpen, openDonationForm] = useState<boolean>(false)
-  const [aboutContent, setAboutContent] = useState(null)
   const [donationHistory, setDonationHistroy] = useState<IDonateHistoryTemplate[]>([])
   const [totalDonated, setDonatedCount] = useState<number>(0)
 
@@ -300,7 +296,7 @@ function ViewFundRaising(): React.ReactElement {
 
                     <TabItem keyid={3} isShow={tabListing == FundRaiserTabItems.PAYEMENT_METHOD}>
                       <div className="grid grid-cols-3 gap-3 ">
-                        <BankAccountCard accountNumber='18910100014554' holderName='Jamee' ifsc='FDRL0001891' type={BankAccountType.Current} />
+                        <BankAccountCard accountNumber={fundRaiserProfile?.bank_account?.account_number?.toString() || ""} holderName={fundRaiserProfile?.bank_account?.holder_name?.toString() || ""} ifsc={fundRaiserProfile?.bank_account?.ifsc_code?.toString() || ""} type={fundRaiserProfile?.bank_account?.account_type || null} />
                         <div className='bg-[#f7f7f7] border '>
                           <div className='pt-3 flex justify-center'>
                             <Image width={240} height={240} src={"/images/payments/upi.png"} alt={''} />
@@ -512,15 +508,7 @@ function ViewFundRaising(): React.ReactElement {
             </div>
           </div>
         </div >
-        {/* <div>
-          <SectionTitle title='Bid for this case' focus_text='Help' sub_title='Join with below bid and help this raiser'></SectionTitle>
-          <SliderComponent arrow={true} dots={true} isGap={true} slidesToScroll={1} slidesToShow={4}>
-            <BiddingItemCard></BiddingItemCard>
-            <BiddingItemCard></BiddingItemCard>
-            <BiddingItemCard></BiddingItemCard>
-            <BiddingItemCard></BiddingItemCard>
-          </SliderComponent>
-        </div> */}
+
         <div>
           {(matchedProfile && matchedProfile.length > 1) &&
             <>

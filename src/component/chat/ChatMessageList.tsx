@@ -16,6 +16,7 @@ export default function ChatMessageList({ chatHistory, profile_id, my_name, send
                         className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
                     >
                         <div>
+
                             {msg.msg}
                         </div>
                     </div>

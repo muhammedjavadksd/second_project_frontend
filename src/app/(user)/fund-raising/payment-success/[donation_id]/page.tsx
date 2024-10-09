@@ -1,17 +1,12 @@
 "use client"
 import React, { Fragment, useEffect, useState } from 'react';
-import { FaCheckCircle, FaArrowRight } from 'react-icons/fa';
 import Header from '@/component/Header/Header';
 import { findOrder } from '@/util/data/helper/APIHelper';
 import { useParams, useRouter } from 'next/navigation';
-import { date } from 'yup';
 import { PaymentOrderResponse } from '@/util/types/API Response/FundRaiser';
-import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper';
 import LoadingComponent from '@/component/Util/LoadingComponent';
-import const_data from '@/util/data/const';
 import DonationSuccess from '@/component/FundRaiser/DonationSuccess';
 import DonationFailed from '@/component/FundRaiser/DonationFailed';
-import SpalshScreen from '@/component/Util/SplashScreen';
 import { motion } from 'framer-motion';
 
 const PaymentSuccessPage = () => {

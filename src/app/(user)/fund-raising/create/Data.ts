@@ -52,5 +52,4 @@ let bannerData: FundRaiseCreationBanner[] = [
     }
 ]
 
-// module.exports = { createFormSteps, bannerData }
 export { createFormSteps, bannerData }

@@ -76,29 +76,26 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
     useEffect(() => {
         // socket.off("new_message");
         console.log(member_id);
-        // socket.on("new_message", (chat: ChatHistory) => {
-        //     console.log("Message recivied");
-        //     console.log("Member ID");
+        socket.on("new_message", (chat: ChatHistory) => {
+            // console.log("Message recivied");
+            // console.log("Member ID");
 
 
-        //     console.log(chat);
-        //     console.log(memberId);
-        //     console.log(chat.profile_id);
+            // console.log(chat);
+            // console.log(memberId);
+            // console.log(chat.profile_id);
 
 
-        //     console.log(chat.profile_id + " " + member_id);
-        //     console.log(chat.profile_id == member_id);
+            // console.log(chat.profile_id + " " + member_id);
+            // console.log(chat.profile_id == member_id);
 
 
 
-        //     // alert(chat.profile_id)
-        //     if (chat.profile_id == member_id) {
-        //         console.log(chatHistoryState);
-
-        //         setHistory((prev) => [...prev, chat])
-        //         console.log("New message recivied");
-        //     }
-        // })
+            // // alert(chat.profile_id)
+            // if (chat.profile_id == member_id) {
+            //     setHistory((prev) => [...prev, chat])
+            // }
+        })
 
         const addEnter = (e) => {
             if (e.key == "Enter") {
@@ -136,6 +133,7 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
             }
         }
     }
+
     return (
         <Fragment>
             <div className="flex w-[600px] h-[540px] flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100"  >
@@ -143,6 +141,7 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
                     <div className="flex items-center space-x-4">
                         <div className="relative group">
                             <AvatarIcon name={sender_name} />
+                            {memberId}
                         </div>
                         <div>
                             <h2 className="text-xl font-bold text-white">{sender_name}</h2>

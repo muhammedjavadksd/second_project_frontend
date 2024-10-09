@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { onEditProfile } from './Logic'
 import { editProfileValidation } from './Data'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 // import { userDetailsFromUseSession } from '@/app/_util/helper/authHelper'
 import { toast } from 'react-toastify'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
@@ -10,15 +10,13 @@ import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 function EditProfileComponent({ editPersonalDetails }): React.ReactElement {
 
     const [initialValues, setInitialValues] = useState({})
-    const { data: session, update } = useSession();
+    const loadSession = useSession();
 
     async function successCB(): Promise<void> {
         console.log("Profile update success");
-        toast.success("Profile updated success")
-        const newData = { ...session, token: { ...session['token'] || {}, user: { ...session['token']['user'], first_name: "My name is Muhammed Javad" } } }
-        await update(newData)
-        console.log("My session");
-        console.log(newData);
+        toast.success("Profile updated successfully");
+        const profile = userDetailsFromUseSession(loadSession, "user");
+        await signIn("credentials", { redirect: false, auth_type: "user_login_with_token", token: profile.token })
     }
 
     function errorCB(err: string): void {
@@ -26,10 +24,10 @@ function EditProfileComponent({ editPersonalDetails }): React.ReactElement {
     }
 
     useEffect(() => {
-        console.log(session);
+        console.log(loadSession);
 
-        const profile = userDetailsFromUseSession(session, "user");
-        console.log(session);
+        const profile = userDetailsFromUseSession(loadSession, "user");
+        console.log(loadSession);
 
         // const firstName = new Cookies
         console.log(profile);
@@ -40,7 +38,7 @@ function EditProfileComponent({ editPersonalDetails }): React.ReactElement {
                 last_name: profile.last_name
             })
         }
-    }, [session])
+    }, [loadSession])
 
     return (
         <Formik onSubmit={(val) => onEditProfile(val, successCB, errorCB)} enableReinitialize initialValues={initialValues} validationSchema={editProfileValidation} >

@@ -52,7 +52,8 @@ interface IBloodDonor {
     donor_id: string
     full_name: string
     blood_group: BloodGroup
-    locatedAt: LocatedAt
+    location_coords: LocatedAt
+    location: ILocatedAt
     phoneNumber: number
     email_address: string
     status: BloodDonorStatus
@@ -65,7 +66,7 @@ interface INearestDonor {
     donor_id: string
     full_name: string
     blood_group: BloodGroup
-    locatedAt: LocatedAt
+    location_coords: LocatedAt
     location: ILocatedAt
     phoneNumber: number
     email_address: string

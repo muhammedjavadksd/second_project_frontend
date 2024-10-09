@@ -11,7 +11,7 @@ import SpalshScreen from "@/component/Util/SplashScreen";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { addChatToTicket, findSingleTicket } from "@/util/data/helper/APIHelper";
 import { useParams } from "next/navigation";
-import { TicketChatFrom } from "@/util/types/Enums/BasicEnums";
+import { TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
 import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper";
 import { toast } from "react-toastify";
 import LoadingComponent from "@/component/Util/LoadingComponent";
@@ -64,6 +64,18 @@ function ViewTicket() {
 
     useEffect(() => {
         findTicket()
+
+
+        const addEnter = (e) => {
+            if (e.key == "Enter") {
+                addChat()
+            }
+        }
+        document.addEventListener("keypress", addEnter);
+
+        return () => {
+            document.removeEventListener("keydown", addEnter)
+        }
     }, [])
 
 
@@ -144,16 +156,24 @@ function ViewTicket() {
                                             )
                                         }
                                         <>
-                                            <div className="flex">
-                                                <textarea ref={chatRef} className={` w-full  border-gray-300 rounded-ss-md rounded-se-md rounded-es-md rounded-ee-md  ${attachment && "rounded-ss-none rounded-se-none"}`} placeholder="Type your reply here..." rows={1}></textarea>
-                                                <button onClick={() => fileRef.current.click()} className={`bg-white p-3 border rounded-ss-md rounded-se-md rounded-es-md rounded-ee-md ${attachment && "rounded-se-none rounded-ss-none"}`}>
-                                                    <i className="fa-solid fa-link"></i>
-                                                </button>
-                                            </div>
-                                            <input onChange={(e) => setAttachment(e.target.files[0])} ref={fileRef} type="file" className="hidden" />
-                                            <button onClick={addChat} className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                                                Send
-                                            </button>
+                                            {
+                                                ticket.status != TicketStatus.Closed ? <>
+                                                    <div className="flex">
+                                                        <textarea ref={chatRef} className={` w-full  border-gray-300 rounded-ss-md rounded-se-md rounded-es-md rounded-ee-md  ${attachment && "rounded-ss-none rounded-se-none"}`} placeholder="Type your reply here..." rows={1}></textarea>
+                                                        <button onClick={() => fileRef.current.click()} className={`bg-white p-3 border rounded-ss-md rounded-se-md rounded-es-md rounded-ee-md ${attachment && "rounded-se-none rounded-ss-none"}`}>
+                                                            <i className="fa-solid fa-link"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input onChange={(e) => setAttachment(e.target.files[0])} ref={fileRef} type="file" className="hidden" />
+                                                    <button onClick={addChat} className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                                        Send
+                                                    </button>
+                                                </> : (
+                                                    <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                                        <span className="font-medium">Closed !</span> This ticket has been closed
+                                                    </div>
+                                                )
+                                            }
                                         </>
                                     </div>
                                 </div>

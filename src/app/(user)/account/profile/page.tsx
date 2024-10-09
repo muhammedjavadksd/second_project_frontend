@@ -21,11 +21,11 @@ function Page(): React.ReactElement {
                 <div className="mb-5">
                     <BreadCrumb path={['Profile', 'View Profile']} />
                 </div>
-                <div className="flex gap-5">
-                    <div className="w-1/4">
-                        <AccountTab />
-                    </div>
-                    <div className="w-4/5">
+
+                <AccountTab />
+
+                <div className="flex gap-5 mb-5">
+                    <div className="w-full mt-5">
                         <div>
                             <h4 className="font-medium text-3xl mb-2">Hi, Muhammed Javad</h4>
                             <p>Here is your daily activities, and history</p>
@@ -60,7 +60,6 @@ function Page(): React.ReactElement {
                     </div>
                 </div>
             </div>
-            <Footer />
         </UserPrivateRouter>
     )
 }

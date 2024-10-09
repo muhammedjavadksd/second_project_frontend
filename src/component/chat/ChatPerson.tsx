@@ -27,9 +27,9 @@ function ChatPerson({ name, chat, unseen_message_count }: { name: string, chat: 
                         <h3 className="text-md font-semibold">{name}</h3>
                         {unseen_message_count > 0 ? (
                             <span className="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                                {messages.last_message}
+                                {messages.last_message?.slice(0, 25)}
                             </span>
-                        ) : <p className="text-gray-500 text-sm truncate">{messages.last_message}</p>}
+                        ) : <p className="text-gray-500 text-sm truncate">{messages.last_message?.slice(0, 25)}</p>}
                     </div>
                     {unseen_message_count > 0 && <span className="bg-blue-600 rounded-full text-white p-1 px-1.5 text-[10px]">{unseen_message_count}</span>}
 

@@ -5,7 +5,7 @@ import AdminBreadCrumb from "@/component/Util/AdminBreadCrumb"
 import LoadingDataNotFoundComponent from "@/component/Util/LoadingDataNotFound"
 import { addReplayToTicket, getSingleTicket } from "@/util/data/helper/APIHelper"
 import { ITicketChat, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile"
-import { TicketChatFrom } from "@/util/types/Enums/BasicEnums"
+import { TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums"
 import { setNestedObjectValues } from "formik"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -16,7 +16,7 @@ import { toast } from "react-toastify"
 
 
 function Page() {
-    const [reply, setReply] = useState("");
+
     const ref = useRef(null)
 
     const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +27,7 @@ function Page() {
     const [selectedFile, setFile] = useState<File | null>(null)
 
     const chatRef = useRef(null);
+    const textref = useRef(null);
 
 
 
@@ -37,6 +38,17 @@ function Page() {
                 setChats(ticket.chats)
             }
         })
+
+        const addEnter = (e) => {
+            if (e.key == "Enter") {
+                handleSendReply()
+            }
+        }
+        document.addEventListener("keypress", addEnter);
+
+        return () => {
+            document.removeEventListener("keydown", addEnter)
+        }
     }, [])
 
     useEffect(() => {
@@ -45,21 +57,25 @@ function Page() {
         }
     }, [ticketChats]);
 
-    const handleReplyChange = (e) => {
-        setReply(e.target.value);
-    };
+
 
     const handleSendReply = () => {
-        if (reply.trim() === "") {
+
+        if (!textref.current) {
+            return;
+        }
+
+        const text = textref.current.value
+        if (text.trim() === "") {
             toast.error("Please enter a message.");
             return;
         }
-        if (reply.length > 500) {
+        if (text.length > 500) {
             toast.error("Message cannot exceed 500 characters.");
             return;
         }
         setIsLoading(true);
-        addReplayToTicket(ticket_id.toString(), reply, TicketChatFrom.Admin, selectedFile).then((data) => {
+        addReplayToTicket(ticket_id.toString(), text, TicketChatFrom.Admin, selectedFile).then((data) => {
             if (data) {
                 setChats((prev) => {
                     const newMessage: ITicketChat = {
@@ -67,11 +83,11 @@ function Page() {
                         chat_id: null,
                         created_at: new Date(),
                         from: TicketChatFrom.Admin,
-                        text: reply
+                        text: text
                     };
                     return [...prev, newMessage]
                 });
-                setReply("");
+                textref.current.value = ""
                 setIsLoading(false);
             } else {
                 setIsLoading(false);
@@ -141,13 +157,12 @@ function Page() {
                                             </div>
                                         </div>
                                     }
-                                    <div className="relative flex items-center">
+                                    {baseTicket?.status != TicketStatus.Closed ? <div className="relative flex items-center">
                                         <textarea
                                             className={`w-full p-3 pr-12 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${selectedFile ? 'rounded-ss-none rounded-se-none rounded-es-lg rounded-ee-lg' : "rounded-md"}`}
                                             rows={1}
                                             placeholder="Type your reply here..."
-                                            value={reply}
-                                            onChange={handleReplyChange}
+                                            ref={textref}
                                             aria-label="Reply input"
                                         ></textarea>
 
@@ -171,7 +186,11 @@ function Page() {
                                                 <IoSend />
                                             </button>
                                         </div>
-                                    </div>
+                                    </div> : (
+                                        <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                            <span className="font-medium">Closed !</span> This ticket has been closed
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </LoadingDataNotFoundComponent>

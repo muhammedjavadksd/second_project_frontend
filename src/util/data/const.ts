@@ -368,7 +368,7 @@ const const_data: Iconst_data = {
     S3_IMAGE_PATH: "http://localhost:4566/",
     MONEY_ICON: '₹',
     OTP_LENGTH: 6,
-    OTP_TIME_SECONDS: 3,
+    OTP_TIME_SECONDS: 30,
     AI_DESCRIPTION_GENERATION: true,
     DEMY_DATA: false
 }

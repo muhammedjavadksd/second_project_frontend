@@ -71,7 +71,7 @@ function SignUpOTP({ state }) {
                                 <div>
                                     <Timer initialTime={const_data.OTP_TIME_SECONDS * 1000}
                                         direction="backward"
-                                        timeToUpdate={10}
+                                        timeToUpdate={60}
                                         checkpoints={[
                                             {
                                                 time: 0,

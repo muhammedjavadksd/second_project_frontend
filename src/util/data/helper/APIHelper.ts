@@ -163,6 +163,37 @@ export async function addBloodDonorApi(full_name: string, blood_group: BloodGrou
     }
 }
 
+export async function activeAccountByAdmin(fundId: string, benfId: string): Promise<FormActionResponse> {
+
+    try {
+        const session = await getSession();
+        const user = userDetailsFromGetSession(session, "admin")
+
+        if (user) {
+            const find = await API_axiosInstance.patch(`fund_raise/admin/active-bank/${fundId}/${benfId}`, {}, {
+                headers: {
+                    authorization: `Bearer ${user.token}`
+                }
+            });
+            const response = find.data;
+            return {
+                msg: response.msg,
+                status: response.status
+            }
+        }
+        return {
+            msg: "Un authraized access",
+            status: false
+        }
+    } catch (e) {
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
+
 export async function activeAccount(fundId: string, benfId: string): Promise<FormActionResponse> {
 
     try {
@@ -460,7 +491,7 @@ export async function updateFundRaiserStatus(status: FundRaiserStatus, fundId: s
         const user = userDetailsFromGetSession(session, "admin")
 
         if (user) {
-            const requestAPI = await API_axiosInstance.patch(`/fund_raise/admin/update-status`, {
+            const requestAPI = await API_axiosInstance.patch(`/fund_raise/admin/update-status/${fundId}`, {
                 status
             },
                 {
@@ -520,7 +551,7 @@ export async function adminUpdateSettings(email_id: string, password: string): P
     }
 }
 
-export async function createChat(to_profileid: string, msg: string, type: CreateChatVia): Promise<boolean> {
+export async function createChat(to_profileid: string, msg: string, type: CreateChatVia): Promise<FormActionResponse> {
 
     try {
         const session = await getSession();
@@ -538,11 +569,21 @@ export async function createChat(to_profileid: string, msg: string, type: Create
                 }
             )
             const response = requestAPI.data;
-            return response.status
+            return {
+                status: response.status,
+                msg: response.msg
+            }
         }
-        return false
+        return {
+            status: false,
+            msg: "Un authrazied access"
+        }
     } catch (e) {
-        return false
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            status: false,
+            msg: errorMsg
+        }
     }
 }
 
@@ -672,6 +713,38 @@ export async function getDonationStatitics(fundId: string, fromDate: Date, endDa
 }
 
 
+export async function addBankAccountByAdmin(fund_id, { account_number, re_account_number, ifsc_code, holder_name, account_type }): Promise<FormActionResponse> {
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "admin");
+        const token = data.token;
+        const addFundRaiser = await API_axiosInstance.post(`/fund_raise/admin/add-bank-account/${fund_id}`, {
+            account_number,
+            ifsc_code,
+            holder_name,
+            account_type
+        }, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        const response = addFundRaiser.data;
+        return {
+            msg: response.msg,
+            status: response.status,
+            data: response.data.bank_id
+        }
+    } catch (e) {
+        console.log(e);
+
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+    }
+}
+
 export async function addBankAccount(fund_id, { account_number, re_account_number, ifsc_code, holder_name, account_type }): Promise<FormActionResponse> {
     try {
         const session = await getSession();
@@ -700,6 +773,35 @@ export async function addBankAccount(fund_id, { account_number, re_account_numbe
         return {
             msg: errorMsg,
             status: false
+        }
+    }
+}
+
+export async function getAllBankAccountByAdmin(fund_id: string, limit: number, page: number): Promise<IPaginatedResponse<IBankAccount>> {
+    try {
+        const session = await getSession();
+        const data = userDetailsFromGetSession(session, "admin");
+        const token = data.token;
+        const addFundRaiser = await API_axiosInstance.get(`/fund_raise/admin/bank-accounts/${fund_id}/${limit}/${page}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        })
+        const response = addFundRaiser.data;
+        console.log(response);
+
+        if (response.status) {
+            return response.data
+        } else {
+            return {
+                paginated: [],
+                total_records: 0
+            }
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
         }
     }
 }
@@ -1151,7 +1253,8 @@ export async function findNearest(bloodGroup: BloodGroup, location: [number, num
     try {
 
         const cord = `long=${location[0]}&lati=${location[1]}`
-        const findNearest = await API_axiosInstance.get(`/blood/nearest-donors/${limit}/${page}/${bloodGroup}?${cord}`)
+        const params = bloodGroup ? `${limit}/${page}/${bloodGroup}` : `${limit}/${page}`;
+        const findNearest = await API_axiosInstance.get(`/blood/nearest-donors/${params}?${cord}`)
         const response = findNearest.data;
 
         if (response.status) {
@@ -1745,7 +1848,7 @@ export async function findMyBloodProfile(): Promise<null | BloodProfile> {
     }
 }
 
-export async function openBloodAccountStatus(status: boolean) {
+export async function openBloodAccountStatus(status: boolean): Promise<FormActionResponse> {
     const session = await getSession();
     const data = userDetailsFromGetSession(session, "user");
     const bloodToken = data.blood_token;
@@ -1759,14 +1862,17 @@ export async function openBloodAccountStatus(status: boolean) {
             }
         })
         const response = profile.data
-        if (response.status) {
-            return true
-        } else {
-            return false
+        return {
+            msg: response.msg,
+            status: response.status
         }
     } catch (e) {
-        console.log(e);
-        return false;
+        const errorMsg = e.response?.data?.msg ?? "Something went wrong"
+        return {
+            msg: errorMsg,
+            status: false
+        }
+
     }
 }
 

@@ -2,6 +2,7 @@ import ModelItem from "@/component/Util/ModelItem"
 import { useState } from "react"
 import UpdateBloodGroup from "./UpdateBloodGroup"
 import UpdatePersonalDetails from "./UpdatePersonalDetails"
+import React from "react"
 
 
 function ViewDonorProfile({ profile }) {
@@ -84,4 +85,4 @@ function ViewDonorProfile({ profile }) {
     )
 }
 
-export default ViewDonorProfile
+export default React.memo(ViewDonorProfile)

@@ -34,4 +34,4 @@ const LoadingDataNotFoundComponent = ({ children, isLoading, isFound }: { childr
     return children
 };
 
-export default LoadingDataNotFoundComponent;
+export default React.memo(LoadingDataNotFoundComponent);

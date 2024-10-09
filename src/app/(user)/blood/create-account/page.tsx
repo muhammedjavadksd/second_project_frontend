@@ -1,12 +1,14 @@
 "use client"
 import { onBloodDonationSubmit } from "@/component/Blood/bloodAccountStart/Logic";
 import Header from "@/component/Header/Header";
+import BlackedBloodAccount from "@/component/LoginComponent/BlackedBloodAccount";
 import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter";
 import AskLocation from "@/component/Util/AskLocation";
 import BreadCrumb from "@/component/Util/BreadCrumb";
 import HospitalSearch from "@/component/Util/HospitalSearch";
 import LocationItem from "@/component/Util/LocationItem";
 import ModelItem from "@/component/Util/ModelItem";
+import SpinnerLoader from "@/component/Util/SpinningLoader";
 import { userDetailsFromUseSession } from "@/util/data/helper/authHelper";
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { bloodDonatationFormValues } from "@/util/external/yup/initialValues";
@@ -23,7 +25,9 @@ import { toast } from "react-toastify";
 function Page() {
 
     const [currentLocation, setCurrentLocation] = useState<SelectedHospital>(null);
+    const [isLoading, setLoading] = useState<boolean>(false);
     const [formInitialValues, setInitialValues] = useState(bloodDonatationFormValues);
+
 
     const session = useSession()
     const router = useRouter();
@@ -39,13 +43,15 @@ function Page() {
         const user = userDetailsFromUseSession(session, "user")
         await API_axiosInstance.patch("/profile/update_profile", { user_profile: { blood_donor_id: donor_id } }, { headers: { authorization: `Bearer ${user.token}` } })
         router.replace("/account/blood-account")
+        setLoading(false)
     }
 
 
 
     return (
-        <UserPrivateRouter>
+        <BlackedBloodAccount>
 
+            <SpinnerLoader isLoading={isLoading} />
             <div className="bg-gray-100">
                 <Header />
                 <div className='container mx-auto'>
@@ -72,14 +78,19 @@ function Page() {
                         <div className="w-full">
 
                             <Formik innerRef={formik} enableReinitialize initialValues={formInitialValues} validationSchema={bloodDonatationFormValidation} onSubmit={(val) => {
+                                setLoading(true)
                                 console.log("Current location");
                                 console.log(currentLocation);
 
                                 if (!currentLocation) {
                                     toast.error("Please allow the location")
+                                    setLoading(false)
                                     return;
                                 }
-                                onBloodDonationSubmit(val, currentLocation, successCB, (err) => toast.error(err))
+                                onBloodDonationSubmit(val, currentLocation, successCB, (err) => {
+                                    toast.error(err)
+                                    setLoading(false)
+                                })
                             }
                             }>
                                 {({ errors }) => (
@@ -152,7 +163,7 @@ function Page() {
 
                 </div >
             </div>
-        </UserPrivateRouter >
+        </BlackedBloodAccount >
     )
 }
 

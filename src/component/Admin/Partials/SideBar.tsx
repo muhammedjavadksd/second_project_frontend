@@ -2,12 +2,15 @@ import React from 'react'
 import LinkNav from './NavLinks/LinkNav'
 import DropdownLink from './NavLinks/DropdownLink'
 import DropDownLinkItem from './NavLinks/DropDownLinkItem'
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { FaSignOutAlt } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 
 function AdminSideBar({ isShow }) {
 
     const session = useSession();
+    const router = useRouter()
     console.log(session);
 
 
@@ -33,6 +36,7 @@ function AdminSideBar({ isShow }) {
     const manageTicket = <i className="fa-solid fa-ticket"></i>
     const manageOrganizationSvgIcon = <i className="fa-solid fa-building-shield"></i>
     const viewCalenderSvgIcon = <i className="fa-solid fa-calendar-days"></i>
+    const logout = <i className="fa-solid fa-right-from-bracket"></i>
 
 
 
@@ -77,7 +81,10 @@ function AdminSideBar({ isShow }) {
                             <div className="space-y-3 ">
                                 <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Ticket</label>
                                 <LinkNav href={"/admin/tickets/manage"} icon={manageTicket} isActive={true} isSub={false} title={"Manage Tickets"} />
-
+                            </div>
+                            <div className="space-y-3 ">
+                                <label className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Sign out</label>
+                                <LinkNav href={"/api/auth/signout"} icon={logout} isActive={false} isSub={false} title={"Sign out"}></LinkNav>
                             </div>
 
                         </nav>

@@ -60,7 +60,7 @@ function DashboardPage(): React.ReactElement {
 
             {
               bloodStatitics?.blood_donor?.donorsByBloodGroup.map((item, index) => {
-                return <DashboardCard key={index} icon={null} classNames={'bg-white'} title={`${item._id} Donors`} data={item.count} />
+                return <DashboardCard key={index} icon={null} classNames={'bg-white'} title={`${item._id} Donors`} data={item.count || 0} />
               })
             }
 

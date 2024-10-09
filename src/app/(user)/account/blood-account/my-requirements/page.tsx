@@ -1,7 +1,6 @@
 "use client"
 import BloodAccountTab from "@/component/Account/AccountTab/BloodAccountTab"
 import OutGoingBloodCard from "@/component/Blood/OutGoingBloodCard"
-import OutGoingRequestView from "@/component/BloodAccount/OutGoingRequestView"
 import Header from "@/component/Header/Header"
 import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter"
 import BreadCrumb from "@/component/Util/BreadCrumb"
@@ -9,14 +8,13 @@ import EmptyScreen from "@/component/Util/EmptyScreen"
 import Footer from "@/component/Util/Footer"
 import PaginationSection from "@/component/Util/PaginationSection"
 import { findMyBloodrequirement } from "@/util/data/helper/APIHelper"
-import { userDetailsFromUseSession } from "@/util/data/helper/authHelper"
 import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper"
-import API_axiosInstance from "@/util/external/axios/api_axios_instance"
 import IBloodReq from "@/util/types/API Response/Blood"
-import { BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums"
+import { BloodStatus } from "@/util/types/Enums/BasicEnums"
 import { IPaginatedResponse } from "@/util/types/InterFace/UtilInterface"
-import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import Link from "next/link"
+import { useState } from "react"
+import { FaPlus } from "react-icons/fa"
 
 function MyRequirements() {
 
@@ -45,6 +43,12 @@ function MyRequirements() {
                     </div>
                     <BloodAccountTab />
                     <div className="mt-5">
+                        <div className="mt-3 flex w-full justify-end mb-3">
+                            <Link href={"/blood/request"} className="flex  items-center gap-2  bg-blue-800 px-5 py-2 text-white rounded-md">
+                                <FaPlus />
+                                Post blood requirement
+                            </Link>
+                        </div>
                         <div className="mb-4 bg-white shadow-inner border  p-3 flex justify-between items-center">
                             <div>
                                 <h4 className="text-2xl font-bold">All your blood request</h4>

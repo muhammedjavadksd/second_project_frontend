@@ -38,10 +38,10 @@ function BloodProfileOverView() {
 
         async function onConfirm() {
             const updateProfile = await openBloodAccountStatus(!isOpen);
-            if (updateProfile) {
+            if (updateProfile.status) {
                 setOpen(!isOpen)
             } else {
-                toast.error("Something went wrong")
+                toast.error(updateProfile.msg)
             }
         }
 

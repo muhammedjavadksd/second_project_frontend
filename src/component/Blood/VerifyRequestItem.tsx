@@ -1,6 +1,6 @@
 import { findNameAvatar, formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import BloodApproveForm from "./OnBloodApproveForm";
 import { toast } from "react-toastify";
@@ -10,8 +10,14 @@ import { BloodDonationStatus } from "@/util/types/Enums/BasicEnums";
 import { FormActionResponse } from "@/util/types/InterFace/UtilInterface";
 import ModelItem from "../Util/ModelItem";
 import ModelHeader from "../Util/Model/ModelHeader";
+import LoadingComponent from "../Util/LoadingComponent";
+
+
 
 function VerifyBloodRequestItem({ fullName, profile_id, date, message, setUpdate, donation_id, currentStatus }) {
+
+
+    const [isLoading, setLoading] = useState(false);
 
     function onApprove() {
         confirmAlert({
@@ -19,9 +25,28 @@ function VerifyBloodRequestItem({ fullName, profile_id, date, message, setUpdate
             message: null,
             customUI: ({ onClose, title }) => {
                 return (
-                    <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={true} onClose={onClose}>
-                        <ModelHeader title={"Blood received confimation"} />
-                        <BloodApproveForm successCb={() => { toast.success("Update success"), setUpdate((prev) => !prev), onClose() }} donation_id={donation_id} errorCb={(err) => { toast.error(err), onClose() }} />
+                    <ModelItem ZIndex={1} closeOnOutSideClock={true} isOpen={true} onClose={onClose}>
+                        <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false}>
+                            <>
+                                <ModelHeader title={"Blood received confimation"} />
+                                <BloodApproveForm
+                                    onStart={() => {
+                                        setLoading(true)
+                                    }}
+                                    successCb={() => {
+                                        toast.success("Update success")
+                                        setUpdate((prev) => !prev)
+                                        onClose()
+                                        // setLoading(false)
+                                    }}
+                                    donation_id={donation_id}
+                                    errorCb={(err) => {
+                                        toast.error(err)
+                                        onClose()
+                                        setLoading(false)
+                                    }} />
+                            </>
+                        </LoadingComponent>
                     </ModelItem>
                 )
             }
@@ -90,7 +115,9 @@ function VerifyBloodRequestItem({ fullName, profile_id, date, message, setUpdate
                 {/* Action Buttons */}
 
                 <div>
-                    <button disabled={currentStatus == BloodDonationStatus.Approved} onClick={onApprove} className={`${currentStatus == BloodDonationStatus.Approved && "cursor-not-allowed"} bg-green-800 w-full text-white px-5 py-3 rounded-md text-sm`}>Blood donated</button>
+                    <button
+                        disabled={currentStatus == BloodDonationStatus.Approved}
+                        onClick={onApprove} className={`${currentStatus == BloodDonationStatus.Approved && "cursor-not-allowed"} bg-green-800 w-full text-white px-5 py-3 rounded-md text-sm`}>Blood donated</button>
                     <div className="flex items-center gap-2 mt-2">
                         <button onClick={() => onUpdateStatus(BloodDonationStatus.NotResponded)} className={`${currentStatus == BloodDonationStatus.NotResponded && "cursor-not-allowed"} w-full bg-yellow-800 text-white px-5 py-3 rounded-md text-sm`}>Not responded</button>
                         <button onClick={() => onUpdateStatus(BloodDonationStatus.Rejected)} className={`${currentStatus == BloodDonationStatus.Rejected && "cursor-not-allowed"} w-full bg-red-800 text-white px-5 py-3 rounded-md text-sm`}>Decline Request</button>

@@ -3,24 +3,27 @@ import AdminLayout from "@/component/Admin/AdminLayout";
 import AdminPrivateRouter from "@/component/LoginComponent/AdminPrivateRouter";
 import AdminBreadCrumb from "@/component/Util/AdminBreadCrumb";
 import HospitalSearch from "@/component/Util/HospitalSearch";
+import SpinnerLoader from "@/component/Util/SpinningLoader";
 import { adminAddBloodReq } from "@/util/data/helper/APIHelper";
 import { bloodRequirementAdminInitialValues } from "@/util/external/yup/initialValues";
 import { bloodRequirementAdminValidation } from "@/util/external/yup/yupValidations";
 import { BloodGroup, BloodStatus } from "@/util/types/Enums/BasicEnums";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import ReactGoogleAutocomplete, { usePlacesWidget } from "react-google-autocomplete";
 import { toast } from "react-toastify";
 
 
 function AddBloodRequirement() {
 
-
+    const [isPageLoading, setPageLoading] = useState(false)
     const searchRef = useRef(null)
 
     return (
         <Fragment>
             <AdminPrivateRouter>
+                <SpinnerLoader isLoading={isPageLoading} />
+
                 <AdminLayout onSearch={() => { }}>
                     <AdminBreadCrumb title={"Add Blood requirement"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Add blood requirement", href: "/blood/blood-reuirement" }]} />
 
@@ -28,6 +31,7 @@ function AddBloodRequirement() {
                         initialValues={bloodRequirementAdminInitialValues}
                         validationSchema={bloodRequirementAdminValidation}
                         onSubmit={(val, { resetForm }) => {
+                            setPageLoading(true)
                             adminAddBloodReq(val.patientName, +val.unit, val.neededAt as Date, val.status as BloodStatus, val.blood_group as BloodGroup, val.hospital, val.address, +val.phoneNumber, val.email_id).then((data) => {
                                 if (data.status) {
                                     toast.success("Blood requirement created success")
@@ -41,6 +45,8 @@ function AddBloodRequirement() {
                             }).catch((err) => {
                                 toast.error("Blood requirement creation failed")
                                 resetForm()
+                            }).finally(() => {
+                                setPageLoading(false)
                             })
                         }}
                     >

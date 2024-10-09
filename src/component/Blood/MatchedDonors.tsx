@@ -93,7 +93,7 @@ function MatchedDonors({ name, bloodGroup, donorId, phoneNumber, emailAddress, s
                         aria-label="Contact donor"
                     >
                         <FaEnvelope className="mr-2" />
-                        Call Javad
+                        Call {name}
                     </a>
                     <label className="inline-flex items-center cursor-pointer">
                         <input onChange={onUpdate} type="checkbox" checked={bloodStatus == BloodDonorStatus.Open} className="sr-only peer" />

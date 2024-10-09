@@ -69,7 +69,11 @@ function FundPaymentModel({ fund_id, type }: { fund_id: string, type: PaymentVia
                         toast.error("Please select valid amount");
                         return;
                     }
-                    initialFundPayment(val.full_name, +val.phone_number, val.email_id, val.hide_profile, amount, orderCreated, () => { }, fund_id, type)
+                    if (amount < 10) {
+                        toast.error("Donate minimum 10 rupees");
+                        return
+                    }
+                    initialFundPayment(val.full_name, +val.phone_number, val.email_id, val.hide_profile, amount, orderCreated, (err) => toast.error(err), fund_id, type)
 
                 }}>
                     <Form>

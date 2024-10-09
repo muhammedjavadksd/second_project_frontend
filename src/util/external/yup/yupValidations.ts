@@ -9,7 +9,7 @@ let adminSiteSettings = yup.object().shape({
 
 const bloodDonatationFormValidation = yup.object().shape({
     full_name: yup.string().typeError("Please enter valid full name").required("Full name is required"),
-    phone_number: yup.number().typeError("Please enter valid phone number").required("Phone number is required"),
+    phone_number: yup.string().typeError("Please enter valid phone number").matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits').required("Phone number is required"),
     email_address: yup.string().email("Please enter valid email address").typeError("Please enter valid email address").required("Email address is required"),
     // location: yup.string().optional(),
     blood_group: yup.string().typeError("Please select valid blood group").oneOf(Object.values(BloodGroup), "Please select valid blood group").required("Blood group is required")
@@ -19,7 +19,7 @@ const updateDonorPersonDetailsValidation = yup.object().shape({
     full_name: yup.string().typeError("Please enter valid full name").required("Full name is required"),
     phone_number: yup.number().typeError("Please enter valid phone number").required("Phone number is required"),
     email_address: yup.string().email("Please enter valid email address").typeError("Please enter valid email address").required("Email address is required"),
-    location: yup.string().optional(),
+    location: yup.mixed().optional(),
 })
 
 const updateBloodGroupValidation = yup.object().shape({
@@ -89,7 +89,15 @@ const validationSchema = yup.object().shape({
         .required('Please select if you use tobacco products'),
     pregnancyStatus: yup.string()
         .required('Please select your pregnancy status'),
-    date: yup.string().typeError("Please select a date for donation").required("Meetup time is required")
+    date: yup
+        .mixed()
+        .test("date-time", "Meet date and time must be in the future", function (value: Date) {
+            const selectedDateTime = new Date(value);
+            const currentDateTime = new Date();
+            return selectedDateTime > currentDateTime;
+        })
+        .typeError("Please select a valid date and time for donation")
+        .required("Meetup date and time are required")
 });
 
 
@@ -157,9 +165,9 @@ const requestPersonalBlood = yup.object().shape({
     deadline: yup.date()
         .required('Deadline is required')
         .min(new Date(), 'Deadline cannot be in the past'),
-    hospital: yup.string()
-        .required('Hospital name is required')
-        .min(2, 'Hospital name must be at least 2 characters')
+    // hospital: yup.string()
+    //     .required('Hospital name is required')
+    //     .min(2, 'Hospital name must be at least 2 characters')
 });
 
 const hospitalSchema = yup.object().shape({

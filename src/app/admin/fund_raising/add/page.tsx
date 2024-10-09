@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { adminAddFundRaiseValidation } from '@/util/external/yup/yupValidations'
 import getAIDescription from '@/component/FundRaiser/CreateSteps/AIDescription/Logic'
 import LoadingComponent from '@/component/Util/LoadingComponent'
+import SpinnerLoader from '@/component/Util/SpinningLoader'
 
 function AdminFundRaiseAdd(): React.ReactElement {
 
@@ -20,6 +21,7 @@ function AdminFundRaiseAdd(): React.ReactElement {
     let [subCategory, setSubCategory] = useState([])
     const [district, setDistrict] = useState([])
     const [isLoading, setLoading] = useState(false)
+    const [isPageLoading, setPageLoading] = useState(false)
 
 
     const reGenerateAIDescription = (val) => {
@@ -36,6 +38,7 @@ function AdminFundRaiseAdd(): React.ReactElement {
 
     return (
         <AdminPrivateRouter>
+            <SpinnerLoader isLoading={isPageLoading} />
             <AdminLayout onSearch={() => { }}>
 
                 <AdminBreadCrumb title={"Add Fund Raiser"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Fund Raiser's", href: "/fund_raising" }, { title: "Add", href: "/admin/fund_raising/add" }]} />
@@ -43,13 +46,16 @@ function AdminFundRaiseAdd(): React.ReactElement {
                     <div className="gap-10">
                         <Formik
                             onSubmit={(val, { resetForm }) => {
+                                setPageLoading(true)
                                 adminAddFundRaiser(val).then((data) => {
                                     if (data) {
                                         router.push(`detail_view/${data}`)
                                     } else {
                                         toast.error("Something went wrong")
                                     }
-                                }).catch((err) => { })
+                                }).catch((err) => { }).finally(() => {
+                                    setPageLoading(false)
+                                })
                             }}
                             validationSchema={adminAddFundRaiseValidation}
                             initialValues={adminAddFundRaiserInitialValues}

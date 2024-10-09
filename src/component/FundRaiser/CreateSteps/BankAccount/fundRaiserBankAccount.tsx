@@ -17,6 +17,8 @@ function FundRaiserBankAccount({ state }) {
     const [initialValues, setInitialValues] = useState<Record<string, any>>(fundRaiserBankAccoutInitialValues);
     const selectData = useSelector((store: IReduxStore) => store.fund_raiser);
     const formRef = useRef(null)
+    const [isLoading, setLoading] = useState(false)
+
 
     useEffect(() => {
         console.log(selectData);
@@ -36,14 +38,16 @@ function FundRaiserBankAccount({ state }) {
 
     function successCB() {
         state((prev) => prev + 1)
+        setLoading(false)
     }
 
     function errorCb(msg: string) {
         toast.error(msg)
+        setLoading(false)
     }
 
     return (
-        <Fragment>
+        <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false}>
             <CreateFormBackground>
                 <Formik
                     key={JSON.stringify(initialValues)}
@@ -52,14 +56,17 @@ function FundRaiserBankAccount({ state }) {
                     initialValues={initialValues}
                     validationSchema={fundRaiserBankAccoutValidation}
                     onSubmit={(val) => {
+                        setLoading(true)
                         const isDirty = JSON.stringify(initialValues) === JSON.stringify(val);
                         val.currentApplication = currentApplication;
 
                         if (isDirty) {
                             state((prev) => prev + 1)
+                            setLoading(false)
                         } else {
-                            onBankAccountSubmit(val, successCB, errorCb);
+                            onBankAccountSubmit(val, successCB, errorCb)
                         }
+
 
                     }}>
 
@@ -105,7 +112,7 @@ function FundRaiserBankAccount({ state }) {
 
                 </Formik>
             </CreateFormBackground >
-        </Fragment >
+        </LoadingComponent >
     )
 }
 

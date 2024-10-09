@@ -23,15 +23,12 @@ const BloodDonorSearch = () => {
     const [center, setCenter] = useState({ lat: 40.7128, lng: -74.0060 });
     const [zoom, setZoom] = useState(8);
     const [selectedDonor, setSelectedDonor] = useState<IBloodDonor>(null);
-    const [bloodTypeFilter, setBloodTypeFilter] = useState<BloodGroup>(BloodGroup.A_POSITIVE);
+    const [bloodTypeFilter, setBloodTypeFilter] = useState<BloodGroup>(null);
     const [currentLocation, setCurrentLocation] = useState(null);
     const [refresh, setRefresh] = useState<boolean>(false);
     const [donors, setDonors] = useState<IBloodDonor[]>([]);
-    const [locationAccess, setLocationAccess] = useState(null);
-    const [isOpen, setIsOpen] = useState(true);
     const [location, setLocation] = useState([]);
     const [isSearching, setSearching] = useState<boolean>(false)
-    const [selectedLocation, setSelectedLocation] = useState<SelectedHospital>(null);
     const [isLoading, setLoading] = useState(true)
 
 
@@ -157,6 +154,7 @@ const BloodDonorSearch = () => {
                         onChange={(e) => setBloodTypeFilter(e.target.value as BloodGroup)}
                         className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                     >
+                        <option value={null}>Select all</option>
                         {
                             Object.values(BloodGroup).map((group: BloodGroup, index: number) => {
                                 return (
@@ -176,7 +174,7 @@ const BloodDonorSearch = () => {
                         {donors.map((donor) => (
                             <Marker
                                 key={1}
-                                position={{ lat: donor.locatedAt.coordinates[1], lng: donor.locatedAt.coordinates[0] }}
+                                position={{ lat: donor.location_coords.coordinates[1], lng: donor.location_coords.coordinates[0] }}
                                 onClick={() => setSelectedDonor(donor)}
                                 icon={{
                                     url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
@@ -185,7 +183,7 @@ const BloodDonorSearch = () => {
                         ))}
                         {selectedDonor && (
                             <InfoWindow
-                                position={{ lat: selectedDonor.locatedAt.coordinates[1], lng: selectedDonor.locatedAt.coordinates[0] }}
+                                position={{ lat: selectedDonor.location_coords.coordinates[1], lng: selectedDonor.location_coords.coordinates[0] }}
                                 onCloseClick={() => setSelectedDonor(null)}
                             >
                                 <div className="p-2">
@@ -212,8 +210,10 @@ const BloodDonorSearch = () => {
                                 <div className='grid grid-cols-3 gap-5'>
                                     {
                                         donors.map((each, index) => {
+                                            console.log(each);
+
                                             return (
-                                                <BloodDonorCard lati={each.locatedAt.coordinates[0]} long={each.locatedAt.coordinates[1]} key={index} bloodGroup={each.blood_group} distance={each.distance} email_id={each.email_address} name={each.full_name} />
+                                                <BloodDonorCard lati={each.location_coords.coordinates[0]} long={each.location_coords.coordinates[1]} key={index} bloodGroup={each.blood_group} distance={each.distance} email_id={each.email_address} name={each.full_name} />
                                             )
                                         })
                                     }

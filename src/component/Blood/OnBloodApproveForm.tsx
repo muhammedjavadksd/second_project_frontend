@@ -6,9 +6,10 @@ import { ErrorMessage, Field, Form, Formik } from "formik"
 import { toast } from "react-toastify"
 
 
-function BloodApproveForm({ successCb, errorCb, donation_id }) {
+function BloodApproveForm({ successCb, errorCb, donation_id, onStart }) {
 
     async function onSubmit({ unit }) {
+        onStart()
         try {
             const update = await updateBloodRequest(BloodDonationStatus.Approved, donation_id, unit)
             console.log(update);

@@ -3,12 +3,12 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { FaLock } from 'react-icons/fa'
 
 function Profil(): React.ReactElement {
 
     const router = useRouter()
     const params = useSearchParams();
-    const open_donor_model = params.get("open_donor_model");
 
     const [currentPath, setPath] = useState<string>("")
 
@@ -45,13 +45,6 @@ function Profil(): React.ReactElement {
                         </Link>
                     </li>
 
-                    <li>
-                        <Link href="/account/chat"
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${currentPath.startsWith("/account/chat") ? 'text-blue-600 border-blue-600' : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}`}>
-                            <i className="fa-regular fa-comment mr-3"> </i>
-                            Messages
-                        </Link>
-                    </li>
 
                     <li>
                         <a href="#" onClick={() => {
@@ -59,12 +52,9 @@ function Profil(): React.ReactElement {
                                 router.replace("/auth/sign_in")
                             }).catch((err) => { })
                         }}
-                            className={`flex p-4 border-b-2 rounded-t-lg ${currentPath === '/account/' ? 'text-blue-600 border-blue-600' : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}`}>
+                            className={`gap-2 items-center flex p-4 border-b-2 rounded-t-lg ${currentPath === '/account/' ? 'text-blue-600 border-blue-600' : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'}`}>
 
-                            <svg className="w-5 h-5 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M7.824 5.937a1 1 0 0 0 .726-.312 2.042 2.042 0 0 1 2.835-.065 1 1 0 0 0 1.388-1.441 3.994 3.994 0 0 0-5.674.13 1 1 0 0 0 .725 1.688Z" />
-                                <path d="M17 7A7 7 0 1 0 3 7a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V7a5 5 0 1 1 10 0v7.083A2.92 2.92 0 0 1 12.083 17H12a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a1.993 1.993 0 0 0 1.833-1.167A7 7 0 0 0 17 7Zm-6 8h2v-1h-2v1Z" />
-                            </svg>
+                            <FaLock />
                             Logout
                         </a>
                     </li>

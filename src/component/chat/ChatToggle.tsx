@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { FaComment, FaFacebookMessenger, FaInbox, FaTimes } from "react-icons/fa";
 import ChatUserList from "./ChatList";
 import ChatDetail from "./ChatDetail";
@@ -20,9 +20,9 @@ function ChatToggle() {
     return (
         <Fragment>
 
-            <ModelItem ZIndex={100} closeOnOutSideClock={true} isOpen={isOpen} onClose={() => toggleModle(false)}>
+            {isOpen && <ModelItem ZIndex={100} closeOnOutSideClock={true} isOpen={true} onClose={() => toggleModle(false)}>
                 <ChatUserList />
-            </ModelItem>
+            </ModelItem>}
 
             {userDetails && <div className="fixed right-10 z-[99] bottom-10">
                 <button
@@ -39,4 +39,4 @@ function ChatToggle() {
     )
 }
 
-export default ChatToggle
+export default React.memo(ChatToggle)

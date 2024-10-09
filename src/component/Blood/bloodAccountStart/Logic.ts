@@ -15,6 +15,9 @@ async function OnDonorPersonDataEditSubmit(val, successCB, errorCB) {
             email_address,
             location
         } = val;
+
+        console.log(location);
+
         const session = await getSession();
         const user = userDetailsFromGetSession(session, "user")
         const { blood_token } = user;

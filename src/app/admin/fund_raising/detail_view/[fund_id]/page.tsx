@@ -8,13 +8,13 @@ import React, { useEffect, useState } from 'react'
 import { fundRaiserGraph } from './data'
 import { useParams } from 'next/navigation'
 import { getSingleFundRaisingProfile } from './logic'
-import { FundRaiserResponse, AxiosResponse, IDonateHistoryTemplate, IDonationStatitics } from '@/util/types/API Response/FundRaiser'
+import { FundRaiserResponse, AxiosResponse, IDonateHistoryTemplate, IDonationStatitics, IBankAccount } from '@/util/types/API Response/FundRaiser'
 import { useRouter } from 'next/navigation'
 import { getSingleUser } from '../../logic/fund-raiser-logic'
 import TableHead from '@/component/Util/Table/TableHead'
 import TableBody from '@/component/Util/Table/TableBody'
-import { FaCloudUploadAlt, FaTrash } from 'react-icons/fa'
-import { adminEditFundRaiser, adminFundRaiserFileUpload, closeFundRaise, closeFundRaiseByAdmin, deleteFundRaiserImageAdmin, findDonationHistroyApi, getDonationStatitics, updateFundRaiserStatus } from '@/util/data/helper/APIHelper'
+import { FaCloudUploadAlt, FaPlus, FaTrash } from 'react-icons/fa'
+import { adminEditFundRaiser, adminFundRaiserFileUpload, closeFundRaise, closeFundRaiseByAdmin, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getAllBankAccountByAdmin, getDonationStatitics, updateFundRaiserStatus } from '@/util/data/helper/APIHelper'
 import { SetPicturs } from '@/util/external/redux/slicer/fundRaiserForm'
 import { toast } from 'react-toastify'
 import { FundRaiserFileType, FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
@@ -35,6 +35,8 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { boolean } from 'yup'
 import EditInput from '@/component/Util/EditInput'
 import AIDescriptionModel from '@/component/FundRaiser/AIDescriptionModel'
+import AddBankAccount from '@/component/FundRaiser/AddBankAccount'
+import SingleBackAccount from '@/component/FundRaiser/BankAccount'
 
 function FundRaiserDetailView(): React.ReactElement {
     var CanvasJSChart: CanvasJSReact = CanvasJSReact.CanvasJSChart;
@@ -71,7 +73,7 @@ function FundRaiserDetailView(): React.ReactElement {
                                 setStatus(status)
                                 toast.success("Status updated")
                                 onClose()
-                                toggleClose(true)
+                                // toggleClose(true)
                             }).catch((err) => {
                                 toast.error("Fund raiser status not allowed!")
                                 onClose()
@@ -209,10 +211,19 @@ function FundRaiserDetailView(): React.ReactElement {
     }, [])
 
     const dateLeft = new Date(fundRaiserProfile?.deadline).getDate() - new Date().getDate()
+    const [isAddBankAccountOpen, toggleBankAccount] = useState(false)
+    const [refresh, setRefresh] = useState(false);
+
 
 
     return (
+
         < AdminLayout onSearch={() => { }} >
+
+            <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isAddBankAccountOpen} onClose={() => toggleBankAccount(false)}>
+                <AddBankAccount role='admin' onFinish={() => { toggleBankAccount(false), setRefresh(!refresh) }} fund_id={fund_id.toString()} />
+            </ModelItem>
+
             <div className='grid grid-cols-2'>
                 <div>
                     <AdminBreadCrumb root={{ title: "Dashboard", href: "/" }} title={`Detail view for ${fundRaiserProfile?.full_name ?? ""}`} paths={[{ title: "Manage Fund Raiser's", href: "/" }, { title: "View Fund Raiser", href: "/" }]} />
@@ -283,7 +294,7 @@ function FundRaiserDetailView(): React.ReactElement {
 
             <div className='min-h-screen grid'>
                 <LoadingDataNotFoundComponent isFound={!!fundRaiserProfile} isLoading={!((!!fundRaiserProfile))}>
-                    <div className='flex mt-5 gap-5'>
+                    <div className='flex w-full mt-5 gap-5'>
                         <div className='w-1/4'>
                             <div className="bg-white shadow-xl rounded-lg py-3">
                                 <div className="photo-wrapper items-center flex justify-center w-full p-2">
@@ -385,7 +396,7 @@ function FundRaiserDetailView(): React.ReactElement {
 
                         </div>
                         <div className='w-3/4'>
-                            <div className='grid grid-cols-3 flex gap-5 '>
+                            <div className='grid grid-cols-3   gap-5 '>
                                 <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Target"} data={<EditInput data={{ key: "amount", value: fundRaiserProfile?.amount ?? "" }} isEditAllowed={() => true} label='Enter amount' onSubmit={onFundRaiserUpdate} uiCallback={(text) => { return `${text}${const_data.MONEY_ICON}` }}>{fundRaiserProfile?.amount}</EditInput>} />
                                 <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Collected"} data={`${fundRaiserProfile?.collected}${const_data.MONEY_ICON}`} />
                                 <DashboardCard icon={null} classNames="bg-white shadow-inner border" title={"Deadline"} data={<EditInput type="date" data={{ key: "deadline", value: new Date(fundRaiserProfile?.deadline) }} isEditAllowed={() => true} label='New deadline' uiCallback={(newDate) => { return `${newDate}` }} onSubmit={onFundRaiserUpdate}>{new Date(fundRaiserProfile?.deadline).toLocaleDateString('en-GB')}</EditInput>} />
@@ -536,6 +547,52 @@ function FundRaiserDetailView(): React.ReactElement {
                                     </div>
                                 </div>
                             </LoadingComponent>
+
+                            <div className='mt-3 mb-3'>
+                                <div className='flex justify-between items-center'>
+                                    <div>
+                                        <h4 className='text-2xl font-bold '>Bank account&apos;s</h4>
+                                        <p>Manage your bank account&apos;s from here</p>
+                                    </div>
+                                    <button onClick={() => toggleBankAccount(true)} className='flex bg-green-500 p-2 text-white border shadow-inner items-center gap-x-3 rounded-lg'>
+                                        <FaPlus />
+                                        Add bank account
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="p-4 mt-5 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+                                <span className="font-medium">Notification alert!</span> The primary account will receive all donation payments.
+                            </div>
+                            <PaginationSection
+                                api={{
+                                    renderType: (page: number, limit: number) => {
+                                        return getAllBankAccountByAdmin(fund_id.toString(), limit, page);
+                                    }
+                                }}
+                                itemsRender={(bankAccounts: IBankAccount[]) => {
+                                    return (
+                                        bankAccounts.length ? (
+                                            <div className="grid gap-4 grid-cols-2" >
+                                                {
+                                                    bankAccounts.map((account) => {
+                                                        return (
+                                                            <SingleBackAccount role='admin' acAccount={fundRaiserProfile?.withdraw_docs?.benf_id} account={account} fund_id={fund_id.toString()} onComplete={() => setRefresh(!refresh)} />
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        ) : <EmptyScreen msg='No bank account found' />
+                                    )
+                                }}
+
+                                paginationProps={{
+                                    current_page: 1,
+                                    currentLimit: 10
+                                }}
+                                refresh={refresh}
+                            >
+                            </PaginationSection>
+
 
                         </div>
                     </div>

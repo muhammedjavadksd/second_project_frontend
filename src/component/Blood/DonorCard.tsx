@@ -13,6 +13,8 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { requestPersonalBlood } from "@/util/external/yup/yupValidations";
 import { requestPersonalBloodInitialValues } from "@/util/external/yup/initialValues";
 import { generateBloodRequest } from "@/util/data/helper/utilHelper";
+import { SelectedHospital } from "@/util/types/InterFace/UtilInterface";
+import HospitalSearch from "../Util/HospitalSearch";
 
 
 function BloodDonorCard({ name, bloodGroup, distance, long, lati, email_id }) {
@@ -20,16 +22,22 @@ function BloodDonorCard({ name, bloodGroup, distance, long, lati, email_id }) {
     const session = useSession()
     const router = useRouter();
     const [modelOpen, toggleModel] = useState(false);
+    const [selectedHospital, setHospital] = useState<SelectedHospital>(null);
 
     function sendMessage(values) {
         const user = userDetailsFromUseSession(session, "user");
+
+        if (!selectedHospital) {
+            toast.error("Please select valid hospital")
+            return;
+        }
         if (user && user.token) {
 
-            createChat(email_id, generateBloodRequest(values.unit, values.hospital_name, values.deadLine), CreateChatVia.DonorId).then((data) => {
-                if (data) {
+            createChat(email_id, generateBloodRequest(values.unit, values.hospital_name, values.deadline), CreateChatVia.DonorId).then((data) => {
+                if (data.status) {
                     toast.success("Message has been sent");
                 } else {
-                    toast.error("Something went wrong");
+                    toast.error(data.msg);
                 }
             }).catch((err) => {
                 console.log(err);
@@ -61,8 +69,7 @@ function BloodDonorCard({ name, bloodGroup, distance, long, lati, email_id }) {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="">Hospital</label>
-                                <Field type="text" name="hospital" id="hospital" placeholder="Select hospital name" className="mt-2 block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
-                                <ErrorMessage className='errorMessage' component="div" name='hospital' />
+                                <HospitalSearch selectedHospital={(val) => setHospital(val)} />
                             </div>
                             <button type="submit" className="mt-3 col-span-2 w-full bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300">
                                 Save
@@ -92,7 +99,7 @@ function BloodDonorCard({ name, bloodGroup, distance, long, lati, email_id }) {
             <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-500">{distance} km away</span>
                 <button
-                    onClick={sendMessage}
+                    onClick={() => toggleModel(true)}
                     className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 flex items-center  hover:animate-pulse`}
                     aria-label={`Chat with ${name}`}
                 >

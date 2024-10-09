@@ -9,11 +9,12 @@ import { userDetailsFromGetSession } from "@/util/data/helper/authHelper"
 import { getSession } from "next-auth/react"
 import { cookies, headers } from "next/headers"
 import { log, profile } from "console"
-import Cookies from "universal-cookie"
+// import Cookies from "universal-cookie"
 import { serialize } from "cookie"
 import { setCookie } from "nookies"
 import { signInWithGoogle } from "@/util/data/helper/APIHelper"
 import { toast } from "react-toastify"
+import Cookies from "universal-cookie"
 
 
 
@@ -91,9 +92,11 @@ let authOptions = {
                                 const user_data = response.data;
                                 console.log(user_data);
 
+                                // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWVkamF2YWQxMTkxNDRAZ21haWwuY29tIiwiZmlyc3RfbmFtZSI6Ik1lcmEiLCJsYXN0X25hbWUiOiJOYW1lIFNoYWppIiwicGhvbmUiOjk3NDQ3Mjc2ODQsInByb2ZpbGVfaWQiOiJNdWhhbW1lZF9kcmNiMCIsInVzZXJfaWQiOiI2NmYyNGEyNjg1NjhhNGU3YzdiNGQ2MmYiLCJpYXQiOjE3MjgzOTA5NTcsImV4cCI6MTcwODM5MTg1N30.zc-xTtwNVAme3gELvIblZ1Jx2f4cqMOF_A_Xdvg2GNw"
+                                const token = user_data.jwt
                                 let storingData: IUserSessionData = {
                                     id: user_data.user_id,
-                                    token: user_data.jwt,
+                                    token,
                                     first_name: user_data.first_name,
                                     last_name: user_data.last_name,
                                     phone: user_data.phone,
@@ -104,9 +107,8 @@ let authOptions = {
                                     profile_id: user_data.profile_id,
                                 }
 
-                                // sessionStorage.setItem("name", "My name")
                                 const cookieStore = cookies();
-                                cookieStore.set("name", "My name is")
+                                cookieStore.set("refresh_token", user_data['refresh_token'])
                                 return storingData
                             } else {
                                 return null
@@ -122,7 +124,9 @@ let authOptions = {
                         // console.log(headers_data);
 
 
-                        const auth_token = credentials.token;
+                        const cookie = cookies();
+                        const token = cookie.get("refresh_token");
+                        const auth_token = credentials.token || token.value;
 
                         console.log("Token is");
                         console.log("The user");

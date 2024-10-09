@@ -40,6 +40,10 @@ function updateBloodDonorPersonalDetailsValues(profile) {
         email_address: profile.email_address,
         location: profile.location,
     }
+
+    console.log("Profile account :");
+    console.log(initData);
+
     return initData
 }
 

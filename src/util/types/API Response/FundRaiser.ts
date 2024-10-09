@@ -1,6 +1,6 @@
 
 
-import { FundRaiserStatus } from "../Enums/BasicEnums"
+import { BankAccountType, FundRaiserStatus } from "../Enums/BasicEnums"
 
 
 interface IDonationStatitics {
@@ -12,7 +12,7 @@ interface IBankAccount {
     account_number: number,
     ifsc_code: string,
     holder_name: string,
-    account_type: string,
+    account_type: BankAccountType,
     befId: string,
     is_active: string,
 }
@@ -34,6 +34,7 @@ interface ICommentsResponse {
     paginated: ISingleCommentsResponse[],
     total_records: number
 }
+
 
 interface FundRaiserResponse {
     _id: string,
@@ -63,7 +64,8 @@ interface FundRaiserResponse {
     state: string,
     deadline: Date
     description: string,
-    withdraw_docs: WithdrawDocs
+    withdraw_docs: WithdrawDocs,
+    bank_account: IBankAccount
 }
 
 

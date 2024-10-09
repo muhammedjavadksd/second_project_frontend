@@ -17,7 +17,6 @@ let socket;
 const ChatUserList = () => {
     const [users, setUsers] = useState<IChatRoomResponse[]>([]);
     const [tempUsers, setTempUsers] = useState<IChatRoomResponse[]>([]);
-    const [searchTerm, setSearchTerm] = useState("");
     const [openChats, setOpenChats] = useState<ChatProfile>(null);
     const [currentChatHistory, setCurrentChatHistory] = useState<ChatHistory[]>([]);
     const [isLoading, toggleLoading] = useState(true)
@@ -27,7 +26,6 @@ const ChatUserList = () => {
     const [userDetails, setUserDetails] = useState(null);
 
     useEffect(() => {
-        console.log(users, users.length, socket);
 
         if (users && users.length && !socket) {
             socket = io(process.env.NEXT_PUBLIC_SOKCET_URL, {
@@ -41,9 +39,9 @@ const ChatUserList = () => {
             socket.off("new_message");
             socket.on("new_message", (chat: ChatHistory) => {
                 console.log("New message recivied");
-                if (openChats.chat_profile_id == chat.profile_id) {
-                    setCurrentChatHistory((prev) => [...prev, chat])
-                }
+                // if (openChats.chat_profile_id == chat.profile_id) {
+                //     setCurrentChatHistory((prev) => [...prev, chat])
+                // }
 
 
                 setUsers((prevUsers) => {

@@ -39,6 +39,8 @@ import DatePicker, { DateObject } from 'react-multi-date-picker'
 import { toast } from 'react-toastify'
 import { DateRangePicker } from 'rsuite';
 import AIDescriptionModel from '@/component/FundRaiser/AIDescriptionModel'
+import AddBankAccount from '@/component/FundRaiser/AddBankAccount'
+import SingleBackAccount from '@/component/FundRaiser/BankAccount'
 
 
 
@@ -48,7 +50,6 @@ function FundRaiserView(): React.ReactElement {
     const [isEditAboutOpen, toggleAbout] = useState(false)
     const [isAddBankAccountOpen, toggleBankAccount] = useState(false)
     const { fund_id } = useParams()
-    const addBankAccountForm = useRef(null);
     const [refresh, setRefresh] = useState(false);
     const [pageRefresh, callPageRefresh] = useState(false);
     const [imageFocus, setImageFocus] = useState(null);
@@ -57,14 +58,13 @@ function FundRaiserView(): React.ReactElement {
     const [donationStatics, setDonationStatics] = useState<IDonationStatitics[]>(null);
     const [fundRaiserProfile, setFundRaiserProfile] = useState<FundRaiserResponse>(null)
     const [notFound, setProfileNotFound] = useState<boolean>(false)
-    const [addBankAcocuntLoader, setBankAccountLoader] = useState<boolean>(false)
     const [activeBankAccount, setActiveAccount] = useState<string>(null)
     const imageUploadRef = useRef(null)
     const documentUploadRef = useRef(null)
-    const [filterDate, setDate] = useState<Date | null>(null);
-    const date = new Date();
-    date.setDate(date.getDate() - 30);
-    const [dateRange, setDateRange] = useState([date, new Date()]);
+    const toDate = new Date();
+    toDate.setDate(toDate.getDate() - 30);
+    const [dateRange, setDateRange] = useState([new Date(), toDate]);
+
 
     async function findProfile() {
         const findProfile: FormActionResponse = await getSingleActiveFundRaiser(fund_id.toString(), true);
@@ -75,39 +75,9 @@ function FundRaiserView(): React.ReactElement {
         }
     }
 
-    async function setAsPrimaryAccount(benfId: string) {
-
-        confirmAlert({
-            title: "Are you sure want to make this account as primary?",
-            message: "set as primary?",
-            customUI: ({ onClose, title }) => {
-                return (
-                    <DangerUIConfirm
-                        onClose={onClose}
-                        onConfirm={() => {
-                            activeAccount(fund_id.toString(), benfId).then((data) => {
-                                if (data.status) {
-                                    setActiveAccount(benfId);
-                                    toast.success(data.msg)
-                                } else {
-                                    toast.error(data.msg)
-                                }
-                            }).catch((err) => {
-                                toast.error("Something went wrong")
-                            }).finally(() => {
-                                onClose()
-                            })
-                        }}
-                        title={title}
-                    />
-                )
-            }
-        })
-    }
-
-    useEffect(() => {
-        setActiveAccount(fundRaiserProfile?.withdraw_docs?.benf_id)
-    }, [fundRaiserProfile])
+    // useEffect(() => {
+    //     setActiveAccount(fundRaiserProfile?.withdraw_docs?.benf_id)
+    // }, [fundRaiserProfile])
 
 
     function close() {
@@ -149,22 +119,6 @@ function FundRaiserView(): React.ReactElement {
         findProfile()
     }, [pageRefresh])
 
-    function onAddBankAccount(val) {
-        addBankAccount(fund_id, val).then((data) => {
-            if (data.status) {
-                setRefresh(!refresh)
-                toast.success("Bank account created success")
-                addBankAccountForm.current.resetForm()
-                toggleBankAccount(false)
-            } else {
-                toast.error(data.msg)
-            }
-        }).catch((err) => {
-            toast.error("Something went wrong")
-        }).finally(() => {
-            setBankAccountLoader(false)
-        })
-    }
 
 
 
@@ -176,6 +130,7 @@ function FundRaiserView(): React.ReactElement {
         <div className='bg-gray-100'>
             <Header />
             <ImageModel ZIndex='99' imageURL={imageFocus} isOpen={!!imageFocus} onImageClose={() => setImageFocus(null)} />
+
 
             <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isEditAboutOpen} onClose={() => toggleAbout(false)}>
                 <ModelHeader title="Edit about content"></ModelHeader>
@@ -212,54 +167,7 @@ function FundRaiserView(): React.ReactElement {
             </ModelItem>
 
             <ModelItem ZIndex={99} closeOnOutSideClock={true} isOpen={isAddBankAccountOpen} onClose={() => toggleBankAccount(false)}>
-                <LoadingComponent closeOnClick={false} isLoading={addBankAcocuntLoader} paddingNeed={false}>
-                    <>
-                        <ModelHeader title="Add bank account"></ModelHeader>
-                        <div className='bg-white p-5 w-96'>
-                            <Formik innerRef={addBankAccountForm} initialValues={fundRaiserBankAccoutInitialValues} validationSchema={fundRaiserBankAccoutValidation} onSubmit={(val) => {
-                                setBankAccountLoader(true)
-                                onAddBankAccount(val)
-                            }}>
-                                <Form>
-                                    <div className='w-full rounded-lg  block mb-2.5'>
-                                        <label htmlFor="holder_name" className='text-sm mb-1 block'>Account holder name</label>
-                                        <Field type="text" name="holder_name" id="holder_name" placeholder="Enter account holder name" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
-                                        <ErrorMessage className='errorMessage' component="div" name='holder_name' />
-                                    </div>
-                                    <div className='w-full rounded-lg  block mb-2.5'>
-                                        <label htmlFor="account_number" className='text-sm mb-2 block'>Account number</label>
-                                        <Field type="text" name="account_number" id="account_number" placeholder="Enter account number" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
-                                        <ErrorMessage className='errorMessage' component="div" name='account_number' />
-                                    </div>
-                                    <div className='w-full rounded-lg  block mb-2.5'>
-                                        <label htmlFor="re_account_number" className='text-sm mb-2 block'>Re enter account number</label>
-                                        <Field type="text" name="re_account_number" id="re_account_number" placeholder="Re enter account number" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
-                                        <ErrorMessage className='errorMessage' component="div" name='re_account_number' />
-                                    </div>
-                                    <div className='w-full rounded-lg  block mb-2.5'>
-                                        <label htmlFor="ifsc_code" className='text-sm mb-1 block'>IFSC Code</label>
-                                        <Field type="text" name="ifsc_code" id="ifsc_code" placeholder="Enter IFSC Code" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
-                                        <ErrorMessage className='errorMessage' component="div" name='ifsc_code' />
-                                    </div>
-                                    <div className='w-full rounded-lg  block mb-2.5'>
-                                        <label htmlFor="account_type" className='text-sm mb-1 block'>Account Type</label>
-                                        <Field as="select" type="text" name="account_type" id="account_type" placeholder="Enter account type" className="block shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                            <option>Select bank account</option>
-                                            {
-                                                Object.values(BankAccountType).map((each) => {
-                                                    return <option key={each} value={each}>{each}</option>
-                                                })
-                                            }
-                                        </Field>
-                                        <ErrorMessage className='errorMessage' component="div" name='account_type' />
-                                    </div>
-                                    <button type="submit" className="mt-3 col-span-2 w-full bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300">
-                                        Save
-                                    </button>
-                                </Form>
-                            </Formik>
-                        </div></>
-                </LoadingComponent>
+                <AddBankAccount role='user' onFinish={() => { toggleBankAccount(false), setRefresh(!refresh) }} fund_id={fund_id.toString()} />
             </ModelItem>
 
             <div className='min-h-screen grid'>
@@ -335,9 +243,14 @@ function FundRaiserView(): React.ReactElement {
                                 <div className='bg-white p-3 rounded-md'>
                                     <div className='flex gap-2 items-center mb-3'>
                                         <label htmlFor="">Filter by date</label>
-                                        <DateRangePicker format="yyyy-MM-dd" character=" – " onChange={(date) => setDateRange([date[1], date[0]])} />;
-
+                                        <DateRangePicker
+                                            format="yyyy-MM-dd"
+                                            character=" – "
+                                            onChange={(date) => setDateRange([date[1], date[0]])}
+                                        // value={dateRange.map(date => date.toISOString().split('T')[0])} // Format dates
+                                        />
                                     </div>
+
                                     <CChart
                                         type="line"
                                         data={{
@@ -383,7 +296,7 @@ function FundRaiserView(): React.ReactElement {
                                                                     <TableHead head={['#', 'Donation ID', 'Name', 'Amount', 'Date']} />
                                                                     {
                                                                         tableBody.map((item, index) => {
-                                                                            return <TableBody key={index} data={[index + 1, item.donation_id, item.name, `${item.name}${const_data.MONEY_ICON}`, formatDateToMonthNameAndDate(item.date)]} />
+                                                                            return <TableBody key={index} data={[index + 1, item.donation_id, item.name, `${item.amount}${const_data.MONEY_ICON}`, formatDateToMonthNameAndDate(item.date)]} />
                                                                         })
                                                                     }
                                                                 </table>
@@ -433,77 +346,78 @@ function FundRaiserView(): React.ReactElement {
                                                     {
                                                         bankAccounts.map((account) => {
                                                             return (
-                                                                <div
-                                                                    key={account.befId}
-                                                                    className={`bg-white rounded-lg shadow-md p-6 transition-all duration-300 ${account.is_active ? "ring-2 ring-blue-500" : ""
-                                                                        }`}
-                                                                >
-                                                                    <div className="flex justify-between items-center mb-4">
-                                                                        <h2 className="text-xl font-semibold">{account.holder_name}</h2>
-                                                                        <div className="flex space-x-2">
+                                                                <SingleBackAccount role='user' acAccount={fundRaiserProfile?.withdraw_docs?.benf_id} account={account} fund_id={fund_id.toString()} onComplete={() => setRefresh(!refresh)} />
+                                                                // <div
+                                                                //     key={account.befId}
+                                                                //     className={`bg-white rounded-lg shadow-md p-6 transition-all duration-300 ${account.is_active ? "ring-2 ring-blue-500" : ""
+                                                                //         }`}
+                                                                // >
+                                                                //     <div className="flex justify-between items-center mb-4">
+                                                                //         <h2 className="text-xl font-semibold">{account.holder_name}</h2>
+                                                                //         <div className="flex space-x-2">
 
-                                                                            <button
-                                                                                onClick={() => {
-                                                                                    confirmAlert({
-                                                                                        title: "Are you sure want to delete the account?",
-                                                                                        message: "delete the account?",
+                                                                //             <button
+                                                                //                 onClick={() => {
+                                                                //                     confirmAlert({
+                                                                //                         title: "Are you sure want to delete the account?",
+                                                                //                         message: "delete the account?",
 
-                                                                                        customUI: ({ onClose, title }) => {
-                                                                                            return (
-                                                                                                <DangerUIConfirm
-                                                                                                    onClose={onClose}
-                                                                                                    onConfirm={() => {
-                                                                                                        deleteBankAccountByUser(fund_id.toString(), account.befId).then((data) => {
-                                                                                                            if (data.status) {
-                                                                                                                toast.success("Bank account deleted")
-                                                                                                                setRefresh(!refresh)
-                                                                                                                onClose()
-                                                                                                            } else {
-                                                                                                                toast.error(data.msg)
-                                                                                                            }
-                                                                                                        }).catch((err) => {
-                                                                                                            console.log(err);
-                                                                                                        })
-                                                                                                    }}
-                                                                                                    title={title}
-                                                                                                />
-                                                                                            )
-                                                                                        }
-                                                                                    })
+                                                                //                         customUI: ({ onClose, title }) => {
+                                                                //                             return (
+                                                                //                                 <DangerUIConfirm
+                                                                //                                     onClose={onClose}
+                                                                //                                     onConfirm={() => {
+                                                                //                                         deleteBankAccountByUser(fund_id.toString(), account.befId).then((data) => {
+                                                                //                                             if (data.status) {
+                                                                //                                                 toast.success("Bank account deleted")
+                                                                //                                                 setRefresh(!refresh)
+                                                                //                                                 onClose()
+                                                                //                                             } else {
+                                                                //                                                 toast.error(data.msg)
+                                                                //                                             }
+                                                                //                                         }).catch((err) => {
+                                                                //                                             console.log(err);
+                                                                //                                         })
+                                                                //                                     }}
+                                                                //                                     title={title}
+                                                                //                                 />
+                                                                //                             )
+                                                                //                         }
+                                                                //                     })
 
-                                                                                }}
-                                                                                className="text-red-500 hover:text-red-600 transition-colors duration-200"
-                                                                                aria-label="Delete account"
-                                                                            >
-                                                                                <FaTrash />
-                                                                            </button>
+                                                                //                 }}
+                                                                //                 className="text-red-500 hover:text-red-600 transition-colors duration-200"
+                                                                //                 aria-label="Delete account"
+                                                                //             >
+                                                                //                 <FaTrash />
+                                                                //             </button>
 
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="space-y-2">
-                                                                        <p>
-                                                                            <span className="font-semibold">Account Number:</span>{" "}
-                                                                            {account.account_number}
-                                                                        </p>
-                                                                        <p>
-                                                                            <span className="font-semibold">Account Holder:</span>{" "}
-                                                                            {account.holder_name}
-                                                                        </p>
-                                                                        <p>
-                                                                            <span className="font-semibold">IFSC Code:</span>
-                                                                            {account.ifsc_code}
-                                                                        </p>
-                                                                    </div>
-                                                                    {
-                                                                        activeBankAccount == account.befId ? (
-                                                                            <>
-                                                                                <button className='bg-green-600 mt-3 text-white w-full p-3 rounded-md'>Primary Account</button>
-                                                                            </>
-                                                                        ) : <>
-                                                                            <button onClick={() => setAsPrimaryAccount(account.befId)} className='bg-blue-600 mt-3 text-white w-full p-3 rounded-md'>Switch to Primary</button>
-                                                                        </>
-                                                                    }
-                                                                </div>
+                                                                //         </div>
+                                                                //     </div>
+                                                                //     <div className="space-y-2">
+                                                                //         <p>
+                                                                //             <span className="font-semibold">Account Number:</span>{" "}
+                                                                //             {account.account_number}
+                                                                //         </p>
+                                                                //         <p>
+                                                                //             <span className="font-semibold">Account Holder:</span>{" "}
+                                                                //             {account.holder_name}
+                                                                //         </p>
+                                                                //         <p>
+                                                                //             <span className="font-semibold">IFSC Code:</span>
+                                                                //             {account.ifsc_code}
+                                                                //         </p>
+                                                                //     </div>
+                                                                //     {
+                                                                //         activeBankAccount == account.befId ? (
+                                                                //             <>
+                                                                //                 <button className='bg-green-600 mt-3 text-white w-full p-3 rounded-md'>Primary Account</button>
+                                                                //             </>
+                                                                //         ) : <>
+                                                                //             <button onClick={() => setAsPrimaryAccount(account.befId)} className='bg-blue-600 mt-3 text-white w-full p-3 rounded-md'>Switch to Primary</button>
+                                                                //         </>
+                                                                //     }
+                                                                // </div>
                                                             )
                                                         })
                                                     }

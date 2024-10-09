@@ -15,8 +15,6 @@ function AdvanceFundRaiserView() {
 
     const [isCategoryOpen, setCategoryOpen] = useState(false)
     const [isSubCategoryOpen, setSubCategoryOpen] = useState(false)
-    const [profile, setProfile] = useState<FundRaiserResponse[]>([])
-    const [tempProfile, setTempProfile] = useState<FundRaiserResponse[]>([])
     const [queryFilter, setQueryFilter] = useState<string>()
     const [refresh, setRefresh] = useState<boolean>(false)
 

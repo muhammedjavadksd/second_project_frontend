@@ -31,12 +31,15 @@ export async function initialFundPayment(full_name: string, phone_number: number
             const order = data.data.order;
             const session_id = order.payment_session_id;
             successCB(session_id)
+        } else {
+            errorCB(data.msg)
         }
         console.log(data);
-
+        
     } catch (e) {
+        const errorMessage = e?.response?.data?.msg ?? "Something went wrong";
+        errorCB(errorMessage)
         console.log(e);
-
     }
 
 }
