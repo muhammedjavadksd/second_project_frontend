@@ -1,7 +1,5 @@
 "use client"
 import FundRaiserAccountTab from '@/component/Account/AccountTab/FundRaiserAccountTab'
-import AccountTab from '@/component/Account/AccountTab/ProfileTab'
-import BlockModel from '@/component/FundRaiser/BlockModel'
 import MyFundRaisingItem from '@/component/FundRaiser/MyFundRaisingItem'
 import Header from '@/component/Header/Header'
 import BreadCrumb from '@/component/Util/BreadCrumb'
@@ -9,11 +7,8 @@ import EmptyScreen from '@/component/Util/EmptyScreen'
 import Footer from '@/component/Util/Footer'
 import PaginationSection from '@/component/Util/PaginationSection'
 import { findMyProfile } from '@/util/data/helper/APIHelper'
-import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
-import API_axiosInstance from '@/util/external/axios/api_axios_instance'
 import { FundRaiserResponse } from '@/util/types/API Response/FundRaiser'
 import { FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -21,12 +16,10 @@ function MyFundRaising(): React.ReactElement {
 
     let [status, setStatus] = useState<FundRaiserStatus>(null);
     let [refresh, setRefresh] = useState<boolean>(true);
-    // const [allMyProfile, setAllMyProfile] = useState(null);
 
     return (
         <>
             <Header />
-            {/* <BlockModel /> */}
             <div className="container mx-auto mt-5 mb-5">
                 <div className="mb-5">
                     <BreadCrumb path={['Home', 'Profile', 'My Fund Raising']} />

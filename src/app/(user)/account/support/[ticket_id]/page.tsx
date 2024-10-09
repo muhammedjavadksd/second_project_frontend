@@ -1,14 +1,11 @@
 "use client"
 import Header from "@/component/Header/Header";
 import UserPrivateRouter from "@/component/LoginComponent/UserPrivateRouter";
-import BreadCrumb from "@/component/Util/BreadCrumb";
 import AccountTab from '@/component/Account/AccountTab/ProfileTab'
-import Link from "next/link";
 import Footer from "@/component/Util/Footer";
 import { useEffect, useRef, useState } from "react";
 import { ProfileTicket } from "@/util/types/API Response/Profile";
 import SpalshScreen from "@/component/Util/SplashScreen";
-import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import { addChatToTicket, findSingleTicket } from "@/util/data/helper/APIHelper";
 import { useParams } from "next/navigation";
 import { TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
@@ -33,13 +30,7 @@ function ViewTicket() {
         setLoading(true)
         addChatToTicket(chatRef.current.value, attachment, ticket_id.toString()).then((response) => {
             if (response || response == "") {
-                const newChat = {
-                    attachment: response,
-                    chat_id: null,
-                    created_at: new Date(),
-                    from: TicketChatFrom.User,
-                    text: chatRef.current.value
-                }
+                const newChat = { attachment: response, chat_id: null, created_at: new Date(), from: TicketChatFrom.User, text: chatRef.current.value }
                 const cloneTicket = { ...ticket };
                 cloneTicket.chats.push(newChat)
                 setTicket(cloneTicket)
@@ -64,8 +55,6 @@ function ViewTicket() {
 
     useEffect(() => {
         findTicket()
-
-
         const addEnter = (e) => {
             if (e.key == "Enter") {
                 addChat()

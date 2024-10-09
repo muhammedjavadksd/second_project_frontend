@@ -27,8 +27,6 @@ function Page() {
     const [currentLocation, setCurrentLocation] = useState<SelectedHospital>(null);
     const [isLoading, setLoading] = useState<boolean>(false);
     const [formInitialValues, setInitialValues] = useState(bloodDonatationFormValues);
-
-
     const session = useSession()
     const router = useRouter();
     const formik = useRef(null)

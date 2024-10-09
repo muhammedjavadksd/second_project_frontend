@@ -51,15 +51,6 @@ function Page() {
         setLoading(false)
     }, [hospitals])
 
-    function searchHospitals(place: string) {
-        setLoading(true)
-        searchHealthCenters(place).then((data) => {
-            setAllHospitals(data)
-        }).catch((err) => {
-            setLoading(false)
-        })
-    }
-
 
     return (
         <Fragment>

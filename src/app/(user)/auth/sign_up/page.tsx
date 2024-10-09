@@ -1,24 +1,16 @@
 "use client"
 import AuthSideCanvas from '@/component/Auth/Common/AuthSideCanvas'
-import FacebookProviderButton from '@/component/Auth/Common/ProvideLoginButton/FacebookProviderButton'
-import GoogleProviderButton from '@/component/Auth/Common/ProvideLoginButton/GoogleProviderButton'
 import SimpleHeader from '@/component/Header/SimpleHeader'
 import React, { FunctionComponent, useContext, useState } from 'react'
-import { bannerSlider, signUpSteps } from '../AuthData/Data'
 import UserBlackedRouter from '@/component/LoginComponent/UserBlackedRouter'
-import { useSession } from 'next-auth/react'
 import { UserAuthStepInterFace } from '@/util/types/InterFace/PropInterFace'
-import { useRouter } from 'next/navigation'
-// import { OnGoingBloodRequestContext } from '@/util/context/Context'
+import { bannerSlider, signUpSteps } from '@/util/data/stepsForm'
 
 function SignUp(): React.ReactElement {
 
 
   let [signUpStepIndex, setSignUpStepIndex] = useState<number>(0)
   const SignUpComponentSteps: FunctionComponent<UserAuthStepInterFace> = signUpSteps[signUpStepIndex];
-  // const data = useContext(OnGoingBloodRequestContext);
-
-
 
 
   return (
@@ -32,12 +24,6 @@ function SignUp(): React.ReactElement {
               <div className="container">
                 <SignUpComponentSteps state={setSignUpStepIndex}></SignUpComponentSteps>
                 <div className="mt-5 ">
-                  {/* <div className="grid grid-cols-2">
-                    <div className="mb-2 flex  flex-col justify-start  gap-3">
-                      <GoogleProviderButton onSign={() => setSignUpStepIndex(3)}></GoogleProviderButton>
-                      <FacebookProviderButton onSign={() => setSignUpStepIndex(3)}></FacebookProviderButton>
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>

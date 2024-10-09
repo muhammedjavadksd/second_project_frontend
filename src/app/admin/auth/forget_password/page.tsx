@@ -3,12 +3,13 @@ import AdminAuthBg from '@/component/Auth/Common/AdminAuthBg'
 import AdminAuthCard from '@/component/Auth/Common/AdminAuthCard'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { ReactElement, useState } from 'react'
-import { onResetPassword } from './Logic'
-import { resetPasswordInitialValues, resetPasswordValidation } from './Data'
 import { toast } from 'react-toastify'
 import LoadingComponent from '@/component/Util/LoadingComponent'
 import BlackedRouter from '@/component/LoginComponent/BlackedRouter'
 import { getSession } from 'next-auth/react'
+import { adminForgetPassword } from '@/util/external/yup/initialValues'
+import { onAdminForgetPassword, onAdminResetPassword } from '@/util/data/helper/logic'
+import { resetPasswordValidation } from '@/util/external/yup/yupValidations'
 
 function AdminForgetPassword(): ReactElement {
 
@@ -41,9 +42,9 @@ function AdminForgetPassword(): ReactElement {
                                 <Formik onSubmit={(values, { resetForm }) => {
                                     setIsLoading(true),
                                         (async function () {
-                                            await onResetPassword(values, () => { successCB(), resetForm() }, (err) => { errorCB(err), resetForm() })
+                                            await onAdminForgetPassword(values, () => { successCB(), resetForm() }, (err) => { errorCB(err), resetForm() })
                                         })()
-                                }} initialValues={resetPasswordInitialValues} enableReinitialize validationSchema={resetPasswordValidation}>
+                                }} initialValues={adminForgetPassword} enableReinitialize validationSchema={resetPasswordValidation}>
                                     <Form className="space-y-4 md:space-y-6" action="#">
                                         <div>
                                             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter email address</label>

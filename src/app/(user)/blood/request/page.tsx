@@ -3,30 +3,27 @@ import Header from '@/component/Header/Header'
 import Footer from '@/component/Util/Footer'
 import React, { FunctionComponent, Suspense, useState } from 'react'
 import BannerForCreating from '@/component/FundRaiser/BannerForCreating'
-import { requestBanner } from './Data'
-import { CreateFormComponent } from './Logic'
 import { useSearchParams } from 'next/navigation'
 import { FundRaiseCreationStep } from '@/util/types/InterFace/PropInterFace'
+import { CreateFormComponent, requestBanner } from '@/util/data/stepsForm'
 
 export default function Page() {
 
     return (
         <Suspense>
-            <CreateFundRaisingPost />
+            <CreateBloodRequestPost />
         </Suspense>
     )
 }
 
 
-function CreateFundRaisingPost(): React.ReactElement {
+function CreateBloodRequestPost(): React.ReactElement {
 
     const params = useSearchParams();
     const stepIndex = +(params.get("step_index") ?? 0)
 
     let [step, setStep] = useState<number>(stepIndex)
     let StepForm: FunctionComponent<FundRaiseCreationStep> = CreateFormComponent(step);
-
-
 
     return (
         <div>
@@ -45,5 +42,3 @@ function CreateFundRaisingPost(): React.ReactElement {
         </div>
     )
 }
-
-// export default CreateFundRaisingPost

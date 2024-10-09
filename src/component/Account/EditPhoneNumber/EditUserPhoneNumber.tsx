@@ -1,12 +1,13 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react'
-import { phoneAndOTPSchema, phoneNumberSchema } from './Data';
-import { onOTPValidate, onPhoneNumberUpdate, phoneNumberInitialValues, phoneNumberWithOTPInitialValues } from './Logic';
 // import { userDetailsFromUseSession } from '@/app/_util/helper/authHelper';
 import { signOut, useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper';
+import { editPhoneAndOTPSchema, editPhoneNumberSchema } from '@/util/external/yup/yupValidations';
+import { onOTPValidate, onPhoneNumberUpdate } from '@/util/data/helper/logic';
+import { phoneNumberInitialValues, phoneNumberWithOTPInitialValues } from '@/util/external/yup/initialValues';
 
 function EditUserPhoneNumber(): React.ReactElement {
 
@@ -50,15 +51,15 @@ function EditUserPhoneNumber(): React.ReactElement {
                     <i className="fa-solid fa-pencil"></i>    Edit Details
                 </button>}
             </div>
-            <Formik enableReinitialize initialValues={(isOtpSend ? phoneNumberWithOTPInitialValues(phoneNumber, null) : phoneNumberInitialValues(phoneNumber))} onSubmit={(val) => {
+            <Formik enableReinitialize initialValues={(isOtpSend ? phoneNumberInitialValues(phoneNumber) : phoneNumberWithOTPInitialValues(phoneNumber, null))} onSubmit={(val) => {
 
-                isOtpSend ? onOTPValidate(val.otp, onOTPSucess, onError) : (
+                isOtpSend ? onOTPValidate(val['otp'], onOTPSucess, onError) : (
                     setPhoneNumber(val.phone_number),
                     onPhoneNumberUpdate(val, onPhoneNumberSuccess, onError)
                 )
 
             }
-            } validationSchema={isOtpSend ? phoneAndOTPSchema : phoneNumberSchema}>
+            } validationSchema={isOtpSend ? editPhoneNumberSchema : editPhoneAndOTPSchema}>
                 <Form>
                     <div>
                         <Field disabled={!editPhoneNumber || isOtpSend} type="number" id="phone_number" name="phone_number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" ></Field>

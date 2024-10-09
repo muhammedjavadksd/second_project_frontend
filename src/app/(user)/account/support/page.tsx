@@ -10,13 +10,10 @@ import ModelItem from '@/component/Util/ModelItem';
 import TableBody from '@/component/Util/Table/TableBody';
 import TableHead from '@/component/Util/Table/TableHead';
 import TablePagination from '@/component/Util/Table/TablePagination';
-import TableSimple from '@/component/Util/TableSimple';
 import { findAllMyTicket } from '@/util/data/helper/APIHelper';
 import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper';
 import { ProfileTicket } from '@/util/types/API Response/Profile';
-import { TicketCategory, TicketPriority } from '@/util/types/Enums/BasicEnums';
 import { IPaginatedResponse } from '@/util/types/InterFace/UtilInterface';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
@@ -24,18 +21,13 @@ function SupportTicket(): React.ReactElement {
 
     let [isNewTicketOpen, setTicketOpen] = useState<boolean>(false)
     const [listTicket, setTicket] = useState<ProfileTicket[]>([]);
-
     const [ticketCount, setCount] = useState<number>(0);
     const [limit, setLimit] = useState(10)
     const [page, setPage] = useState(1)
 
-
-
     async function findTicket(page: number, limit: number) {
         try {
             const tickets: IPaginatedResponse<ProfileTicket> = await findAllMyTicket(page, limit)
-            console.log("Tickets");
-            console.log(tickets);
             setTicket(tickets.paginated)
             setCount(tickets.total_records)
         } catch (e) {
@@ -78,7 +70,6 @@ function SupportTicket(): React.ReactElement {
 
                             <div className="relative p-0 overflow-x-auto sm:rounded-lg">
 
-                                {/* {listTicket[0].updated_at} */}
 
                                 <section className="container px-0 mx-auto">
 
@@ -109,46 +100,6 @@ function SupportTicket(): React.ReactElement {
 
 
                                 </section>
-                                {/* <TableSimple
-                                // headers={['ID', 'Title', 'Priority', 'Category', 'Status', 'Updated Date']}
-                                // searchKeys={['title']}
-                                // data={listTicket}
-                                // keyIndex={
-                                //     [
-                                //         {
-                                //             as: (children) => children,
-                                //             key: "ticket_id"
-                                //         },
-                                //         {
-                                //             as: (title, ticket_id) => <Link href={`support/${ticket_id}`}>{title}</Link>,
-                                //             key: ["title", "ticket_id"]
-                                //         },
-                                //         {
-                                //             as: (children) => children,
-                                //             key: "priority"
-                                //         },
-                                //         {
-                                //             as: (children) => children,
-                                //             key: "category"
-                                //         },
-                                //         {
-                                //             as: (children) => (
-                                //                 <span className='bg-green-400 text-white rounded-lg px-3 py-2'>
-                                //                     {children}
-                                //                 </span>
-                                //             ),
-                                //             key: "status"
-                                //         },
-                                //         {
-                                //             as: (children) => formatDateToMonthNameAndDate(children),
-                                //             key: "updated_at"
-                                //         },
-                                //     ]
-                                // }
-                                /> */}
-
-
-
                             </div>
 
 

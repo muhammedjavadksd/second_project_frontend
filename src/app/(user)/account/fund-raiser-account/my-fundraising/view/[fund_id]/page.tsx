@@ -344,9 +344,9 @@ function FundRaiserView(): React.ReactElement {
                                             bankAccounts.length ? (
                                                 <div className="grid gap-4 grid-cols-3" >
                                                     {
-                                                        bankAccounts.map((account) => {
+                                                        bankAccounts.map((account, index: number) => {
                                                             return (
-                                                                <SingleBackAccount role='user' acAccount={fundRaiserProfile?.withdraw_docs?.benf_id} account={account} fund_id={fund_id.toString()} onComplete={() => setRefresh(!refresh)} />
+                                                                <SingleBackAccount key={index} role='user' acAccount={fundRaiserProfile?.withdraw_docs?.benf_id} account={account} fund_id={fund_id.toString()} onComplete={() => setRefresh(!refresh)} />
                                                                 // <div
                                                                 //     key={account.befId}
                                                                 //     className={`bg-white rounded-lg shadow-md p-6 transition-all duration-300 ${account.is_active ? "ring-2 ring-blue-500" : ""

@@ -253,7 +253,7 @@ function Page() {
                                                         donors.map((items) => {
                                                             return (
                                                                 <>
-                                                                    <MatchedDonors bloodGroup={items.blood_group as BloodGroup} donorId={items.donor_id} emailAddress={items.donor_id} phoneNumber={items.phoneNumber} name={items.full_name} />
+                                                                    <MatchedDonors blockedReason={items.blocked_reason} status={items.status} bloodGroup={items.blood_group as BloodGroup} donorId={items.donor_id} emailAddress={items.donor_id} phoneNumber={items.phoneNumber} name={items.full_name} />
                                                                 </>
                                                             )
                                                         })

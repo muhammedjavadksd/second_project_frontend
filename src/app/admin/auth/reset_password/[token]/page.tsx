@@ -4,14 +4,15 @@ import AdminAuthCard from '@/component/Auth/Common/AdminAuthCard'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
-import { resetPasswordInitialValues, resetPasswordValidation } from './Data'
-import { onResetPassword } from './Logic'
 import { toast } from 'react-toastify'
 import LoadingComponent from '@/component/Util/LoadingComponent'
 import BlackedRouter from '@/component/LoginComponent/BlackedRouter'
 import { useRouter } from 'next/navigation'
 import { getSession } from 'next-auth/react'
 import { AdminResetPassword } from '@/util/types/InterFace/FormInitialValues'
+import { adminResetPasswordInitialValues } from '@/util/external/yup/initialValues'
+import { resetPasswordValidation } from '@/util/external/yup/yupValidations'
+import { onAdminResetPassword } from '@/util/data/helper/logic'
 
 function ResetPassword(): React.ReactElement {
 
@@ -49,10 +50,10 @@ function ResetPassword(): React.ReactElement {
                                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                             New password
                                         </h1>
-                                        <Formik initialValues={resetPasswordInitialValues} onSubmit={(val: AdminResetPassword) => {
+                                        <Formik initialValues={adminResetPasswordInitialValues} onSubmit={(val: AdminResetPassword) => {
                                             val.token = token;
                                             setIsLoading(true)
-                                            onResetPassword(val, successCB, errorCB)
+                                            onAdminResetPassword(val, successCB, errorCB)
                                         }} validationSchema={resetPasswordValidation} className="space-y-4 md:space-y-6" action="#">
                                             <Form>
                                                 <div>

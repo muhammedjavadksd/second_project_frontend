@@ -1,3 +1,4 @@
+import { AdminForgetPassword, AdminResetPassword, AdminSignIn } from "@/util/types/InterFace/FormInitialValues";
 
 
 const addBloodDonorInitialValues = {
@@ -147,5 +148,49 @@ const adminAddFundRaiserInitialValues = {
     description: "",
 }
 
+
+const adminForgetPassword: AdminForgetPassword = {
+    email_address: ''
+}
+
+const adminResetPasswordInitialValues: AdminResetPassword = {
+    password: null,
+    confirm_password: null,
+    token: null
+}
+
+const adminSignInInitialValues: AdminSignIn = {
+    email: null,
+    password: null
+}
+
+export function emailAddressEditInitialValues(email, otp) {
+    return {
+        email,
+        otp
+    }
+}
+
+
+export function phoneNumberInitialValues(phoneNumber: number): { phone_number: number } {
+    return {
+        phone_number: phoneNumber,
+    }
+}
+export function phoneNumberWithOTPInitialValues(phoneNumber, otp): { phone_number: number, otp: number } {
+    return {
+        phone_number: phoneNumber,
+        otp
+    }
+};
+
+export function getEditProfileInitialValues(first_name, last_name) {
+    return {
+        first_name,
+        last_name
+    }
+}
+
+export { adminForgetPassword, adminResetPasswordInitialValues, adminSignInInitialValues }
 
 export { closeBloodRequirementInitialValues, fundRaisePaymentInitialValues, fundRaiserBankAccoutInitialValues, bloodDonationFormInitialValues, newTicketRaiseInitialValues, bloodDonatationFormValues, bloodRequestDetailsInitialVaues, updateBloodGroupInitialValues, updateBloodDonorPersonalDetailsValues, bloodRequestPersonalDetailsInitialValue, bloodApproveUnitValues, adminAddFundRaiserInitialValues, requestPersonalBloodInitialValues, bloodRequirementAdminInitialValues, addBloodDonorInitialValues, blockDonorAccountInitialValues }

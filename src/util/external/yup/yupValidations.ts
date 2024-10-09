@@ -205,4 +205,50 @@ const addBloodDonorValidation = yup.object().shape({
     status: yup.string().oneOf(Object.values(BloodDonorStatus), 'Invalid status')
 })
 
+const resetPasswordValidation = yup.object().shape({
+    email_address: yup.string().email("Please enter valid email address").required("Email address is required").typeError("Please enter valid email address")
+})
+
+
+const adminResetPasswordValidation = yup.object().shape({
+    password: yup.string().required("Password is required").typeError("Please enter valid password"),
+    confirm_password: yup.string().required("Confirm password is required").oneOf([yup.ref("password")], "Password & Confirm password must be same").typeError("Please enter valid password")
+})
+
+
+let adminSignInValidation = yup.object().shape({
+    email: yup.string().email("Please enter valid email address").required("Email address is required").typeError("Please enter valid password"),
+    password: yup.string().required("Please enter valid password").typeError("Please enter valid password")
+})
+
+
+const editEmailAddressValidation = yup.object().shape({
+    email: yup.string().typeError("Please enter valid email address").email("Please enter valid email address").required("Email address is required")
+})
+
+const editEmailAddressValidationWithOTP = yup.object().shape({
+    email: yup.string().typeError("Please enter valid email address").email("Please enter valid email address").required("Email address is required"),
+    otp: yup.string().matches(/^[0-9]{6}$/, 'OTP must be exactly 6 digits').required('OTP is required'),
+})
+
+
+const editPhoneNumberSchema = yup.object().shape({
+    phone_number: yup.string().matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits').required('Phone number is required'),
+});
+
+
+const editPhoneAndOTPSchema = yup.object().shape({
+    phone_number: yup.string().matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits').required('Phone number is required'),
+    otp: yup.string().matches(/^[0-9]{6}$/, 'OTP must be exactly 6 digits').required('OTP is required'),
+});
+
+export const editProfileValidation = yup.object().shape({
+    first_name: yup.string().typeError("Please enter valid first name").required("First name is required"),
+    last_name: yup.string().typeError("Please enter valid last name").required("Last name is required")
+})
+
+
+export { editPhoneNumberSchema, editPhoneAndOTPSchema }
+export { editEmailAddressValidation, editEmailAddressValidationWithOTP }
+export { resetPasswordValidation, adminResetPasswordValidation, adminSignInValidation }
 export { editFundRaiseDescriptionValidation, editFundRaiseAboutValidation, closeBloodRequirementValidation, commentPostValidation, fundRaisePaymentValidation, fundRaiserBankAccoutValidation, validationSchema, newTicketRaiseValidation, bloodDonatationFormValidation, updateBloodGroupValidation, updateDonorPersonDetailsValidation, bloodRequestPersonalDetailsValidation, bloodRequestDetailsValidation, bloodApproveValidation, adminAddFundRaiseValidation, requestPersonalBlood, adminSiteSettings, bloodRequirementAdminValidation, addBloodDonorValidation, blockDonroAccountValidation }

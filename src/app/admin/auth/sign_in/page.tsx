@@ -3,7 +3,6 @@ import AdminAuthBg from '@/component/Auth/Common/AdminAuthBg'
 import AdminAuthCard from '@/component/Auth/Common/AdminAuthCard'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { ReactElement, useState } from 'react'
-import { adminSignInInitialValues, adminSignInValidation } from './Data'
 import { onAdminSignInHandler } from './Logic'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
@@ -12,6 +11,8 @@ import BlackedRouter from '@/component/LoginComponent/BlackedRouter'
 import { getSession, useSession } from 'next-auth/react'
 import { Session } from 'inspector'
 import LoadingComponent from '@/component/Util/LoadingComponent'
+import { adminSignInValidation } from '@/util/external/yup/yupValidations'
+import { adminSignInInitialValues } from '@/util/external/yup/initialValues'
 
 function AdminSignIN(): ReactElement {
 

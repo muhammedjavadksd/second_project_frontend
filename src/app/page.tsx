@@ -4,7 +4,6 @@ import './global.css'
 import CouldHelp from "@/component/section/Home/CouldHelp";
 import BloodReqSlider from "@/component/section/Home/BloodReqSlider";
 import EventPromo from "@/component/section/Home/EventPromo";
-import NewsSlider from "@/component/section/Home/NewsSlider";
 import Footer from "@/component/Util/Footer";
 import { SessionProvider } from "next-auth/react"
 import HomeHero from "@/component/Hero/HomeHero";
@@ -64,9 +63,7 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
                     <section className="mt-10 bg-gray-100">
                         <EventPromo />
                     </section>
-                    <section className="mt-10">
-                        <NewsSlider />
-                    </section>
+
                     <div className="mt-10">
                         <Footer />
                     </div>

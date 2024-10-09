@@ -2,13 +2,81 @@
 import API_axiosInstance from "@/util/external/axios/api_axios_instance";
 import IBloodReq, { BloodProfile, IBloodDonor, IBloodGroupUpdateTemplate, ILocatedAt } from "@/util/types/API Response/Blood";
 import { ChatApiResponse, FormActionResponse, HospitalResponse, IAdminAddFundRaiser, IBloodDonate, IBloodDonorForm, IPaginatedResponse, IShowedIntrest, MapApiResponse, PaginatedApi, SelectedHospital } from "@/util/types/InterFace/UtilInterface";
-import axios, { AxiosResponse } from "axios";
+import axios, { Axios } from "axios";
 import { STATUS_CODES } from "http";
 import { getSession, useSession } from "next-auth/react";
 import { userDetailsFromGetSession } from "./authHelper";
-import { FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IDonationStatitics, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
+import { AxiosResponse, FundRaiserResponse, IBankAccount, IBloodStatitics, ICommentsResponse, IDonateHistoryTemplate, IDonationStatitics, IFundRaiseStatitics } from "@/util/types/API Response/FundRaiser";
 import { IChatTemplate, ChatProfile, ProfileTicket, ProfileTicketPopoulated } from "@/util/types/API Response/Profile";
 import { BloodCloseCategory, BloodDonationStatus, BloodDonorStatus, BloodGroup, BloodGroupUpdateStatus, BloodStatus, CreateChatVia, FundRaiserFileType, FundRaiserStatus, TicketCategory, TicketChatFrom, TicketStatus } from "@/util/types/Enums/BasicEnums";
+
+
+export async function adminGetSingleFundRaisingProfile(fundraiser_id: string): Promise<AxiosResponse | null> {
+
+    try {
+        const session = await getSession();
+        const adminDetail = userDetailsFromGetSession(session, "admin");
+        let profile = await API_axiosInstance.get(`/fund_raise/admin/view/${fundraiser_id}`, {
+            headers: {
+                "authorization": `Bearer ${adminDetail.token}`
+            }
+        });
+        return profile.data as AxiosResponse || null
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
+
+export async function findFundRaiserByCategory(category: string): Promise<IPaginatedResponse<FundRaiserResponse>> {
+    try {
+        const otherProfile = await API_axiosInstance.get(`fund_raise/view/${category}/10/1`);
+        const response = otherProfile.data;
+        console.log(response);
+
+        if (response.status) {
+            const { profile } = response.data;
+            return profile.paginated
+        } else {
+            return {
+                paginated: [],
+                total_records: 0
+            }
+        }
+    } catch (e) {
+        return {
+            paginated: [],
+            total_records: 0
+        }
+    }
+}
+
+export async function findDonorDetails() {
+    try {
+        const session = await getSession()
+        const profile = userDetailsFromGetSession(session, "user");
+        const bloodToken = profile.blood_token;
+        const token = profile.token;
+
+        if (bloodToken && token) {
+            const findBloodDonor = await API_axiosInstance.get(`/blood/get_profile`, {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    bloodAuthorization: `Bearer ${bloodToken}`
+                }
+            });
+            const response = findBloodDonor.data;
+            if (response.status) {
+                const profile = response.data?.profile?.profile;
+                return profile
+            }
+            return false
+        }
+    } catch (e) {
+        return false
+    }
+}
+
 
 
 
@@ -1252,13 +1320,21 @@ export async function findNearest(bloodGroup: BloodGroup, location: [number, num
 
     try {
 
-        const cord = `long=${location[0]}&lati=${location[1]}`
-        const params = bloodGroup ? `${limit}/${page}/${bloodGroup}` : `${limit}/${page}`;
-        const findNearest = await API_axiosInstance.get(`/blood/nearest-donors/${params}?${cord}`)
-        const response = findNearest.data;
+        if (location && location.length == 2) {
 
-        if (response.status) {
-            return response.data
+            const cord = `long=${location[0]}&lati=${location[1]}`
+            const params = bloodGroup ? `${limit}/${page}/${bloodGroup}` : `${limit}/${page}`;
+            const findNearest = await API_axiosInstance.get(`/blood/nearest-donors/${params}?${cord}`)
+            const response = findNearest.data;
+
+            if (response.status) {
+                return response.data
+            } else {
+                return {
+                    paginated: [],
+                    total_records: 0
+                }
+            }
         } else {
             return {
                 paginated: [],
@@ -1827,6 +1903,7 @@ export async function findDonationHistroyApi(limit: number, page: number, fund_i
 }
 
 export async function findMyBloodProfile(): Promise<null | BloodProfile> {
+
 
     const session = await getSession();
     const data = userDetailsFromGetSession(session, "user");

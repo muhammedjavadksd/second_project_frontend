@@ -1,122 +1,62 @@
 "use client"
+import FundRaiserAboutContent from '@/component/FundRaiser/AboutContent'
 import BankAccountCard from '@/component/FundRaiser/BankAccountPublic'
-import FundRaiserComment from '@/component/FundRaiser/FundRaiserComment'
-import FundRaiserSingleItem from '@/component/FundRaiser/FundRaiserSingleItem'
 import SuccessBanner from '@/component/FundRaiser/SuccessBanner'
 import Header from '@/component/Header/Header'
 import FundPaymentModel from '@/component/Payment/FundRaiserPaymentModel'
 import FundRaiserCommentSection from '@/component/section/FundRaiser/FundRaiserCommentSection'
 import FundRaiserSlider from '@/component/section/Home/FundRaiserSlider'
-import AvatarIcon from '@/component/Util/avatarIcon'
-import CustomeConfirmUI from '@/component/Util/ConfirmUI'
 import DangerUIConfirm from '@/component/Util/DangerUIConfirm'
-import EmptyScreen from '@/component/Util/EmptyScreen'
 import Footer from '@/component/Util/Footer'
 import LoadImage from '@/component/Util/ImageLoading'
 import ImageModel from '@/component/Util/ImageModel'
 import ModelItem from '@/component/Util/ModelItem'
-import PaginationSection from '@/component/Util/PaginationSection'
 import PublicImage from '@/component/Util/PublicImage'
 import SectionTitle from '@/component/Util/SectionTitle'
-import SliderComponent from '@/component/Util/SliderComponent'
 import SpalshScreen from '@/component/Util/SplashScreen'
 import TabItem from '@/component/Util/TabItem'
 import const_data from '@/util/data/const'
-import { findDonationHistroyApi, getPaginatedComments, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
-import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
+import { findDonationHistroyApi, findFundRaiserByCategory, getSingleActiveFundRaiser } from '@/util/data/helper/APIHelper'
 import { createFundRaiserWhatsappMessage, findNameAvatar, formatDateToMonthNameAndDate, isUrgentFundRaiser } from '@/util/data/helper/utilHelper'
 import API_axiosInstance from '@/util/external/axios/api_axios_instance'
-import { onCommentPost } from '@/util/external/yup/formSubmission'
-import { FundRaiserResponse, ICommentsResponse, IDonateHistoryTemplate, ISingleCommentsResponse } from '@/util/types/API Response/FundRaiser'
-import { BankAccountType, FundRaiserTabItems, PaymentVia } from '@/util/types/Enums/BasicEnums'
-import { FormActionResponse, PaginatedApi } from '@/util/types/InterFace/UtilInterface'
-import { Field, Form, Formik } from 'formik'
+import { FundRaiserResponse, IDonateHistoryTemplate } from '@/util/types/API Response/FundRaiser'
+import { FundRaiserTabItems, PaymentVia } from '@/util/types/Enums/BasicEnums'
+import { FormActionResponse } from '@/util/types/InterFace/UtilInterface'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-// import { FundRaiserTabItems } from '@/util/external/types/Enums/BasicEnums'
 import React, { useEffect, useState } from 'react'
 import { confirmAlert } from 'react-confirm-alert'
-import Countdown from 'react-countdown'
+
 
 function ViewFundRaising(): React.ReactElement {
 
   let [tabListing, setTabListing] = useState<FundRaiserTabItems>(FundRaiserTabItems.ABOUT)
-  const session = useSession();
   const params = useSearchParams()
   const router = useRouter()
-
   const success = params.get("success")
   const isForce = params.get("isForce")
   const { fund_id } = useParams();
   const [orderMethod, setorderMethod] = useState<PaymentVia>(null);
-
   const [focusModelImage, setFocusImage] = useState(null);
-
   const [fundRaiserPictures, setPictures] = useState<string[]>([])
   const [fundRaiserDocuments, setDocuments] = useState<string[]>([])
-
   const [focusPicture, setFocusPictures] = useState<string>(fundRaiserPictures[0])
-
   const [matchedProfile, setMatchedProfile] = useState<FundRaiserResponse[]>([])
   const [fundRaiserProfile, setProfile] = useState<FundRaiserResponse>(null)
-
   const [isDonationOpen, openDonationForm] = useState<boolean>(false)
   const [donationHistory, setDonationHistroy] = useState<IDonateHistoryTemplate[]>([])
   const [totalDonated, setDonatedCount] = useState<number>(0)
-
   async function findDonationHistory() {
     const history = await findDonationHistroyApi(2, 1, fund_id.toString());
     setDonationHistroy(history.paginated)
     setDonatedCount(history.total_records)
   }
 
-
   useEffect(() => {
     orderMethod != null && openDonationForm(true)
   }, [orderMethod])
-
-  function aboutDescription(description: string, fundRaiserPictures: string[]) {
-
-    const words = description ? description.split('.') : [];
-
-    let imageIndex = 0
-    const content = words.map((each, index) => {
-      return (
-        <div key={index}>
-          <p>{each}</p>
-          {
-            imageIndex < fundRaiserPictures.length && <div className='mt-3 mb-3'>
-              <PublicImage className='w-full' imageurl={fundRaiserPictures[imageIndex++]} />
-            </div>
-          }
-        </div>
-      )
-    })
-
-    return content
-  }
-
-  async function findMatchedProfile(category) {
-    try {
-      const otherProfile = await API_axiosInstance.get(`fund_raise/view/${category}/10/1`);
-      const response = otherProfile.data;
-      console.log(response);
-
-
-
-      if (response.status) {
-        const { profile } = response.data;
-        setMatchedProfile(profile.paginated)
-      } else {
-
-      }
-    } catch (e) {
-      console.log("error");
-      console.log("Error");
-    }
-  }
 
   async function findFundRaiserProfile() {
     const findProfile: FormActionResponse = await getSingleActiveFundRaiser(fund_id.toString(), isForce == "true");
@@ -124,13 +64,10 @@ function ViewFundRaising(): React.ReactElement {
       const response: FundRaiserResponse = findProfile.data
       setProfile(findProfile.data);
       findDonationHistory()
-      aboutDescription(response.description, response.picture)
-      findMatchedProfile(response.category);
       setPictures(response.picture)
       setDocuments(response.documents)
       setFocusPictures(response.picture[0])
-      console.log(response.picture);
-
+      findFundRaiserByCategory(response.category).then((data) => setMatchedProfile(data.paginated));
     } else {
       if (findProfile.msg == "CLOSED") {
         router.replace("/fund-raising/closed")
@@ -144,7 +81,6 @@ function ViewFundRaising(): React.ReactElement {
 
   useEffect(() => {
     findFundRaiserProfile()
-
   }, [])
 
   useEffect(() => {
@@ -200,6 +136,7 @@ function ViewFundRaising(): React.ReactElement {
         }} >
           <FundPaymentModel fund_id={fundRaiserProfile.fund_id} type={orderMethod} />
         </ModelItem>
+
         {success && (
           <SuccessBanner title={"Congrats! Your fundraiser is now active and you can begin receiving donations."} shareURL={`${window.location.host}/fund-raising/view/${fund_id}`}></SuccessBanner>
         )}
@@ -213,19 +150,12 @@ function ViewFundRaising(): React.ReactElement {
               </div>
             </div>
           }
-          {/* {
-            fundRaiserProfile.collected <= 0 && (
-              <div className='flex justify-center mt-5'>
-                <div className="alert bg-orange-300 rounded-md text-black p-3 text-center mb-5">
-                  Be the first person to donate {fundRaiserProfile.full_name} and be the example for others
-                </div>
-              </div>
-            )
-          } */}
+
 
           <div className='mb-8 block'>
             <h2 className='text-center  mt-5 text-4xl font-bold text-gray-700'>Help {fundRaiserProfile.full_name} for their {fundRaiserProfile.category}</h2>
           </div>
+
           <div className='mt-5'>
             <div className='flex gap-10 mt-5'>
               <div className='w-3/4 mb-5'>
@@ -268,13 +198,10 @@ function ViewFundRaising(): React.ReactElement {
                     <TabItem keyid={1} isShow={tabListing == FundRaiserTabItems.ABOUT}>
                       <div style={{ height: "600px" }} className='overflow-auto'>
                         <h4 className='text-center font-bold text-3xl mb-3'>About the Fundraiser</h4>
-
-
-
                         <div className='mb-3'>
                           {fundRaiserProfile.about}
                         </div>
-                        {aboutDescription(fundRaiserProfile.description, fundRaiserPictures)}
+                        <FundRaiserAboutContent description={fundRaiserProfile?.description || ""} fundRaiserPictures={fundRaiserProfile.picture} />
                       </div>
                     </TabItem>
                     <TabItem keyid={2} isShow={tabListing == FundRaiserTabItems.DOCUMENT}>

@@ -11,7 +11,6 @@ import { findMyBloodrequirement } from "@/util/data/helper/APIHelper"
 import { formatDateToMonthNameAndDate } from "@/util/data/helper/utilHelper"
 import IBloodReq from "@/util/types/API Response/Blood"
 import { BloodStatus } from "@/util/types/Enums/BasicEnums"
-import { IPaginatedResponse } from "@/util/types/InterFace/UtilInterface"
 import Link from "next/link"
 import { useState } from "react"
 import { FaPlus } from "react-icons/fa"
@@ -21,17 +20,7 @@ function MyRequirements() {
     const [bloodStatus, setStatus] = useState<BloodStatus>(null)
     const [refresh, setRefresh] = useState<boolean>(false)
 
-    async function findRequirement(page: number, limit: number): Promise<IPaginatedResponse<IBloodReq>> {
-        try {
-            const find = await findMyBloodrequirement(page, limit, bloodStatus);
-            return find
-        } catch (e) {
-            return {
-                paginated: [],
-                total_records: 0
-            }
-        }
-    }
+
 
     return (
         <>
@@ -62,8 +51,8 @@ function MyRequirements() {
                         </div>
                         <PaginationSection
                             api={{
-                                renderType: (page: number, limit: number) => {
-                                    return findRequirement(page, limit)
+                                renderType: async (page: number, limit: number) => {
+                                    return await findMyBloodrequirement(page, limit, bloodStatus);
                                 }
                             }}
                             itemsRender={(requirement: IBloodReq[]) => {

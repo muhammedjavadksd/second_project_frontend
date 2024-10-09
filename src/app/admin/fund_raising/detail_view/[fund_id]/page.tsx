@@ -7,14 +7,13 @@ import CanvasJSReact from '@canvasjs/react-charts/canvasjs.react.js'
 import React, { useEffect, useState } from 'react'
 import { fundRaiserGraph } from './data'
 import { useParams } from 'next/navigation'
-import { getSingleFundRaisingProfile } from './logic'
 import { FundRaiserResponse, AxiosResponse, IDonateHistoryTemplate, IDonationStatitics, IBankAccount } from '@/util/types/API Response/FundRaiser'
 import { useRouter } from 'next/navigation'
 import { getSingleUser } from '../../logic/fund-raiser-logic'
 import TableHead from '@/component/Util/Table/TableHead'
 import TableBody from '@/component/Util/Table/TableBody'
 import { FaCloudUploadAlt, FaPlus, FaTrash } from 'react-icons/fa'
-import { adminEditFundRaiser, adminFundRaiserFileUpload, closeFundRaise, closeFundRaiseByAdmin, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getAllBankAccountByAdmin, getDonationStatitics, updateFundRaiserStatus } from '@/util/data/helper/APIHelper'
+import { adminEditFundRaiser, adminFundRaiserFileUpload, adminGetSingleFundRaisingProfile, closeFundRaise, closeFundRaiseByAdmin, deleteFundRaiserImageAdmin, findDonationHistroyApi, getAllBankAccount, getAllBankAccountByAdmin, getDonationStatitics, updateFundRaiserStatus } from '@/util/data/helper/APIHelper'
 import { SetPicturs } from '@/util/external/redux/slicer/fundRaiserForm'
 import { toast } from 'react-toastify'
 import { FundRaiserFileType, FundRaiserStatus } from '@/util/types/Enums/BasicEnums'
@@ -106,7 +105,7 @@ function FundRaiserDetailView(): React.ReactElement {
 
     async function fetchProfile(): Promise<void> {
         try {
-            const profile: AxiosResponse | null = await getSingleFundRaisingProfile(fund_id.toString())
+            const profile: AxiosResponse | null = await adminGetSingleFundRaisingProfile(fund_id.toString())
             console.log(profile);
 
             if (profile && profile.status) {
@@ -574,9 +573,9 @@ function FundRaiserDetailView(): React.ReactElement {
                                         bankAccounts.length ? (
                                             <div className="grid gap-4 grid-cols-2" >
                                                 {
-                                                    bankAccounts.map((account) => {
+                                                    bankAccounts.map((account, index: number) => {
                                                         return (
-                                                            <SingleBackAccount role='admin' acAccount={fundRaiserProfile?.withdraw_docs?.benf_id} account={account} fund_id={fund_id.toString()} onComplete={() => setRefresh(!refresh)} />
+                                                            <SingleBackAccount key={index} role='admin' acAccount={fundRaiserProfile?.withdraw_docs?.benf_id} account={account} fund_id={fund_id.toString()} onComplete={() => setRefresh(!refresh)} />
                                                         )
                                                     })
                                                 }
