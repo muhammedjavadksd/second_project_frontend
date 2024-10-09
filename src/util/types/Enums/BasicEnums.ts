@@ -25,7 +25,8 @@ enum BankAccountType {
 }
 
 enum FileAcceptType {
-    BasicImage = "image/jpeg, image/jpg, image/png"
+    BasicImage = "image/jpeg, image/jpg, image/png",
+    BasicDocs = "image/jpeg, image/jpg, image/png, application/pdf"
 }
 
 enum TicketStatus {

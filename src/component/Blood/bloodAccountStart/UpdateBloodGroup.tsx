@@ -3,7 +3,7 @@ import { updateBloodGroupValidation } from '@/util/external/yup/yupValidations'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useContext, useEffect, useState } from 'react'
 import { onBloodDonationSubmit, OnBloodGroupUpdate } from './Logic'
-import { BloodGroup } from '@/util/types/Enums/BasicEnums'
+import { BloodGroup, FileAcceptType } from '@/util/types/Enums/BasicEnums'
 import { useSession } from 'next-auth/react'
 import { userDetailsFromUseSession } from '@/util/data/helper/authHelper'
 import { toast } from 'react-toastify'
@@ -65,7 +65,7 @@ function UpdateBloodGroup({ onComplete }: { onComplete: Function }): React.React
                                         <label htmlFor="" className='text-sm'>Select Blood Certificate</label>
                                         <Field value={undefined} onChange={(event) => {
                                             setFieldValue("certificate", event.currentTarget.files[0]);
-                                        }} type="file" name="certificate" id="blood_certificate" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
+                                        }} type="file" accept={FileAcceptType.BasicDocs} name="certificate" id="blood_certificate" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" />
                                         <ErrorMessage name='certificate' component={"div"} className='errorMessage'></ErrorMessage>
                                     </div>
 
