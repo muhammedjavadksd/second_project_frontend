@@ -8,7 +8,6 @@ import { FaSearch, FaTint, FaMapMarkerAlt, FaSpinner } from 'react-icons/fa';
 import SectionTitle from '@/component/Util/SectionTitle'
 import { findNearest, findPlaces } from '@/util/data/helper/APIHelper'
 import PaginationSection from '@/component/Util/PaginationSection'
-import { IPaginatedResponse } from '@/util/types/InterFace/UtilInterface'
 import { IBloodDonor, INearestDonor } from '@/util/types/API Response/Blood'
 import ModelItem from '@/component/Util/ModelItem';
 import AskLocation from '@/component/Util/AskLocation';
@@ -20,7 +19,7 @@ import { useGetLocation } from '@/util/data/hook';
 const BloodDonorSearch = () => {
 
 
-    
+
     const [center, setCenter] = useState({ lat: 40.7128, lng: -74.0060 });
     const [zoom, setZoom] = useState(8);
     const [selectedDonor, setSelectedDonor] = useState<IBloodDonor>(null);

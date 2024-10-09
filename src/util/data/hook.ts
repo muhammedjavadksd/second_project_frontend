@@ -1,4 +1,4 @@
-
+"use client"
 
 
 export function useGetLocation(state) {
@@ -16,4 +16,6 @@ export function useGetLocation(state) {
     } else {
         console.log('Geolocation is not supported by this browser.');
     }
+
+    return navigator
 }
