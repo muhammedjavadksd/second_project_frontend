@@ -52,4 +52,4 @@ function PaginationSection({ itemsRender, api, paginationProps, refresh }: { ite
     )
 }
 
-export default PaginationSection;
+export default React.memo(PaginationSection);
