@@ -58,11 +58,11 @@ function BloodProfileOverView() {
                             </div>
                             <div className="grid gap-5 grid-cols-3">
                                 <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.blood_group || ""} title="Blood group" />
-                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.donated_blood.toString() || "0"} title="Blood donated" />
-                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.blood_requirements.toString() || "0"} title="Blood requirements" />
-                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.expressed_intrest.toString() || "0"} title="Expressed intrest" />
-                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.status.toString() || "0"} title="Account Status" />
-                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.matched_profile.toString() || "0"} title="Matched profile" />
+                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.donated_blood || "0"} title="Blood donated" />
+                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.blood_requirements || "0"} title="Blood requirements" />
+                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.expressed_intrest || "0"} title="Expressed intrest" />
+                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.status || "0"} title="Account Status" />
+                                <StatisticCard bgClass="bg-gray-100" icon={<i className="fa-solid fa-droplet"></i>} statistic={bloodDonorDetails?.matched_profile || "0"} title="Matched profile" />
                             </div>
                         </div>
                         <div className="w-2/6">
