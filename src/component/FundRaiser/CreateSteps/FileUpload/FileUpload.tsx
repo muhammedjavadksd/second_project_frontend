@@ -63,6 +63,7 @@ function FileUpload({ state }) {
 
   function onFileDeleted(image_id, type) {
     const newImagesData = type == "Pictures" ? pictures : Documents
+
     const filterData = newImagesData.filter((each) => each != image_id);
     type == "Pictures" ? setPictures(filterData) : setDocuments(filterData);
     toast.success("Image deleted success")

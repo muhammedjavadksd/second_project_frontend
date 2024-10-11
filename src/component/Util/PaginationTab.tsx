@@ -114,4 +114,4 @@ function PaginationTab({ onClick, item_per_page, total_records }: IPaginationBut
   )
 }
 
-export default PaginationTab
+export default React.memo(PaginationTab)
