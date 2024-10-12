@@ -27,21 +27,26 @@ const ChatUserList = () => {
 
     useEffect(() => {
 
-        if (users && users.length && !socket) {
-            socket = io(process.env.NEXT_PUBLIC_SOKCET_URL, {
-                transports: ['websocket', 'polling'],
-                query: {
-                    token: `Bearer ${userDetails?.token}`
-                }
-            })
+        if (users && users.length) {
+            if (!socket) {
+                socket = io(process.env.NEXT_PUBLIC_SOKCET_URL, {
+                    transports: ['websocket', 'polling'],
+                    query: {
+                        token: `Bearer ${userDetails?.token}`
+                    }
+                })
+            }
 
             socket.emit("join", userDetails.profile_id)
             socket.off("new_message");
             socket.on("new_message", (chat: ChatHistory) => {
                 console.log("New message recivied");
-                // if (openChats.chat_profile_id == chat.profile_id) {
-                //     setCurrentChatHistory((prev) => [...prev, chat])
-                // }
+
+                console.log(openChats)
+                console.log(chat)
+                if (openChats.chat_profile_id == chat.profile_id) {
+                    setCurrentChatHistory((prev) => [...prev, chat])
+                }
 
 
                 setUsers((prevUsers) => {
@@ -116,6 +121,7 @@ const ChatUserList = () => {
         }
 
 
+
     }, [users, openChats])
 
 
@@ -176,7 +182,6 @@ const ChatUserList = () => {
     }, [userDetails]);
 
 
-    console.log("State updated");
 
 
 
@@ -223,6 +228,7 @@ const ChatUserList = () => {
                     )
                 }
             </div>
+            The length{currentChatHistory.length}
             {openChats && (
                 <ChatDetail memberId={openChats.chat_person.profile_id} blockStatus={openChats.blocked} room_id={openChats.chat_id} socket={socket} my_name={userDetails.first_name.concat("  " + userDetails.last_name)} sender_name={openChats.chat_person.first_name.concat(openChats.chat_person.last_name)} chatHistory={currentChatHistory} />
             )}

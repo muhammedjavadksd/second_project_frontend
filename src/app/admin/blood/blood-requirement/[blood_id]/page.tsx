@@ -20,11 +20,13 @@ import { confirmAlert } from "react-confirm-alert"
 import DangerUIConfirm from "@/component/Util/DangerUIConfirm"
 import { toast } from "react-toastify"
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import SpinnerLoader from "@/component/Util/SpinningLoader"
 
 
 
 function Page() {
 
+    const [spinnerLoader, setSpinner] = useState<boolean>(false)
     const [isLoading, setLoading] = useState<boolean>(true)
     const [isDeadlinenearst, setNearest] = useState<boolean>(false)
     const [isCrossed, setCrossed] = useState<boolean>(false)
@@ -41,10 +43,13 @@ function Page() {
             message: "Verify requirement",
             customUI: ({ onClose, title }) => {
                 return <DangerUIConfirm onClose={onClose} onConfirm={() => {
+                    setSpinner(true)
                     adminBloodVerify(status, blood_id.toString()).then((response) => {
                         response.status ? toast.success(response.msg) : toast.error(response.msg);
                     }).finally(() => {
                         setStatus(status)
+                        setSpinner(false)
+                        onClose()
                     })
                 }} title={title}></DangerUIConfirm>
             }
@@ -74,14 +79,12 @@ function Page() {
     function findReq() {
         setLoading(true)
         findSingleBloodrequirement(blood_id.toString()).then((profile: IBloodReq) => {
-
-            console.log(profile);
-
             setRequirement(profile)
             setLoading(false)
             setClose(profile.is_closed || false)
             setClosingExplanation({ category: profile.close_details?.category, explanation: profile.close_details?.explanation || "" })
             setClose(profile.is_closed || false)
+            setStatus(profile.status)
 
             const now = new Date();
             const tomorrow = new Date();
@@ -102,11 +105,11 @@ function Page() {
         findReq()
     }, [blood_id])
 
-    const today: number = new Date().getMilliseconds()
 
 
     return (
         <Fragment>
+            <SpinnerLoader isLoading={spinnerLoader} />
             <AdminPrivateRouter>
                 <AdminLayout>
                     <div className="flex justify-between">
@@ -114,6 +117,7 @@ function Page() {
                             <AdminBreadCrumb title={"Blood requirement"} root={{ title: "Dashboard", href: "/" }} paths={[{ title: "Blood requirement", href: "/blood/blood-reuirement" }]} />
                         </div>
                         <div className='buttonGroups flex items-center justify-end gap-3'>
+
                             {(!isClosed && status != BloodStatus.Approved) && <button onClick={() => verifyRequest(BloodStatus.Approved)} className='bg-green-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Verify Case </button>}
                             {!isClosed && <button onClick={onClose} className='bg-red-700 text-sm text-white p-2 rounded-lg pl-5 pr-5'> Close the case </button>}
                         </div>

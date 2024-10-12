@@ -16,12 +16,7 @@ export function axiosUnAuthraizedInterceptor() {
             originRequest['_retry'] = true;
             const signInData = await signIn("credentials", { redirect: false, auth_type: "user_login_with_token" })
             originRequest['headers']['authorization'] = `Bearer ${signInData['token']}`
-
-            const newRequest = API_axiosInstance(originRequest)
-            console.log(newRequest);
-            alert("NEw Request")
-            return newRequest
-
+            return API_axiosInstance(originRequest)
         } else {
             return Promise.reject(err)
         }

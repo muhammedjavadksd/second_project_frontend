@@ -5,7 +5,6 @@ import { HospitalResponse } from '@/util/types/InterFace/UtilInterface';
 
 const HospitalSearch = ({ selectedHospital, searchRef, defaultValue }: { selectedHospital: Function, searchRef?: Ref<HTMLInputElement>, defaultValue?: string }) => {
 
-    console.log(process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "");
 
     const [defaultVal, setDefault] = useState(defaultValue);
 
@@ -17,7 +16,7 @@ const HospitalSearch = ({ selectedHospital, searchRef, defaultValue }: { selecte
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "",
-        libraries: ['places']
+        libraries: ['places', 'visualization', 'drawing', 'geometry']
     });
 
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete>(null);

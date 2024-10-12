@@ -1,23 +1,23 @@
-"use client"
+'use client';
+import { useState, useEffect } from 'react';
 
+export function useGetLocation() {
+    const [location, setLocation] = useState(null);
 
-export function useGetLocation(state) {
-
-    if (typeof window !== 'undefined') {
-
-        try {
-            global.navigator.geolocation.getCurrentPosition(({ coords }) => {
-                state([coords.longitude, coords.latitude])
-            }, (err) => {
-                console.log(err);
-            })
-            return global.navigator
-        } catch (e) {
+    useEffect(() => {
+        if (typeof window !== 'undefined' && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                ({ coords }) => {
+                    setLocation([coords.longitude, coords.latitude]);
+                },
+                (err) => {
+                    console.log(err);
+                }
+            );
+        } else {
             console.log('Geolocation is not supported by this browser.');
         }
-    }
+    }, []);
 
-    return null
-
-
+    return location;
 }

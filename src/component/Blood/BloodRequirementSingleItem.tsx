@@ -93,7 +93,8 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
                 router.push("/blood/create-account")
             }
         } finally {
-            // setLoading(false)
+            setLoading(false)
+            onClose()
         }
 
     }

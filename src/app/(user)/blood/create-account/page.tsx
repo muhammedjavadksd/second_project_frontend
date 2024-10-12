@@ -34,7 +34,7 @@ function Page() {
     useEffect(() => {
         const userData = userDetailsFromUseSession(session, "user");
         console.log(userData);
-        setInitialValues({ email_address: userData.email, full_name: `${userData.first_name}  ${userData.last_name}`, phone_number: userData.phone, location: null, blood_group: null });
+        setInitialValues({ email_address: userData.email, full_name: `${userData.first_name || ""}  ${userData.last_name || ""}`, phone_number: userData.phone, location: null, blood_group: null });
     }, [session])
 
     async function successCB(donor_id: string) {

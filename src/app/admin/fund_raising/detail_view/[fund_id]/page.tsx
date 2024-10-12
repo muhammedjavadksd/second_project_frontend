@@ -477,7 +477,7 @@ function FundRaiserDetailView(): React.ReactElement {
                                             <div className="flex-shrink-0 w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out">
                                                 <label htmlFor="upload-input-pics" className="cursor-pointer">
                                                     <FaCloudUploadAlt className="text-4xl text-gray-400" />
-                                                    <input id="upload-input-pics" type="file" accept="image/*" className="hidden" onChange={(e) => onFileUpload(e.target.files, FundRaiserFileType.Pictures)} />
+                                                    <input multiple id="upload-input-pics" type="file" accept="image/*" className="hidden" onChange={(e) => onFileUpload(e.target.files, FundRaiserFileType.Pictures)} />
                                                 </label>
                                             </div>
                                             {images.map((image) => (
@@ -516,7 +516,7 @@ function FundRaiserDetailView(): React.ReactElement {
                                             <div className="flex-shrink-0 w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out">
                                                 <label htmlFor="upload-input-docs" className="cursor-pointer">
                                                     <FaCloudUploadAlt className="text-4xl text-gray-400" />
-                                                    <input id={`upload-input-docs`} type="file" accept="image/*" className="hidden" onChange={(e) => onFileUpload(e.target.files, FundRaiserFileType.Document)} />
+                                                    <input multiple id={`upload-input-docs`} type="file" accept="image/*" className="hidden" onChange={(e) => onFileUpload(e.target.files, FundRaiserFileType.Document)} />
                                                 </label>
                                             </div>
                                             {documents.map((image) => (

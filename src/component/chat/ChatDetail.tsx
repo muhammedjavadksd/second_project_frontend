@@ -1,3 +1,4 @@
+"use strict"
 import { Fragment, useEffect, useRef, useState } from "react"
 import ChatMessageList from "./ChatMessageList"
 import { BlockedStatus, ChatHistory } from "@/util/types/API Response/Profile"
@@ -60,8 +61,6 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
     }, [chatHistoryState])
 
     useEffect(() => {
-        console.log("Chat updated");
-
         setHistory(chatHistory)
     }, [chatHistory])
 
@@ -73,41 +72,24 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
         }
     }
 
+
+
     useEffect(() => {
-        // socket.off("new_message");
-        console.log(member_id);
-        socket.on("new_message", (chat: ChatHistory) => {
-            // console.log("Message recivied");
-            // console.log("Member ID");
-
-
-            // console.log(chat);
-            // console.log(memberId);
-            // console.log(chat.profile_id);
-
-
-            // console.log(chat.profile_id + " " + member_id);
-            // console.log(chat.profile_id == member_id);
-
-
-
-            // // alert(chat.profile_id)
-            // if (chat.profile_id == member_id) {
-            //     setHistory((prev) => [...prev, chat])
-            // }
-        })
 
         const addEnter = (e) => {
-            if (e.key == "Enter") {
-                onMessage()
+            if (e.key === "Enter") {
+                onMessage();
             }
-        }
+        };
+
         document.addEventListener("keypress", addEnter);
 
         return () => {
-            document.removeEventListener("keydown", addEnter)
-        }
-    }, [memberId, member_id])
+            document.removeEventListener("keypress", addEnter);
+        };
+    }, [memberId, member_id]);
+
+
 
 
     function onMessage() {
