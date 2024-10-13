@@ -45,7 +45,7 @@ function FundPaymentModel({ fund_id, type }: { fund_id: string, type: PaymentVia
         //@ts-ignore
         if (window && window.Cashfree) {
             //@ts-ignore
-            new window.Cashfree(session_id).redirect();
+            new window.Cashfree(session_id).redirect({ _blank: true });
         } else {
             console.error("Cashfree SDK is not loaded");
             console.log("Redirect");

@@ -68,9 +68,11 @@ function PaginationTab({ onClick, item_per_page, total_records }: IPaginationBut
 
 
 
-  if (totalPages == 0) {
+  if (totalPages == 0 || isNaN(total_records) || total_records < 1) {
     return <span>No records found</span>
   }
+
+
 
 
 

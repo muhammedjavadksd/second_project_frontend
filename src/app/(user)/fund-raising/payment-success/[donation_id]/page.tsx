@@ -13,8 +13,13 @@ const PaymentSuccessPage = () => {
 
     const [tokenDetails, setDonation] = useState<PaymentOrderResponse>(null);
     const [isLoading, setLoading] = useState<boolean>(true);
+    const router = useRouter()
 
     const { donation_id } = useParams()
+
+    useEffect(() => {
+        router.replace(`/fund-raising/payment-success/${donation_id}`)
+    }, [donation_id])
 
     function findProfile() {
         findOrder(donation_id.toString()).then((profile) => {

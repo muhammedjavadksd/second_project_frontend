@@ -30,7 +30,7 @@ const updateBloodGroupValidation = yup.object().shape({
 const bloodRequestPersonalDetailsValidation = yup.object().shape({
     patient_name: yup.string().trim().typeError("Please enter valid name").required("Patient name is required"),
     gender: yup.string().trim().typeError("Please enter valid gender").required("Gender is required"),
-    age: yup.number().typeError("Please enter valid age").required("Age is required"),
+    age: yup.number().positive().typeError("Please enter valid age").required("Age is required"),
     relation: yup.string().trim().typeError("Please select valid relation").required("Relation with patient is required"),
     address: yup.string().trim().typeError("Please enter valid address").required("Please enter valid address"),
     phone_number: yup.number().typeError("Please enter valid phone number").required("Phone number is required"),
