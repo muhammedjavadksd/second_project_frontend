@@ -2,50 +2,53 @@ import React, { Ref, useEffect, useRef, useState } from 'react';
 import { GoogleMap, useLoadScript, Autocomplete } from '@react-google-maps/api';
 import { HospitalResponse } from '@/util/types/InterFace/UtilInterface';
 
-
 const HospitalSearch = ({ selectedHospital, searchRef, defaultValue }: { selectedHospital: Function, searchRef?: Ref<HTMLInputElement>, defaultValue?: string }) => {
-
 
     const [defaultVal, setDefault] = useState(defaultValue);
 
     useEffect(() => {
-        setDefault(defaultValue)
-    }, [defaultValue])
-
-
+        if (defaultValue) {
+            setDefault(defaultValue);
+        }
+    }, [defaultValue]);
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "",
-        libraries: ['places', 'visualization', 'drawing', 'geometry']
+        libraries: ['places']
     });
 
-    const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete>(null);
+    const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
 
-    const onLoad = (autocomplete) => {
-        setAutocomplete(autocomplete)
-    }
+    const onLoad = (autocompleteInstance: google.maps.places.Autocomplete) => {
+        setAutocomplete(autocompleteInstance);
+    };
 
     const onPlaceChanged = () => {
-        const place = autocomplete.getPlace();
-        console.log(place);
+        if (autocomplete) {
+            const place = autocomplete.getPlace();
+            console.log(place);
 
-        const response: HospitalResponse = {
-            hospital_id: place.place_id,
-            coordinates: [place.geometry.location.toJSON().lng, place.geometry.location.toJSON().lat],
-            hospital_name: place.name
+            if (place.place_id && place.geometry && place.name) {
+                const response: HospitalResponse = {
+                    hospital_id: place.place_id,
+                    coordinates: [place.geometry.location.toJSON().lng, place.geometry.location.toJSON().lat],
+                    hospital_name: place.name
+                };
+                setDefault(place.name);
+                selectedHospital(response);
+            }
         }
-        setDefault(place.name)
-        selectedHospital(response)
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDefault(event.target.value)
-        if (event.target.value === '') {
+        const value = event.target.value;
+        setDefault(value);
+        if (value === '') {
             selectedHospital(null);
         }
     };
 
-    if (!isLoaded) return <div>Loading...</div>
+    if (!isLoaded) return <div>Loading...</div>;
 
     return (
         <div>
@@ -63,4 +66,4 @@ const HospitalSearch = ({ selectedHospital, searchRef, defaultValue }: { selecte
     );
 };
 
-export default HospitalSearch;
+export default React.memo(HospitalSearch);

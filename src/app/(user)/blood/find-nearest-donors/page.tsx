@@ -54,16 +54,23 @@ const BloodDonorSearch = () => {
     };
 
 
-
-    return (
-        <>
-            <Header />
-            <ModelItem ZIndex={99} closeOnOutSideClock={false} isOpen={!(!!currentLocation)} onClose={() => { }} >
+    if (!currentLocation) {
+        return (
+            <ModelItem ZIndex={99} closeOnOutSideClock={false} isOpen={true} onClose={() => { }} >
                 <div>
                     <ModelHeader title={'Access location'} />
                     <AskLocation />
                 </div>
             </ModelItem>
+        )
+    }
+
+
+    return (
+        <>
+
+            <Header />
+
             <div className="container mx-auto px-4 py-8">
                 <div className='-mt-10'>
                     <SectionTitle focus_text='blood donors' sub_title='Nearest blood donors' title='Find nearest '></SectionTitle>
@@ -91,41 +98,7 @@ const BloodDonorSearch = () => {
                     </select>
                 </div>
 
-                <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY} >
-                    <GoogleMap
-                        mapContainerStyle={mapContainerStyle}
-                        center={center}
-                        zoom={zoom}
-                    >
-                        {donors.map((donor) => (
-                            <Marker
-                                key={1}
-                                position={{ lat: donor.location_coords.coordinates[1], lng: donor.location_coords.coordinates[0] }}
-                                onClick={() => {
 
-                                    setSelectedDonor(donor)
-                                }}
-                                icon={{
-                                    url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                                }}
-                            />
-                        ))}
-                        {selectedDonor && (
-                            <InfoWindow
-                                position={{ lat: selectedDonor.location_coords.coordinates[1], lng: selectedDonor.location_coords.coordinates[0] }}
-                                onCloseClick={() => setSelectedDonor(null)}
-                            >
-                                <div className="p-2">
-                                    <h2 className="text-lg font-semibold mb-2">{selectedDonor.full_name}</h2>
-                                    <p className="mb-1">
-                                        <FaTint className="inline-block mr-2 text-red-600" />
-                                        Blood Group: {selectedDonor.blood_group}
-                                    </p>
-                                </div>
-                            </InfoWindow>
-                        )}
-                    </GoogleMap>
-                </LoadScript>
 
                 <div className="mt-8">
                     <h2 className="text-2xl font-semibold mb-4">Nearby Donors</h2>
