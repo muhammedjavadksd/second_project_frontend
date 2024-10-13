@@ -85,8 +85,8 @@ async function onSignUpHandler(values, successCB, onSignUpError) {
 
 const signUpValidator = yup.object().shape({
     phone_number: yup.string().typeError("Please enter number").matches(/^\d{10}$/, "Please enter a valid 10 digit phone number"),
-    first_name: yup.string().typeError("Please enter valid first name").required("First name is required"),
-    last_name: yup.string().typeError("Please enter valid last name").required("Last name is required"),
+    first_name: yup.string().trim().typeError("Please enter valid first name").required("First name is required"),
+    last_name: yup.string().trim().typeError("Please enter valid last name").required("Last name is required"),
     email_address: yup.string().typeError("Please enter valid email address").email("Please enter valid email address").required("Email address is required"),
 })
 

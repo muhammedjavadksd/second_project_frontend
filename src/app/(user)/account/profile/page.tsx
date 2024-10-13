@@ -7,11 +7,20 @@ import Header from '@/component/Header/Header'
 import UserPrivateRouter from '@/component/LoginComponent/UserPrivateRouter';
 import BreadCrumb from '@/component/Util/BreadCrumb'
 import Footer from '@/component/Util/Footer'
-import React, { useState } from 'react'
+import { userDetailsFromUseSession } from '@/util/data/helper/authHelper';
+import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react'
 
 function Page(): React.ReactElement {
 
     let [editPersonalDetails, setEditPersonalDetails] = useState<boolean>(false);
+    const [userDetails, setDetails] = useState<Record<string, any>>(null);
+    const session = useSession();
+
+    useEffect(() => {
+        const user = userDetailsFromUseSession(session, "user");
+        setDetails(user);
+    }, [session])
 
 
     return (
@@ -27,7 +36,7 @@ function Page(): React.ReactElement {
                 <div className="flex gap-5 mb-5">
                     <div className="w-full mt-5">
                         <div>
-                            <h4 className="font-medium text-3xl mb-2">Hi, Muhammed Javad</h4>
+                            <h4 className="font-medium text-3xl mb-2">Hi, {userDetails && userDetails?.first_name.concat(" " + userDetails?.last_name)} </h4>
                             <p>Here is your daily activities, and history</p>
                         </div>
                         <div className="mt-5">
