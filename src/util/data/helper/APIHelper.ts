@@ -67,7 +67,7 @@ export async function findDonorDetails() {
             });
             const response = findBloodDonor.data;
             if (response.status) {
-                const profile = response.data?.profile?.profile;
+                const profile = response.data?.profile;
                 return profile
             }
             return false

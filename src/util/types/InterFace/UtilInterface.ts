@@ -1,6 +1,7 @@
 import { FundRaiserFormInitialValues } from "./FormInitialValues";
 import IBloodReq, { ILocatedAt } from "../API Response/Blood";
 import { BloodGroup, BloodStatus, Relationship } from "../Enums/BasicEnums";
+import { ChatHistory } from "../API Response/Profile";
 
 
 interface HospitalResponse {
@@ -75,6 +76,11 @@ interface IBloodDonate {
 interface IBloodDonorForm {
     donor_id: string
     setDonor: Function
+}
+
+interface IChatHistoryContext {
+    chatLog: ChatHistory[],
+    setChatHistory: Function
 }
 
 interface IOnGoingBloodRequestProvider {
@@ -266,4 +272,4 @@ interface IAdminAddFundRaiser {
     description: string;               // Detailed description of the fundraiser
 }
 
-export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider, IAdminAddFundRaiser, IOptionLabel, HospitalResponse, IChatMessageDetails }
+export type { IBloodDonate, IPaginatedResponse, PaginatedApi, IChatRoomResponse, IChatPerson, ICurrentUser, IMessageTemplate, ChatApiResponse, IShowedIntrest, IReduxStore, FormActionResponse, IUserSessionData, IAdminSessionData, IOrganizationSessionData, IOnGoingApplocation, IStore, IBloodDonorForm, MapApiResponse, SelectedHospital, IOnGoingBloodRequest, IOnGoingBloodRequestProvider, IAdminAddFundRaiser, IOptionLabel, HospitalResponse, IChatMessageDetails, IChatHistoryContext }

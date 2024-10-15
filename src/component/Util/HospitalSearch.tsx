@@ -58,7 +58,7 @@ const HospitalSearch = ({ selectedHospital, searchRef, defaultValue }: { selecte
                     ref={searchRef}
                     onChange={handleInputChange}
                     type="text"
-                    placeholder="Search for a hospital..."
+                    placeholder="Search for a place..."
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
                 />
             </Autocomplete>

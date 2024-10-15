@@ -12,6 +12,8 @@ export async function initialFundPayment(full_name: string, phone_number: number
     try {
         const session = await getSession();
         const user = userDetailsFromGetSession(session, "user")
+
+
         const token = user?.token;
 
         const { data } = await API_axiosInstance.post(`fund_raise/pay/${fund_id}`, {
@@ -35,7 +37,7 @@ export async function initialFundPayment(full_name: string, phone_number: number
             errorCB(data.msg)
         }
         console.log(data);
-        
+
     } catch (e) {
         const errorMessage = e?.response?.data?.msg ?? "Something went wrong";
         errorCB(errorMessage)

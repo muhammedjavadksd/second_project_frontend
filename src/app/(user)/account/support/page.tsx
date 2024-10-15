@@ -10,6 +10,7 @@ import ModelItem from '@/component/Util/ModelItem';
 import TableBody from '@/component/Util/Table/TableBody';
 import TableHead from '@/component/Util/Table/TableHead';
 import TablePagination from '@/component/Util/Table/TablePagination';
+import TableWrapper from '@/component/Util/TableWrapper';
 import { findAllMyTicket } from '@/util/data/helper/APIHelper';
 import { formatDateToMonthNameAndDate } from '@/util/data/helper/utilHelper';
 import { ProfileTicket } from '@/util/types/API Response/Profile';
@@ -24,6 +25,7 @@ function SupportTicket(): React.ReactElement {
     const [ticketCount, setCount] = useState<number>(0);
     const [limit, setLimit] = useState(10)
     const [page, setPage] = useState(1)
+    const [isLoading, setLoading] = useState(true)
 
     async function findTicket(page: number, limit: number) {
         try {
@@ -32,6 +34,8 @@ function SupportTicket(): React.ReactElement {
             setCount(tickets.total_records)
         } catch (e) {
             console.log(e);
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -76,11 +80,9 @@ function SupportTicket(): React.ReactElement {
                                     <div className="flex flex-col mt-6">
                                         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
 
-                                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-
-                                                        <TableHead head={['ID', 'Title', 'Category', 'Status', 'Updated Date', 'Action']} />
+                                                <TableWrapper isLoading={isLoading} head={['ID', 'Title', 'Category', 'Status', 'Updated Date', 'Action']}>
+                                                    <>
                                                         {
                                                             listTicket.map((item) => {
                                                                 return (
@@ -90,10 +92,11 @@ function SupportTicket(): React.ReactElement {
                                                                 )
                                                             })
                                                         }
-                                                    </table>
 
-                                                </div>
+                                                    </>
+                                                </TableWrapper>
                                                 <TablePagination item_per_page={limit} onClick={(val) => { setPage(val) }} total_records={ticketCount} />
+
                                             </div>
                                         </div>
                                     </div>
@@ -106,7 +109,7 @@ function SupportTicket(): React.ReactElement {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
             <Footer />
         </UserPrivateRouter >
     )

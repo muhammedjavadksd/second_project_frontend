@@ -5,13 +5,16 @@ import ChatDetail from "./ChatDetail";
 import ModelItem from "../Util/ModelItem";
 import { useSession } from "next-auth/react";
 import { userDetailsFromUseSession } from "@/util/data/helper/authHelper";
-
+import ChatHistoryContextWrapper from "@/util/context/ChatContext";
+import firebaseApp, { firebaseNotification } from "@/util/external/firebase/firebase-config";
+import { getToken } from "firebase/messaging";
 
 function ChatToggle() {
 
     const [isOpen, toggleModle] = useState(false);
     const session = useSession();
     const [userDetails, setUserDetails] = useState(null);
+
 
     useEffect(() => {
         setUserDetails(userDetailsFromUseSession(session, "user"))
@@ -20,9 +23,15 @@ function ChatToggle() {
     return (
         <Fragment>
 
-            {isOpen && <ModelItem ZIndex={100} closeOnOutSideClock={true} isOpen={true} onClose={() => toggleModle(false)}>
-                <ChatUserList />
-            </ModelItem>}
+
+
+            {isOpen && (
+                <ChatHistoryContextWrapper>
+                    <ModelItem ZIndex={100} closeOnOutSideClock={true} isOpen={true} onClose={() => toggleModle(false)}>
+                        <ChatUserList />
+                    </ModelItem>
+                </ChatHistoryContextWrapper>
+            )}
 
             {userDetails && <div className="fixed right-10 z-[99] bottom-10">
                 <button

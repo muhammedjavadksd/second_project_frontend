@@ -68,7 +68,7 @@ function BloodProfileOverView() {
                         <div className="w-2/6">
                             <div className="h-[420px]">
                                 <LoadingDataNotFoundComponent isFound={!!bloodDonorDetails} isLoading={isBloodDonorFormLoading}>
-                                    <ViewDonorProfile profile={bloodDonorDetails} />
+                                    <ViewDonorProfile profile={bloodDonorDetails?.profile} />
                                 </LoadingDataNotFoundComponent>
                             </div>
                         </div>

@@ -9,7 +9,7 @@ import PaginationSection from "@/component/Util/PaginationSection"
 import const_data from "@/util/data/const"
 import { getLimitedFundRaiserPost, getSingleActiveFundRaiser } from "@/util/data/helper/APIHelper"
 import { FundRaiserResponse } from "@/util/types/API Response/FundRaiser"
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 
 function AdvanceFundRaiserView() {
 
@@ -22,10 +22,23 @@ function AdvanceFundRaiserView() {
     const [subCategorySelect, setSelectedSubCategory] = useState(null)
     const [stateSelect, setSelectedState] = useState(null)
     const [urgentSelected, setUrgentSelected] = useState(null)
-    const [minPrice, setMin] = useState<string>(null)
-    const [maxPrice, setMax] = useState<string>(null)
+    const minPrice = useRef(null)
+    const maxPrice = useRef(null)
+    const [minThrottle, setMinThrottle] = useState<boolean>(false)
 
-    useEffect(() => {
+    function onPriceChange(val) {
+        if (minThrottle) {
+            return;
+        }
+        console.log("Api call");
+
+        filterData()
+        setTimeout(() => {
+            setMinThrottle(false)
+        }, 2000)
+    }
+
+    function filterData() {
         const objectFind: Record<string, any> = {};
 
         if (subCategorySelect) {
@@ -39,31 +52,39 @@ function AdvanceFundRaiserView() {
         if (urgentSelected) {
             objectFind.urgency = urgentSelected;
         }
-        if (minPrice) {
-            objectFind.min = minPrice;
+        if (minPrice.current && minPrice.current.value) {
+            objectFind.min = minPrice.current.value;
         }
-        if (maxPrice) {
-            objectFind.max = maxPrice;
+        if (maxPrice.current && maxPrice.current.value) {
+            objectFind.max = maxPrice.current.value;
         }
+
         const queryString = new URLSearchParams(objectFind).toString();
         setQueryFilter(queryString || "")
         setRefresh(!refresh)
+    }
+
+    useEffect(() => {
+        filterData()
     }, [categorySelect, subCategorySelect, stateSelect, urgentSelected, maxPrice, minPrice])
 
 
     function resetFilter() {
+        minPrice.current.value = null
+        maxPrice.current.value = null
         setSelectedCategory(null)
         setSelectedSubCategory(null)
         setSelectedState(null)
         setUrgentSelected(null)
-        setMin("")
-        setMax("")
     }
 
 
     return (
         <Fragment>
             <Header />
+            {
+                minPrice.current?.value
+            }
             <div className='container mx-auto mt-5 mb-5 '>
                 <BreadCrumb path={['Home', 'Fund Raiser', 'Browse']} />
 
@@ -86,8 +107,8 @@ function AdvanceFundRaiserView() {
                             {/* Min Value Input */}
                             <div className="flex flex-col">
                                 <input
-                                    onChange={(e) => setMin(e.target.value)}
-                                    value={minPrice}
+                                    ref={minPrice}
+                                    onChange={(e) => onPriceChange(e.target.value)}
                                     type="text"
                                     id="min-value"
                                     placeholder="Min"
@@ -99,8 +120,8 @@ function AdvanceFundRaiserView() {
                             <div className="flex flex-col">
 
                                 <input
-                                    value={maxPrice}
-                                    onChange={(e) => setMax(e.target.value)}
+                                    ref={maxPrice}
+                                    onChange={(e) => onPriceChange(e.target.value)}
                                     type="text"
                                     id="max-value"
                                     placeholder="Max"

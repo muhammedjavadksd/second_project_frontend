@@ -91,12 +91,6 @@ function Header() {
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button
-              type="button"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Donate to us
-            </button>
 
             <div className="relative ml-3">
               <div>
@@ -158,15 +152,7 @@ function Header() {
                 >
                   Fund Raiser Account
                 </Link>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700"
-                  role="menuitem"
-                  tabIndex={4}
-                  id="user-menu-item-1"
-                >
-                  Settings
-                </a>
+
                 <a
                   href="#"
                   onClick={() => {

@@ -1,5 +1,5 @@
 "use strict"
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import ChatMessageList from "./ChatMessageList"
 import { BlockedStatus, ChatHistory } from "@/util/types/API Response/Profile"
 import { userDetailsFromUseSession } from "@/util/data/helper/authHelper";
@@ -7,21 +7,24 @@ import { useSession } from "next-auth/react";
 import { Socket } from "socket.io-client";
 import AvatarIcon from "../Util/avatarIcon";
 import { FaUser, FaUserSlash } from "react-icons/fa";
-import { blockProfile } from "@/util/data/helper/APIHelper";
+import { blockProfile, seenMessage } from "@/util/data/helper/APIHelper";
 import { toast } from "react-toastify";
+import { ChatHistoryContext } from "@/util/context/Context";
 
 
 
-function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockStatus, memberId }: { chatHistory: ChatHistory[], my_name: string, sender_name: string, room_id: string, socket: Socket, blockStatus: BlockedStatus, memberId: string }) {
+function ChatDetail({ my_name, sender_name, room_id, socket, blockStatus, memberId }: { my_name: string, sender_name: string, room_id: string, socket: Socket, blockStatus: BlockedStatus, memberId: string }) {
 
     const msgRef = useRef(null);
     const session = useSession();
     const messagesRef = useRef(null);
 
-    const [chatHistoryState, setHistory] = useState<ChatHistory[]>([]);
+    // const [chatHistoryState, setHistory] = useState<ChatHistory[]>([]);
+    const [localHistory, setLocalMessage] = useState<ChatHistory[]>([]);
     const [isBlockOpen, toggleBlock] = useState<boolean>();
     const [isBlocked, setBlockStatus] = useState<boolean>(false);
     const [member_id, setMemberId] = useState(memberId)
+    const { chatLog, setChatHistory } = useContext(ChatHistoryContext);
 
     useEffect(() => {
         setMemberId(memberId)
@@ -57,12 +60,18 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
 
 
     useEffect(() => {
+        seenMessage(room_id)
         moveDown()
-    }, [chatHistoryState])
+    }, [chatLog])
 
-    useEffect(() => {
-        setHistory(chatHistory)
-    }, [chatHistory])
+    // useEffect(() => {
+    //     if (localHistory.length) {
+    //         const prevHistory = [...chatHistory, ...localHistory];
+    //         setHistory(prevHistory)
+    //     }
+    // }, [localHistory]);
+
+
 
     function moveDown() {
         console.log(messagesRef.current);
@@ -97,7 +106,7 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
         if (message && message != "") {
             const userDetails = userDetailsFromUseSession(session, "user");
             const newMsg: ChatHistory = {
-                _id: null,
+                _id: new Date().getMilliseconds().toString(),
                 msg: message,
                 profile_id: userDetails.profile_id,
                 room_id: room_id,
@@ -111,19 +120,20 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
             msgRef.current.value = null
             if (socket) {
                 socket.emit("message", newMsg)
-                setHistory((prev) => [...prev, newMsg])
+                // console.log(chatHistoryState);
+                setChatHistory((prev) => [...prev, newMsg])
             }
         }
     }
 
     return (
         <Fragment>
+
             <div className="flex w-[600px] h-[540px] flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100"  >
                 <div className="flex bg-blue-800 items-center justify-between   p-2 rounded-ss-lg rounded-se-lg">
                     <div className="flex items-center space-x-4">
                         <div className="relative group">
                             <AvatarIcon name={sender_name} />
-                            {memberId}
                         </div>
                         <div>
                             <h2 className="text-xl font-bold text-white">{sender_name}</h2>
@@ -155,7 +165,7 @@ function ChatDetail({ chatHistory, my_name, sender_name, room_id, socket, blockS
                 <div ref={messagesRef} className="flex flex-col h-full overflow-x-auto mb-4">
                     <div className="flex flex-col h-full">
                         <div className="grid grid-cols-12 gap-y-2">
-                            <ChatMessageList my_name={my_name} sender_name={sender_name} chatHistory={chatHistoryState} profile_id={memberId} />
+                            <ChatMessageList my_name={my_name} sender_name={sender_name} chatHistory={chatLog} profile_id={memberId} />
                         </div>
                     </div>
                 </div>

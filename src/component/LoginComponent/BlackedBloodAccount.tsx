@@ -12,7 +12,8 @@ function BlackedBloodAccount({ children }) {
 
     useEffect(() => {
         session.then((data) => {
-            let userLogged = userDetailsFromGetSession(data, "user")
+            const userLogged = userDetailsFromGetSession(data, "user")
+            console.log(userLogged)
 
             if (userLogged) {
 

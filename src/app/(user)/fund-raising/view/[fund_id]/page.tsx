@@ -295,19 +295,6 @@ function ViewFundRaising(): React.ReactElement {
                 </div>
 
 
-                <div className="flex justify-center items-center mt-5  bg-gray-100">
-                  <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 max-w-sm text-center">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                      Don’t have enough money to donate?
-                    </h2>
-                    <p className="text-gray-700 mb-6">
-                      Auction your items and donate the profits to this fundraiser!
-                    </p>
-                    <Link href={"/bidding/create"} className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition duration-300">
-                      Get Started
-                    </Link>
-                  </div>
-                </div>
 
 
 

@@ -24,9 +24,7 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
 
     const session = useSession();
     const router = useRouter();
-    const [donateBloodForm, setDonateBloodForm] = useState<boolean>(true)
     const formik = useRef(null);
-    const [isLoading, setLoading] = useState<boolean>(false);
 
 
 
@@ -93,7 +91,6 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
                 router.push("/blood/create-account")
             }
         } finally {
-            setLoading(false)
             onClose()
         }
 
@@ -107,143 +104,153 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
             title: "Are you sure about it",
             message: "Are you sure about it?",
             customUI: ({ onClose, title, }) => {
-                return (
-                    <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false}>
-                        <>
-                            <ModelHeader title={"Donate your blood"} />
-                            <div className='bg-white  shadow-md p-5 w-96 max-h-screen' style={{ height: "600px" }}>
-                                <Formik
-                                    innerRef={formik}
-                                    validationSchema={validationSchema}
-                                    initialValues={bloodDonationFormInitialValues}
-                                    onSubmit={async (values) => {
-                                        setLoading(true)
-                                        await onDonation(values, onClose)
-                                    }}
-                                >
-                                    {({ values, setFieldValue }) => (
-                                        <Form className='overflow-auto h-full'>
-                                            <div className='overflow-auto'>
-                                                <div className='mb-4'>
-                                                    <label htmlFor="donatedLast90Days" className='text-sm mb-2 block'>Have you donated blood in the last 90 days?</label>
-                                                    <Field as="select" name="donatedLast90Days" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                                        <option value="">Select</option>
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
-                                                    </Field>
-                                                    <ErrorMessage className='errorMessage' component="div" name='donatedLast90Days' />
-                                                </div>
 
-                                                <div className='mb-4'>
-                                                    <label htmlFor="weight" className='text-sm mb-2 block'>What is your weight?</label>
-                                                    <Field type="number" name="weight" id="weight" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" placeholder="Enter your weight" />
-                                                    <ErrorMessage className='errorMessage' component="div" name='weight' />
-                                                </div>
+                const CustomModal = () => {
 
-                                                <div className='mb-4'>
-                                                    <label htmlFor="seriousConditions" className='text-sm mb-2 block'>Have you ever been diagnosed with or treated for any of the following conditions?</label>
-                                                    <FormikSelectField multiple={true} placeHolder={"Enter dignouse"} setFieldValue={(val) => { setFieldValue("seriousConditions", val) }} values={['HIV/AIDS', 'Hepatitis B or C', 'Cancer', 'Heart Disease', 'Tuberculosis']}></FormikSelectField>
-                                                    <ErrorMessage className='errorMessage' component="div" name='seriousConditions' />
-                                                </div>
+                    const [isLoading, setLoading] = useState<boolean>(false);
 
-                                                <div className='mb-4'>
-                                                    <label htmlFor="majorSurgeryOrIllness" className='text-sm mb-2 block'>Have you had any major surgery or been seriously ill in the past 6 months?</label>
-                                                    <Field as="select" name="majorSurgeryOrIllness" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                                        <option value="">Select</option>
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
-                                                    </Field>
-                                                    <ErrorMessage className='errorMessage' component="div" name='majorSurgeryOrIllness' />
-                                                </div>
-
-                                                {values.majorSurgeryOrIllness === 'true' && (
+                    return (
+                        <LoadingComponent closeOnClick={false} isLoading={isLoading} paddingNeed={false}>
+                            <>
+                                <ModelHeader title={"Donate your blood"} />
+                                <div className='bg-white  shadow-md p-5 w-96 max-h-screen' style={{ height: "600px" }}>
+                                    <Formik
+                                        innerRef={formik}
+                                        validationSchema={validationSchema}
+                                        initialValues={bloodDonationFormInitialValues}
+                                        onSubmit={async (values) => {
+                                            setLoading(true)
+                                            await onDonation(values, onClose)
+                                            setLoading(false)
+                                        }}
+                                    >
+                                        {({ values, setFieldValue }) => (
+                                            <Form className='overflow-auto h-full'>
+                                                <div className='overflow-auto'>
                                                     <div className='mb-4'>
-                                                        <label htmlFor="surgeryOrIllnessDetails" className='text-sm mb-2 block'>Please specify the surgery or illness:</label>
-                                                        <Field type="text" name="surgeryOrIllnessDetails" id="surgeryOrIllnessDetails" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" placeholder="Enter details" />
-                                                        <ErrorMessage className='errorMessage' component="div" name='surgeryOrIllnessDetails' />
+                                                        <label htmlFor="donatedLast90Days" className='text-sm mb-2 block'>Have you donated blood in the last 90 days?</label>
+                                                        <Field as="select" name="donatedLast90Days" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
+                                                            <option value="">Select</option>
+                                                            <option value="true">Yes</option>
+                                                            <option value="false">No</option>
+                                                        </Field>
+                                                        <ErrorMessage className='errorMessage' component="div" name='donatedLast90Days' />
                                                     </div>
-                                                )}
-                                                <div className='mb-4'>
-                                                    <label htmlFor="chronicIllnesses" className='text-sm mb-2 block'>Do you have any chronic illnesses (e.g., diabetes, hypertension)?</label>
-                                                    <Field as="select" name="chronicIllnesses" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                                        <option value="">Select</option>
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
-                                                    </Field>
-                                                    <ErrorMessage className='errorMessage' component="div" name='chronicIllnesses' />
-                                                </div>
 
-                                                <div className='mb-4'>
-                                                    <label htmlFor="tattooPiercingAcupuncture" className='text-sm mb-2 block'>Have you had a tattoo, piercing, or acupuncture treatment in the past 12 months?</label>
-                                                    <Field as="select" name="tattooPiercingAcupuncture" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                                        <option value="">Select</option>
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
-                                                    </Field>
-                                                    <ErrorMessage className='errorMessage' component="div" name='tattooPiercingAcupuncture' />
-                                                </div>
-
-                                                <div className='mb-4'>
-                                                    <label htmlFor="alcoholConsumption" className='text-sm mb-2 block'>Have you consumed alcohol in the past 48 hours?</label>
-                                                    <Field as="select" name="alcoholConsumption" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                                        <option value="">Select</option>
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
-                                                    </Field>
-                                                    <ErrorMessage className='errorMessage' component="div" name='alcoholConsumption' />
-                                                </div>
-
-                                                <div className='mb-4'>
-                                                    <label htmlFor="tobaccoUse" className='text-sm mb-2 block'>Do you use tobacco products (e.g., cigarettes, chewing tobacco)?</label>
-                                                    <Field as="select" name="tobaccoUse" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                                        <option value="">Select</option>
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
-                                                    </Field>
-                                                    <ErrorMessage className='errorMessage' component="div" name='tobaccoUse' />
-                                                </div>
-
-                                                <div className='mb-4'>
-                                                    <label htmlFor="pregnancyStatus" className='text-sm mb-2 block'>Are you currently pregnant or have you been pregnant in the past 6 months? (For female donors)</label>
-                                                    <Field as="select" name="pregnancyStatus" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                                        <option value="">Select</option>
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
-                                                    </Field>
-                                                    <ErrorMessage className='errorMessage' component="div" name='pregnancyStatus' />
-                                                </div>
-
-                                                <div className='mb-4'>
-                                                    <label htmlFor="pregnancyStatus" className='text-sm mb-2 block'>Select the time for donating blood</label>
-
-                                                    <div className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
-                                                        <DatePicker
-                                                            onChange={(val) => {
-                                                                setFieldValue("date", val)
-                                                            }}
-                                                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full"
-                                                            format="MM/DD/YYYY HH:mm A"
-                                                            value={values.date}
-                                                            plugins={[
-                                                                <TimePicker key="1" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" position="bottom" />
-                                                            ]}
-                                                        />
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="weight" className='text-sm mb-2 block'>What is your weight?</label>
+                                                        <Field type="number" name="weight" id="weight" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" placeholder="Enter your weight" />
+                                                        <ErrorMessage className='errorMessage' component="div" name='weight' />
                                                     </div>
-                                                    <ErrorMessage className='errorMessage' component="div" name='date' />
+
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="seriousConditions" className='text-sm mb-2 block'>Have you ever been diagnosed with or treated for any of the following conditions?</label>
+                                                        <FormikSelectField multiple={true} placeHolder={"Enter dignouse"} setFieldValue={(val) => { setFieldValue("seriousConditions", val) }} values={['HIV/AIDS', 'Hepatitis B or C', 'Cancer', 'Heart Disease', 'Tuberculosis']}></FormikSelectField>
+                                                        <ErrorMessage className='errorMessage' component="div" name='seriousConditions' />
+                                                    </div>
+
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="majorSurgeryOrIllness" className='text-sm mb-2 block'>Have you had any major surgery or been seriously ill in the past 6 months?</label>
+                                                        <Field as="select" name="majorSurgeryOrIllness" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
+                                                            <option value="">Select</option>
+                                                            <option value="true">Yes</option>
+                                                            <option value="false">No</option>
+                                                        </Field>
+                                                        <ErrorMessage className='errorMessage' component="div" name='majorSurgeryOrIllness' />
+                                                    </div>
+
+                                                    {values.majorSurgeryOrIllness === 'true' && (
+                                                        <div className='mb-4'>
+                                                            <label htmlFor="surgeryOrIllnessDetails" className='text-sm mb-2 block'>Please specify the surgery or illness:</label>
+                                                            <Field type="text" name="surgeryOrIllnessDetails" id="surgeryOrIllnessDetails" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" placeholder="Enter details" />
+                                                            <ErrorMessage className='errorMessage' component="div" name='surgeryOrIllnessDetails' />
+                                                        </div>
+                                                    )}
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="chronicIllnesses" className='text-sm mb-2 block'>Do you have any chronic illnesses (e.g., diabetes, hypertension)?</label>
+                                                        <Field as="select" name="chronicIllnesses" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
+                                                            <option value="">Select</option>
+                                                            <option value="true">Yes</option>
+                                                            <option value="false">No</option>
+                                                        </Field>
+                                                        <ErrorMessage className='errorMessage' component="div" name='chronicIllnesses' />
+                                                    </div>
+
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="tattooPiercingAcupuncture" className='text-sm mb-2 block'>Have you had a tattoo, piercing, or acupuncture treatment in the past 12 months?</label>
+                                                        <Field as="select" name="tattooPiercingAcupuncture" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
+                                                            <option value="">Select</option>
+                                                            <option value="true">Yes</option>
+                                                            <option value="false">No</option>
+                                                        </Field>
+                                                        <ErrorMessage className='errorMessage' component="div" name='tattooPiercingAcupuncture' />
+                                                    </div>
+
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="alcoholConsumption" className='text-sm mb-2 block'>Have you consumed alcohol in the past 48 hours?</label>
+                                                        <Field as="select" name="alcoholConsumption" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
+                                                            <option value="">Select</option>
+                                                            <option value="true">Yes</option>
+                                                            <option value="false">No</option>
+                                                        </Field>
+                                                        <ErrorMessage className='errorMessage' component="div" name='alcoholConsumption' />
+                                                    </div>
+
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="tobaccoUse" className='text-sm mb-2 block'>Do you use tobacco products (e.g., cigarettes, chewing tobacco)?</label>
+                                                        <Field as="select" name="tobaccoUse" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
+                                                            <option value="">Select</option>
+                                                            <option value="true">Yes</option>
+                                                            <option value="false">No</option>
+                                                        </Field>
+                                                        <ErrorMessage className='errorMessage' component="div" name='tobaccoUse' />
+                                                    </div>
+
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="pregnancyStatus" className='text-sm mb-2 block'>Are you currently pregnant or have you been pregnant in the past 6 months? (For female donors)</label>
+                                                        <Field as="select" name="pregnancyStatus" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
+                                                            <option value="">Select</option>
+                                                            <option value="true">Yes</option>
+                                                            <option value="false">No</option>
+                                                        </Field>
+                                                        <ErrorMessage className='errorMessage' component="div" name='pregnancyStatus' />
+                                                    </div>
+
+                                                    <div className='mb-4'>
+                                                        <label htmlFor="pregnancyStatus" className='text-sm mb-2 block'>Select the time for donating blood</label>
+
+                                                        <div className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full">
+                                                            <DatePicker
+                                                                onChange={(val) => {
+                                                                    setFieldValue("date", val)
+                                                                }}
+                                                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full"
+                                                                format="MM/DD/YYYY HH:mm A"
+                                                                value={values.date}
+                                                                plugins={[
+                                                                    <TimePicker key="1" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" position="bottom" />
+                                                                ]}
+                                                            />
+                                                        </div>
+                                                        <ErrorMessage className='errorMessage' component="div" name='date' />
+                                                    </div>
+
+
                                                 </div>
 
 
-                                            </div>
+                                                <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded">Submit</button>
+                                            </Form>
+                                        )}
+                                    </Formik>
+                                </div>
+                            </>
+                        </LoadingComponent>
+                    )
+                }
 
 
-                                            <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded">Submit</button>
-                                        </Form>
-                                    )}
-                                </Formik>
-                            </div>
-                        </>
-                    </LoadingComponent>
-                )
+                return <CustomModal />
             }
         })
     }
@@ -256,8 +263,6 @@ function BloodRequirementSingleItem({ req_id, group, unit, deadLine, location, u
     return (
         <>
             <div className="mb-5 w-full bg-white border border-gray-200  shadow dark:bg-gray-800 dark:border-gray-700">
-
-
                 <BloodCard location={location} group={group} onDonateBlood={onDonateBlood} unit={unit} username={username} deadLine={deadLine} />
             </div>
 

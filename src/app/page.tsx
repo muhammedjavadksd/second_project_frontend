@@ -60,9 +60,6 @@ const Home: React.FC<{ name: string }> = ({ name }) => {
                     </section>
 
                     <BloodReqSlider />
-                    <section className="mt-10 bg-gray-100">
-                        <EventPromo />
-                    </section>
 
                     <div className="mt-10">
                         <Footer />

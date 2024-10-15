@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaSearch, FaCommentAlt, FaTimes, FaSpinner, FaComment } from "react-icons/fa";
 import SpinnerLoader from "../Util/SpinningLoader";
 import { useSession } from "next-auth/react";
@@ -10,6 +10,7 @@ import ChatDetail from "./ChatDetail";
 import ChatPerson from "./ChatPerson";
 import { ChatHistory, ChatProfile } from "@/util/types/API Response/Profile";
 import { io } from "socket.io-client";
+import { ChatHistoryContext } from "@/util/context/Context";
 
 
 let socket;
@@ -18,12 +19,11 @@ const ChatUserList = () => {
     const [users, setUsers] = useState<IChatRoomResponse[]>([]);
     const [tempUsers, setTempUsers] = useState<IChatRoomResponse[]>([]);
     const [openChats, setOpenChats] = useState<ChatProfile>(null);
-    const [currentChatHistory, setCurrentChatHistory] = useState<ChatHistory[]>([]);
+    // const [currentChatHistory, setCurrentChatHistory] = useState<ChatHistory[]>([]);
     const [isLoading, toggleLoading] = useState(true)
-
-
     const session = useSession();
     const [userDetails, setUserDetails] = useState(null);
+    const { chatLog, setChatHistory } = useContext(ChatHistoryContext);
 
     useEffect(() => {
 
@@ -42,10 +42,9 @@ const ChatUserList = () => {
             socket.on("new_message", (chat: ChatHistory) => {
                 console.log("New message recivied");
 
-                console.log(openChats)
                 console.log(chat)
                 if (openChats.chat_profile_id == chat.profile_id) {
-                    setCurrentChatHistory((prev) => [...prev, chat])
+                    setChatHistory((prev) => [...prev, chat])
                 }
 
 
@@ -55,68 +54,25 @@ const ChatUserList = () => {
 
                     if (findIndex !== -1) {
                         // Clone the user list immutably
-                        const updatedUsers = prevUsers.map((user, index) => {
-                            if (index === findIndex) {
-                                // Increment unseen_message_count without mutating state directly
-                                return {
-                                    ...user,
-                                    messages: {
-                                        ...user.messages,
-                                        last_message: chat.msg,
-                                        last_message_from: toProfileId,
-                                        unseen_message_count: user.messages.unseen_message_count + 1, // Increment properly
-                                    },
-                                };
-                            }
-                            return user;
-                        });
 
+                        const focusUser = {
+                            ...prevUsers[findIndex],
+                            messages: {
+                                ...prevUsers[findIndex].messages,
+                                last_message: chat.msg,
+                                last_message_from: toProfileId,
+                                unseen_message_count: prevUsers[findIndex].messages.unseen_message_count + 1, // Increment unseen_message_count properly
+                            },
+                        };
+
+
+                        const updatedUsers = [focusUser, ...prevUsers.filter((_, index) => index !== findIndex)];
                         return updatedUsers;
                     } else {
                         console.log("User not found in the list");
                         return prevUsers; // Return the original state if no match
                     }
                 });
-                // console.log("New message recivied");
-
-
-                // const toProfileId = chat.profile_id;
-                // const findIndex = users.findIndex((each) => each.chat_profile_id == toProfileId)
-                // console.log("User  find");
-                // console.log(toProfileId);
-                // console.log(users);
-
-
-                // if (findIndex != -1) {
-                //     const updatedUsers = [...users];
-                //     const updatedUser = {
-                //         ...updatedUsers[findIndex],
-                //         messages: {
-                //             ...updatedUsers[findIndex].messages,
-                //             last_message: chat.msg,
-                //             last_message_from: toProfileId,
-                //             // unseen_message_count: updatedUsers[findIndex].messages.unseen_message_count + 1,
-                //         },
-                //     };
-
-                //     console.log("Count");
-                //     console.log(updatedUser.messages.unseen_message_count);
-                //     const updatedCount = updatedUser.messages.unseen_message_count + 1
-                //     console.log(updatedCount);
-                //     updatedUser.messages.unseen_message_count = updatedCount
-
-
-
-                //     console.log(updatedUsers);
-                //     console.log(updatedUser);
-
-
-                //     updatedUsers[findIndex] = updatedUser;
-                //     setUsers([...updatedUsers]);
-
-                // } else {
-                //     console.log("Index failed");
-                // }
             })
         }
 
@@ -148,7 +104,7 @@ const ChatUserList = () => {
         getSingleChat(room_id).then(async (data) => {
             if (data) {
                 setOpenChats(data)
-                setCurrentChatHistory(data.chat_history)
+                setChatHistory(data.chat_history)
                 const findIndex = users.findIndex((each) => each.chat_profile_id == data.chat_profile_id);
                 if (findIndex != -1) {
                     const user = users[findIndex];
@@ -228,9 +184,8 @@ const ChatUserList = () => {
                     )
                 }
             </div>
-            The length{currentChatHistory.length}
             {openChats && (
-                <ChatDetail memberId={openChats.chat_person.profile_id} blockStatus={openChats.blocked} room_id={openChats.chat_id} socket={socket} my_name={userDetails.first_name.concat("  " + userDetails.last_name)} sender_name={openChats.chat_person.first_name.concat(openChats.chat_person.last_name)} chatHistory={currentChatHistory} />
+                <ChatDetail memberId={openChats.chat_person.profile_id} blockStatus={openChats.blocked} room_id={openChats.chat_id} socket={socket} my_name={userDetails.first_name.concat("  " + userDetails.last_name)} sender_name={openChats.chat_person.first_name.concat(openChats.chat_person.last_name)} />
             )}
         </div>
     );
