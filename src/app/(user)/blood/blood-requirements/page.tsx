@@ -30,7 +30,7 @@ function BloodRequirementsView(): React.ReactElement {
                 </div>
 
                 <div className="flex mt-3 gap-5 items-center">
-                    <DropDownItem isOpen={false} options={Object.values(BloodGroup)} title="Select blood group" callBack={(val) => { setBloodGroup(val), setRefresh(!refresh) }}></DropDownItem>
+                    <DropDownItem value={selectedBloodGroup} isOpen={false} options={Object.values(BloodGroup)} title="Select blood group" callBack={(val) => { setBloodGroup(val), setRefresh(!refresh) }}></DropDownItem>
                     <button onClick={() => {
                         setBloodGroup(null)
                         setRefresh(!refresh)

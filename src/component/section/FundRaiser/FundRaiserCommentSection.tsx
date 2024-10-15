@@ -48,7 +48,7 @@ function FundRaiserCommentSection({ fund_id }) {
             <div className='mb-3'>
                 <Formik initialValues={{ comment: "" }} onSubmit={async (val, { resetForm }) => {
                     const save = await onCommentPost(val.comment, fund_id, () => {
-                        router.replace("/auth/sign_in")
+                        router.push("/auth/sign_in")
                     })
                     if (save) {
                         callComments(!reCallComments)

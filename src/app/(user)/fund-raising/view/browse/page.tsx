@@ -82,9 +82,7 @@ function AdvanceFundRaiserView() {
     return (
         <Fragment>
             <Header />
-            {
-                minPrice.current?.value
-            }
+
             <div className='container mx-auto mt-5 mb-5 '>
                 <BreadCrumb path={['Home', 'Fund Raiser', 'Browse']} />
 
@@ -93,10 +91,10 @@ function AdvanceFundRaiserView() {
 
                         <div className="flex mt-3 gap-5 items-center justify-between">
                             <div className="flex gap-2">
-                                <DropDownItem isOpen={isCategoryOpen} options={Object.keys(const_data.FUNDRAISER_CATEGORY)} title="Select category" callBack={(val) => setSelectedCategory(val)}></DropDownItem>
-                                <DropDownItem isOpen={isSubCategoryOpen} options={categorySelect ? const_data.FUNDRAISER_CATEGORY[categorySelect] : []} title="Select sub category" callBack={(val) => setSelectedSubCategory(val)}></DropDownItem>
-                                <DropDownItem isOpen={isSubCategoryOpen} options={['urgent', 'Not urgent']} title="Select Urgency" callBack={(val) => setUrgentSelected(val)}></DropDownItem>
-                                <DropDownItem isOpen={isSubCategoryOpen} options={Object.keys(const_data.STATE_WITH_DISTRICT)} title="Select State" callBack={(val) => setSelectedState(val)}></DropDownItem>
+                                <DropDownItem value={categorySelect} isOpen={isCategoryOpen} options={Object.keys(const_data.FUNDRAISER_CATEGORY)} title="Select category" callBack={(val) => setSelectedCategory(val)}></DropDownItem>
+                                <DropDownItem value={subCategorySelect} isOpen={isSubCategoryOpen} options={categorySelect ? const_data.FUNDRAISER_CATEGORY[categorySelect] : []} title="Select sub category" callBack={(val) => setSelectedSubCategory(val)}></DropDownItem>
+                                <DropDownItem value={urgentSelected} isOpen={isSubCategoryOpen} options={['urgent', 'Not urgent']} title="Select Urgency" callBack={(val) => setUrgentSelected(val)}></DropDownItem>
+                                <DropDownItem value={stateSelect} isOpen={isSubCategoryOpen} options={Object.keys(const_data.STATE_WITH_DISTRICT)} title="Select State" callBack={(val) => setSelectedState(val)}></DropDownItem>
                             </div>
                             <button onClick={resetFilter} className="bg-red-500 p-2 py-2 px-4 rounded-lg text-white flex gap-2 items-center">
                                 <i className="fa-solid fa-rotate-right"></i>

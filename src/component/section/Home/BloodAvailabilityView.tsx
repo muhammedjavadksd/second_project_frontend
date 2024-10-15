@@ -3,11 +3,12 @@ import const_data from '@/util/data/const';
 import API_axiosInstance from '@/util/external/axios/api_axios_instance';
 import { BloodGroup } from '@/util/types/Enums/BasicEnums'
 import React, { useEffect, useState } from 'react'
+import Skeleton from 'react-loading-skeleton';
 
 function BloodAvailabilitySection() {
 
 
-    let [bloodStatics, setBloodStatics] = useState({});
+    let [bloodStatics, setBloodStatics] = useState(null);
     useEffect(() => {
 
         API_axiosInstance.get("blood/blood_availability", {}).then((data) => {
@@ -39,8 +40,7 @@ function BloodAvailabilitySection() {
             />
 
             <div className="">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-
+                {bloodStatics ? <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     {
                         Object.keys(bloodStatics).map((each, index) => {
                             return (
@@ -61,7 +61,8 @@ function BloodAvailabilitySection() {
                             )
                         })
                     }
-                </div>
+                </div> : <Skeleton height={250} />
+                }
             </div>
 
 

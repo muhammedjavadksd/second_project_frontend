@@ -69,8 +69,8 @@ function Page() {
                         <div className="flex justify-between">
                             <div className='buttonGroups flex items-center justify-start mt-3 gap-3' >
                                 <button className={`${closedOnly ? 'bg-blue-800' : 'bg-blue-600'} text-sm text-white p-2 rounded-lg pl-5 pr-5`} onClick={() => { setClosed(!closedOnly), setRefresh(!refresh) }}> <i className="fa-solid fa-bars" > </i> Closed Only</button >
-                                <DropDownItem callBack={(val) => { setStatus(val), setRefresh(!refresh) }} isOpen={false} optionsType={[{ label: "All", value: null }, { label: "Approved", value: BloodStatus.Approved }, { label: "Pending", value: BloodStatus.Pending }]} title="Select  status" />
-                                <DropDownItem callBack={(val) => { setBloodGroup(val), setRefresh(!refresh) }} isOpen={false} options={Object.values(BloodGroup)} title="Select blood group" />
+                                <DropDownItem value={status + ""} callBack={(val) => { setStatus(val), setRefresh(!refresh) }} isOpen={false} optionsType={[{ label: "All", value: null }, { label: "Approved", value: BloodStatus.Approved }, { label: "Pending", value: BloodStatus.Pending }]} title="Select  status" />
+                                <DropDownItem value={selectedBloodGroup} callBack={(val) => { setBloodGroup(val), setRefresh(!refresh) }} isOpen={false} options={Object.values(BloodGroup)} title="Select blood group" />
                             </div>
                             <HospitalSearch searchRef={hospitalRef} selectedHospital={(hsptl) => { setHospital(hsptl), setRefresh(!refresh) }} />
                         </div>

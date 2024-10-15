@@ -36,7 +36,7 @@ function BloodBank() {
                                 <button className={`${donorStatus == null ? "bg-blue-900" : 'bg-blue-700'}  text-sm text-white p-2.5 rounded-lg pl-5 pr-5 flex gap-2 items-center`} onClick={() => setStatus(null)} > <FaList /> All donors </button>
                                 <button className={`${donorStatus == "true" ? "bg-blue-900" : 'bg-blue-700'}  text-sm text-white p-2.5 rounded-lg pl-5 pr-5 flex gap-2 items-center`} onClick={() => setStatus("true")}> <FaList /> Active only </button>
                                 <button className={`${donorStatus == "false" ? "bg-blue-900" : 'bg-blue-700'}  text-sm text-white p-2.5 rounded-lg pl-5 pr-5 flex gap-2 items-center`} onClick={() => setStatus("false")}> <FaList /> In Active only </button>
-                                <DropDownItem callBack={(val) => { setBloodGroup(val['value']) }} isOpen={false} optionsType={[{ label: "Find all", value: null }, ...Object.values(BloodGroup).map((each) => { return { label: each, value: each } })]} title="Select blood group" />
+                                <DropDownItem value={bloodGroup} callBack={(val) => { setBloodGroup(val['value']) }} isOpen={false} optionsType={[{ label: "Find all", value: null }, ...Object.values(BloodGroup).map((each) => { return { label: each, value: each } })]} title="Select blood group" />
                             </div>
                         </div>
                     </div>

@@ -22,7 +22,7 @@ function MyFundRaisingItem({ profile }: { profile: FundRaiserResponse }) {
         <div className="w-full flex mx-auto mb-5 bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden dark:bg-gray-800 dark:border-gray-700">
             <div className="w-3/12">
                 <a href={`my-fundraising/view/${profile.fund_id}`} className='h-full block'>
-                    <LoadImage unoptimized className="w-full h-full  object-cover" imageurl={profile.picture[0] || null} />
+                    <LoadImage skeltonHeight={100} unoptimized className="w-full h-full  object-cover" imageurl={profile.picture[0] || null} />
                 </a>
             </div>
             <div className="w-9/12">

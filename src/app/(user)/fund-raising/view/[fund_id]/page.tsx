@@ -161,13 +161,13 @@ function ViewFundRaising(): React.ReactElement {
               <div className='w-3/4 mb-5'>
                 <div className='bg-white shadow rounded-sm'>
                   <div>
-                    <LoadImage unoptimized className='w-full' imageurl={focusPicture} />
+                    <LoadImage skeltonHeight={600} unoptimized className='w-full' imageurl={focusPicture} />
                     <ul className='flex gap-5 bg-white shadow-lg py-5 ml-5'>
                       {
                         fundRaiserPictures.map((pic, index) => {
                           return (
                             <li key={index} onClick={() => setFocusPictures(pic)} className={pic == focusPicture && 'border-b-4 border-s-4 border-t-4 border-e-4 border-blue-600'}>
-                              <LoadImage unoptimized className="w-20" imageurl={pic}></LoadImage>
+                              <LoadImage skeltonHeight={50} unoptimized className="w-20" imageurl={pic}></LoadImage>
                             </li>
                           )
                         })
@@ -212,7 +212,7 @@ function ViewFundRaising(): React.ReactElement {
                             fundRaiserDocuments.map((each, index) => {
                               return (
                                 <li key={index} className='cursor-pointer mb-5' onClick={() => setFocusImage(each)}>
-                                  <LoadImage unoptimized imageurl={each} className="w-full" />
+                                  <LoadImage skeltonHeight={600} unoptimized imageurl={each} className="w-full" />
                                 </li>
                               )
                             })

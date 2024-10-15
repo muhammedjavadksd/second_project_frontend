@@ -7,6 +7,8 @@ import SectionTitle from '@/component/Util/SectionTitle';
 import { getLimitedFundRaiserPost } from '@/util/data/helper/APIHelper';
 import const_data from '@/util/data/const';
 import { FundRaiserResponse } from '@/util/types/API Response/FundRaiser';
+import 'react-loading-skeleton/dist/skeleton.css'; // Import the styles for the skeleton
+import Skeleton from 'react-loading-skeleton';
 
 
 function FundRaiserSlider({ profiles, exclude }: { profiles: FundRaiserResponse[], exclude: string }) {
@@ -28,19 +30,22 @@ function FundRaiserSlider({ profiles, exclude }: { profiles: FundRaiserResponse[
         <section className='mt-5'>
             <div className=''>
 
-                <SliderComponent arrow={true} isGap={true} slidesToScroll={1} slidesToShow={4} dots={false}>
-                    {
-                        profiles.map((each, index) => {
-                            if (each.fund_id != exclude) {
-                                return (
-                                    <>
-                                        <FundRaiserSingleItem key={index} profile={each}></FundRaiserSingleItem>
-                                    </>
-                                )
-                            }
-                        })
-                    }
-                </SliderComponent>
+                {
+                    profiles.length ? <SliderComponent arrow={true} isGap={true} slidesToScroll={1} slidesToShow={4} dots={false}>
+                        {
+                            profiles.map((each, index) => {
+                                if (each.fund_id != exclude) {
+                                    return (
+                                        <>
+                                            <FundRaiserSingleItem key={index} profile={each}></FundRaiserSingleItem>
+                                        </>
+                                    )
+                                }
+                            })
+                        }
+                    </SliderComponent> : <div className='container mx-auto'>
+                        <Skeleton height={200} />
+                    </div>}
             </div>
 
         </section>
