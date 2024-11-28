@@ -156,9 +156,17 @@ function ViewFundRaising(): React.ReactElement {
             <h2 className='text-center  mt-5 text-4xl font-bold text-gray-700'>Help {fundRaiserProfile.full_name} for their {fundRaiserProfile.category}</h2>
           </div>
 
+
+
           <div className='mt-5'>
-            <div className='flex gap-10 mt-5'>
-              <div className='w-3/4 mb-5'>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-5">
+              <div className="md:col-span-3">
+
+
+
+
+
+
                 <div className='bg-white shadow rounded-sm'>
                   <div>
                     <LoadImage skeltonHeight={600} unoptimized className='w-full' imageurl={focusPicture} />
@@ -177,7 +185,7 @@ function ViewFundRaising(): React.ReactElement {
                   </div>
 
 
-                  <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+                  <ul className="flex overflow-scroll text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
                     <li>
                       <button onClick={() => setTabListing(FundRaiserTabItems.ABOUT)} aria-current="page" className={`inline-block   text-black ${tabListing == FundRaiserTabItems.ABOUT ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>About</button>
                     </li>
@@ -186,7 +194,7 @@ function ViewFundRaising(): React.ReactElement {
                     </li>
 
                     <li>
-                      <button onClick={() => setTabListing(FundRaiserTabItems.PAYEMENT_METHOD)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.PAYEMENT_METHOD ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Bank Account&apos;s</button>
+                      <button onClick={() => setTabListing(FundRaiserTabItems.PAYEMENT_METHOD)} className={`inline-block   text-black ${tabListing == FundRaiserTabItems.PAYEMENT_METHOD ? 'bg-blue-200' : 'bg-white'} py-5 px-10 shadow-inner border active dark:bg-gray-800 `}>Payment&apos;s</button>
                     </li>
 
                     <li>
@@ -222,7 +230,7 @@ function ViewFundRaising(): React.ReactElement {
                     </TabItem>
 
                     <TabItem keyid={3} isShow={tabListing == FundRaiserTabItems.PAYEMENT_METHOD}>
-                      <div className="grid grid-cols-3 gap-3 ">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 ">
                         <BankAccountCard accountNumber={fundRaiserProfile?.bank_account?.account_number?.toString() || ""} holderName={fundRaiserProfile?.bank_account?.holder_name?.toString() || ""} ifsc={fundRaiserProfile?.bank_account?.ifsc_code?.toString() || ""} type={fundRaiserProfile?.bank_account?.account_type || null} />
                         <div className='bg-[#f7f7f7] border '>
                           <div className='pt-3 flex justify-center'>
@@ -258,7 +266,13 @@ function ViewFundRaising(): React.ReactElement {
 
                 </div>
               </div>
-              <div className='w-1/4'>
+              <div className="md:col-span-1 p-5 md:p-0">
+
+
+
+
+
+
                 <div className='flex flex-col'>
 
                   <button onClick={() => setorderMethod(PaymentVia.Manual)} className='w-full font-medium text-white p-3 text-lg bg-green-400 rounded-lg'>Donate Now</button>

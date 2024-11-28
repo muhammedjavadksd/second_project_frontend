@@ -10,23 +10,35 @@ function SliderComponent({ children, slidesToShow, slidesToScroll, dots = true, 
     let sliderRef = useRef(null);
 
     let settings = {
-        // dots: dots,
-        // speed: 1000,
-        // slidesToShow,
-        // slidesToScroll,
-        // centerMode: true,
         initialSlide: 0,
-        // infinite: true,
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow,
-        slidesToScroll,
+        centerPadding: '1%',
+        slidesToShow: slidesToShow,
+        slidesToScroll: slidesToScroll,
         autoplay: true,
         vertical: false,
         verticalSwiping: false,
         adaptiveHeight: true,
-        variableHeight: false
+        variableHeight: false,
+        responsive: [
+            {
+                breakpoint: 768, // Tablet
+                settings: {
+                    slidesToShow: 2, // Show 2 slides on tablet
+                    slidesToScroll: 1,
+                    centerPadding: '0%',
+                }
+            },
+            {
+                breakpoint: 1024, // Laptop
+                settings: {
+                    slidesToShow: 1, // Show 1 slide on laptops
+                    slidesToScroll: 1
+                }
+            }
+        ]
     };
 
 

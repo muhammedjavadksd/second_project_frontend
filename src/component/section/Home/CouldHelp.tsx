@@ -6,7 +6,7 @@ function CouldHelp() {
     return (
         <div className='mb-10'>
             <SectionTitle title={"How Could You "} focus_text={"Help?"} sub_title={null}></SectionTitle>
-            <div className="grid grid-cols-3 gap-4 items-center	">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-center">
 
                 <div className="text-center  block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <div className='justify-center flex mb-3'>

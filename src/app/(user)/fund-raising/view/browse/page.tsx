@@ -83,7 +83,7 @@ function AdvanceFundRaiserView() {
         <Fragment>
             <Header />
 
-            <div className='container mx-auto mt-5 mb-5 '>
+            <div className='container mx-auto px-4 md:px-8 mt-5'>
                 <BreadCrumb path={['Home', 'Fund Raiser', 'Browse']} />
 
                 <div className="w-full  t-5 gap-5">
@@ -151,7 +151,7 @@ function AdvanceFundRaiserView() {
                                     )
                                 }
                                 return (
-                                    <div className="grid grid-cols-3 mt-5">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-5">
                                         {
                                             response.map((profile) => {
                                                 return <FundRaiserSingleItem key={profile._id} profile={profile} />

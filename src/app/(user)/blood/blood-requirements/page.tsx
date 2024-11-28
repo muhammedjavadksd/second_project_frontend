@@ -24,7 +24,7 @@ function BloodRequirementsView(): React.ReactElement {
     return (
         <div>
             <Header />
-            <div className='container mx-auto'>
+            <div className='container mx-auto px-4 md:px-8'>
                 <div className="mt-3 mb-3">
                     <BreadCrumb path={['Blood', 'Blood Requirements', 'View']} ></BreadCrumb>
                 </div>
@@ -49,7 +49,8 @@ function BloodRequirementsView(): React.ReactElement {
                         }}
                         itemsRender={(items: IBloodReq[]) => {
                             return items && items.length ? (
-                                <div className="grid grid-cols-3 gap-y-3 gap-x-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-5">
+
                                     {
                                         items.map((each) => {
                                             return (

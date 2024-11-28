@@ -20,7 +20,7 @@ function OtherAmount({ onAmountSelect, initialValue }) {
 
 
     return (
-        !isOtherAmount ? <button className="bg-white rounded-3xl shadow-inner border px-7 py-3" onClick={() => setOtherAmount(true)}>Other amount</button> :
+        !isOtherAmount ? <button className="w-fit bg-white rounded-3xl shadow-inner border px-7 py-3" onClick={() => setOtherAmount(true)}>Other amount</button> :
             (
                 <>
 
@@ -55,7 +55,7 @@ function FundPaymentModel({ fund_id, type }: { fund_id: string, type: PaymentVia
 
     const [amount, setAmount] = useState<number>(0)
     return (
-        <div className="bg-white min-h-96 min-w-96 rounded-lg">
+        <div className="bg-white min-h-96  rounded-lg">
             <script async src="https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js"></script>
 
             <div className="p-3 text-center bg-gray-300 rounded-ss-lg rounded-se-lg">
@@ -77,10 +77,12 @@ function FundPaymentModel({ fund_id, type }: { fund_id: string, type: PaymentVia
 
                 }}>
                     <Form>
-                        <div className="mt-5 mb-5 flex flex-wrap w-[350px] justify-center gap-4">
-                            <button type="button" onClick={() => setAmount(500)} className={`${amount == 500 ? "bg-gray-200" : "bg-white"}  rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}500</button>
-                            <button type="button" onClick={() => setAmount(1000)} className={`${amount == 1000 ? "bg-gray-200" : "bg-white"} rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}1000</button>
-                            <button type="button" onClick={() => setAmount(2000)} className={`${amount == 2000 ? "bg-gray-200" : "bg-white"} rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}2000</button>
+                        <div className="flex  mb-3 items-center justify-center flex-col">
+                            <div className="mt-5 mb-5 flex flex-wrap  justify-center gap-4">
+                                <button type="button" onClick={() => setAmount(500)} className={`${amount == 500 ? "bg-gray-200" : "bg-white"}  rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}500</button>
+                                <button type="button" onClick={() => setAmount(1000)} className={`${amount == 1000 ? "bg-gray-200" : "bg-white"} rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}1000</button>
+                                <button type="button" onClick={() => setAmount(2000)} className={`${amount == 2000 ? "bg-gray-200" : "bg-white"} rounded-3xl shadow-inner border px-7 py-3`}>{const_data.MONEY_ICON}2000</button>
+                            </div>
                             <OtherAmount initialValue={amount} onAmountSelect={(amount) => {
                                 setAmount(amount)
                             }} />
