@@ -21,6 +21,7 @@ const nextConfig = {
             'life-link.online',
             'localhost',
             'fund-raiser.s3.amazonaws.com',
+            'fund-raisers.s3.eu-north-1.amazonaws.com',
             'kettocdn.gumlet.io',
             'flowbite.com',
             'images.unsplash.com'
